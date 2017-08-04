@@ -22,7 +22,6 @@ public final class NettyServerContext {
      */
     private Map<Long, SocketChannel> channelMap = new ConcurrentHashMap(10000);
 
-
     /**
      * 添加引用关系
      *

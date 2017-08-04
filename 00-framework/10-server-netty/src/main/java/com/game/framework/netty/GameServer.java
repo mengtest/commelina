@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  * Created by @panyao on 2017/8/3.
  */
 @Component
-public class GameMainEvent {
+public class GameServer {
 
-    private static final Logger log = Logger.getLogger(GameMainEvent.class.getName());
+    private static final Logger log = Logger.getLogger(GameServer.class.getName());
 
     private Channel channel;
     private EventLoopGroup bossGroup = new NioEventLoopGroup();

@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 public final class SpringStarter {
 
     public static void start(ApplicationContext context, SessionInterface sessionInterface) throws Exception {
-        GameMainEvent event = context.getBean(GameMainEvent.class);
+        GameServer event = context.getBean(GameServer.class);
         event.bind(9002, sessionInterface);
     }
 
