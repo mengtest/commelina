@@ -11,4 +11,14 @@ import java.util.BitSet;
 public class SessionCache {
     private BitSet set = new BitSet(10000);
 
+    private SessionInterface sessionInterface;
+
+    public SessionInterface getSessionInterface() {
+        return sessionInterface;
+    }
+
+    public void setSessionInterface(SessionInterface sessionInterface) {
+        this.sessionInterface = sessionInterface;
+    }
+
 }

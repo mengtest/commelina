@@ -1,13 +1,14 @@
 package com.game.framework.netty;
 
+import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.ChannelId;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by @panyao on 2017/8/3.
@@ -15,44 +16,53 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public final class NettyServerContext {
 
-    private BlockingQueue<String> messageQueue = new ArrayBlockingQueue(10000);
+    // 默认的用户组管理
+    public static final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup("ChannelGroups", GlobalEventExecutor.INSTANCE);
+
+    private Map<Long, ChannelId> loginUsers = Maps.newConcurrentMap();
+
+    // 把用户加入到登录会话中去
+    public void userJoin(long userId, ChannelId channelId) {
+        loginUsers.put(userId, channelId);
+    }
+
+    // 用户注销了
+    public void userRemove(long userId) {
+        loginUsers.remove(userId);
+    }
+
+    // 用户是否在线
+    public boolean isOnline(long userId) {
+        ChannelId channelId = loginUsers.get(userId);
+        if (channelId == null) {
+            return false;
+        }
+        Channel channel = CHANNEL_GROUP.find(channelId);
+        if (channel == null) {
+            loginUsers.remove(userId);
+            return false;
+        }
+        return true;
+    }
 
     /**
-     * 用户 user_id 和当前登录的 channel 的映射
-     */
-    private Map<Long, SocketChannel> channelMap = new ConcurrentHashMap(10000);
-
-    /**
-     * 添加引用关系
+     * 获取用户的 channel
      *
-     * @param clientId
-     * @param socketChannel
+     * @param userId
+     * @return
      */
-    public void addChannelShip(long clientId, SocketChannel socketChannel) {
-        channelMap.put(clientId, socketChannel);
-    }
-
-    public Channel get(Long clientId) {
-        return channelMap.get(clientId);
-    }
-
-    public void remove(SocketChannel socketChannel) {
-        for (Map.Entry entry : channelMap.entrySet()) {
-            if (entry.getValue() == socketChannel) {
-                channelMap.remove(entry.getKey());
-                break;
-            }
+    public Channel getUserChannel(long userId) {
+        ChannelId channelId = loginUsers.get(userId);
+        if (channelId == null) {
+            // 用户未登录
+            throw new UserUnLoginException();
         }
-    }
-
-    public void listener() {
-        for (; ; ) {
-            try {
-                messageQueue.take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        Channel channel = CHANNEL_GROUP.find(channelId);
+        if (channel == null) {
+            // 用户下线了
+            throw new UserChannelNotFoundException();
         }
+        return channel;
     }
 
 }

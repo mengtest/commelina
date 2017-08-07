@@ -1,4 +1,4 @@
-package com.game.framework.netty;
+package com.game.framework.nettytest;
 
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
@@ -39,15 +39,15 @@ public class GameEventContext {
             throw new RuntimeException(e);
         }
 
-//        for (Future<Integer> future : futures) {
-//            try {
-//                System.out.println(future.get());
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        for (Future<Integer> future : futures) {
+            try {
+                System.out.println(future.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
 
         System.out.println("start time:" + System.currentTimeMillis());
         System.out.println("exe time:" + (System.nanoTime() - start_time));
