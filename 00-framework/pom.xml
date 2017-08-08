@@ -2,27 +2,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.game.framework</groupId>
+    <groupId>com.nexus.maven</groupId>
     <artifactId>framework-root</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
-        <module>10-server-netty</module>
+        <module>00-utils</module>
     </modules>
 
     <properties>
         <file.encoding>UTF-8</file.encoding>
         <java.version>1.8</java.version>
-
-        <spring.version>4.2.4.RELEASE</spring.version>
         <!-- log -->
         <log4j.version>1.2.15</log4j.version>
         <slf4j.version>1.7.5</slf4j.version>
         <jackson.version>2.6.3</jackson.version>
-        <netty.version>4.1.13.Final</netty.version>
-        <akka.version>2.4.19</akka.version>
-
     </properties>
 
     <dependencies>
@@ -33,104 +28,16 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.9.5</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-            <!-- spring 依赖-->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <!-- beans -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- core data 依赖 start -->
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>1.11.4.RELEASE</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-redis</artifactId>
-                <version>1.8.4.RELEASE</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>1.9.2</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>2.9.0</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>5.2.10.Final</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>6.0.6</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
-            <dependency>
-                <groupId>com.google.protobuf</groupId>
-                <artifactId>protobuf-java</artifactId>
-                <version>3.2.0</version>
-            </dependency>
-
             <!-- util start -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>21.0</version>
             </dependency>
-
-            <!-- 工具包 开始 -->
             <!-- jackson-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -153,30 +60,8 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-            <!-- 工具包 结束 -->
-
-            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor_2.11 -->
-            <dependency>
-                <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-actor_2.11</artifactId>
-                <version>${akka.version}</version>
-            </dependency>
-
-            <!-- 日志包 -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
     <repositories>
         <!-- 阿里私服 -->
         <repository>
@@ -202,13 +87,6 @@
 
     <build>
         <finalName>${project.name}</finalName>
-        <extensions>
-            <extension>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.4.1.Final</version>
-            </extension>
-        </extensions>
         <plugins>
             <!-- 编译插件 -->
             <plugin>
@@ -253,5 +131,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
