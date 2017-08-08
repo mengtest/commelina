@@ -51,7 +51,7 @@ message Arg {
 }
 
 // 系统默认错误码
-enum DEFAULT_CONSTANTS {
+enum SYSTEM_ERROR_CONSTANTS {
     SUCESS = 0; // 成功
     RPC_TARGET_CLASS_NOT_FOUND = 1; // 要调用的 rpc name 没有找到
 }

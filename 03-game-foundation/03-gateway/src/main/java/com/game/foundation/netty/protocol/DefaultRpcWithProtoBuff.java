@@ -43,6 +43,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
         List<Callable<String>> event = Lists.newArrayList();
         event.add(() -> invokeHandler(entity.getC(), entity.getM(), entity.getArgs()));
+        // 这里使用事件循环的意思是一个用户的 channel 下的全部请求也会是有序的。
         List<Future<String>> futures = eventLoop.invokeAll(event);
         Future<String> apiHandlerResult = futures.get(0);
         if (apiHandlerResult.isDone()) {
@@ -51,6 +52,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                 if (future.isSuccess()) {
                     // 成功
                 } else if (future.cause() != null) {
+                    // FIXME: 2017/8/8 全部转换为领域模型
                     // 异常
                     throw new Exception(future.cause());
                 } else {
@@ -67,7 +69,6 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             return ResponseMessage.errorString(SocketNettyProtocol.DEFAULT_CONSTANTS.RPC_TARGET_CLASS_NOT_FOUND.getNumber());
         }
 
-
         Method method;
         Class[] classArgs = new Class[1];
         try {
@@ -75,7 +76,6 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-
 
         try {
             if (args == null || args.length == 0) {
