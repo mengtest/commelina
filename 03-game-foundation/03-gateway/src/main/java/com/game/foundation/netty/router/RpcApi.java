@@ -1,4 +1,4 @@
-package com.game.foundation.netty.protocol;
+package com.game.foundation.netty.router;
 
 import org.springframework.stereotype.Component;
 
@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface RpcAPI {
+public @interface RpcApi {
 
 }

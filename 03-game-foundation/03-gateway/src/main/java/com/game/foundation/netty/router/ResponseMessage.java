@@ -1,4 +1,6 @@
-package com.game.foundation.netty.protocol;
+package com.game.foundation.netty.router;
+
+import com.game.foundation.netty.PipelineFuture;
 
 import java.io.Serializable;
 
@@ -9,10 +11,12 @@ import java.io.Serializable;
  * @coding.net https://coding.net/u/pandaxia
  * @github https://github.com/freedompy
  */
-public class ResponseMessage implements Serializable {
+public final class ResponseMessage<T> implements Serializable {
 
     private transient final Object data;
     private transient int code = 0;
+
+    private PipelineFuture callableHandler;
 
     private static final ResponseMessage _emptyResponseMessage =
             new ResponseMessage(null);
@@ -42,8 +46,23 @@ public class ResponseMessage implements Serializable {
         return responseMessage;
     }
 
-    public static String errorString(int code) {
-        return "{code:" + code + "}";
+    public void addListener(PipelineFuture future) {
+        this.callableHandler = future;
     }
 
+    public PipelineFuture getCallableHandler() {
+        return this.callableHandler;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 }

@@ -1,7 +1,7 @@
 package com.game.foundation.netty_spring;
 
 import com.game.foundation.netty.NettyNioSocketServer;
-import com.game.foundation.netty.RPCRouterDispatchInterface;
+import com.game.foundation.netty.router.DefaultRpcWithProtoBuff;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -9,11 +9,13 @@ import org.springframework.context.ApplicationContext;
  */
 public final class NettyNioSocketServerStarterForSpring {
 
-    public static NettyNioSocketServer start(ApplicationContext context, int port,
-                                             RPCRouterDispatchInterface dispatchInterface) throws Exception {
+    public static NettyNioSocketServer startWithProtoBuff(ApplicationContext context, int port) throws Exception {
         NettyNioSocketServer event = context.getBean(NettyNioSocketServer.class);
+
+        DefaultRpcWithProtoBuff socketServerHandler = context.getBean(DefaultRpcWithProtoBuff.class);
+        socketServerHandler.defaultSpringLoader(context);
+
         event.setPort(port);
-        event.setDispatch(dispatchInterface);
         event.bind();
         return event;
     }

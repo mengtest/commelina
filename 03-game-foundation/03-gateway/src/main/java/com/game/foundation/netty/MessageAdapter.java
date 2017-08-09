@@ -55,6 +55,28 @@ public class MessageAdapter {
         }
     }
 
+    public static final class MessageEntity<T> {
+
+        private long userId;
+        private T msg;
+
+        public long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(long userId) {
+            this.userId = userId;
+        }
+
+        public T getMsg() {
+            return msg;
+        }
+
+        public void setMsg(T msg) {
+            this.msg = msg;
+        }
+    }
+
 }
 
 

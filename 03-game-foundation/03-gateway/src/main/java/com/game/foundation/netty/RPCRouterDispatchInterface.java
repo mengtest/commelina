@@ -14,6 +14,6 @@ public interface RPCRouterDispatchInterface {
      * @param jsonMessage
      * @return
      */
-    void invoke(Long signInUserId, ChannelHandlerContext ctx, Object jsonMessage) throws Exception;
+    void invoke(ChannelHandlerContext ctx, Object jsonMessage);
 
 }

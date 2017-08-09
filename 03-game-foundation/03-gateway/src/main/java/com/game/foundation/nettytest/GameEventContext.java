@@ -49,7 +49,7 @@ public class GameEventContext {
             }
         }
 
-        System.out.println("start time:" + System.currentTimeMillis());
+        System.out.println("startWithProtoBuff time:" + System.currentTimeMillis());
         System.out.println("exe time:" + (System.nanoTime() - start_time));
     }
 

@@ -15,113 +15,6 @@ public final class SocketNettyProtocol {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
-   * Protobuf enum {@code socket.netty.SERVER_TYPE}
-   */
-  public enum SERVER_TYPE
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>GATEWAY = 0;</code>
-     */
-    GATEWAY(0),
-    /**
-     * <code>MATHCHING = 1;</code>
-     */
-    MATHCHING(1),
-    /**
-     * <code>ROOM = 2;</code>
-     */
-    ROOM(2),
-    UNRECOGNIZED(-1),
-    ;
-
-    /**
-     * <code>GATEWAY = 0;</code>
-     */
-    public static final int GATEWAY_VALUE = 0;
-    /**
-     * <code>MATHCHING = 1;</code>
-     */
-    public static final int MATHCHING_VALUE = 1;
-    /**
-     * <code>ROOM = 2;</code>
-     */
-    public static final int ROOM_VALUE = 2;
-
-
-    public final int getNumber() {
-      if (this == UNRECOGNIZED) {
-        throw new java.lang.IllegalArgumentException(
-            "Can't get the number of an unknown enum value.");
-      }
-      return value;
-    }
-
-    /**
-     * @deprecated Use {@link #forNumber(int)} instead.
-     */
-    @java.lang.Deprecated
-    public static SERVER_TYPE valueOf(int value) {
-      return forNumber(value);
-    }
-
-    public static SERVER_TYPE forNumber(int value) {
-      switch (value) {
-        case 0: return GATEWAY;
-        case 1: return MATHCHING;
-        case 2: return ROOM;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<SERVER_TYPE>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        SERVER_TYPE> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<SERVER_TYPE>() {
-            public SERVER_TYPE findValueByNumber(int number) {
-              return SERVER_TYPE.forNumber(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final SERVER_TYPE[] VALUES = values();
-
-    public static SERVER_TYPE valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      if (desc.getIndex() == -1) {
-        return UNRECOGNIZED;
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int value;
-
-    private SERVER_TYPE(int value) {
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:socket.netty.SERVER_TYPE)
-  }
-
-  /**
    * <pre>
    * 基本数据类型
    * </pre>
@@ -139,9 +32,9 @@ public final class SocketNettyProtocol {
      */
     STRING(1),
     /**
-     * <code>BIT = 2;</code>
+     * <code>BOOL = 2;</code>
      */
-    BIT(2),
+    BOOL(2),
     /**
      * <code>LONG = 3;</code>
      */
@@ -166,9 +59,9 @@ public final class SocketNettyProtocol {
      */
     public static final int STRING_VALUE = 1;
     /**
-     * <code>BIT = 2;</code>
+     * <code>BOOL = 2;</code>
      */
-    public static final int BIT_VALUE = 2;
+    public static final int BOOL_VALUE = 2;
     /**
      * <code>LONG = 3;</code>
      */
@@ -203,7 +96,7 @@ public final class SocketNettyProtocol {
       switch (value) {
         case 0: return INT;
         case 1: return STRING;
-        case 2: return BIT;
+        case 2: return BOOL;
         case 3: return LONG;
         case 4: return DOUBLUE;
         case 5: return FLOAT;
@@ -233,7 +126,7 @@ public final class SocketNettyProtocol {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.getDescriptor().getEnumTypes().get(1);
+      return io.socket.netty.proto.SocketNettyProtocol.getDescriptor().getEnumTypes().get(0);
     }
 
     private static final DATA_TYPE[] VALUES = values();
@@ -264,9 +157,9 @@ public final class SocketNettyProtocol {
    * 系统默认错误码
    * </pre>
    *
-   * Protobuf enum {@code socket.netty.DEFAULT_CONSTANTS}
+   * Protobuf enum {@code socket.netty.SYSTEM_ERROR_CONSTANTS}
    */
-  public enum DEFAULT_CONSTANTS
+  public enum SYSTEM_ERROR_CONSTANTS
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
      * <pre>
@@ -278,12 +171,68 @@ public final class SocketNettyProtocol {
     SUCESS(0),
     /**
      * <pre>
-     * 要调用的 rpc name 没有找到
+     * 协议解析错误
      * </pre>
      *
-     * <code>RPC_TARGET_CLASS_NOT_FOUND = 1;</code>
+     * <code>PROTOCOL_FORMAT_ERROR = 1;</code>
      */
-    RPC_TARGET_CLASS_NOT_FOUND(1),
+    PROTOCOL_FORMAT_ERROR(1),
+    /**
+     * <pre>
+     * 要调用的 api 不存在
+     * </pre>
+     *
+     * <code>RPC_API_NOT_FOUND = 2;</code>
+     */
+    RPC_API_NOT_FOUND(2),
+    /**
+     * <pre>
+     * 要调用的 rpc name 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_NOT_ALLOW_EMPTY = 3;</code>
+     */
+    RPC_CLASS_NOT_ALLOW_EMPTY(3),
+    /**
+     * <pre>
+     * 要调用的 rpc method 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_METHOD_NOT_ALLOW_EMPTY = 4;</code>
+     */
+    RPC_CLASS_METHOD_NOT_ALLOW_EMPTY(4),
+    /**
+     * <pre>
+     * 要调用的 rpc method version 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY = 5;</code>
+     */
+    RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY(5),
+    /**
+     * <pre>
+     * 参数错误
+     * </pre>
+     *
+     * <code>RPC_METHOD_ARG_ERROR = 6;</code>
+     */
+    RPC_METHOD_ARG_ERROR(6),
+    /**
+     * <pre>
+     * 方法不存在
+     * </pre>
+     *
+     * <code>RPC_METHOD_NOT_FOUND = 7;</code>
+     */
+    RPC_METHOD_NOT_FOUND(7),
+    /**
+     * <pre>
+     * 服务端内部错误
+     * </pre>
+     *
+     * <code>RPC_SERVER_ERROR = 8;</code>
+     */
+    RPC_SERVER_ERROR(8),
     UNRECOGNIZED(-1),
     ;
 
@@ -297,12 +246,68 @@ public final class SocketNettyProtocol {
     public static final int SUCESS_VALUE = 0;
     /**
      * <pre>
-     * 要调用的 rpc name 没有找到
+     * 协议解析错误
      * </pre>
      *
-     * <code>RPC_TARGET_CLASS_NOT_FOUND = 1;</code>
+     * <code>PROTOCOL_FORMAT_ERROR = 1;</code>
      */
-    public static final int RPC_TARGET_CLASS_NOT_FOUND_VALUE = 1;
+    public static final int PROTOCOL_FORMAT_ERROR_VALUE = 1;
+    /**
+     * <pre>
+     * 要调用的 api 不存在
+     * </pre>
+     *
+     * <code>RPC_API_NOT_FOUND = 2;</code>
+     */
+    public static final int RPC_API_NOT_FOUND_VALUE = 2;
+    /**
+     * <pre>
+     * 要调用的 rpc name 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_NOT_ALLOW_EMPTY = 3;</code>
+     */
+    public static final int RPC_CLASS_NOT_ALLOW_EMPTY_VALUE = 3;
+    /**
+     * <pre>
+     * 要调用的 rpc method 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_METHOD_NOT_ALLOW_EMPTY = 4;</code>
+     */
+    public static final int RPC_CLASS_METHOD_NOT_ALLOW_EMPTY_VALUE = 4;
+    /**
+     * <pre>
+     * 要调用的 rpc method version 不允许为空
+     * </pre>
+     *
+     * <code>RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY = 5;</code>
+     */
+    public static final int RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY_VALUE = 5;
+    /**
+     * <pre>
+     * 参数错误
+     * </pre>
+     *
+     * <code>RPC_METHOD_ARG_ERROR = 6;</code>
+     */
+    public static final int RPC_METHOD_ARG_ERROR_VALUE = 6;
+    /**
+     * <pre>
+     * 方法不存在
+     * </pre>
+     *
+     * <code>RPC_METHOD_NOT_FOUND = 7;</code>
+     */
+    public static final int RPC_METHOD_NOT_FOUND_VALUE = 7;
+    /**
+     * <pre>
+     * 服务端内部错误
+     * </pre>
+     *
+     * <code>RPC_SERVER_ERROR = 8;</code>
+     */
+    public static final int RPC_SERVER_ERROR_VALUE = 8;
 
 
     public final int getNumber() {
@@ -317,27 +322,34 @@ public final class SocketNettyProtocol {
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
-    public static DEFAULT_CONSTANTS valueOf(int value) {
+    public static SYSTEM_ERROR_CONSTANTS valueOf(int value) {
       return forNumber(value);
     }
 
-    public static DEFAULT_CONSTANTS forNumber(int value) {
+    public static SYSTEM_ERROR_CONSTANTS forNumber(int value) {
       switch (value) {
         case 0: return SUCESS;
-        case 1: return RPC_TARGET_CLASS_NOT_FOUND;
+        case 1: return PROTOCOL_FORMAT_ERROR;
+        case 2: return RPC_API_NOT_FOUND;
+        case 3: return RPC_CLASS_NOT_ALLOW_EMPTY;
+        case 4: return RPC_CLASS_METHOD_NOT_ALLOW_EMPTY;
+        case 5: return RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY;
+        case 6: return RPC_METHOD_ARG_ERROR;
+        case 7: return RPC_METHOD_NOT_FOUND;
+        case 8: return RPC_SERVER_ERROR;
         default: return null;
       }
     }
 
-    public static com.google.protobuf.Internal.EnumLiteMap<DEFAULT_CONSTANTS>
+    public static com.google.protobuf.Internal.EnumLiteMap<SYSTEM_ERROR_CONSTANTS>
         internalGetValueMap() {
       return internalValueMap;
     }
     private static final com.google.protobuf.Internal.EnumLiteMap<
-        DEFAULT_CONSTANTS> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<DEFAULT_CONSTANTS>() {
-            public DEFAULT_CONSTANTS findValueByNumber(int number) {
-              return DEFAULT_CONSTANTS.forNumber(number);
+        SYSTEM_ERROR_CONSTANTS> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<SYSTEM_ERROR_CONSTANTS>() {
+            public SYSTEM_ERROR_CONSTANTS findValueByNumber(int number) {
+              return SYSTEM_ERROR_CONSTANTS.forNumber(number);
             }
           };
 
@@ -351,12 +363,12 @@ public final class SocketNettyProtocol {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.getDescriptor().getEnumTypes().get(2);
+      return io.socket.netty.proto.SocketNettyProtocol.getDescriptor().getEnumTypes().get(1);
     }
 
-    private static final DEFAULT_CONSTANTS[] VALUES = values();
+    private static final SYSTEM_ERROR_CONSTANTS[] VALUES = values();
 
-    public static DEFAULT_CONSTANTS valueOf(
+    public static SYSTEM_ERROR_CONSTANTS valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
@@ -370,32 +382,23 @@ public final class SocketNettyProtocol {
 
     private final int value;
 
-    private DEFAULT_CONSTANTS(int value) {
+    private SYSTEM_ERROR_CONSTANTS(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:socket.netty.DEFAULT_CONSTANTS)
+    // @@protoc_insertion_point(enum_scope:socket.netty.SYSTEM_ERROR_CONSTANTS)
   }
 
-  public interface SocketRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:socket.netty.SocketRequest)
+  public interface SocketASKOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:socket.netty.SocketASK)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    int getServerTypeValue();
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType();
 
     /**
      * <pre>
      * rpc class name
      * </pre>
      *
-     * <code>string rcn = 2;</code>
+     * <code>string rcn = 1;</code>
      */
     java.lang.String getRcn();
     /**
@@ -403,7 +406,7 @@ public final class SocketNettyProtocol {
      * rpc class name
      * </pre>
      *
-     * <code>string rcn = 2;</code>
+     * <code>string rcn = 1;</code>
      */
     com.google.protobuf.ByteString
         getRcnBytes();
@@ -413,7 +416,7 @@ public final class SocketNettyProtocol {
      * rpc class method
      * </pre>
      *
-     * <code>string rcm = 3;</code>
+     * <code>string rcm = 2;</code>
      */
     java.lang.String getRcm();
     /**
@@ -421,10 +424,28 @@ public final class SocketNettyProtocol {
      * rpc class method
      * </pre>
      *
-     * <code>string rcm = 3;</code>
+     * <code>string rcm = 2;</code>
      */
     com.google.protobuf.ByteString
         getRcmBytes();
+
+    /**
+     * <pre>
+     * rpc class method version
+     * </pre>
+     *
+     * <code>string rcmv = 3;</code>
+     */
+    java.lang.String getRcmv();
+    /**
+     * <pre>
+     * rpc class method version
+     * </pre>
+     *
+     * <code>string rcmv = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getRcmvBytes();
 
     /**
      * <pre>
@@ -475,20 +496,20 @@ public final class SocketNettyProtocol {
    * socket 请求体
    * </pre>
    *
-   * Protobuf type {@code socket.netty.SocketRequest}
+   * Protobuf type {@code socket.netty.SocketASK}
    */
-  public  static final class SocketRequest extends
+  public  static final class SocketASK extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:socket.netty.SocketRequest)
-      SocketRequestOrBuilder {
-    // Use SocketRequest.newBuilder() to construct.
-    private SocketRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:socket.netty.SocketASK)
+      SocketASKOrBuilder {
+    // Use SocketASK.newBuilder() to construct.
+    private SocketASK(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private SocketRequest() {
-      serverType_ = 0;
+    private SocketASK() {
       rcn_ = "";
       rcm_ = "";
+      rcmv_ = "";
       args_ = java.util.Collections.emptyList();
     }
 
@@ -497,7 +518,7 @@ public final class SocketNettyProtocol {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private SocketRequest(
+    private SocketASK(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -517,22 +538,22 @@ public final class SocketNettyProtocol {
               }
               break;
             }
-            case 8: {
-              int rawValue = input.readEnum();
-
-              serverType_ = rawValue;
-              break;
-            }
-            case 18: {
+            case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
               rcn_ = s;
               break;
             }
-            case 26: {
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               rcm_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              rcmv_ = s;
               break;
             }
             case 34: {
@@ -560,41 +581,25 @@ public final class SocketNettyProtocol {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketRequest_descriptor;
+      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketASK_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketRequest_fieldAccessorTable
+      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketASK_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.socket.netty.proto.SocketNettyProtocol.SocketRequest.class, io.socket.netty.proto.SocketNettyProtocol.SocketRequest.Builder.class);
+              io.socket.netty.proto.SocketNettyProtocol.SocketASK.class, io.socket.netty.proto.SocketNettyProtocol.SocketASK.Builder.class);
     }
 
     private int bitField0_;
-    public static final int SERVERTYPE_FIELD_NUMBER = 1;
-    private int serverType_;
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    public int getServerTypeValue() {
-      return serverType_;
-    }
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    public io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType() {
-      io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE result = io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.valueOf(serverType_);
-      return result == null ? io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.UNRECOGNIZED : result;
-    }
-
-    public static final int RCN_FIELD_NUMBER = 2;
+    public static final int RCN_FIELD_NUMBER = 1;
     private volatile java.lang.Object rcn_;
     /**
      * <pre>
      * rpc class name
      * </pre>
      *
-     * <code>string rcn = 2;</code>
+     * <code>string rcn = 1;</code>
      */
     public java.lang.String getRcn() {
       java.lang.Object ref = rcn_;
@@ -613,7 +618,7 @@ public final class SocketNettyProtocol {
      * rpc class name
      * </pre>
      *
-     * <code>string rcn = 2;</code>
+     * <code>string rcn = 1;</code>
      */
     public com.google.protobuf.ByteString
         getRcnBytes() {
@@ -629,14 +634,14 @@ public final class SocketNettyProtocol {
       }
     }
 
-    public static final int RCM_FIELD_NUMBER = 3;
+    public static final int RCM_FIELD_NUMBER = 2;
     private volatile java.lang.Object rcm_;
     /**
      * <pre>
      * rpc class method
      * </pre>
      *
-     * <code>string rcm = 3;</code>
+     * <code>string rcm = 2;</code>
      */
     public java.lang.String getRcm() {
       java.lang.Object ref = rcm_;
@@ -655,7 +660,7 @@ public final class SocketNettyProtocol {
      * rpc class method
      * </pre>
      *
-     * <code>string rcm = 3;</code>
+     * <code>string rcm = 2;</code>
      */
     public com.google.protobuf.ByteString
         getRcmBytes() {
@@ -665,6 +670,48 @@ public final class SocketNettyProtocol {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         rcm_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RCMV_FIELD_NUMBER = 3;
+    private volatile java.lang.Object rcmv_;
+    /**
+     * <pre>
+     * rpc class method version
+     * </pre>
+     *
+     * <code>string rcmv = 3;</code>
+     */
+    public java.lang.String getRcmv() {
+      java.lang.Object ref = rcmv_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        rcmv_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * rpc class method version
+     * </pre>
+     *
+     * <code>string rcmv = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getRcmvBytes() {
+      java.lang.Object ref = rcmv_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        rcmv_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -738,14 +785,14 @@ public final class SocketNettyProtocol {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (serverType_ != io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.GATEWAY.getNumber()) {
-        output.writeEnum(1, serverType_);
-      }
       if (!getRcnBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, rcn_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, rcn_);
       }
       if (!getRcmBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, rcm_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, rcm_);
+      }
+      if (!getRcmvBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, rcmv_);
       }
       for (int i = 0; i < args_.size(); i++) {
         output.writeMessage(4, args_.get(i));
@@ -757,15 +804,14 @@ public final class SocketNettyProtocol {
       if (size != -1) return size;
 
       size = 0;
-      if (serverType_ != io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.GATEWAY.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, serverType_);
-      }
       if (!getRcnBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, rcn_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, rcn_);
       }
       if (!getRcmBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, rcm_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, rcm_);
+      }
+      if (!getRcmvBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, rcmv_);
       }
       for (int i = 0; i < args_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -781,17 +827,18 @@ public final class SocketNettyProtocol {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof io.socket.netty.proto.SocketNettyProtocol.SocketRequest)) {
+      if (!(obj instanceof io.socket.netty.proto.SocketNettyProtocol.SocketASK)) {
         return super.equals(obj);
       }
-      io.socket.netty.proto.SocketNettyProtocol.SocketRequest other = (io.socket.netty.proto.SocketNettyProtocol.SocketRequest) obj;
+      io.socket.netty.proto.SocketNettyProtocol.SocketASK other = (io.socket.netty.proto.SocketNettyProtocol.SocketASK) obj;
 
       boolean result = true;
-      result = result && serverType_ == other.serverType_;
       result = result && getRcn()
           .equals(other.getRcn());
       result = result && getRcm()
           .equals(other.getRcm());
+      result = result && getRcmv()
+          .equals(other.getRcmv());
       result = result && getArgsList()
           .equals(other.getArgsList());
       return result;
@@ -804,12 +851,12 @@ public final class SocketNettyProtocol {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SERVERTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + serverType_;
       hash = (37 * hash) + RCN_FIELD_NUMBER;
       hash = (53 * hash) + getRcn().hashCode();
       hash = (37 * hash) + RCM_FIELD_NUMBER;
       hash = (53 * hash) + getRcm().hashCode();
+      hash = (37 * hash) + RCMV_FIELD_NUMBER;
+      hash = (53 * hash) + getRcmv().hashCode();
       if (getArgsCount() > 0) {
         hash = (37 * hash) + ARGS_FIELD_NUMBER;
         hash = (53 * hash) + getArgsList().hashCode();
@@ -819,58 +866,58 @@ public final class SocketNettyProtocol {
       return hash;
     }
 
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(byte[] data)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(java.io.InputStream input)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseDelimitedFrom(java.io.InputStream input)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseDelimitedFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -882,7 +929,7 @@ public final class SocketNettyProtocol {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(io.socket.netty.proto.SocketNettyProtocol.SocketRequest prototype) {
+    public static Builder newBuilder(io.socket.netty.proto.SocketNettyProtocol.SocketASK prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -901,25 +948,25 @@ public final class SocketNettyProtocol {
      * socket 请求体
      * </pre>
      *
-     * Protobuf type {@code socket.netty.SocketRequest}
+     * Protobuf type {@code socket.netty.SocketASK}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:socket.netty.SocketRequest)
-        io.socket.netty.proto.SocketNettyProtocol.SocketRequestOrBuilder {
+        // @@protoc_insertion_point(builder_implements:socket.netty.SocketASK)
+        io.socket.netty.proto.SocketNettyProtocol.SocketASKOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketRequest_descriptor;
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketASK_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketRequest_fieldAccessorTable
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketASK_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                io.socket.netty.proto.SocketNettyProtocol.SocketRequest.class, io.socket.netty.proto.SocketNettyProtocol.SocketRequest.Builder.class);
+                io.socket.netty.proto.SocketNettyProtocol.SocketASK.class, io.socket.netty.proto.SocketNettyProtocol.SocketASK.Builder.class);
       }
 
-      // Construct using io.socket.netty.proto.SocketNettyProtocol.SocketRequest.newBuilder()
+      // Construct using io.socket.netty.proto.SocketNettyProtocol.SocketASK.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -937,11 +984,11 @@ public final class SocketNettyProtocol {
       }
       public Builder clear() {
         super.clear();
-        serverType_ = 0;
-
         rcn_ = "";
 
         rcm_ = "";
+
+        rcmv_ = "";
 
         if (argsBuilder_ == null) {
           args_ = java.util.Collections.emptyList();
@@ -954,28 +1001,28 @@ public final class SocketNettyProtocol {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketRequest_descriptor;
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketASK_descriptor;
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketRequest getDefaultInstanceForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.SocketRequest.getDefaultInstance();
+      public io.socket.netty.proto.SocketNettyProtocol.SocketASK getDefaultInstanceForType() {
+        return io.socket.netty.proto.SocketNettyProtocol.SocketASK.getDefaultInstance();
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketRequest build() {
-        io.socket.netty.proto.SocketNettyProtocol.SocketRequest result = buildPartial();
+      public io.socket.netty.proto.SocketNettyProtocol.SocketASK build() {
+        io.socket.netty.proto.SocketNettyProtocol.SocketASK result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketRequest buildPartial() {
-        io.socket.netty.proto.SocketNettyProtocol.SocketRequest result = new io.socket.netty.proto.SocketNettyProtocol.SocketRequest(this);
+      public io.socket.netty.proto.SocketNettyProtocol.SocketASK buildPartial() {
+        io.socket.netty.proto.SocketNettyProtocol.SocketASK result = new io.socket.netty.proto.SocketNettyProtocol.SocketASK(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        result.serverType_ = serverType_;
         result.rcn_ = rcn_;
         result.rcm_ = rcm_;
+        result.rcmv_ = rcmv_;
         if (argsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) == 0x00000008)) {
             args_ = java.util.Collections.unmodifiableList(args_);
@@ -1017,25 +1064,26 @@ public final class SocketNettyProtocol {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof io.socket.netty.proto.SocketNettyProtocol.SocketRequest) {
-          return mergeFrom((io.socket.netty.proto.SocketNettyProtocol.SocketRequest)other);
+        if (other instanceof io.socket.netty.proto.SocketNettyProtocol.SocketASK) {
+          return mergeFrom((io.socket.netty.proto.SocketNettyProtocol.SocketASK)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(io.socket.netty.proto.SocketNettyProtocol.SocketRequest other) {
-        if (other == io.socket.netty.proto.SocketNettyProtocol.SocketRequest.getDefaultInstance()) return this;
-        if (other.serverType_ != 0) {
-          setServerTypeValue(other.getServerTypeValue());
-        }
+      public Builder mergeFrom(io.socket.netty.proto.SocketNettyProtocol.SocketASK other) {
+        if (other == io.socket.netty.proto.SocketNettyProtocol.SocketASK.getDefaultInstance()) return this;
         if (!other.getRcn().isEmpty()) {
           rcn_ = other.rcn_;
           onChanged();
         }
         if (!other.getRcm().isEmpty()) {
           rcm_ = other.rcm_;
+          onChanged();
+        }
+        if (!other.getRcmv().isEmpty()) {
+          rcmv_ = other.rcmv_;
           onChanged();
         }
         if (argsBuilder_ == null) {
@@ -1076,11 +1124,11 @@ public final class SocketNettyProtocol {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        io.socket.netty.proto.SocketNettyProtocol.SocketRequest parsedMessage = null;
+        io.socket.netty.proto.SocketNettyProtocol.SocketASK parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (io.socket.netty.proto.SocketNettyProtocol.SocketRequest) e.getUnfinishedMessage();
+          parsedMessage = (io.socket.netty.proto.SocketNettyProtocol.SocketASK) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1091,57 +1139,13 @@ public final class SocketNettyProtocol {
       }
       private int bitField0_;
 
-      private int serverType_ = 0;
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public int getServerTypeValue() {
-        return serverType_;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder setServerTypeValue(int value) {
-        serverType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType() {
-        io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE result = io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.valueOf(serverType_);
-        return result == null ? io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder setServerType(io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        serverType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder clearServerType() {
-        
-        serverType_ = 0;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object rcn_ = "";
       /**
        * <pre>
        * rpc class name
        * </pre>
        *
-       * <code>string rcn = 2;</code>
+       * <code>string rcn = 1;</code>
        */
       public java.lang.String getRcn() {
         java.lang.Object ref = rcn_;
@@ -1160,7 +1164,7 @@ public final class SocketNettyProtocol {
        * rpc class name
        * </pre>
        *
-       * <code>string rcn = 2;</code>
+       * <code>string rcn = 1;</code>
        */
       public com.google.protobuf.ByteString
           getRcnBytes() {
@@ -1180,7 +1184,7 @@ public final class SocketNettyProtocol {
        * rpc class name
        * </pre>
        *
-       * <code>string rcn = 2;</code>
+       * <code>string rcn = 1;</code>
        */
       public Builder setRcn(
           java.lang.String value) {
@@ -1197,7 +1201,7 @@ public final class SocketNettyProtocol {
        * rpc class name
        * </pre>
        *
-       * <code>string rcn = 2;</code>
+       * <code>string rcn = 1;</code>
        */
       public Builder clearRcn() {
         
@@ -1210,7 +1214,7 @@ public final class SocketNettyProtocol {
        * rpc class name
        * </pre>
        *
-       * <code>string rcn = 2;</code>
+       * <code>string rcn = 1;</code>
        */
       public Builder setRcnBytes(
           com.google.protobuf.ByteString value) {
@@ -1230,7 +1234,7 @@ public final class SocketNettyProtocol {
        * rpc class method
        * </pre>
        *
-       * <code>string rcm = 3;</code>
+       * <code>string rcm = 2;</code>
        */
       public java.lang.String getRcm() {
         java.lang.Object ref = rcm_;
@@ -1249,7 +1253,7 @@ public final class SocketNettyProtocol {
        * rpc class method
        * </pre>
        *
-       * <code>string rcm = 3;</code>
+       * <code>string rcm = 2;</code>
        */
       public com.google.protobuf.ByteString
           getRcmBytes() {
@@ -1269,7 +1273,7 @@ public final class SocketNettyProtocol {
        * rpc class method
        * </pre>
        *
-       * <code>string rcm = 3;</code>
+       * <code>string rcm = 2;</code>
        */
       public Builder setRcm(
           java.lang.String value) {
@@ -1286,7 +1290,7 @@ public final class SocketNettyProtocol {
        * rpc class method
        * </pre>
        *
-       * <code>string rcm = 3;</code>
+       * <code>string rcm = 2;</code>
        */
       public Builder clearRcm() {
         
@@ -1299,7 +1303,7 @@ public final class SocketNettyProtocol {
        * rpc class method
        * </pre>
        *
-       * <code>string rcm = 3;</code>
+       * <code>string rcm = 2;</code>
        */
       public Builder setRcmBytes(
           com.google.protobuf.ByteString value) {
@@ -1309,6 +1313,95 @@ public final class SocketNettyProtocol {
   checkByteStringIsUtf8(value);
         
         rcm_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object rcmv_ = "";
+      /**
+       * <pre>
+       * rpc class method version
+       * </pre>
+       *
+       * <code>string rcmv = 3;</code>
+       */
+      public java.lang.String getRcmv() {
+        java.lang.Object ref = rcmv_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          rcmv_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * rpc class method version
+       * </pre>
+       *
+       * <code>string rcmv = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getRcmvBytes() {
+        java.lang.Object ref = rcmv_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          rcmv_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * rpc class method version
+       * </pre>
+       *
+       * <code>string rcmv = 3;</code>
+       */
+      public Builder setRcmv(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        rcmv_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * rpc class method version
+       * </pre>
+       *
+       * <code>string rcmv = 3;</code>
+       */
+      public Builder clearRcmv() {
+        
+        rcmv_ = getDefaultInstance().getRcmv();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * rpc class method version
+       * </pre>
+       *
+       * <code>string rcmv = 3;</code>
+       */
+      public Builder setRcmvBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        rcmv_ = value;
         onChanged();
         return this;
       }
@@ -1635,63 +1728,54 @@ public final class SocketNettyProtocol {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:socket.netty.SocketRequest)
+      // @@protoc_insertion_point(builder_scope:socket.netty.SocketASK)
     }
 
-    // @@protoc_insertion_point(class_scope:socket.netty.SocketRequest)
-    private static final io.socket.netty.proto.SocketNettyProtocol.SocketRequest DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:socket.netty.SocketASK)
+    private static final io.socket.netty.proto.SocketNettyProtocol.SocketASK DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new io.socket.netty.proto.SocketNettyProtocol.SocketRequest();
+      DEFAULT_INSTANCE = new io.socket.netty.proto.SocketNettyProtocol.SocketASK();
     }
 
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketRequest getDefaultInstance() {
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketASK getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<SocketRequest>
-        PARSER = new com.google.protobuf.AbstractParser<SocketRequest>() {
-      public SocketRequest parsePartialFrom(
+    private static final com.google.protobuf.Parser<SocketASK>
+        PARSER = new com.google.protobuf.AbstractParser<SocketASK>() {
+      public SocketASK parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SocketRequest(input, extensionRegistry);
+          return new SocketASK(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<SocketRequest> parser() {
+    public static com.google.protobuf.Parser<SocketASK> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<SocketRequest> getParserForType() {
+    public com.google.protobuf.Parser<SocketASK> getParserForType() {
       return PARSER;
     }
 
-    public io.socket.netty.proto.SocketNettyProtocol.SocketRequest getDefaultInstanceForType() {
+    public io.socket.netty.proto.SocketNettyProtocol.SocketASK getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface SocketResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:socket.netty.SocketResponse)
+  public interface SocketACKOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:socket.netty.SocketACK)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    int getServerTypeValue();
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType();
 
     /**
      * <pre>
      * 错误码 0 表示成功
      * </pre>
      *
-     * <code>uint32 code = 2;</code>
+     * <code>uint32 code = 1;</code>
      */
     int getCode();
 
@@ -1700,7 +1784,7 @@ public final class SocketNettyProtocol {
      * json
      * </pre>
      *
-     * <code>bytes msg = 4;</code>
+     * <code>bytes msg = 2;</code>
      */
     com.google.protobuf.ByteString getMsg();
   }
@@ -1709,18 +1793,17 @@ public final class SocketNettyProtocol {
    * socket 响应
    * </pre>
    *
-   * Protobuf type {@code socket.netty.SocketResponse}
+   * Protobuf type {@code socket.netty.SocketACK}
    */
-  public  static final class SocketResponse extends
+  public  static final class SocketACK extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:socket.netty.SocketResponse)
-      SocketResponseOrBuilder {
-    // Use SocketResponse.newBuilder() to construct.
-    private SocketResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:socket.netty.SocketACK)
+      SocketACKOrBuilder {
+    // Use SocketACK.newBuilder() to construct.
+    private SocketACK(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private SocketResponse() {
-      serverType_ = 0;
+    private SocketACK() {
       code_ = 0;
       msg_ = com.google.protobuf.ByteString.EMPTY;
     }
@@ -1730,7 +1813,7 @@ public final class SocketNettyProtocol {
     getUnknownFields() {
       return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
-    private SocketResponse(
+    private SocketACK(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1751,17 +1834,11 @@ public final class SocketNettyProtocol {
               break;
             }
             case 8: {
-              int rawValue = input.readEnum();
-
-              serverType_ = rawValue;
-              break;
-            }
-            case 16: {
 
               code_ = input.readUInt32();
               break;
             }
-            case 34: {
+            case 18: {
 
               msg_ = input.readBytes();
               break;
@@ -1779,53 +1856,37 @@ public final class SocketNettyProtocol {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketResponse_descriptor;
+      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketACK_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketResponse_fieldAccessorTable
+      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketACK_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              io.socket.netty.proto.SocketNettyProtocol.SocketResponse.class, io.socket.netty.proto.SocketNettyProtocol.SocketResponse.Builder.class);
+              io.socket.netty.proto.SocketNettyProtocol.SocketACK.class, io.socket.netty.proto.SocketNettyProtocol.SocketACK.Builder.class);
     }
 
-    public static final int SERVERTYPE_FIELD_NUMBER = 1;
-    private int serverType_;
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    public int getServerTypeValue() {
-      return serverType_;
-    }
-    /**
-     * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-     */
-    public io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType() {
-      io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE result = io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.valueOf(serverType_);
-      return result == null ? io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.UNRECOGNIZED : result;
-    }
-
-    public static final int CODE_FIELD_NUMBER = 2;
+    public static final int CODE_FIELD_NUMBER = 1;
     private int code_;
     /**
      * <pre>
      * 错误码 0 表示成功
      * </pre>
      *
-     * <code>uint32 code = 2;</code>
+     * <code>uint32 code = 1;</code>
      */
     public int getCode() {
       return code_;
     }
 
-    public static final int MSG_FIELD_NUMBER = 4;
+    public static final int MSG_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString msg_;
     /**
      * <pre>
      * json
      * </pre>
      *
-     * <code>bytes msg = 4;</code>
+     * <code>bytes msg = 2;</code>
      */
     public com.google.protobuf.ByteString getMsg() {
       return msg_;
@@ -1843,14 +1904,11 @@ public final class SocketNettyProtocol {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (serverType_ != io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.GATEWAY.getNumber()) {
-        output.writeEnum(1, serverType_);
-      }
       if (code_ != 0) {
-        output.writeUInt32(2, code_);
+        output.writeUInt32(1, code_);
       }
       if (!msg_.isEmpty()) {
-        output.writeBytes(4, msg_);
+        output.writeBytes(2, msg_);
       }
     }
 
@@ -1859,17 +1917,13 @@ public final class SocketNettyProtocol {
       if (size != -1) return size;
 
       size = 0;
-      if (serverType_ != io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.GATEWAY.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, serverType_);
-      }
       if (code_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, code_);
+          .computeUInt32Size(1, code_);
       }
       if (!msg_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, msg_);
+          .computeBytesSize(2, msg_);
       }
       memoizedSize = size;
       return size;
@@ -1881,13 +1935,12 @@ public final class SocketNettyProtocol {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof io.socket.netty.proto.SocketNettyProtocol.SocketResponse)) {
+      if (!(obj instanceof io.socket.netty.proto.SocketNettyProtocol.SocketACK)) {
         return super.equals(obj);
       }
-      io.socket.netty.proto.SocketNettyProtocol.SocketResponse other = (io.socket.netty.proto.SocketNettyProtocol.SocketResponse) obj;
+      io.socket.netty.proto.SocketNettyProtocol.SocketACK other = (io.socket.netty.proto.SocketNettyProtocol.SocketACK) obj;
 
       boolean result = true;
-      result = result && serverType_ == other.serverType_;
       result = result && (getCode()
           == other.getCode());
       result = result && getMsg()
@@ -1902,8 +1955,6 @@ public final class SocketNettyProtocol {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + SERVERTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + serverType_;
       hash = (37 * hash) + CODE_FIELD_NUMBER;
       hash = (53 * hash) + getCode();
       hash = (37 * hash) + MSG_FIELD_NUMBER;
@@ -1913,58 +1964,58 @@ public final class SocketNettyProtocol {
       return hash;
     }
 
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(byte[] data)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(java.io.InputStream input)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseDelimitedFrom(java.io.InputStream input)
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseDelimitedFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse parseFrom(
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1976,7 +2027,7 @@ public final class SocketNettyProtocol {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(io.socket.netty.proto.SocketNettyProtocol.SocketResponse prototype) {
+    public static Builder newBuilder(io.socket.netty.proto.SocketNettyProtocol.SocketACK prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -1995,25 +2046,25 @@ public final class SocketNettyProtocol {
      * socket 响应
      * </pre>
      *
-     * Protobuf type {@code socket.netty.SocketResponse}
+     * Protobuf type {@code socket.netty.SocketACK}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:socket.netty.SocketResponse)
-        io.socket.netty.proto.SocketNettyProtocol.SocketResponseOrBuilder {
+        // @@protoc_insertion_point(builder_implements:socket.netty.SocketACK)
+        io.socket.netty.proto.SocketNettyProtocol.SocketACKOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketResponse_descriptor;
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketACK_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketResponse_fieldAccessorTable
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketACK_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                io.socket.netty.proto.SocketNettyProtocol.SocketResponse.class, io.socket.netty.proto.SocketNettyProtocol.SocketResponse.Builder.class);
+                io.socket.netty.proto.SocketNettyProtocol.SocketACK.class, io.socket.netty.proto.SocketNettyProtocol.SocketACK.Builder.class);
       }
 
-      // Construct using io.socket.netty.proto.SocketNettyProtocol.SocketResponse.newBuilder()
+      // Construct using io.socket.netty.proto.SocketNettyProtocol.SocketACK.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2030,8 +2081,6 @@ public final class SocketNettyProtocol {
       }
       public Builder clear() {
         super.clear();
-        serverType_ = 0;
-
         code_ = 0;
 
         msg_ = com.google.protobuf.ByteString.EMPTY;
@@ -2041,24 +2090,23 @@ public final class SocketNettyProtocol {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketResponse_descriptor;
+        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_SocketACK_descriptor;
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketResponse getDefaultInstanceForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.SocketResponse.getDefaultInstance();
+      public io.socket.netty.proto.SocketNettyProtocol.SocketACK getDefaultInstanceForType() {
+        return io.socket.netty.proto.SocketNettyProtocol.SocketACK.getDefaultInstance();
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketResponse build() {
-        io.socket.netty.proto.SocketNettyProtocol.SocketResponse result = buildPartial();
+      public io.socket.netty.proto.SocketNettyProtocol.SocketACK build() {
+        io.socket.netty.proto.SocketNettyProtocol.SocketACK result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public io.socket.netty.proto.SocketNettyProtocol.SocketResponse buildPartial() {
-        io.socket.netty.proto.SocketNettyProtocol.SocketResponse result = new io.socket.netty.proto.SocketNettyProtocol.SocketResponse(this);
-        result.serverType_ = serverType_;
+      public io.socket.netty.proto.SocketNettyProtocol.SocketACK buildPartial() {
+        io.socket.netty.proto.SocketNettyProtocol.SocketACK result = new io.socket.netty.proto.SocketNettyProtocol.SocketACK(this);
         result.code_ = code_;
         result.msg_ = msg_;
         onBuilt();
@@ -2092,19 +2140,16 @@ public final class SocketNettyProtocol {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof io.socket.netty.proto.SocketNettyProtocol.SocketResponse) {
-          return mergeFrom((io.socket.netty.proto.SocketNettyProtocol.SocketResponse)other);
+        if (other instanceof io.socket.netty.proto.SocketNettyProtocol.SocketACK) {
+          return mergeFrom((io.socket.netty.proto.SocketNettyProtocol.SocketACK)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(io.socket.netty.proto.SocketNettyProtocol.SocketResponse other) {
-        if (other == io.socket.netty.proto.SocketNettyProtocol.SocketResponse.getDefaultInstance()) return this;
-        if (other.serverType_ != 0) {
-          setServerTypeValue(other.getServerTypeValue());
-        }
+      public Builder mergeFrom(io.socket.netty.proto.SocketNettyProtocol.SocketACK other) {
+        if (other == io.socket.netty.proto.SocketNettyProtocol.SocketACK.getDefaultInstance()) return this;
         if (other.getCode() != 0) {
           setCode(other.getCode());
         }
@@ -2123,11 +2168,11 @@ public final class SocketNettyProtocol {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        io.socket.netty.proto.SocketNettyProtocol.SocketResponse parsedMessage = null;
+        io.socket.netty.proto.SocketNettyProtocol.SocketACK parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (io.socket.netty.proto.SocketNettyProtocol.SocketResponse) e.getUnfinishedMessage();
+          parsedMessage = (io.socket.netty.proto.SocketNettyProtocol.SocketACK) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2137,57 +2182,13 @@ public final class SocketNettyProtocol {
         return this;
       }
 
-      private int serverType_ = 0;
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public int getServerTypeValue() {
-        return serverType_;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder setServerTypeValue(int value) {
-        serverType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE getServerType() {
-        io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE result = io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.valueOf(serverType_);
-        return result == null ? io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder setServerType(io.socket.netty.proto.SocketNettyProtocol.SERVER_TYPE value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        serverType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.socket.netty.SERVER_TYPE serverType = 1;</code>
-       */
-      public Builder clearServerType() {
-        
-        serverType_ = 0;
-        onChanged();
-        return this;
-      }
-
       private int code_ ;
       /**
        * <pre>
        * 错误码 0 表示成功
        * </pre>
        *
-       * <code>uint32 code = 2;</code>
+       * <code>uint32 code = 1;</code>
        */
       public int getCode() {
         return code_;
@@ -2197,7 +2198,7 @@ public final class SocketNettyProtocol {
        * 错误码 0 表示成功
        * </pre>
        *
-       * <code>uint32 code = 2;</code>
+       * <code>uint32 code = 1;</code>
        */
       public Builder setCode(int value) {
         
@@ -2210,7 +2211,7 @@ public final class SocketNettyProtocol {
        * 错误码 0 表示成功
        * </pre>
        *
-       * <code>uint32 code = 2;</code>
+       * <code>uint32 code = 1;</code>
        */
       public Builder clearCode() {
         
@@ -2225,7 +2226,7 @@ public final class SocketNettyProtocol {
        * json
        * </pre>
        *
-       * <code>bytes msg = 4;</code>
+       * <code>bytes msg = 2;</code>
        */
       public com.google.protobuf.ByteString getMsg() {
         return msg_;
@@ -2235,7 +2236,7 @@ public final class SocketNettyProtocol {
        * json
        * </pre>
        *
-       * <code>bytes msg = 4;</code>
+       * <code>bytes msg = 2;</code>
        */
       public Builder setMsg(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2251,7 +2252,7 @@ public final class SocketNettyProtocol {
        * json
        * </pre>
        *
-       * <code>bytes msg = 4;</code>
+       * <code>bytes msg = 2;</code>
        */
       public Builder clearMsg() {
         
@@ -2270,665 +2271,39 @@ public final class SocketNettyProtocol {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:socket.netty.SocketResponse)
+      // @@protoc_insertion_point(builder_scope:socket.netty.SocketACK)
     }
 
-    // @@protoc_insertion_point(class_scope:socket.netty.SocketResponse)
-    private static final io.socket.netty.proto.SocketNettyProtocol.SocketResponse DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:socket.netty.SocketACK)
+    private static final io.socket.netty.proto.SocketNettyProtocol.SocketACK DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new io.socket.netty.proto.SocketNettyProtocol.SocketResponse();
+      DEFAULT_INSTANCE = new io.socket.netty.proto.SocketNettyProtocol.SocketACK();
     }
 
-    public static io.socket.netty.proto.SocketNettyProtocol.SocketResponse getDefaultInstance() {
+    public static io.socket.netty.proto.SocketNettyProtocol.SocketACK getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<SocketResponse>
-        PARSER = new com.google.protobuf.AbstractParser<SocketResponse>() {
-      public SocketResponse parsePartialFrom(
+    private static final com.google.protobuf.Parser<SocketACK>
+        PARSER = new com.google.protobuf.AbstractParser<SocketACK>() {
+      public SocketACK parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new SocketResponse(input, extensionRegistry);
+          return new SocketACK(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<SocketResponse> parser() {
+    public static com.google.protobuf.Parser<SocketACK> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<SocketResponse> getParserForType() {
+    public com.google.protobuf.Parser<SocketACK> getParserForType() {
       return PARSER;
     }
 
-    public io.socket.netty.proto.SocketNettyProtocol.SocketResponse getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface NotifyMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:socket.netty.NotifyMessage)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 通知类型
-     * </pre>
-     *
-     * <code>uint32 typeRouter = 1;</code>
-     */
-    int getTypeRouter();
-
-    /**
-     * <pre>
-     * 错误码 0 表示成功
-     * </pre>
-     *
-     * <code>uint32 code = 2;</code>
-     */
-    int getCode();
-
-    /**
-     * <pre>
-     * json
-     * </pre>
-     *
-     * <code>bytes msg = 3;</code>
-     */
-    com.google.protobuf.ByteString getMsg();
-  }
-  /**
-   * <pre>
-   * 通知的消息
-   * </pre>
-   *
-   * Protobuf type {@code socket.netty.NotifyMessage}
-   */
-  public  static final class NotifyMessage extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:socket.netty.NotifyMessage)
-      NotifyMessageOrBuilder {
-    // Use NotifyMessage.newBuilder() to construct.
-    private NotifyMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private NotifyMessage() {
-      typeRouter_ = 0;
-      code_ = 0;
-      msg_ = com.google.protobuf.ByteString.EMPTY;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-    }
-    private NotifyMessage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!input.skipField(tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-
-              typeRouter_ = input.readUInt32();
-              break;
-            }
-            case 16: {
-
-              code_ = input.readUInt32();
-              break;
-            }
-            case 26: {
-
-              msg_ = input.readBytes();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_NotifyMessage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_NotifyMessage_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.class, io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.Builder.class);
-    }
-
-    public static final int TYPEROUTER_FIELD_NUMBER = 1;
-    private int typeRouter_;
-    /**
-     * <pre>
-     * 通知类型
-     * </pre>
-     *
-     * <code>uint32 typeRouter = 1;</code>
-     */
-    public int getTypeRouter() {
-      return typeRouter_;
-    }
-
-    public static final int CODE_FIELD_NUMBER = 2;
-    private int code_;
-    /**
-     * <pre>
-     * 错误码 0 表示成功
-     * </pre>
-     *
-     * <code>uint32 code = 2;</code>
-     */
-    public int getCode() {
-      return code_;
-    }
-
-    public static final int MSG_FIELD_NUMBER = 3;
-    private com.google.protobuf.ByteString msg_;
-    /**
-     * <pre>
-     * json
-     * </pre>
-     *
-     * <code>bytes msg = 3;</code>
-     */
-    public com.google.protobuf.ByteString getMsg() {
-      return msg_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (typeRouter_ != 0) {
-        output.writeUInt32(1, typeRouter_);
-      }
-      if (code_ != 0) {
-        output.writeUInt32(2, code_);
-      }
-      if (!msg_.isEmpty()) {
-        output.writeBytes(3, msg_);
-      }
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (typeRouter_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, typeRouter_);
-      }
-      if (code_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, code_);
-      }
-      if (!msg_.isEmpty()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, msg_);
-      }
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof io.socket.netty.proto.SocketNettyProtocol.NotifyMessage)) {
-        return super.equals(obj);
-      }
-      io.socket.netty.proto.SocketNettyProtocol.NotifyMessage other = (io.socket.netty.proto.SocketNettyProtocol.NotifyMessage) obj;
-
-      boolean result = true;
-      result = result && (getTypeRouter()
-          == other.getTypeRouter());
-      result = result && (getCode()
-          == other.getCode());
-      result = result && getMsg()
-          .equals(other.getMsg());
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TYPEROUTER_FIELD_NUMBER;
-      hash = (53 * hash) + getTypeRouter();
-      hash = (37 * hash) + CODE_FIELD_NUMBER;
-      hash = (53 * hash) + getCode();
-      hash = (37 * hash) + MSG_FIELD_NUMBER;
-      hash = (53 * hash) + getMsg().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(io.socket.netty.proto.SocketNettyProtocol.NotifyMessage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 通知的消息
-     * </pre>
-     *
-     * Protobuf type {@code socket.netty.NotifyMessage}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:socket.netty.NotifyMessage)
-        io.socket.netty.proto.SocketNettyProtocol.NotifyMessageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_NotifyMessage_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_NotifyMessage_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.class, io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.Builder.class);
-      }
-
-      // Construct using io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        typeRouter_ = 0;
-
-        code_ = 0;
-
-        msg_ = com.google.protobuf.ByteString.EMPTY;
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.internal_static_socket_netty_NotifyMessage_descriptor;
-      }
-
-      public io.socket.netty.proto.SocketNettyProtocol.NotifyMessage getDefaultInstanceForType() {
-        return io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.getDefaultInstance();
-      }
-
-      public io.socket.netty.proto.SocketNettyProtocol.NotifyMessage build() {
-        io.socket.netty.proto.SocketNettyProtocol.NotifyMessage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public io.socket.netty.proto.SocketNettyProtocol.NotifyMessage buildPartial() {
-        io.socket.netty.proto.SocketNettyProtocol.NotifyMessage result = new io.socket.netty.proto.SocketNettyProtocol.NotifyMessage(this);
-        result.typeRouter_ = typeRouter_;
-        result.code_ = code_;
-        result.msg_ = msg_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof io.socket.netty.proto.SocketNettyProtocol.NotifyMessage) {
-          return mergeFrom((io.socket.netty.proto.SocketNettyProtocol.NotifyMessage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(io.socket.netty.proto.SocketNettyProtocol.NotifyMessage other) {
-        if (other == io.socket.netty.proto.SocketNettyProtocol.NotifyMessage.getDefaultInstance()) return this;
-        if (other.getTypeRouter() != 0) {
-          setTypeRouter(other.getTypeRouter());
-        }
-        if (other.getCode() != 0) {
-          setCode(other.getCode());
-        }
-        if (other.getMsg() != com.google.protobuf.ByteString.EMPTY) {
-          setMsg(other.getMsg());
-        }
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        io.socket.netty.proto.SocketNettyProtocol.NotifyMessage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (io.socket.netty.proto.SocketNettyProtocol.NotifyMessage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private int typeRouter_ ;
-      /**
-       * <pre>
-       * 通知类型
-       * </pre>
-       *
-       * <code>uint32 typeRouter = 1;</code>
-       */
-      public int getTypeRouter() {
-        return typeRouter_;
-      }
-      /**
-       * <pre>
-       * 通知类型
-       * </pre>
-       *
-       * <code>uint32 typeRouter = 1;</code>
-       */
-      public Builder setTypeRouter(int value) {
-        
-        typeRouter_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 通知类型
-       * </pre>
-       *
-       * <code>uint32 typeRouter = 1;</code>
-       */
-      public Builder clearTypeRouter() {
-        
-        typeRouter_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int code_ ;
-      /**
-       * <pre>
-       * 错误码 0 表示成功
-       * </pre>
-       *
-       * <code>uint32 code = 2;</code>
-       */
-      public int getCode() {
-        return code_;
-      }
-      /**
-       * <pre>
-       * 错误码 0 表示成功
-       * </pre>
-       *
-       * <code>uint32 code = 2;</code>
-       */
-      public Builder setCode(int value) {
-        
-        code_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 错误码 0 表示成功
-       * </pre>
-       *
-       * <code>uint32 code = 2;</code>
-       */
-      public Builder clearCode() {
-        
-        code_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.ByteString msg_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <pre>
-       * json
-       * </pre>
-       *
-       * <code>bytes msg = 3;</code>
-       */
-      public com.google.protobuf.ByteString getMsg() {
-        return msg_;
-      }
-      /**
-       * <pre>
-       * json
-       * </pre>
-       *
-       * <code>bytes msg = 3;</code>
-       */
-      public Builder setMsg(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        msg_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * json
-       * </pre>
-       *
-       * <code>bytes msg = 3;</code>
-       */
-      public Builder clearMsg() {
-        
-        msg_ = getDefaultInstance().getMsg();
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:socket.netty.NotifyMessage)
-    }
-
-    // @@protoc_insertion_point(class_scope:socket.netty.NotifyMessage)
-    private static final io.socket.netty.proto.SocketNettyProtocol.NotifyMessage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new io.socket.netty.proto.SocketNettyProtocol.NotifyMessage();
-    }
-
-    public static io.socket.netty.proto.SocketNettyProtocol.NotifyMessage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<NotifyMessage>
-        PARSER = new com.google.protobuf.AbstractParser<NotifyMessage>() {
-      public NotifyMessage parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new NotifyMessage(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<NotifyMessage> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<NotifyMessage> getParserForType() {
-      return PARSER;
-    }
-
-    public io.socket.netty.proto.SocketNettyProtocol.NotifyMessage getDefaultInstanceForType() {
+    public io.socket.netty.proto.SocketNettyProtocol.SocketACK getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2958,17 +2333,9 @@ public final class SocketNettyProtocol {
     io.socket.netty.proto.SocketNettyProtocol.DATA_TYPE getDataType();
 
     /**
-     * <code>repeated bytes value = 3;</code>
+     * <code>bytes value = 3;</code>
      */
-    java.util.List<com.google.protobuf.ByteString> getValueList();
-    /**
-     * <code>repeated bytes value = 3;</code>
-     */
-    int getValueCount();
-    /**
-     * <code>repeated bytes value = 3;</code>
-     */
-    com.google.protobuf.ByteString getValue(int index);
+    com.google.protobuf.ByteString getValue();
   }
   /**
    * <pre>
@@ -2988,7 +2355,7 @@ public final class SocketNettyProtocol {
     private Arg() {
       name_ = "";
       dataType_ = 0;
-      value_ = java.util.Collections.emptyList();
+      value_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -3029,11 +2396,8 @@ public final class SocketNettyProtocol {
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                value_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
-                mutable_bitField0_ |= 0x00000004;
-              }
-              value_.add(input.readBytes());
+
+              value_ = input.readBytes();
               break;
             }
           }
@@ -3044,9 +2408,6 @@ public final class SocketNettyProtocol {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          value_ = java.util.Collections.unmodifiableList(value_);
-        }
         makeExtensionsImmutable();
       }
     }
@@ -3062,7 +2423,6 @@ public final class SocketNettyProtocol {
               io.socket.netty.proto.SocketNettyProtocol.Arg.class, io.socket.netty.proto.SocketNettyProtocol.Arg.Builder.class);
     }
 
-    private int bitField0_;
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
@@ -3114,25 +2474,12 @@ public final class SocketNettyProtocol {
     }
 
     public static final int VALUE_FIELD_NUMBER = 3;
-    private java.util.List<com.google.protobuf.ByteString> value_;
+    private com.google.protobuf.ByteString value_;
     /**
-     * <code>repeated bytes value = 3;</code>
+     * <code>bytes value = 3;</code>
      */
-    public java.util.List<com.google.protobuf.ByteString>
-        getValueList() {
+    public com.google.protobuf.ByteString getValue() {
       return value_;
-    }
-    /**
-     * <code>repeated bytes value = 3;</code>
-     */
-    public int getValueCount() {
-      return value_.size();
-    }
-    /**
-     * <code>repeated bytes value = 3;</code>
-     */
-    public com.google.protobuf.ByteString getValue(int index) {
-      return value_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3153,8 +2500,8 @@ public final class SocketNettyProtocol {
       if (dataType_ != io.socket.netty.proto.SocketNettyProtocol.DATA_TYPE.INT.getNumber()) {
         output.writeEnum(2, dataType_);
       }
-      for (int i = 0; i < value_.size(); i++) {
-        output.writeBytes(3, value_.get(i));
+      if (!value_.isEmpty()) {
+        output.writeBytes(3, value_);
       }
     }
 
@@ -3170,14 +2517,9 @@ public final class SocketNettyProtocol {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, dataType_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < value_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(value_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getValueList().size();
+      if (!value_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, value_);
       }
       memoizedSize = size;
       return size;
@@ -3198,8 +2540,8 @@ public final class SocketNettyProtocol {
       result = result && getName()
           .equals(other.getName());
       result = result && dataType_ == other.dataType_;
-      result = result && getValueList()
-          .equals(other.getValueList());
+      result = result && getValue()
+          .equals(other.getValue());
       return result;
     }
 
@@ -3214,10 +2556,8 @@ public final class SocketNettyProtocol {
       hash = (53 * hash) + getName().hashCode();
       hash = (37 * hash) + DATATYPE_FIELD_NUMBER;
       hash = (53 * hash) + dataType_;
-      if (getValueCount() > 0) {
-        hash = (37 * hash) + VALUE_FIELD_NUMBER;
-        hash = (53 * hash) + getValueList().hashCode();
-      }
+      hash = (37 * hash) + VALUE_FIELD_NUMBER;
+      hash = (53 * hash) + getValue().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3344,8 +2684,8 @@ public final class SocketNettyProtocol {
 
         dataType_ = 0;
 
-        value_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        value_ = com.google.protobuf.ByteString.EMPTY;
+
         return this;
       }
 
@@ -3368,16 +2708,9 @@ public final class SocketNettyProtocol {
 
       public io.socket.netty.proto.SocketNettyProtocol.Arg buildPartial() {
         io.socket.netty.proto.SocketNettyProtocol.Arg result = new io.socket.netty.proto.SocketNettyProtocol.Arg(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.name_ = name_;
         result.dataType_ = dataType_;
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          value_ = java.util.Collections.unmodifiableList(value_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
         result.value_ = value_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -3426,15 +2759,8 @@ public final class SocketNettyProtocol {
         if (other.dataType_ != 0) {
           setDataTypeValue(other.getDataTypeValue());
         }
-        if (!other.value_.isEmpty()) {
-          if (value_.isEmpty()) {
-            value_ = other.value_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureValueIsMutable();
-            value_.addAll(other.value_);
-          }
-          onChanged();
+        if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
+          setValue(other.getValue());
         }
         onChanged();
         return this;
@@ -3461,7 +2787,6 @@ public final class SocketNettyProtocol {
         }
         return this;
       }
-      private int bitField0_;
 
       private java.lang.Object name_ = "";
       /**
@@ -3576,74 +2901,31 @@ public final class SocketNettyProtocol {
         return this;
       }
 
-      private java.util.List<com.google.protobuf.ByteString> value_ = java.util.Collections.emptyList();
-      private void ensureValueIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-          value_ = new java.util.ArrayList<com.google.protobuf.ByteString>(value_);
-          bitField0_ |= 0x00000004;
-         }
+      private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>bytes value = 3;</code>
+       */
+      public com.google.protobuf.ByteString getValue() {
+        return value_;
       }
       /**
-       * <code>repeated bytes value = 3;</code>
+       * <code>bytes value = 3;</code>
        */
-      public java.util.List<com.google.protobuf.ByteString>
-          getValueList() {
-        return java.util.Collections.unmodifiableList(value_);
-      }
-      /**
-       * <code>repeated bytes value = 3;</code>
-       */
-      public int getValueCount() {
-        return value_.size();
-      }
-      /**
-       * <code>repeated bytes value = 3;</code>
-       */
-      public com.google.protobuf.ByteString getValue(int index) {
-        return value_.get(index);
-      }
-      /**
-       * <code>repeated bytes value = 3;</code>
-       */
-      public Builder setValue(
-          int index, com.google.protobuf.ByteString value) {
+      public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValueIsMutable();
-        value_.set(index, value);
+  
+        value_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated bytes value = 3;</code>
-       */
-      public Builder addValue(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureValueIsMutable();
-        value_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated bytes value = 3;</code>
-       */
-      public Builder addAllValue(
-          java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
-        ensureValueIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, value_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated bytes value = 3;</code>
+       * <code>bytes value = 3;</code>
        */
       public Builder clearValue() {
-        value_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+        
+        value_ = getDefaultInstance().getValue();
         onChanged();
         return this;
       }
@@ -3697,20 +2979,15 @@ public final class SocketNettyProtocol {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_socket_netty_SocketRequest_descriptor;
+    internal_static_socket_netty_SocketASK_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_socket_netty_SocketRequest_fieldAccessorTable;
+      internal_static_socket_netty_SocketASK_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_socket_netty_SocketResponse_descriptor;
+    internal_static_socket_netty_SocketACK_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_socket_netty_SocketResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_socket_netty_NotifyMessage_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_socket_netty_NotifyMessage_fieldAccessorTable;
+      internal_static_socket_netty_SocketACK_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_socket_netty_Arg_descriptor;
   private static final 
@@ -3725,22 +3002,23 @@ public final class SocketNettyProtocol {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020nio_socket.proto\022\014socket.netty\"y\n\rSock" +
-      "etRequest\022-\n\nserverType\030\001 \001(\0162\031.socket.n" +
-      "etty.SERVER_TYPE\022\013\n\003rcn\030\002 \001(\t\022\013\n\003rcm\030\003 \001" +
-      "(\t\022\037\n\004args\030\004 \003(\0132\021.socket.netty.Arg\"Z\n\016S" +
-      "ocketResponse\022-\n\nserverType\030\001 \001(\0162\031.sock" +
-      "et.netty.SERVER_TYPE\022\014\n\004code\030\002 \001(\r\022\013\n\003ms" +
-      "g\030\004 \001(\014\">\n\rNotifyMessage\022\022\n\ntypeRouter\030\001" +
-      " \001(\r\022\014\n\004code\030\002 \001(\r\022\013\n\003msg\030\003 \001(\014\"M\n\003Arg\022\014" +
-      "\n\004name\030\001 \001(\t\022)\n\010dataType\030\002 \001(\0162\027.socket." +
-      "netty.DATA_TYPE\022\r\n\005value\030\003 \003(\014*3\n\013SERVER",
-      "_TYPE\022\013\n\007GATEWAY\020\000\022\r\n\tMATHCHING\020\001\022\010\n\004ROO" +
-      "M\020\002*K\n\tDATA_TYPE\022\007\n\003INT\020\000\022\n\n\006STRING\020\001\022\007\n" +
-      "\003BIT\020\002\022\010\n\004LONG\020\003\022\013\n\007DOUBLUE\020\004\022\t\n\005FLOAT\020\005" +
-      "*?\n\021DEFAULT_CONSTANTS\022\n\n\006SUCESS\020\000\022\036\n\032RPC" +
-      "_TARGET_CLASS_NOT_FOUND\020\001B,\n\025io.socket.n" +
-      "etty.protoB\023SocketNettyProtocolb\006proto3"
+      "\n\027nio_socket_server.proto\022\014socket.netty\"" +
+      "T\n\tSocketASK\022\013\n\003rcn\030\001 \001(\t\022\013\n\003rcm\030\002 \001(\t\022\014" +
+      "\n\004rcmv\030\003 \001(\t\022\037\n\004args\030\004 \003(\0132\021.socket.nett" +
+      "y.Arg\"&\n\tSocketACK\022\014\n\004code\030\001 \001(\r\022\013\n\003msg\030" +
+      "\002 \001(\014\"M\n\003Arg\022\014\n\004name\030\001 \001(\t\022)\n\010dataType\030\002" +
+      " \001(\0162\027.socket.netty.DATA_TYPE\022\r\n\005value\030\003" +
+      " \001(\014*L\n\tDATA_TYPE\022\007\n\003INT\020\000\022\n\n\006STRING\020\001\022\010" +
+      "\n\004BOOL\020\002\022\010\n\004LONG\020\003\022\013\n\007DOUBLUE\020\004\022\t\n\005FLOAT" +
+      "\020\005*\223\002\n\026SYSTEM_ERROR_CONSTANTS\022\n\n\006SUCESS\020" +
+      "\000\022\031\n\025PROTOCOL_FORMAT_ERROR\020\001\022\025\n\021RPC_API_",
+      "NOT_FOUND\020\002\022\035\n\031RPC_CLASS_NOT_ALLOW_EMPTY" +
+      "\020\003\022$\n RPC_CLASS_METHOD_NOT_ALLOW_EMPTY\020\004" +
+      "\022,\n(RPC_CLASS_METHOD_VERSION_NOT_ALLOW_E" +
+      "MPTY\020\005\022\030\n\024RPC_METHOD_ARG_ERROR\020\006\022\030\n\024RPC_" +
+      "METHOD_NOT_FOUND\020\007\022\024\n\020RPC_SERVER_ERROR\020\010" +
+      "B,\n\025io.socket.netty.protoB\023SocketNettyPr" +
+      "otocolb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3754,26 +3032,20 @@ public final class SocketNettyProtocol {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_socket_netty_SocketRequest_descriptor =
+    internal_static_socket_netty_SocketASK_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_socket_netty_SocketRequest_fieldAccessorTable = new
+    internal_static_socket_netty_SocketASK_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_socket_netty_SocketRequest_descriptor,
-        new java.lang.String[] { "ServerType", "Rcn", "Rcm", "Args", });
-    internal_static_socket_netty_SocketResponse_descriptor =
+        internal_static_socket_netty_SocketASK_descriptor,
+        new java.lang.String[] { "Rcn", "Rcm", "Rcmv", "Args", });
+    internal_static_socket_netty_SocketACK_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_socket_netty_SocketResponse_fieldAccessorTable = new
+    internal_static_socket_netty_SocketACK_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_socket_netty_SocketResponse_descriptor,
-        new java.lang.String[] { "ServerType", "Code", "Msg", });
-    internal_static_socket_netty_NotifyMessage_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_socket_netty_NotifyMessage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_socket_netty_NotifyMessage_descriptor,
-        new java.lang.String[] { "TypeRouter", "Code", "Msg", });
+        internal_static_socket_netty_SocketACK_descriptor,
+        new java.lang.String[] { "Code", "Msg", });
     internal_static_socket_netty_Arg_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_socket_netty_Arg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_socket_netty_Arg_descriptor,

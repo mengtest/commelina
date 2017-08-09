@@ -1,4 +1,4 @@
-package com.game.foundation.netty.protocol;
+package com.game.foundation.netty.router;
 
 import java.lang.annotation.*;
 
@@ -9,4 +9,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RpcMethod {
+
+    String value();
+
+    String version() default "1.0.0";
 }
