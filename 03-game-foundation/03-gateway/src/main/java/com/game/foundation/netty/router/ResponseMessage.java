@@ -1,7 +1,5 @@
 package com.game.foundation.netty.router;
 
-import com.game.foundation.netty.PipelineFuture;
-
 import java.io.Serializable;
 
 /**
@@ -11,7 +9,7 @@ import java.io.Serializable;
  * @coding.net https://coding.net/u/pandaxia
  * @github https://github.com/freedompy
  */
-public final class ResponseMessage<T> implements Serializable {
+public final class ResponseMessage implements Serializable {
 
     private transient final Object data;
     private transient int code = 0;

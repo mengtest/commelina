@@ -1,4 +1,4 @@
-package com.game.foundation.netty;
+package com.game.foundation.netty.router;
 
 import io.netty.channel.ChannelFuture;
 

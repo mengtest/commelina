@@ -1,7 +1,6 @@
 package com.game.foundation.netty.router;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.game.foundation.netty.PipelineFuture;
 import com.game.foundation.netty.RPCRouterDispatchInterface;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -138,7 +137,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             bytes = Generator.getJsonHolder().writeValueAsBytes(message.getData());
         } catch (JsonProcessingException e) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-            LOGGER.info("method return value must be instanceof " + ResponseMessage.class);
+            LOGGER.info(ResponseMessage.class + "object to json error.");
             return;
         }
 
@@ -177,11 +176,11 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         } else if (future.cause() != null) {
             // FIXME: 2017/8/8 全部转换为领域模型
             // 异常
-//                throw new Exception(future.cause());
+            //  throw new Exception(future.cause());
             LOGGER.info(future.cause().getMessage());
         } else {
             // 取消
-//                throw new Exception("客户端取消执行");
+            //  throw new Exception("客户端取消执行");
             LOGGER.info("client cancel receive message.");
         }
     }
