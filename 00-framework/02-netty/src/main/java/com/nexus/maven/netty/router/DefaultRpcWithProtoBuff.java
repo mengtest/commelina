@@ -78,6 +78,10 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                 this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
                 LOGGER.info(e.getMessage());
                 return;
+            } catch (Throwable throwable) {
+                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
+                throwable.printStackTrace();
+                return;
             }
         } else {
             Object[] args = new Object[request.getArgsList().size()];
@@ -111,13 +115,17 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
             try {
                 object = entity.method.invoke(entity.instance, args);
-            } catch (IllegalAccessException e) {
+            }  catch (IllegalAccessException e) {
                 this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
                 LOGGER.info(e.getMessage());
                 return;
             } catch (InvocationTargetException e) {
                 this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
                 LOGGER.info(e.getMessage());
+                return;
+            } catch (Throwable throwable) {
+                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
+                throwable.printStackTrace();
                 return;
             }
         }
