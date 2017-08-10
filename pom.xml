@@ -8,7 +8,7 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>00-framework</module>
+        <!--<module>00-framework</module>-->
         <module>03-game-foundation</module>
     </modules>
 
