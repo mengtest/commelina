@@ -10,6 +10,7 @@
     <modules>
         <module>01-utils</module>
         <module>02-netty</module>
+        <module>03-akka</module>
     </modules>
 
     <properties>
@@ -22,6 +23,8 @@
 
         <netty.version>4.1.13.Final</netty.version>
         <spring.version>4.3.10.RELEASE</spring.version>
+
+        <akka.version>2.4.19</akka.version>
     </properties>
 
     <dependencies>
@@ -102,6 +105,26 @@
                 <artifactId>spring-boot-starter</artifactId>
                 <version>1.5.6.RELEASE</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-actor_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <!-- 日志包 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
 
         </dependencies>

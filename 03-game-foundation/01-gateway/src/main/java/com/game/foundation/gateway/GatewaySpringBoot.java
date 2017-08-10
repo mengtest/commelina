@@ -23,7 +23,7 @@ public class GatewaySpringBoot {
     }
 
     @Bean
-    public NettyNioSocketServerForSpringBoot init() {
+    public NettyNioSocketServerForSpringBoot createServer() {
         return new NettyNioSocketServerForSpringBoot();
     }
 
