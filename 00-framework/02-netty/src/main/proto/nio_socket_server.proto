@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package socket.netty;
+
+option java_package = "io.socket.netty.proto";
+option java_outer_classname = "SocketNettyProtocol";
+
+// 基本数据类型
+enum DATA_TYPE {
+    INT = 0;
+    STRING = 1;
+    BOOL = 2;
+    LONG = 3;
+    DOUBLUE = 4;
+    FLOAT = 5;
+}
+
+// socket 请求体
+message SocketASK {
+    string rcn = 1; // rpc class name
+    string rcm = 2; // rpc class method
+    string rcmv = 3; // rpc class method version
+    repeated Arg args = 4; // 参数列表
+}
+
+// socket 响应
+message SocketACK {
+    uint32 code = 1; // 错误码 0 表示成功
+    bytes msg = 2; // json
+}
+
+// 参数格式
+message Arg {
+    string name = 1;
+    DATA_TYPE dataType = 2;
+    bytes value = 3;
+}
+
+// 系统默认错误码
+enum SYSTEM_ERROR_CONSTANTS {
+    SUCESS = 0; // 成功
+    PROTOCOL_FORMAT_ERROR = 1; // 协议解析错误
+    RPC_API_NOT_FOUND = 2; // 要调用的 api 不存在
+    RPC_CLASS_NOT_ALLOW_EMPTY = 3; // 要调用的 rpc name 不允许为空
+    RPC_CLASS_METHOD_NOT_ALLOW_EMPTY = 4; // 要调用的 rpc method 不允许为空
+    RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY = 5; // 要调用的 rpc method version 不允许为空
+    RPC_METHOD_ARG_ERROR = 6; // 参数错误
+    RPC_METHOD_NOT_FOUND = 7; // 方法不存在
+    RPC_SERVER_ERROR = 8; // 服务端内部错误
+}
