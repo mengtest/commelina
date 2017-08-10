@@ -115,7 +115,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
             try {
                 object = entity.method.invoke(entity.instance, args);
-            }  catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
                 LOGGER.info(e.getMessage());
                 return;
@@ -148,6 +148,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                 .setMsg(
                         SocketNettyProtocol.BusinessMessage.newBuilder()
                                 .setOpCode(responseHandler.getOpCode())
+                                .setBp(responseHandler.getBp())
                                 .setMsg(ByteString.copyFrom(bytes))
                 ).build();
 

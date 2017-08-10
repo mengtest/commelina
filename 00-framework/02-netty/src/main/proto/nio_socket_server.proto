@@ -15,6 +15,10 @@ enum DATA_TYPE {
     FLOAT = 5;
 }
 
+enum BusinessProtocol {
+    JSON = 0;
+}
+
 // socket 请求体
 message SocketASK {
     string rcn = 1; // rpc class name
@@ -30,8 +34,9 @@ message SocketMessage {
 }
 
 message BusinessMessage {
-    uint32 opCode = 1;
-    bytes msg = 2; // 用户自定义
+    uint32 opCode = 1; // 操作码
+    BusinessProtocol bp = 2; // 业务协议
+    bytes msg = 3; // 用户自定义
 }
 
 // 参数格式

@@ -3,6 +3,7 @@ package com.nexus.maven.netty.router;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Preconditions;
 import com.nexus.maven.utils.Generator;
+import io.socket.netty.proto.SocketNettyProtocol;
 
 import java.util.logging.Logger;
 
@@ -64,6 +65,11 @@ public final class ResJsonHandler implements ResponseHandler {
 
     public int getOpCode() {
         return opCode;
+    }
+
+    @Override
+    public SocketNettyProtocol.BusinessProtocol getBp() {
+        return SocketNettyProtocol.BusinessProtocol.JSON;
     }
 
 }
