@@ -16,6 +16,7 @@ public class MethodInvoke {
 
         Test test = new Test();
 
+
         Method[] methods = new Method[4];
         for (int i = 0, j = 0; i < test.getClass().getMethods().length; i++) {
             Empty empty = test.getClass().getMethods()[i].getAnnotation(Empty.class);

@@ -1,5 +1,6 @@
 package com.game.foundation.gateway.api;
 
+import com.nexus.maven.netty.router.ResJsonHandler;
 import com.nexus.maven.netty.router.RpcApi;
 import com.nexus.maven.netty.router.RpcMethod;
 

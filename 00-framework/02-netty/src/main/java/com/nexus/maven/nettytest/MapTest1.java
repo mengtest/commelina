@@ -8,6 +8,10 @@ import com.google.common.collect.HashBiMap;
  */
 public class MapTest1 {
     public static void main(String[] args) {
+
+
+
+
         BiMap<Integer, Long> loginUsers = HashBiMap.create(200);
 
         System.out.println(loginUsers.forcePut(1, Long.valueOf(2L)));

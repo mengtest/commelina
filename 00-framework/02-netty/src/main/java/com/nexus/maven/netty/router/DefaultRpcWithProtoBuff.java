@@ -1,15 +1,11 @@
 package com.nexus.maven.netty.router;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nexus.maven.netty.RPCRouterDispatchInterface;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
-import com.nexus.maven.utils.Generator;
+import com.nexus.maven.netty.RPCRouterDispatchInterface;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultEventLoop;
-import io.netty.channel.EventLoop;
 import io.socket.netty.proto.SocketNettyProtocol;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -27,7 +23,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultRpcWithProtoBuff.class.getName());
 
-    private final EventLoop eventLoop = new DefaultEventLoop();
+//    private final EventLoop eventLoop = new DefaultEventLoop();
 
     private Map<String, InvokeMethodEntity> classes;
 
@@ -126,37 +122,38 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             }
         }
 
-        if (!(object instanceof ResponseMessage)) {
+        if (!(object instanceof ResponseHandler)) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-            LOGGER.info("method return value must be instanceof " + ResponseMessage.class);
+            LOGGER.info("method return value must be implements " + ResponseHandler.class);
             return;
         }
 
-        ResponseMessage message = (ResponseMessage) object;
+        ResponseHandler responseHandler = (ResponseHandler) object;
 
-        byte[] bytes;
-
-        try {
-            bytes = Generator.getJsonHolder().writeValueAsBytes(message.getData());
-        } catch (JsonProcessingException e) {
+        byte[] bytes = responseHandler.getBytes();
+        if (bytes == null) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-            LOGGER.info(ResponseMessage.class + "object to json error.");
             return;
         }
 
-        SocketNettyProtocol.SocketACK ack = SocketNettyProtocol.SocketACK.newBuilder()
-                .setMsg(ByteString.copyFrom(bytes)).build();
-        if (message.getCallableHandler() == null) {
-            this.futureComp(ctx.writeAndFlush(ack));
+        SocketNettyProtocol.SocketMessage socketMessage = SocketNettyProtocol.SocketMessage.newBuilder()
+                .setMsg(
+                        SocketNettyProtocol.BusinessMessage.newBuilder()
+                                .setOpCode(responseHandler.getOpCode())
+                                .setMsg(ByteString.copyFrom(bytes))
+                ).build();
+
+        if (responseHandler.getListener() == null) {
+            this.futureComp(ctx.writeAndFlush(socketMessage));
         } else {
-            this.futureEvent(ctx.writeAndFlush(ack), message.getCallableHandler());
+            this.futureEvent(ctx.writeAndFlush(socketMessage), responseHandler.getListener());
         }
     }
 
     private void channelFutureFlush(ChannelHandlerContext ctx, int error_code) {
-        SocketNettyProtocol.SocketACK ack = SocketNettyProtocol.SocketACK.newBuilder()
+        SocketNettyProtocol.SocketMessage message = SocketNettyProtocol.SocketMessage.newBuilder()
                 .setCode(error_code).build();
-        ChannelFuture future = ctx.writeAndFlush(ack);
+        ChannelFuture future = ctx.writeAndFlush(message);
         this.futureComp(future);
     }
 

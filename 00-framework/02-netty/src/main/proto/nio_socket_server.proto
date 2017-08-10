@@ -24,9 +24,14 @@ message SocketASK {
 }
 
 // socket 响应
-message SocketACK {
+message SocketMessage {
     uint32 code = 1; // 错误码 0 表示成功
-    bytes msg = 2; // json
+    BusinessMessage msg = 2; // 业务消息
+}
+
+message BusinessMessage {
+    uint32 opCode = 1;
+    bytes msg = 2; // 用户自定义
 }
 
 // 参数格式
