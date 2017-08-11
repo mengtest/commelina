@@ -13,6 +13,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.socket.netty.proto.SocketNettyProtocol;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
  * Created by @panyao on 2017/8/3.
  */
 @Component
+@ImportResource(locations = {"classpath:spring-netty-context.xml"})
 public class NettyNioSocketServer {
 
     private static final Logger LOGGER = Logger.getLogger(NettyNioSocketServer.class.getName());

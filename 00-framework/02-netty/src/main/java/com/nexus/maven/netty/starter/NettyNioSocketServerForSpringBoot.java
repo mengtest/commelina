@@ -6,8 +6,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,9 +14,8 @@ import java.io.IOException;
 /**
  * Created by @panyao on 2017/8/4.
  */
-@Component
+//@Component
 // 实现ApplicationContextAware以获得ApplicationContext中的所有bean
-@ImportResource(locations = {"classpath:spring-netty-context.xml"})
 //@ComponentScan("com.nexus.maven.netty")
 public final class NettyNioSocketServerForSpringBoot implements ApplicationContextAware {
 
