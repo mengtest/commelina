@@ -1,8 +1,5 @@
 # 概括
     基础 service 服务，尽量不要构建，调试麻烦。这里是因为需要全局的登录会话
 
-# 00-session
+# 00-session akka server
     中心会话服务，用户从房间下线，则更新在线状态
-
-# 01-session-client
-    中心会话服务提供的客户端

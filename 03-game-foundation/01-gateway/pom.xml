@@ -15,12 +15,10 @@
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>netty</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

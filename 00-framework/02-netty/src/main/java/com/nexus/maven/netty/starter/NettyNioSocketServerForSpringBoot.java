@@ -1,7 +1,7 @@
-package com.nexus.maven.netty_starter;
+package com.nexus.maven.netty.starter;
 
-import com.nexus.maven.netty.NettyNioSocketServer;
-import com.nexus.maven.netty.router.DefaultRpcWithProtoBuff;
+import com.nexus.maven.netty.socket.NettyNioSocketServer;
+import com.nexus.maven.netty.socket.router.DefaultRpcWithProtoBuff;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.io.IOException;
 
 /**
  * Created by @panyao on 2017/8/4.
@@ -32,7 +33,7 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
     private NettyNioSocketServer server;
 
     @PostConstruct
-    public void initServer() throws Exception {
+    public void initServer() throws IOException {
         server = context.getBean(NettyNioSocketServer.class);
         DefaultRpcWithProtoBuff socketServerHandler = context.getBean(DefaultRpcWithProtoBuff.class);
         socketServerHandler.defaultSpringLoader(context);

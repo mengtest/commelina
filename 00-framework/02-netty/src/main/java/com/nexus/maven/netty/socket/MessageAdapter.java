@@ -1,4 +1,4 @@
-package com.nexus.maven.netty;
+package com.nexus.maven.netty.socket;
 
 import com.google.common.base.Preconditions;
 import io.netty.channel.Channel;

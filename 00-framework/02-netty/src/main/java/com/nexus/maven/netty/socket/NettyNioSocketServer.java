@@ -1,4 +1,4 @@
-package com.nexus.maven.netty;
+package com.nexus.maven.netty.socket;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -54,7 +54,7 @@ public class NettyNioSocketServer {
         return ((InetSocketAddress) localAddr).getPort();
     }
 
-    public void bind(String host, int port) throws Exception {
+    public void bind(String host, int port) throws IOException {
         ServerBootstrap boot = new ServerBootstrap();  //server启动管理配置
         boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)

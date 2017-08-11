@@ -1,4 +1,4 @@
-package com.nexus.maven.netty;
+package com.nexus.maven.netty.socket;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

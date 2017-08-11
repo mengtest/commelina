@@ -1,4 +1,4 @@
-package com.nexus.maven.netty.router;
+package com.nexus.maven.netty.socket.router;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Preconditions;
@@ -33,6 +33,12 @@ public final class ResJsonHandler implements ResponseHandler {
     public static ResJsonHandler newHandler(int opCode) {
         Preconditions.checkArgument(opCode >= 0);
         return new ResJsonHandler(opCode, Version.FIRST_VERSION, EMPTY_RESPONSE_JSON_MESSAGE, null);
+    }
+
+    public static ResJsonHandler newHandler(int opCode, ResJsonMessage message) {
+        Preconditions.checkArgument(opCode >= 0);
+        Preconditions.checkNotNull(message);
+        return new ResJsonHandler(opCode, Version.FIRST_VERSION, message, null);
     }
 
     public static ResJsonHandler newHandler(int opCode, String version) {

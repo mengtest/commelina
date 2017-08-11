@@ -1,4 +1,4 @@
-package com.nexus.maven.netty.router;
+package com.nexus.maven.netty.socket.router;
 
 import org.springframework.stereotype.Component;
 
@@ -12,5 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Component
 public @interface RpcApi {
+
+    String apiName() default "";
 
 }

@@ -16,12 +16,14 @@
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>netty</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
-            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>akka</artifactId>
         </dependency>
     </dependencies>
 

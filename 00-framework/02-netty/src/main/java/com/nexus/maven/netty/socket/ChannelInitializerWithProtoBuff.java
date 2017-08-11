@@ -1,4 +1,4 @@
-package com.nexus.maven.netty;
+package com.nexus.maven.netty.socket;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

@@ -1,4 +1,4 @@
-package com.nexus.maven.netty;
+package com.nexus.maven.netty.socket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

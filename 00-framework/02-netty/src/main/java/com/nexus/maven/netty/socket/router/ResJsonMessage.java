@@ -1,4 +1,4 @@
-package com.nexus.maven.netty.router;
+package com.nexus.maven.netty.socket.router;
 
 import java.io.Serializable;
 

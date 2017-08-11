@@ -1,6 +1,6 @@
 package com.game.foundation.gateway;
 
-import com.nexus.maven.netty_starter.NettyNioSocketServerForSpringBoot;
+import com.nexus.maven.netty.starter.NettyNioSocketServerForSpringBoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

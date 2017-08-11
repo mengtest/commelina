@@ -1,9 +1,9 @@
-package com.nexus.maven.netty.router;
+package com.nexus.maven.netty.socket.router;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
-import com.nexus.maven.netty.RPCRouterDispatchInterface;
+import com.nexus.maven.netty.socket.RPCRouterDispatchInterface;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.socket.netty.proto.SocketNettyProtocol;
@@ -25,7 +25,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
 //    private final EventLoop eventLoop = new DefaultEventLoop();
 
-    private Map<String, InvokeMethodEntity> classes;
+    private Map<String, InvokeMethodEntity> apiClasses;
 
     @Override
     public final void invoke(ChannelHandlerContext ctx, Object jsonMessage) {
@@ -52,33 +52,16 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
         String api = apiName + version;
 
-        InvokeMethodEntity entity = this.classes.get(api);
+        InvokeMethodEntity entity = this.apiClasses.get(api);
         if (entity == null) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
             return;
         }
 
-        Object object;
-        if (request.getArgsList().size() == 0) {
-            try {
-                object = entity.method.invoke(entity.instance);
-            } catch (IllegalAccessException e) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
-                LOGGER.info(e.getMessage());
-                return;
-            } catch (InvocationTargetException e) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
-                LOGGER.info(e.getMessage());
-                return;
-            } catch (Throwable throwable) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-                throwable.printStackTrace();
-                return;
-            }
-        } else {
-            Object[] args = new Object[request.getArgsList().size()];
-
-            for (int i = 0, size = request.getArgsList().size(); i < size; i++) {
+        Object[] args = new Object[request.getArgsList().size() + 1];
+        args[0] = ctx;
+        if (request.getArgsList().size() > 0) {
+            for (int i = 1, size = request.getArgsList().size(); i <= size; i++) {
                 SocketNettyProtocol.Arg arg = request.getArgsList().get(i);
                 switch (arg.getDataType()) {
                     case INT:
@@ -103,22 +86,22 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                         throw new IllegalArgumentException("undefined arg type " + arg.getDataType());
                 }
             }
-
-            try {
-                object = entity.method.invoke(entity.instance, args);
-            } catch (IllegalAccessException e) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
-                LOGGER.info(e.getMessage());
-                return;
-            } catch (InvocationTargetException e) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
-                LOGGER.info(e.getMessage());
-                return;
-            } catch (Throwable throwable) {
-                this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-                throwable.printStackTrace();
-                return;
-            }
+        }
+        Object object;
+        try {
+            object = entity.method.invoke(entity.instance, args);
+        } catch (IllegalAccessException e) {
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
+            LOGGER.info(e.getMessage());
+            return;
+        } catch (InvocationTargetException e) {
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
+            LOGGER.info(e.getMessage());
+            return;
+        } catch (Throwable throwable) {
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
+            throwable.printStackTrace();
+            return;
         }
 
         if (!(object instanceof ResponseHandler)) {
@@ -195,6 +178,8 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         Map<String, InvokeMethodEntity> newLinkedMap = Maps.newLinkedHashMap();
         // api, method, version
         for (Map.Entry<String, Object> stringObjectEntry : apiClasses.entrySet()) {
+            RpcApi rpcApi = stringObjectEntry.getValue().getClass().getAnnotation(RpcApi.class);
+            String apiName = !Strings.isNullOrEmpty(rpcApi.apiName()) ? rpcApi.apiName() : stringObjectEntry.getKey();
             for (Method method : stringObjectEntry.getValue().getClass().getMethods()) {
                 RpcMethod rpcMethod = method.getAnnotation(RpcMethod.class);
                 if (rpcMethod == null) {
@@ -204,7 +189,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                     throw new IllegalArgumentException("RpcMethod value or version is not allow empty.");
                 }
 
-                String api = stringObjectEntry.getKey() + rpcMethod.value() + rpcMethod.version();
+                String api = apiName + rpcMethod.value() + rpcMethod.version();
 
                 InvokeMethodEntity entity = new InvokeMethodEntity();
                 entity.instance = stringObjectEntry.getValue();
@@ -216,7 +201,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                 newLinkedMap.put(api, entity);
             }
         }
-        this.classes = newLinkedMap;
+        this.apiClasses = newLinkedMap;
     }
 
     private class InvokeMethodEntity {
