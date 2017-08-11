@@ -2,6 +2,7 @@ package com.nexus.maven.netty.router;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.nexus.maven.utils.Generator;
 import io.socket.netty.proto.SocketNettyProtocol;
 
@@ -13,41 +14,53 @@ import java.util.logging.Logger;
 public final class ResJsonHandler implements ResponseHandler {
 
     private static final Logger LOGGER = Logger.getLogger(DefaultRpcWithProtoBuff.class.getName());
+
     private static final ResJsonMessage EMPTY_RESPONSE_JSON_MESSAGE =
-            ResJsonMessage.success(null);
+            ResJsonMessage.success();
 
     private final int opCode;
+    private final String version;
     private final ResJsonMessage message;
     private final PipelineFuture pipelineCallbackFuture;
 
-    private ResJsonHandler(int opCode, ResJsonMessage message, PipelineFuture pipelineCallbackFuture) {
+    private ResJsonHandler(int opCode, String version, ResJsonMessage message, PipelineFuture pipelineCallbackFuture) {
         this.opCode = opCode;
+        this.version = version;
         this.message = message;
         this.pipelineCallbackFuture = pipelineCallbackFuture;
     }
 
     public static ResJsonHandler newHandler(int opCode) {
         Preconditions.checkArgument(opCode >= 0);
-        return new ResJsonHandler(opCode, EMPTY_RESPONSE_JSON_MESSAGE, null);
+        return new ResJsonHandler(opCode, Version.FIRST_VERSION, EMPTY_RESPONSE_JSON_MESSAGE, null);
     }
 
-    public static ResJsonHandler newHandler(int opCode, ResJsonMessage message) {
+    public static ResJsonHandler newHandler(int opCode, String version) {
         Preconditions.checkArgument(opCode >= 0);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
+        return new ResJsonHandler(opCode, version, EMPTY_RESPONSE_JSON_MESSAGE, null);
+    }
+
+    public static ResJsonHandler newHandler(int opCode, String version, ResJsonMessage message) {
+        Preconditions.checkArgument(opCode >= 0);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
         Preconditions.checkNotNull(message);
-        return new ResJsonHandler(opCode, message, null);
+        return new ResJsonHandler(opCode, version, message, null);
     }
 
-    public static ResJsonHandler newHandler(int opCode, PipelineFuture callableHandler) {
+    public static ResJsonHandler newHandler(int opCode, String version, ResJsonMessage message, PipelineFuture callableHandler) {
         Preconditions.checkArgument(opCode >= 0);
-        Preconditions.checkNotNull(callableHandler);
-        return new ResJsonHandler(opCode, EMPTY_RESPONSE_JSON_MESSAGE, callableHandler);
-    }
-
-    public static ResJsonHandler newHandler(int opCode, ResJsonMessage message, PipelineFuture callableHandler) {
-        Preconditions.checkArgument(opCode >= 0);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
         Preconditions.checkNotNull(message);
         Preconditions.checkNotNull(callableHandler);
-        return new ResJsonHandler(opCode, message, callableHandler);
+        return new ResJsonHandler(opCode, version, message, callableHandler);
+    }
+
+    public static ResJsonHandler newHandler(int opCode, String version, PipelineFuture callableHandler) {
+        Preconditions.checkArgument(opCode >= 0);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
+        Preconditions.checkNotNull(callableHandler);
+        return new ResJsonHandler(opCode, version, EMPTY_RESPONSE_JSON_MESSAGE, callableHandler);
     }
 
     public PipelineFuture getListener() {
@@ -67,9 +80,12 @@ public final class ResJsonHandler implements ResponseHandler {
         return opCode;
     }
 
-    @Override
     public SocketNettyProtocol.BusinessProtocol getBp() {
         return SocketNettyProtocol.BusinessProtocol.JSON;
+    }
+
+    public String getVersion() {
+        return this.version;
     }
 
 }

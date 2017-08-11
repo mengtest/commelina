@@ -35,8 +35,9 @@ message SocketMessage {
 
 message BusinessMessage {
     uint32 opCode = 1; // 操作码
-    BusinessProtocol bp = 2; // 业务协议
-    bytes msg = 3; // 用户自定义
+    string version = 2; // 版本
+    BusinessProtocol bp = 3; // 业务协议
+    bytes msg = 4; // 字符串
 }
 
 // 参数格式

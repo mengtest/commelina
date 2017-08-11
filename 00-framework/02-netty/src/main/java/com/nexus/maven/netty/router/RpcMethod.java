@@ -12,5 +12,6 @@ public @interface RpcMethod {
 
     String value();
 
-    String version() default "1.0.0";
+    String version() default Version.FIRST_VERSION;
+
 }

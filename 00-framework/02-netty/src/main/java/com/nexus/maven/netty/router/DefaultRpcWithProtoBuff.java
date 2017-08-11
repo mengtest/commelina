@@ -29,7 +29,6 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
     @Override
     public final void invoke(ChannelHandlerContext ctx, Object jsonMessage) {
-
         // 协议格式错误
         if (!(jsonMessage instanceof SocketNettyProtocol.SocketASK)) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE);
@@ -109,7 +108,6 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
                         break;
                     default:
                         throw new IllegalArgumentException("undefined arg type " + arg.getDataType());
-
                 }
             }
 
@@ -145,9 +143,11 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         }
 
         SocketNettyProtocol.SocketMessage socketMessage = SocketNettyProtocol.SocketMessage.newBuilder()
+                .setCode(SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.SUCESS_VALUE)
                 .setMsg(
                         SocketNettyProtocol.BusinessMessage.newBuilder()
                                 .setOpCode(responseHandler.getOpCode())
+                                .setVersion(responseHandler.getVersion())
                                 .setBp(responseHandler.getBp())
                                 .setMsg(ByteString.copyFrom(bytes))
                 ).build();

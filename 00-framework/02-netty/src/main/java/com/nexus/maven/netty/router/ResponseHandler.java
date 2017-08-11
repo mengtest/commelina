@@ -5,7 +5,7 @@ import io.socket.netty.proto.SocketNettyProtocol;
 /**
  * Created by @panyao on 2017/8/10.
  */
-public interface ResponseHandler {
+public interface ResponseHandler extends Version {
 
     PipelineFuture getListener();
 
