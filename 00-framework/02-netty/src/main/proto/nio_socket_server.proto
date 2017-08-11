@@ -21,9 +21,8 @@ enum BusinessProtocol {
 
 // socket 请求体
 message SocketASK {
-    string rcn = 1; // rpc class name
-    string rcm = 2; // rpc class method
-    string rcmv = 3; // rpc class method version
+    string apiName = 1; // 接口
+    string version = 3; // 借口版本
     repeated Arg args = 4; // 参数列表
 }
 
@@ -52,10 +51,9 @@ enum SYSTEM_ERROR_CONSTANTS {
     SUCESS = 0; // 成功
     PROTOCOL_FORMAT_ERROR = 1; // 协议解析错误
     RPC_API_NOT_FOUND = 2; // 要调用的 api 不存在
-    RPC_CLASS_NOT_ALLOW_EMPTY = 3; // 要调用的 rpc name 不允许为空
-    RPC_CLASS_METHOD_NOT_ALLOW_EMPTY = 4; // 要调用的 rpc method 不允许为空
-    RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY = 5; // 要调用的 rpc method version 不允许为空
-    RPC_METHOD_ARG_ERROR = 6; // 参数错误
-    RPC_METHOD_NOT_FOUND = 7; // 方法不存在
-    RPC_SERVER_ERROR = 8; // 服务端内部错误
+    RPC_API_NAME_NOT_ALLOW_EMPTY = 3; // 接口地址不能为空
+    RPC_API_VERSION_NOT_ALLOW_EMPTY = 4; // 要调用的 rpc method version 不允许为空
+    RPC_METHOD_ARG_ERROR = 5; // 参数错误
+    RPC_METHOD_NOT_FOUND = 6; // 方法不存在
+    RPC_SERVER_ERROR = 7; // 服务端内部错误
 }

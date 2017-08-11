@@ -37,27 +37,20 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
         // rpc name 不能为空
         SocketNettyProtocol.SocketASK request = (SocketNettyProtocol.SocketASK) jsonMessage;
-        String className = request.getRcn();
-        if (Strings.isNullOrEmpty(className)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_CLASS_NOT_ALLOW_EMPTY_VALUE);
+        String apiName = request.getApiName();
+        if (Strings.isNullOrEmpty(apiName)) {
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_NAME_NOT_ALLOW_EMPTY_VALUE);
             return;
         }
 
-        String methodName = request.getRcm();
-        // 方法名不允许为空
-        if (Strings.isNullOrEmpty(methodName)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_CLASS_METHOD_NOT_ALLOW_EMPTY_VALUE);
-            return;
-        }
-
-        String version = request.getRcmv();
+        String version = request.getVersion();
         // 版本不允许为空
         if (Strings.isNullOrEmpty(version)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_CLASS_METHOD_VERSION_NOT_ALLOW_EMPTY_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_VERSION_NOT_ALLOW_EMPTY_VALUE);
             return;
         }
 
-        String api = className + methodName + version;
+        String api = apiName + version;
 
         InvokeMethodEntity entity = this.classes.get(api);
         if (entity == null) {
