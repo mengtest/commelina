@@ -26,17 +26,18 @@ message SocketASK {
     repeated Arg args = 4; // 参数列表
 }
 
-// socket 响应
+// socket 消息
 message SocketMessage {
-    uint32 code = 1; // 错误码 0 表示成功
+    uint32 code = 1; // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
     BusinessMessage msg = 2; // 业务消息
 }
 
+// 业务消息体
 message BusinessMessage {
     uint32 opCode = 1; // 操作码
     string version = 2; // 版本
     BusinessProtocol bp = 3; // 业务协议
-    bytes msg = 4; // 字符串
+    bytes msg = 4; // 字节
 }
 
 // 参数格式
@@ -47,13 +48,14 @@ message Arg {
 }
 
 // 系统默认错误码
-enum SYSTEM_ERROR_CONSTANTS {
-    SUCESS = 0; // 成功
-    PROTOCOL_FORMAT_ERROR = 1; // 协议解析错误
-    RPC_API_NOT_FOUND = 2; // 要调用的 api 不存在
-    RPC_API_NAME_NOT_ALLOW_EMPTY = 3; // 接口地址不能为空
-    RPC_API_VERSION_NOT_ALLOW_EMPTY = 4; // 要调用的 rpc method version 不允许为空
-    RPC_METHOD_ARG_ERROR = 5; // 参数错误
-    RPC_METHOD_NOT_FOUND = 6; // 方法不存在
-    RPC_SERVER_ERROR = 7; // 服务端内部错误
+enum SYSTEM_CODE_CONSTANTS {
+    RESONSE_CODE = 0; // 成功响应
+    NOTIFY_CODE = 1; // 通知
+    PROTOCOL_FORMAT_ERROR = 2; // 协议解析错误
+    RPC_API_NOT_FOUND = 3; // 要调用的 api 不存在
+    RPC_API_NAME_NOT_ALLOW_EMPTY = 4; // 接口地址不能为空
+    RPC_API_VERSION_NOT_ALLOW_EMPTY = 5; // 要调用的 rpc method version 不允许为空
+    RPC_METHOD_ARG_ERROR = 6; // 参数错误
+    RPC_METHOD_NOT_FOUND = 7; // 方法不存在
+    SERVER_ERROR = 8; // 服务端内部错误
 }

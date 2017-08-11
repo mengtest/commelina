@@ -1,15 +1,13 @@
-package com.nexus.maven.netty.socket.router;
+package com.nexus.maven.netty.socket;
 
 import io.socket.netty.proto.SocketNettyProtocol;
 
 /**
  * Created by @panyao on 2017/8/10.
  */
-public interface ResponseHandler extends Version {
+public interface MessageHandler extends MessageVersion, Message {
 
     PipelineFuture getListener();
-
-    byte[] getBytes();
 
     int getOpCode();
 

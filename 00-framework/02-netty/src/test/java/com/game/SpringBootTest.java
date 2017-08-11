@@ -9,13 +9,13 @@ public class SpringBootTest {
 //        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:/spring-*.xml");
 ////        NettyNioSocketServerForSpringBoot.startWithProtoBuff(context, 9002);
 //
-//        MessageAdapter messageAdapter = context.getBean(MessageAdapter.class);
+//        NotifyMessageAdapter messageAdapter = context.getBean(NotifyMessageAdapter.class);
 //
 //        Random random = new Random();
 //        random.setSeed(100);
 //        while (true) {
 //            if (random.nextInt() > 70) {
-//                MessageAdapter.MessageEntity entity = new MessageAdapter.MessageEntity<>();
+//                NotifyMessageAdapter.MessageEntity entity = new NotifyMessageAdapter.MessageEntity<>();
 //                entity.setUserId(1);
 //                entity.setMsg("广播!");
 //                messageAdapter.addMessage(entity);

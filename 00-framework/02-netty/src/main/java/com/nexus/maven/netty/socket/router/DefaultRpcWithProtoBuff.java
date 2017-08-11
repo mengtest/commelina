@@ -3,6 +3,8 @@ package com.nexus.maven.netty.socket.router;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
+import com.nexus.maven.netty.socket.MessageHandler;
+import com.nexus.maven.netty.socket.PipelineFuture;
 import com.nexus.maven.netty.socket.RPCRouterDispatchInterface;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,7 +33,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
     public final void invoke(ChannelHandlerContext ctx, Object jsonMessage) {
         // 协议格式错误
         if (!(jsonMessage instanceof SocketNettyProtocol.SocketASK)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE);
             return;
         }
 
@@ -39,14 +41,14 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         SocketNettyProtocol.SocketASK request = (SocketNettyProtocol.SocketASK) jsonMessage;
         String apiName = request.getApiName();
         if (Strings.isNullOrEmpty(apiName)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_NAME_NOT_ALLOW_EMPTY_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NAME_NOT_ALLOW_EMPTY_VALUE);
             return;
         }
 
         String version = request.getVersion();
         // 版本不允许为空
         if (Strings.isNullOrEmpty(version)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_VERSION_NOT_ALLOW_EMPTY_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_VERSION_NOT_ALLOW_EMPTY_VALUE);
             return;
         }
 
@@ -54,7 +56,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
 
         InvokeMethodEntity entity = this.apiClasses.get(api);
         if (entity == null) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
             return;
         }
 
@@ -91,48 +93,48 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         try {
             object = entity.method.invoke(entity.instance, args);
         } catch (IllegalAccessException e) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
             LOGGER.info(e.getMessage());
             return;
         } catch (InvocationTargetException e) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
             LOGGER.info(e.getMessage());
             return;
         } catch (Throwable throwable) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
             throwable.printStackTrace();
             return;
         }
 
-        if (!(object instanceof ResponseHandler)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
-            LOGGER.info("method return value must be implements " + ResponseHandler.class);
+        if (!(object instanceof MessageHandler)) {
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
+            LOGGER.info("method return value must be implements " + MessageHandler.class);
             return;
         }
 
-        ResponseHandler responseHandler = (ResponseHandler) object;
+        MessageHandler messageHandler = (MessageHandler) object;
 
-        byte[] bytes = responseHandler.getBytes();
+        byte[] bytes = messageHandler.getBytes();
         if (bytes == null) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.RPC_SERVER_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
             return;
         }
 
         SocketNettyProtocol.SocketMessage socketMessage = SocketNettyProtocol.SocketMessage.newBuilder()
-                .setCode(SocketNettyProtocol.SYSTEM_ERROR_CONSTANTS.SUCESS_VALUE)
-                .setMsg(
-                        SocketNettyProtocol.BusinessMessage.newBuilder()
-                                .setOpCode(responseHandler.getOpCode())
-                                .setVersion(responseHandler.getVersion())
-                                .setBp(responseHandler.getBp())
-                                .setMsg(ByteString.copyFrom(bytes))
+                .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RESONSE_CODE_VALUE)
+                .setMsg(SocketNettyProtocol.BusinessMessage.newBuilder()
+                        .setOpCode(messageHandler.getOpCode())
+                        .setVersion(messageHandler.getVersion())
+                        .setBp(messageHandler.getBp())
+                        .setMsg(ByteString.copyFrom(bytes))
                 ).build();
 
-        if (responseHandler.getListener() == null) {
+        if (messageHandler.getListener() == null) {
             this.futureComp(ctx.writeAndFlush(socketMessage));
         } else {
-            this.futureEvent(ctx.writeAndFlush(socketMessage), responseHandler.getListener());
+            this.futureEvent(ctx.writeAndFlush(socketMessage), messageHandler.getListener());
         }
+
     }
 
     private void channelFutureFlush(ChannelHandlerContext ctx, int error_code) {
@@ -145,6 +147,8 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
     private void futureComp(ChannelFuture future) {
         if (future.isDone()) {
             this.futureDoneEvent(future);
+        } else {
+            throw new RuntimeException("这里是调试的错误，发现了就改了。");
         }
     }
 
@@ -152,6 +156,8 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         if (future.isDone()) {
             this.futureDoneEvent(future);
             pipelineFuture.call(future);
+        } else {
+            throw new RuntimeException("这里是调试的错误，发现了就改了。");
         }
     }
 
@@ -182,9 +188,11 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             String apiName = !Strings.isNullOrEmpty(rpcApi.apiName()) ? rpcApi.apiName() : stringObjectEntry.getKey();
             for (Method method : stringObjectEntry.getValue().getClass().getMethods()) {
                 RpcMethod rpcMethod = method.getAnnotation(RpcMethod.class);
+
                 if (rpcMethod == null) {
                     continue;
                 }
+
                 if (Strings.isNullOrEmpty(rpcMethod.value()) || Strings.isNullOrEmpty(rpcMethod.version())) {
                     throw new IllegalArgumentException("RpcMethod value or version is not allow empty.");
                 }

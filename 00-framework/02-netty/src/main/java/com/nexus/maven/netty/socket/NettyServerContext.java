@@ -20,7 +20,6 @@ public final class NettyServerContext {
 
     // 用户会话组
     private static final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup("sessionGroups", GlobalEventExecutor.INSTANCE);
-
     // 用户会话管理
     // FIXME: 2017/8/8 session 具体信息待商榷
     private final BiMap<ChannelId, Long> loginUsers = HashBiMap.create(128);

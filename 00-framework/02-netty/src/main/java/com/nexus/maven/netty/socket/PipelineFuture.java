@@ -1,4 +1,4 @@
-package com.nexus.maven.netty.socket.router;
+package com.nexus.maven.netty.socket;
 
 import io.netty.channel.ChannelFuture;
 

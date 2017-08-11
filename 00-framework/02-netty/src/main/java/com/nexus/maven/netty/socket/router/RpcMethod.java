@@ -1,5 +1,7 @@
 package com.nexus.maven.netty.socket.router;
 
+import com.nexus.maven.netty.socket.MessageVersion;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,6 +14,6 @@ public @interface RpcMethod {
 
     String value();
 
-    String version() default Version.FIRST_VERSION;
+    String version() default MessageVersion.FIRST_VERSION;
 
 }

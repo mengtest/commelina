@@ -38,9 +38,6 @@ public class NettyNioSocketServer {
     @Resource
     private NettyServerContext nettyServerContext;
 
-    @Resource
-    private MessageAdapter messageAdapter;
-
     private RPCRouterDispatchInterface dispatch;
 
     public int getPort() {
