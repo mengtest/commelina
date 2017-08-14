@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import com.game.matching.service.MatchingActor;
+import com.nexus.maven.akka.NotifyDomain;
 import com.nexus.maven.akka.RequestDomain;
 import com.nexus.maven.akka.ResponseDomain;
 
@@ -34,6 +35,8 @@ public class MatchRouterActor extends UntypedActor {
                     getSender().tell(ResponseDomain.success(), getSelf());
                     break;
             }
+        } else if (o instanceof NotifyDomain) {
+            getSender().tell(ResponseDomain.success(), getSelf());
         } else {
             this.unhandled(o);
         }

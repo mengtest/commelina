@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/8/14.
+ *
+ * 匹配重定向到房间的操作
+ *
  */
 public class MatchingRedirectActor extends UntypedActor {
 
@@ -36,9 +39,8 @@ public class MatchingRedirectActor extends UntypedActor {
         getContext().system().scheduler().scheduleOnce(Duration.create(10000, TimeUnit.MILLISECONDS), () -> {
             // 停止当前 actor
             getContext().stop(getSelf());
-
         }, getContext().system().dispatcher());
-        
+
 
         return false;
     }
