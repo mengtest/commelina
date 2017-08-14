@@ -4,9 +4,9 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import com.game.matching.service.MatchingActor;
-import com.nexus.maven.akka.NotifyDomain;
-import com.nexus.maven.akka.RequestDomain;
-import com.nexus.maven.akka.ResponseDomain;
+import com.nexus.maven.akka.AkkaNotifyDomain;
+import com.nexus.maven.akka.AkkaRequestDomain;
+import com.nexus.maven.akka.AkkaResponseDomain;
 
 /**
  * Created by @panyao on 2017/8/10.
@@ -16,11 +16,11 @@ public class MatchRouterActor extends UntypedActor {
     // 匹配的接收者
     @Override
     public void onReceive(Object o) throws Throwable {
-        if (o instanceof RequestDomain) {
-            RequestDomain domain = (RequestDomain) o;
+        if (o instanceof AkkaRequestDomain) {
+            AkkaRequestDomain domain = (AkkaRequestDomain) o;
             switch (domain.getTypeRouter()) {
                 // 加入匹配
-                case 0:
+                case "joinMatch":
                     this.addMatching(domain.getArgs());
                     break;
                 default:
@@ -32,11 +32,11 @@ public class MatchRouterActor extends UntypedActor {
             switch (msg) {
                 case MATCHING_ROUTER:
                     // 收到匹配 service 业务处理成功的消息，通知到 gateway 的调用者
-                    getSender().tell(ResponseDomain.success(), getSelf());
+                    getSender().tell(AkkaResponseDomain.success(), getSelf());
                     break;
             }
-        } else if (o instanceof NotifyDomain) {
-            getSender().tell(ResponseDomain.success(), getSelf());
+        } else if (o instanceof AkkaNotifyDomain) {
+            getSender().tell(AkkaResponseDomain.success(), getSelf());
         } else {
             this.unhandled(o);
         }

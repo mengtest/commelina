@@ -60,7 +60,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             return;
         }
 
-        Object[] args = new Object[request.getArgsList().size() + 1];
+        Object[] args = new Object[request.getArgsList().size()];
         args[0] = ctx;
         if (request.getArgsList().size() > 0) {
             for (int i = 1, size = request.getArgsList().size(); i <= size; i++) {

@@ -20,6 +20,10 @@
             <groupId>com.nexus.maven</groupId>
             <artifactId>netty</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>akka</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
