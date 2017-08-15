@@ -25,7 +25,6 @@ public class MatchingStatus extends AbstractActor {
                 .match(NOTIFY_MATCH_STATUS.class, ms -> {
                     BroadcastResponse broadcast = AkkaBroadcast.newBroadcast(ms.userIds,
                             JsonMessage.newHandlerJSONKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
-                    // FIXME: 2017/8/15 如何确保消息正确送达了呢？
                     getContext().system().actorSelection(MatchingGroup.GOURP_PATH).tell(broadcast, getSelf());
                 })
                 .match(Matching.CREATE_ROOM_FAILED_TRY_SUCCESS.class, s -> getContext().stop(getSelf()))

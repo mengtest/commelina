@@ -104,30 +104,7 @@ public class Matching extends AbstractActor {
 
     }
 
-    public static final class JOIN_SUCCESS {
-
-    }
-
     public static final class CREATE_ROOM_FAILED_TRY_SUCCESS {
-
-    }
-
-    public static final class NOTIFY_MATCHING_STATUS {
-        private long[] userIds;
-        private int notifyQuality;
-
-        public NOTIFY_MATCHING_STATUS(long[] userIds) {
-            this.userIds = userIds;
-            this.notifyQuality = userIds.length;
-        }
-
-        public long[] getUserIds() {
-            return userIds;
-        }
-
-        public int getNotifyQuality() {
-            return notifyQuality;
-        }
 
     }
 

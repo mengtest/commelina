@@ -42,6 +42,7 @@ public class MatchingGroup extends AbstractActor {
                 .match(ApiResponse.class, r -> getSender().tell(r, getSelf()))
                 // 因为连接保持，这里通知信息直接通知回 gateway ，由 gateway 推送到客户端
                 .match(BroadcastResponse.class, b -> getSender().tell(b, getSelf()))
+                // FIXME: 2017/8/15 响应如何确认送达了呢？
 //                .matchAny(u -> unhandled(u))
                 .build();
     }
@@ -74,9 +75,7 @@ public class MatchingGroup extends AbstractActor {
             this.unhandled("parse first arg to long error.");
             return;
         }
-
         final ActorRef matchingActor = getContext().actorOf(Matching.props(), "matchingActor");
-
         // 发送一个内部消息 到 匹配的 service 的队列里去
         matchingActor.tell(new Matching.JOIN_MATCH(userId), getSelf());
     }
