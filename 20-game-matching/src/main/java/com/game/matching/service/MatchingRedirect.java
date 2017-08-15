@@ -47,27 +47,27 @@ public class MatchingRedirect extends AbstractActor {
                 .build();
     }
 
-    public static final class CREATE_ROOM {
+    static final class CREATE_ROOM {
         long[] userIds;
 
-        public CREATE_ROOM(long[] userIds) {
+        CREATE_ROOM(long[] userIds) {
             this.userIds = userIds;
         }
     }
 
-    public static final class CREATE_ROOM_FAILED {
+    static final class CREATE_ROOM_FAILED {
         private long[] userIds;
 
-        public CREATE_ROOM_FAILED(long[] userIds) {
+        CREATE_ROOM_FAILED(long[] userIds) {
             this.userIds = userIds;
         }
 
-        public long[] getUserIds() {
+        long[] getUserIds() {
             return userIds;
         }
     }
 
-    public static Props props() {
+    static Props props() {
         return Props.create(MatchingRedirect.class);
     }
 

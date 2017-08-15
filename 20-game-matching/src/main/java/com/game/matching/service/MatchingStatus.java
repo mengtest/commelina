@@ -31,15 +31,15 @@ public class MatchingStatus extends AbstractActor {
                 .build();
     }
 
-    public static final class NOTIFY_MATCH_STATUS {
+    static final class NOTIFY_MATCH_STATUS {
         long[] userIds;
 
-        public NOTIFY_MATCH_STATUS(long[] userIds) {
+        NOTIFY_MATCH_STATUS(long[] userIds) {
             this.userIds = userIds;
         }
     }
 
-    public static Props props() {
+    static Props props() {
         return Props.create(MatchingStatus.class);
     }
 

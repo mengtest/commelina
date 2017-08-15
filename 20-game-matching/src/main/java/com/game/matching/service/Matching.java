@@ -55,7 +55,7 @@ public class Matching extends AbstractActor {
                             .newReponse(JsonMessage.newHandler(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
                 })
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, f -> {
-                    long[] userIds = f.getUserIds();
+                    final long[] userIds = f.getUserIds();
                     for (int i = 0; i < userIds.length; i++) {
                         queue.offer(userIds[i]);
                     }
@@ -104,7 +104,7 @@ public class Matching extends AbstractActor {
 
     }
 
-    public static final class CREATE_ROOM_FAILED_TRY_SUCCESS {
+     static final class CREATE_ROOM_FAILED_TRY_SUCCESS {
 
     }
 
