@@ -20,6 +20,10 @@
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
     </dependencies>
 
     <!--<build>-->

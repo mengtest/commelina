@@ -1,6 +1,7 @@
 package com.nexus.maven.netty.socket;
 
 import com.google.protobuf.ByteString;
+import com.nexus.maven.core.message.MessageBus;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.socket.netty.proto.SocketNettyProtocol;
@@ -17,8 +18,9 @@ class MessageNotifyHandlerWithProtoBuff {
 
     private final Logger logger = Logger.getLogger(MessageNotifyHandlerWithProtoBuff.class.getName());
 
-    public void addNotify(MessageNotifyHandler messageHandler) throws IOException {
-        byte[] bytes = messageHandler.getBytes();
+    public void addNotify(NotifyResponseHandler messageHandler) throws IOException {
+        MessageBus messageBus = messageHandler.getMessage();
+        byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
             throw new IOException("serialize failed.");
         }
@@ -56,9 +58,9 @@ class MessageNotifyHandlerWithProtoBuff {
         SocketNettyProtocol.SocketMessage notifyMessage = SocketNettyProtocol.SocketMessage.newBuilder()
                 .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.NOTIFY_CODE_VALUE)
                 .setMsg(SocketNettyProtocol.BusinessMessage.newBuilder()
-                        .setOpCode(messageHandler.getOpCode())
-                        .setVersion(messageHandler.getVersion())
-                        .setBp(messageHandler.getBp())
+                        .setOpCode(messageBus.getOpCode())
+                        .setVersion(messageBus.getVersion())
+                        .setBp(SocketNettyProtocol.BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                         .setMsg(ByteString.copyFrom(bytes))
                 ).build();
 

@@ -3,7 +3,7 @@ package com.nexus.maven.netty.socket.router;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
-import com.nexus.maven.netty.socket.MessageHandler;
+import com.nexus.maven.core.message.MessageBus;
 import com.nexus.maven.netty.socket.PipelineFuture;
 import com.nexus.maven.netty.socket.RPCRouterDispatchInterface;
 import io.netty.channel.ChannelFuture;
@@ -106,15 +106,19 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
             return;
         }
 
-        if (!(object instanceof MessageHandler)) {
+        if (!(object instanceof ResponseHandler)) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
-            LOGGER.info("method return value must be implements " + MessageHandler.class);
+            LOGGER.info("method return value must be implements " + ResponseHandler.class);
             return;
         }
 
-        MessageHandler messageHandler = (MessageHandler) object;
+        ResponseHandler messageResponseHandler = (ResponseHandler) object;
 
-        byte[] bytes = messageHandler.getBytes();
+        MessageBus messageBus = messageResponseHandler.getMessage();
+
+
+
+        byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
             this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
             return;
@@ -123,16 +127,16 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         SocketNettyProtocol.SocketMessage socketMessage = SocketNettyProtocol.SocketMessage.newBuilder()
                 .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RESONSE_CODE_VALUE)
                 .setMsg(SocketNettyProtocol.BusinessMessage.newBuilder()
-                        .setOpCode(messageHandler.getOpCode())
-                        .setVersion(messageHandler.getVersion())
-                        .setBp(messageHandler.getBp())
+                        .setOpCode(messageBus.getOpCode())
+                        .setVersion(messageBus.getVersion())
+                        .setBp(SocketNettyProtocol.BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                         .setMsg(ByteString.copyFrom(bytes))
                 ).build();
 
-        if (messageHandler.getListener() == null) {
+        if (messageResponseHandler.getListener() == null) {
             this.futureComp(ctx.writeAndFlush(socketMessage));
         } else {
-            this.futureEvent(ctx.writeAndFlush(socketMessage), messageHandler.getListener());
+            this.futureEvent(ctx.writeAndFlush(socketMessage), messageResponseHandler.getListener());
         }
 
     }

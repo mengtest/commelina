@@ -8,6 +8,7 @@
     <version>1.0.0</version>
 
     <modules>
+        <module>00-core</module>
         <module>01-utils</module>
         <module>02-netty</module>
         <module>03-akka</module>
@@ -26,7 +27,8 @@
         <netty.version>4.1.13.Final</netty.version>
         <spring.version>4.3.10.RELEASE</spring.version>
 
-        <akka.version>2.4.19</akka.version>
+        <!--<akka.version>2.4.20</akka.version>-->
+        <akka.version>2.5.4</akka.version>
     </properties>
 
     <dependencies>
@@ -37,6 +39,14 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-testkit_2.11 -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-testkit_2.11</artifactId>
+            <version>${akka.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -45,7 +55,14 @@
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>utils</artifactId>
                 <version>1.0.0</version>
+                <optional>true</optional>
             </dependency>
+            <dependency>
+                <groupId>com.nexus.maven</groupId>
+                <artifactId>core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
             <!-- util start -->
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -118,15 +135,15 @@
 
             <!-- 日志包 -->
             <!--<dependency>-->
-                <!--<groupId>org.slf4j</groupId>-->
-                <!--<artifactId>slf4j-api</artifactId>-->
-                <!--<version>${slf4j.version}</version>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-api</artifactId>-->
+            <!--<version>${slf4j.version}</version>-->
             <!--</dependency>-->
 
             <!--<dependency>-->
-                <!--<groupId>org.slf4j</groupId>-->
-                <!--<artifactId>slf4j-log4j12</artifactId>-->
-                <!--<version>${slf4j.version}</version>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>${slf4j.version}</version>-->
             <!--</dependency>-->
 
         </dependencies>

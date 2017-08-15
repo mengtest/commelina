@@ -1,7 +1,7 @@
 package com.game.foundation.gateway.api;
 
 import com.game.foundation.gateway.service.AkkaMatching;
-import com.nexus.maven.netty.socket.MessageHandler;
+import com.nexus.maven.netty.socket.router.ResponseHandler;
 import com.nexus.maven.netty.socket.router.RpcApi;
 import com.nexus.maven.netty.socket.router.RpcMethod;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,8 +18,8 @@ public class ActorRouterWithAkka {
     private AkkaMatching matching;
 
     @RpcMethod(value = "matching")
-    public MessageHandler routing(ChannelHandlerContext ctx, String funcName, String jsonArgs) {
-        Future<MessageHandler> future = matching.handler(funcName, null);
+    public ResponseHandler routing(ChannelHandlerContext ctx, String funcName, String jsonArgs) {
+        Future<ResponseHandler> future = matching.handler(funcName, null);
         // 这里把 akka 的错误处理了再返回
         return null;
     }

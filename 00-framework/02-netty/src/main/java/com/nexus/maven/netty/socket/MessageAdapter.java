@@ -22,7 +22,7 @@ public class MessageAdapter {
         notifyHandler.context = context;
     }
 
-    public void addNotify(MessageNotifyHandler messageHandler) throws IOException {
+    public void addNotify(NotifyResponseHandler messageHandler) throws IOException {
         notifyHandler.addNotify(messageHandler);
     }
 

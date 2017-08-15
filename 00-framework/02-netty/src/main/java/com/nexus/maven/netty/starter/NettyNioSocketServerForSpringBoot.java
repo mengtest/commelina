@@ -33,7 +33,7 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
     public void initServer() throws IOException {
         server = context.getBean(NettyNioSocketServer.class);
         DefaultRpcWithProtoBuff socketServerHandler = context.getBean(DefaultRpcWithProtoBuff.class);
-        socketServerHandler.springLoader(context);
+        socketServerHandler.defaultSpringLoader(context);
         server.bind(host, port);
     }
 

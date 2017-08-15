@@ -3,9 +3,10 @@ package com.game.foundation.gateway.api;
 import com.game.foundation.gateway.OpCodeConstants;
 import com.google.common.base.Splitter;
 import com.google.common.io.BaseEncoding;
+import com.nexus.maven.core.message.JsonMessage;
 import com.nexus.maven.netty.socket.NettyServerContext;
-import com.nexus.maven.netty.socket.MessageJsonHandler;
-import com.nexus.maven.netty.socket.MessageHandler;
+import com.nexus.maven.netty.socket.router.DefaultResponseHandler;
+import com.nexus.maven.netty.socket.router.ResponseHandler;
 import com.nexus.maven.netty.socket.router.RpcApi;
 import com.nexus.maven.netty.socket.router.RpcMethod;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,12 +24,12 @@ public class Passport {
     private NettyServerContext context;
 
     @RpcMethod(value = "connect")
-    public MessageHandler connect(ChannelHandlerContext ctx, String token) {
+    public ResponseHandler connect(ChannelHandlerContext ctx, String token) {
         // FIXME: 2017/8/11 测试的时候不用验证
         String parseToken = new String(BaseEncoding.base64Url().decode(token));
         List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
         context.userJoin(ctx.channel().id(), Long.valueOf(tokenChars.get(0)));
-        return MessageJsonHandler.newHandler(OpCodeConstants.PASSPORT_CONNECT);
+        return DefaultResponseHandler.newHandler(JsonMessage.newHandler(OpCodeConstants.PASSPORT_CONNECT));
     }
 
 }
