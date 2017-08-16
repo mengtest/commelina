@@ -1,9 +1,9 @@
 package com.game.foundation.gateway.api;
 
+import com.game.foundation.gateway.MessageProvider;
 import com.game.foundation.gateway.OpCodeConstants;
 import com.google.common.base.Splitter;
 import com.google.common.io.BaseEncoding;
-import com.nexus.maven.core.message.JsonMessage;
 import com.nexus.maven.netty.socket.NettyServerContext;
 import com.nexus.maven.netty.socket.router.DefaultResponseHandler;
 import com.nexus.maven.netty.socket.router.ResponseHandler;
@@ -29,7 +29,7 @@ public class Passport {
         String parseToken = new String(BaseEncoding.base64Url().decode(token));
         List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
         context.userJoin(ctx.channel().id(), Long.valueOf(tokenChars.get(0)));
-        return DefaultResponseHandler.newHandler(JsonMessage.newMessage(OpCodeConstants.PASSPORT_CONNECT));
+        return DefaultResponseHandler.newHandler(MessageProvider.newMessage(OpCodeConstants.PASSPORT_CONNECT));
     }
 
 }

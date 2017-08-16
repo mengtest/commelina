@@ -4,11 +4,11 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.game.matching.MessageProvider;
 import com.game.matching.OpCodeConstants;
 import com.game.matching.portal.MatchingGroup;
 import com.nexus.maven.akka.AkkaBroadcast;
 import com.nexus.maven.core.message.BroadcastResponse;
-import com.nexus.maven.core.message.JsonMessage;
 
 /**
  * Created by @panyao on 2017/8/14.
@@ -24,7 +24,7 @@ public class MatchingStatus extends AbstractActor {
         return receiveBuilder()
                 .match(NOTIFY_MATCH_STATUS.class, ms -> {
                     BroadcastResponse broadcast = AkkaBroadcast.newBroadcast(ms.userIds,
-                            JsonMessage.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
+                            MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
                     getContext().system().actorSelection(MatchingGroup.GOURP_PATH).tell(broadcast, getSelf());
                 })
                 .match(Matching.CREATE_ROOM_FAILED_TRY_SUCCESS.class, s -> getContext().stop(getSelf()))

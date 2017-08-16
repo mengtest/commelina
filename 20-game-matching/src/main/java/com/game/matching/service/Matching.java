@@ -6,11 +6,11 @@ import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.game.matching.MessageProvider;
 import com.game.matching.OpCodeConstants;
 import com.game.matching.portal.MatchingGroup;
 import com.google.common.collect.Queues;
 import com.nexus.maven.akka.AkkaResponse;
-import com.nexus.maven.core.message.JsonMessage;
 
 import java.util.Queue;
 
@@ -52,7 +52,7 @@ public class Matching extends AbstractActor {
                     ActorSelection group = getContext().system().actorSelection(MatchingGroup.GOURP_PATH);
                     // 回复调用者成功
                     group.tell(AkkaResponse
-                            .newResponse(JsonMessage.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
+                            .newResponse(MessageProvider.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
                 })
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, f -> {
                     final long[] userIds = f.getUserIds();
