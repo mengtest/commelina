@@ -59,8 +59,6 @@ public class Matching extends AbstractActor {
                     for (int i = 0; i < userIds.length; i++) {
                         queue.offer(userIds[i]);
                     }
-                    // 回复调用者成功
-                    getSender().tell(new CREATE_ROOM_FAILED_TRY_SUCCESS(), getSelf());
                 })
                 .build();
     }
@@ -75,6 +73,7 @@ public class Matching extends AbstractActor {
         if (redirectEventId == Long.MAX_VALUE) {
             redirectEventId = 0;
         }
+        //  这里作为 matching 的子 actor 被创建，重定向完成，即销毁
         final ActorRef actorRef = getContext().actorOf(MatchingRedirect.props(), "redirectEventId:" + redirectEventId++);
         // 发送一个内部消息到 重定向的 actor
         actorRef.tell(new MatchingRedirect.CREATE_ROOM(userIds), getSelf());
@@ -101,10 +100,6 @@ public class Matching extends AbstractActor {
         public JOIN_MATCH(long userId) {
             this.userId = userId;
         }
-
-    }
-
-     static final class CREATE_ROOM_FAILED_TRY_SUCCESS {
 
     }
 

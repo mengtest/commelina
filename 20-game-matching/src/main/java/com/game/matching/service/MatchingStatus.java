@@ -25,9 +25,12 @@ public class MatchingStatus extends AbstractActor {
                 .match(NOTIFY_MATCH_STATUS.class, ms -> {
                     BroadcastResponse broadcast = AkkaBroadcast.newBroadcast(ms.userIds,
                             MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
+
+                    // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
                     getContext().system().actorSelection(MatchingGroup.GOURP_PATH).tell(broadcast, getSelf());
+                    // 销毁自己
+                    getContext().stop(getSelf());
                 })
-                .match(Matching.CREATE_ROOM_FAILED_TRY_SUCCESS.class, s -> getContext().stop(getSelf()))
                 .build();
     }
 

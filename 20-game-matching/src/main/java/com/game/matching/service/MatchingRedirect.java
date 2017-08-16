@@ -34,16 +34,14 @@ public class MatchingRedirect extends AbstractActor {
         return receiveBuilder()
                 .match(CREATE_ROOM.class, c -> {
                     // 成功了就关闭此次的重定向 actor
-                    if (this.createRoom(c.userIds)) {
-                        getContext().stop(getSelf());
-                    } else {
+                    if (!this.createRoom(c.userIds)) {
                         // 失败了就把元素投递回去 Matching 队列
                         getSender().tell(new CREATE_ROOM_FAILED(c.userIds), getSelf());
                         // FIXME: 2017/8/14 面临死循环问题
                     }
                     // 失败的重新投递回去，就关闭此次的 actor
+                    getContext().stop(getSelf());
                 })
-                .match(Matching.CREATE_ROOM_FAILED_TRY_SUCCESS.class, s -> getContext().stop(getSelf()))
                 .build();
     }
 
