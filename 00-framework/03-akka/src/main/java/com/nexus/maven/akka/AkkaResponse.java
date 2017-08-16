@@ -14,7 +14,7 @@ public final class AkkaResponse implements ApiResponse {
         this.messageBus = messageBus;
     }
 
-    public static AkkaResponse newReponse(MessageBus messageBus) {
+    public static AkkaResponse newResponse(MessageBus messageBus) {
         return new AkkaResponse(messageBus);
     }
 

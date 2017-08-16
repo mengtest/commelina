@@ -21,18 +21,18 @@ public final class JsonMessage implements MessageBus {
         this.message = message;
     }
 
-    public static JsonMessage newHandler(int opCode) {
+    public static JsonMessage newMessage(int opCode) {
         Preconditions.checkArgument(opCode >= 0);
         return new JsonMessage(opCode, EMPTY_RESPONSE_JSON_MESSAGE);
     }
 
-    public static JsonMessage newHandler(int opCode, BusinessMessage message) {
+    public static JsonMessage newMessage(int opCode, BusinessMessage message) {
         Preconditions.checkArgument(opCode >= 0);
         Preconditions.checkNotNull(message);
         return new JsonMessage(opCode, message);
     }
 
-    public static JsonMessage newHandlerJSONKV(int opCode, String k, Object v) {
+    public static JsonMessage newMessageForKV(int opCode, String k, Object v) {
         Preconditions.checkArgument(opCode >= 0);
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);

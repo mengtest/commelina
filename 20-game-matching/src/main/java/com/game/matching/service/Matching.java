@@ -52,7 +52,7 @@ public class Matching extends AbstractActor {
                     ActorSelection group = getContext().system().actorSelection(MatchingGroup.GOURP_PATH);
                     // 回复调用者成功
                     group.tell(AkkaResponse
-                            .newReponse(JsonMessage.newHandler(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
+                            .newResponse(JsonMessage.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
                 })
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, f -> {
                     final long[] userIds = f.getUserIds();

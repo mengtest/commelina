@@ -63,7 +63,7 @@ public class AkkaMatching {
 //                    AkkaNotifyToMore notify = (AkkaNotifyToMore) o;
 //                    for (AkkaNotifyToMore.MessageEntity messageEntity : notify.getMessages()) {
 //                        messageAdapter.addNotify(NotifyJsonResponseHandler
-//                                .newHandler(messageEntity.getUserId(), 0,
+//                                .newMessage(messageEntity.getUserId(), 0,
 //                                        BusinessMessage.success(0, messageEntity.getMessage())
 //                                ));
 //                    }
@@ -72,7 +72,7 @@ public class AkkaMatching {
 //                    AkkaBroadcast broadcast = (AkkaBroadcast) o;
 //                    for (Long aLong : broadcast.getUserIds()) {
 //                        messageAdapter.addNotify(NotifyJsonResponseHandler
-//                                .newHandler(aLong, 0,
+//                                .newMessage(aLong, 0,
 //                                        BusinessMessage.success(0, broadcast.getMessage())
 //                                ));
 //                    }

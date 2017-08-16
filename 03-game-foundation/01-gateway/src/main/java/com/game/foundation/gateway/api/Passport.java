@@ -29,7 +29,7 @@ public class Passport {
         String parseToken = new String(BaseEncoding.base64Url().decode(token));
         List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
         context.userJoin(ctx.channel().id(), Long.valueOf(tokenChars.get(0)));
-        return DefaultResponseHandler.newHandler(JsonMessage.newHandler(OpCodeConstants.PASSPORT_CONNECT));
+        return DefaultResponseHandler.newHandler(JsonMessage.newMessage(OpCodeConstants.PASSPORT_CONNECT));
     }
 
 }
