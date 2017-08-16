@@ -49,7 +49,7 @@ public class Matching extends AbstractActor {
                         this.addMessageToNotify(userIds);
                     }
 
-                    ActorSelection group = getContext().system().actorSelection(MatchingGroup.GOURP_PATH);
+                    ActorSelection group = getContext().system().actorSelection(MatchingGroup.MATCHING_GROUP_PATH);
                     // 回复调用者成功
                     group.tell(AkkaResponse
                             .newResponse(MessageProvider.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());

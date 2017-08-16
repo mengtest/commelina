@@ -15,7 +15,7 @@ import com.nexus.maven.core.message.BroadcastResponse;
  */
 public class MatchingGroup extends AbstractActor {
 
-    public static final String GOURP_PATH = "user/";
+    public static final String MATCHING_GROUP_PATH = "user/";
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
