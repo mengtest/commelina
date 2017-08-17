@@ -2,13 +2,11 @@ package com.game.matching.service;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.game.matching.MessageProvider;
 import com.game.matching.OpCodeConstants;
-import com.game.matching.portal.MatchingGroup;
 import com.google.common.collect.Queues;
 import com.nexus.maven.akka.AkkaResponse;
 
@@ -26,13 +24,33 @@ public class Matching extends AbstractActor {
     private static final int MATCH_SUCCESS_PEOPLE = 100;
 
     private long redirectEventId = 0;
-    private long notifyEventId = 0;
+
+    private ActorRef notifyMatchStatus;
+
+    @Override
+    public void preStart() throws Exception {
+        for (ActorRef each : getContext().getChildren()) {
+//            getContext().unwatch(each);
+            getContext().stop(each);
+        }
+        notifyMatchStatus = getContext().actorOf(MatchingStatus.props(), "notifyMatchStatusEvent:");
+//        super.preStart();
+    }
+
+//    @Override
+//    public void postStop() throws Exception {
+//        for (ActorRef each : getContext().getChildren()) {
+////            getContext().unwatch(each);
+//            getContext().stop(each);
+//        }
+//    }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JOIN_MATCH.class, j -> {
                     long userId = j.userId;
+                    log.info("add queue userId " + userId);
                     queue.offer(userId);
                     int queueSize = queue.size();
                     if (queueSize >= MATCH_SUCCESS_PEOPLE) {
@@ -49,15 +67,13 @@ public class Matching extends AbstractActor {
                         this.addMessageToNotify(userIds);
                     }
 
-                    ActorSelection group = getContext().system().actorSelection(MatchingGroup.MATCHING_GROUP_PATH);
                     // 回复调用者成功
-                    group.tell(AkkaResponse
+                    getSender().tell(AkkaResponse
                             .newResponse(MessageProvider.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
                 })
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, f -> {
-                    final long[] userIds = f.getUserIds();
-                    for (int i = 0; i < userIds.length; i++) {
-                        queue.offer(userIds[i]);
+                    for (long userId : f.getUserIds()) {
+                        queue.offer(userId);
                     }
                 })
                 .build();
@@ -85,12 +101,7 @@ public class Matching extends AbstractActor {
      * @param userIds
      */
     private void addMessageToNotify(long[] userIds) {
-        // 事件id 超过边界则重新从 0 开始
-        if (notifyEventId == Long.MAX_VALUE) {
-            notifyEventId = 0;
-        }
-        final ActorRef actorRef = getContext().actorOf(MatchingStatus.props(), "notifyEventId:" + notifyEventId++);
-        actorRef.tell(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getSelf());
+        notifyMatchStatus.tell(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getSelf());
     }
 
     // http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html

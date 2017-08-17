@@ -10,25 +10,27 @@ import com.nexus.maven.core.message.ApiRequest;
  */
 public final class AkkaRequest implements ApiRequest {
 
-    private final String apiName;
-    private final String version;
-    private final Object[] args;
-
-    private AkkaRequest(String apiName, String version, Object[] args) {
-        this.apiName = apiName;
-        this.version = version;
-        this.args = args;
-    }
+    private String apiName;
+    private String version;
+    private Object[] args;
 
     public static AkkaRequest newRequest(String apiName, Object... args) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(apiName));
-        return new AkkaRequest(apiName, AppVersion.FIRST_VERSION, args);
+        AkkaRequest request = new AkkaRequest();
+        request.setApiName(apiName);
+        request.setVersion(AppVersion.FIRST_VERSION);
+        request.setArgs(args);
+        return request;
     }
 
     public static AkkaRequest newRequest(String apiName, String version, Object... args) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(apiName));
         Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
-        return new AkkaRequest(apiName, version, args);
+        AkkaRequest request = new AkkaRequest();
+        request.setApiName(apiName);
+        request.setVersion(version);
+        request.setArgs(args);
+        return request;
     }
 
     public String getApiName() {
@@ -49,6 +51,23 @@ public final class AkkaRequest implements ApiRequest {
             }
         }
         return null;
+    }
+
+    @Override
+    public String getVersion() {
+        return this.version;
+    }
+
+    void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
+
+    void setVersion(String version) {
+        this.version = version;
+    }
+
+    void setArgs(Object[] args) {
+        this.args = args;
     }
 
 }
