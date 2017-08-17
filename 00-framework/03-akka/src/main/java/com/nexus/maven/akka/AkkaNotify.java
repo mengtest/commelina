@@ -8,14 +8,16 @@ import com.nexus.maven.core.message.NotifyResponse;
  */
 public class AkkaNotify implements NotifyResponse {
 
-    private long userId;
-    private MessageBus messageBus;
+    private final long userId;
+    private final MessageBus messageBus;
+
+    private AkkaNotify(long userId, MessageBus messageBus) {
+        this.userId = userId;
+        this.messageBus = messageBus;
+    }
 
     public static AkkaNotify newNotify(long userId, MessageBus messageBus) {
-        AkkaNotify notify = new AkkaNotify();
-        notify.setUserId(userId);
-        notify.setMessageBus(messageBus);
-        return notify;
+        return new AkkaNotify(userId, messageBus);
     }
 
     @Override
@@ -28,11 +30,4 @@ public class AkkaNotify implements NotifyResponse {
         return userId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public void setMessageBus(MessageBus messageBus) {
-        this.messageBus = messageBus;
-    }
 }

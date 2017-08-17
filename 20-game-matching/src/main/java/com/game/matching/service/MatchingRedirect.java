@@ -14,8 +14,6 @@ public class MatchingRedirect extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-
-
     @Override
     public void postStop() throws Exception {
         log.info("MatchingRedirect Application stopped");
@@ -34,6 +32,7 @@ public class MatchingRedirect extends AbstractActor {
                     // 失败的重新投递回去，就关闭此次的 actor
 //                    getContext().stop(getSelf());
                 })
+                .matchAny(o -> log.info("MatchingRedirect received unknown message " + o))
                 .build();
     }
 

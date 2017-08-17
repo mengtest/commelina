@@ -32,6 +32,8 @@ public final class Generator {
         private static ObjectMapper objectMapper = new ObjectMapper() {
             {
                 configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//                configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
 
 //                setDateFormat (new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss"));
 //                // 空值处理为空串

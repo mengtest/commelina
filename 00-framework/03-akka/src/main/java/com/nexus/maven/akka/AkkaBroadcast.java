@@ -13,19 +13,21 @@ import java.util.List;
  */
 public class AkkaBroadcast implements BroadcastResponse {
 
-    private  List<Long> userIds = Lists.newArrayList();
-    private MessageBus message;
+    private final List<Long> userIds = Lists.newArrayList();
+    private final MessageBus message;
+
+    private AkkaBroadcast(MessageBus message) {
+        this.message = message;
+    }
 
     public static AkkaBroadcast newBroadcast(long userId, MessageBus bus) {
-        AkkaBroadcast broadcast = new AkkaBroadcast();
-        broadcast.setMessage(bus);
+        AkkaBroadcast broadcast = new AkkaBroadcast(bus);
         broadcast.userIds.add(userId);
         return broadcast;
     }
 
     public static AkkaBroadcast newBroadcast(long[] userIds, MessageBus bus) {
-        AkkaBroadcast broadcast = new AkkaBroadcast();
-        broadcast.setMessage(bus);
+        AkkaBroadcast broadcast = new AkkaBroadcast(bus);
         for (long userId : userIds) {
             broadcast.userIds.add(userId);
         }
@@ -43,13 +45,5 @@ public class AkkaBroadcast implements BroadcastResponse {
 
     public MessageBus getMessage() {
         return message;
-    }
-
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
-    }
-
-    public void setMessage(MessageBus message) {
-        this.message = message;
     }
 }

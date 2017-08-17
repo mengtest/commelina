@@ -19,6 +19,7 @@
         <!--<module>00-framework</module>-->
         <module>03-game-foundation</module>
         <module>20-game-matching</module>
+        <module>21-game-room</module>
     </modules>
 
     <properties>

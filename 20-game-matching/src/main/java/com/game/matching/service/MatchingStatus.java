@@ -1,7 +1,6 @@
 package com.game.matching.service;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -18,7 +17,7 @@ public class MatchingStatus extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private final ActorSelection matchingGroup = getContext().system().actorSelection(getContext().parent().path().parent());
+//    private final ActorSelection matchingGroup = getContext().system().actorSelection(getContext().parent().path().parent());
 
     @Override
     public Receive createReceive() {
@@ -28,8 +27,10 @@ public class MatchingStatus extends AbstractActor {
                             MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
                     log.info("Broadcast match status people: " + ms.userIds.length);
                     // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-                    matchingGroup.tell(broadcast, getSelf());
+                    getSender().tell(broadcast, getSelf());
+//                    getSender().tell(broadcast, getSelf());
                 })
+                .matchAny(o -> log.info("MatchingStatus received unknown message "))
                 .build();
     }
 

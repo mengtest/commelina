@@ -11,13 +11,17 @@ import java.io.Serializable;
  */
 public final class BusinessMessage implements Serializable {
 
-    private final int businessCode;
-    private final Object data;
+    private int businessCode;
+    private DataEntity data;
 
     public static final String DEFAULT_DATA = null;
     public static final int DEFAULT_SUCCESS = 0;
 
-    private BusinessMessage(int businessCode, Object data) {
+    public BusinessMessage() {
+
+    }
+
+    private BusinessMessage(int businessCode, DataEntity data) {
         this.businessCode = businessCode;
         this.data = data;
     }
@@ -35,7 +39,28 @@ public final class BusinessMessage implements Serializable {
     }
 
     public static BusinessMessage success(int code, Object data) {
-        return new BusinessMessage(code, data);
+        DataEntity dataEntity = new DataEntity();
+        dataEntity.data = data;
+        return new BusinessMessage(code, dataEntity);
     }
 
+    public static final class DataEntity {
+        Object data;
+    }
+
+    public int getBusinessCode() {
+        return businessCode;
+    }
+
+    public void setBusinessCode(int businessCode) {
+        this.businessCode = businessCode;
+    }
+
+    public DataEntity getData() {
+        return data;
+    }
+
+    public void setData(DataEntity data) {
+        this.data = data;
+    }
 }

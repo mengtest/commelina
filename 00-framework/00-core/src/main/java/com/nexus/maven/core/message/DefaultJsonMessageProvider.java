@@ -8,12 +8,12 @@ import com.google.common.base.Strings;
  */
 public class DefaultJsonMessageProvider {
 
-    private static final BusinessMessage EMPTY_RESPONSE_JSON_MESSAGE =
+    private static final BusinessMessage EMPTY_RESPONSE_MESSAGE =
             BusinessMessage.success();
 
     public static MessageBus newMessage(int opCode) {
         Preconditions.checkArgument(opCode >= 0);
-        return new JsonMessage(opCode, EMPTY_RESPONSE_JSON_MESSAGE);
+        return new JsonMessage(opCode, EMPTY_RESPONSE_MESSAGE);
     }
 
     public static MessageBus newMessage(int opCode, BusinessMessage message) {
@@ -32,7 +32,7 @@ public class DefaultJsonMessageProvider {
         return new JsonMessage(opCode, BusinessMessage.success(entity));
     }
 
-    private static class KVEntity {
+    public static final class KVEntity {
         String k;
         Object v;
     }

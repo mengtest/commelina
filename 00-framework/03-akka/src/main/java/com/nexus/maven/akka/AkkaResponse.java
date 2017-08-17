@@ -1,26 +1,24 @@
 package com.nexus.maven.akka;
 
+import com.nexus.maven.core.message.ApiResponse;
 import com.nexus.maven.core.message.MessageBus;
 
 /**
  * Created by @panyao on 2017/8/14.
  */
-public final class AkkaResponse {
+public final class AkkaResponse implements ApiResponse {
 
-    private MessageBus messageBus;
+    private final MessageBus messageBus;
+
+    private AkkaResponse(MessageBus messageBus) {
+        this.messageBus = messageBus;
+    }
 
     public static AkkaResponse newResponse(MessageBus messageBus) {
-        AkkaResponse response = new AkkaResponse();
-        response.setMessageBus(messageBus);
-        return response;
+        return new AkkaResponse(messageBus);
     }
 
     public MessageBus getMessage() {
         return messageBus;
     }
-
-    public void setMessageBus(MessageBus messageBus) {
-        this.messageBus = messageBus;
-    }
-
 }

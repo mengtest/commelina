@@ -3,36 +3,44 @@ package com.game.matching.portal;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.game.matching.service.Matching;
 import com.nexus.maven.akka.AkkaBroadcast;
 import com.nexus.maven.akka.AkkaRequest;
-import com.nexus.maven.akka.AkkaResponse;
 
 /**
  * Created by @panyao on 2017/8/10.
  */
-public class MatchingGroup extends AbstractActor {
+public class MatchingRouter extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private ActorRef matchingActor;
+    private final ActorRef matching = getContext().actorOf(Matching.props(), "matching");
+
+//    http://doc.akka.io/docs/akka/current/java/actors.html#lifecycle-monitoring-aka-deathwatch
+//    private final ActorRef lastSender = getContext().system().deadLetters();
 
     @Override
-    public void preStart() {
-        matchingActor = getContext().actorOf(Matching.props(), "matchingActor");
-        log.info("MatchingGroup Application started");
+    public void preStart() throws Exception {
+        log.info("MatchingRouter Application started");
+        super.preStart();
     }
 
     @Override
-    public void postStop() {
-        // 关闭全部子节点
-        log.info("MatchingGroup Application stopped");
+    public void postStop() throws Exception {
+        log.info("MatchingRouter Application stopped");
+        super.postStop();
     }
 
     @Override
     public Receive createReceive() {
+//      [
+//          0 => [ 0 => {},1 => {}, 2 => {} ],
+//          1 => [ 0 => {},1 => {}, 2 => {} ],
+//          2 => [ 0 => {},1 => {}, 2 => {} ],
+//      ]
         return receiveBuilder()
                 // 收到来自远程的请求调用，即 gateway 进行业务层路由转发
                 .match(AkkaRequest.class, r -> {
@@ -46,12 +54,13 @@ public class MatchingGroup extends AbstractActor {
                             break;
                     }
                 })
-                // 业务层匹配回调，则把消息回传到请求的调用者, 由 gateway 推送到客户端
-                .match(AkkaResponse.class, r -> getSender().tell(r, getSelf()))
                 // 因为连接保持，这里通知信息直接通知回 gateway ，由 gateway 推送到客户端
                 .match(AkkaBroadcast.class, b -> getSender().tell(b, getSelf()))
                 // FIXME: 2017/8/15 响应如何确认送达了呢？
-//                .matchAny(o -> log.info("received unknown message"))
+                .matchAny(o -> log.info("MatchingRouter received unknown message" + o))
+                .match(Terminated.class, t -> true, t -> {
+                    log.info("Terminated " + t.toString());
+                })
                 .build();
     }
 
@@ -74,10 +83,10 @@ public class MatchingGroup extends AbstractActor {
             return;
         }
         // 发送一个内部消息 到 匹配的 service 的队列里去
-        matchingActor.tell(new Matching.JOIN_MATCH(userId), getSelf());
+        matching.forward(new Matching.JOIN_MATCH(userId), getContext());
     }
 
     public static Props props() {
-        return Props.create(MatchingGroup.class);
+        return Props.create(MatchingRouter.class);
     }
 }
