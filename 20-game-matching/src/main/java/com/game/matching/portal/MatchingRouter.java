@@ -43,25 +43,27 @@ public class MatchingRouter extends AbstractActor {
 //      ]
         return receiveBuilder()
                 // 收到来自远程的请求调用，即 gateway 进行业务层路由转发
-                .match(AkkaRequest.class, r -> {
-                    switch (r.getApiName()) {
-                        // 加入匹配
-                        case "joinMatch":
-                            this.addMatching(r.getArgs());
-                            break;
-                        default:
-                            this.unhandled("type " + r.getApiName() + " undefined.");
-                            break;
-                    }
-                })
+                .match(AkkaRequest.class, this::routerAdapter)
                 // 因为连接保持，这里通知信息直接通知回 gateway ，由 gateway 推送到客户端
                 .match(AkkaBroadcast.class, b -> getSender().tell(b, getSelf()))
-                // FIXME: 2017/8/15 响应如何确认送达了呢？
-                .matchAny(o -> log.info("MatchingRouter received unknown message" + o))
                 .match(Terminated.class, t -> true, t -> {
                     log.info("Terminated " + t.toString());
                 })
+                // FIXME: 2017/8/15 响应如何确认送达了呢？
+                .matchAny(o -> log.info("MatchingRouter received unknown message" + o))
                 .build();
+    }
+
+    private void routerAdapter(AkkaRequest request) {
+        switch (request.getApiName()) {
+            // 加入匹配
+            case "joinMatch":
+                this.addMatching(request.getArgs());
+                break;
+            default:
+                this.unhandled("type " + request.getApiName() + " undefined.");
+                break;
+        }
     }
 
     private void addMatching(Object[] args) {

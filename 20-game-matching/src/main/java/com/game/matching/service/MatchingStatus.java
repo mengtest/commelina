@@ -22,16 +22,17 @@ public class MatchingStatus extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(NOTIFY_MATCH_STATUS.class, ms -> {
-                    AkkaBroadcast broadcast = AkkaBroadcast.newBroadcast(ms.userIds,
-                            MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", ms.userIds.length));
-                    log.info("Broadcast match status people: " + ms.userIds.length);
-                    // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-                    getSender().tell(broadcast, getSelf());
-//                    getSender().tell(broadcast, getSelf());
-                })
+                .match(NOTIFY_MATCH_STATUS.class, this::notifyMatchStatus)
                 .matchAny(o -> log.info("MatchingStatus received unknown message "))
                 .build();
+    }
+
+    private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
+        AkkaBroadcast broadcast = AkkaBroadcast.newBroadcast(notifyMatchStatus.userIds,
+                MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", notifyMatchStatus.userIds.length));
+        log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
+        // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
+        getSender().tell(broadcast, getSelf());
     }
 
     static final class NOTIFY_MATCH_STATUS {
