@@ -1,23 +1,19 @@
 # 00-framework
     基础框架
 
-# 01-service
-    基础服务
+# 01-platform
+    基础app服务
 
-# 02-http-api
-    基础的api 服务
+# 02-chess-card-game-module
+    棋牌类游戏通用模块
 
 # 03-gateway
     网关服务，管理客户端的 socket 连接，给客户端广播消息等等
 
 # ----------------------------------------------------------------
 ## 游戏部分
-## 20-game-matching
-    执行匹配逻辑
-
-## 21-game-room
+## 21-ponint24-game-room
     游戏具体逻辑
 
-# api 功能部分
-## 30-point24-api
-    端连接部分，游戏外的api
+## 22-point24-api
+    app业务逻辑

@@ -133,6 +133,34 @@
                 <version>${akka.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-cluster_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-cluster_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-remote_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-remote_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-cluster-metrics_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-cluster-metrics_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-cluster-tools_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-cluster-tools_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
             <!-- 日志包 -->
             <!--<dependency>-->
             <!--<groupId>org.slf4j</groupId>-->
@@ -222,6 +250,7 @@
                     </includes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

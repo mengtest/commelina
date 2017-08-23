@@ -8,26 +8,29 @@ import com.nexus.maven.core.message.MessageBus;
  */
 public final class NotifyJsonResponseHandler implements NotifyResponseHandler {
 
+    private final int domain;
     private final long userId;
     private final MessageBus message;
     private final PipelineNotifyFuture pipelineCallbackFuture;
 
-    private NotifyJsonResponseHandler(long userId, MessageBus messageBus, PipelineNotifyFuture pipelineCallbackFuture) {
+    private NotifyJsonResponseHandler(int domain, long userId, MessageBus messageBus, PipelineNotifyFuture pipelineCallbackFuture) {
+        Preconditions.checkArgument(domain >= 0);
         Preconditions.checkArgument(userId > 0);
+        this.domain = domain;
         this.userId = userId;
         this.message = messageBus;
         this.pipelineCallbackFuture = pipelineCallbackFuture;
     }
 
-    public static NotifyJsonResponseHandler newHandler(long userId, MessageBus messageBus) {
+    public static NotifyJsonResponseHandler newHandler(int domain, long userId, MessageBus messageBus) {
         Preconditions.checkNotNull(messageBus);
-        return new NotifyJsonResponseHandler(userId, messageBus, null);
+        return new NotifyJsonResponseHandler(domain, userId, messageBus, null);
     }
 
-    public static NotifyJsonResponseHandler newHandler(long userId, MessageBus messageBus, PipelineNotifyFuture callableHandler) {
+    public static NotifyJsonResponseHandler newHandler(int domain, long userId, MessageBus messageBus, PipelineNotifyFuture callableHandler) {
         Preconditions.checkNotNull(messageBus);
         Preconditions.checkNotNull(callableHandler);
-        return new NotifyJsonResponseHandler(userId, messageBus, callableHandler);
+        return new NotifyJsonResponseHandler(domain, userId, messageBus, callableHandler);
     }
 
     public PipelineNotifyFuture getListener() {
@@ -41,5 +44,10 @@ public final class NotifyJsonResponseHandler implements NotifyResponseHandler {
     @Override
     public MessageBus getMessage() {
         return this.message;
+    }
+
+    @Override
+    public int getDomain() {
+        return this.domain;
     }
 }

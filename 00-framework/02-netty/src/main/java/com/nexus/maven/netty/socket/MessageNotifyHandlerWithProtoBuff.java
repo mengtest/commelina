@@ -56,7 +56,8 @@ class MessageNotifyHandlerWithProtoBuff {
         }
 
         SocketNettyProtocol.SocketMessage notifyMessage = SocketNettyProtocol.SocketMessage.newBuilder()
-                .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.NOTIFY_CODE_VALUE)
+                .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.NOTIFY_CODE)
+                .setDomain(messageHandler.getDomain())
                 .setMsg(SocketNettyProtocol.BusinessMessage.newBuilder()
                         .setOpCode(messageBus.getOpCode())
                         .setVersion(messageBus.getVersion())

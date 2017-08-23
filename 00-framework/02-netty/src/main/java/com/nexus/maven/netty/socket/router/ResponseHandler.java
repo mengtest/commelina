@@ -11,4 +11,7 @@ public interface ResponseHandler {
     PipelineFuture getListener();
 
     MessageBus getMessage();
+
+    int getDomain();
+
 }

@@ -28,8 +28,9 @@ message SocketASK {
 
 // socket 消息
 message SocketMessage {
-    uint32 code = 1; // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
-    BusinessMessage msg = 2; // 业务消息
+    SYSTEM_CODE_CONSTANTS code = 1; // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
+    uint32 domain = 2; // 消息所在的作用域， 0 网络层作用域 > 0 业务作用域
+    BusinessMessage msg = 3; // 业务消息
 }
 
 // 业务消息体
@@ -47,7 +48,7 @@ message Arg {
     bytes value = 3;
 }
 
-// 系统默认错误码
+// 系统错误码
 enum SYSTEM_CODE_CONSTANTS {
     RESONSE_CODE = 0; // 成功响应
     NOTIFY_CODE = 1; // 通知
@@ -55,7 +56,7 @@ enum SYSTEM_CODE_CONSTANTS {
     RPC_API_NOT_FOUND = 3; // 要调用的 api 不存在
     RPC_API_NAME_NOT_ALLOW_EMPTY = 4; // 接口地址不能为空
     RPC_API_VERSION_NOT_ALLOW_EMPTY = 5; // 要调用的 rpc method version 不允许为空
-    RPC_METHOD_ARG_ERROR = 6; // 参数错误
-    RPC_METHOD_NOT_FOUND = 7; // 方法不存在
+    RPC_METHOD_NOT_FOUND = 6; // 方法不存在
+    RPC_METHOD_ARG_ERROR = 7; // 参数错误
     SERVER_ERROR = 8; // 服务端内部错误
 }

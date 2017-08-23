@@ -38,7 +38,7 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
     }
 
     @PreDestroy
-    private void stop() {
+    public void stop() {
         if (server != null) {
             server.shutdown();
         }

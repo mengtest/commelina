@@ -33,7 +33,7 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
     public final void invoke(ChannelHandlerContext ctx, Object jsonMessage) {
         // 协议格式错误
         if (!(jsonMessage instanceof SocketNettyProtocol.SocketASK)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR);
             return;
         }
 
@@ -41,22 +41,22 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         SocketNettyProtocol.SocketASK request = (SocketNettyProtocol.SocketASK) jsonMessage;
         String apiName = request.getApiName();
         if (Strings.isNullOrEmpty(apiName)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NAME_NOT_ALLOW_EMPTY_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NAME_NOT_ALLOW_EMPTY);
             return;
         }
 
         String version = request.getVersion();
         // 版本不允许为空
         if (Strings.isNullOrEmpty(version)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_VERSION_NOT_ALLOW_EMPTY_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_VERSION_NOT_ALLOW_EMPTY);
             return;
         }
 
-        String api = apiName + version;
+        String api = apiName.concat(version);
 
         InvokeMethodEntity entity = this.apiClasses.get(api);
         if (entity == null) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND);
             return;
         }
 
@@ -93,39 +93,36 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         try {
             object = entity.method.invoke(entity.instance, args);
         } catch (IllegalAccessException e) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_ARG_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_ARG_ERROR);
             LOGGER.info(e.getMessage());
             return;
         } catch (InvocationTargetException e) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_NOT_FOUND_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_METHOD_NOT_FOUND);
             LOGGER.info(e.getMessage());
             return;
         } catch (Throwable throwable) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR);
             throwable.printStackTrace();
             return;
         }
 
         if (!(object instanceof ResponseHandler)) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR);
             LOGGER.info("method return value must be implements " + ResponseHandler.class);
             return;
         }
 
         ResponseHandler messageResponseHandler = (ResponseHandler) object;
-
         MessageBus messageBus = messageResponseHandler.getMessage();
-
-
-
         byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
-            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR_VALUE);
+            this.channelFutureFlush(ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.SERVER_ERROR);
             return;
         }
 
         SocketNettyProtocol.SocketMessage socketMessage = SocketNettyProtocol.SocketMessage.newBuilder()
-                .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RESONSE_CODE_VALUE)
+                .setCode(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RESONSE_CODE)
+                .setDomain(messageResponseHandler.getDomain())
                 .setMsg(SocketNettyProtocol.BusinessMessage.newBuilder()
                         .setOpCode(messageBus.getOpCode())
                         .setVersion(messageBus.getVersion())
@@ -138,10 +135,9 @@ public class DefaultRpcWithProtoBuff implements RPCRouterDispatchInterface {
         } else {
             this.futureEvent(ctx.writeAndFlush(socketMessage), messageResponseHandler.getListener());
         }
-
     }
 
-    private void channelFutureFlush(ChannelHandlerContext ctx, int error_code) {
+    private void channelFutureFlush(ChannelHandlerContext ctx, SocketNettyProtocol.SYSTEM_CODE_CONSTANTS error_code) {
         SocketNettyProtocol.SocketMessage message = SocketNettyProtocol.SocketMessage.newBuilder()
                 .setCode(error_code).build();
         ChannelFuture future = ctx.writeAndFlush(message);

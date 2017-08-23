@@ -9,23 +9,27 @@ import com.nexus.maven.netty.socket.PipelineFuture;
  */
 public final class DefaultResponseHandler implements ResponseHandler {
 
-    private final PipelineFuture pipelineCallbackFuture;
+    private final int domain;
     private final MessageBus message;
+    private final PipelineFuture pipelineCallbackFuture;
 
-    private DefaultResponseHandler(MessageBus message, PipelineFuture pipelineCallbackFuture) {
-        this.pipelineCallbackFuture = pipelineCallbackFuture;
+    private DefaultResponseHandler(int domain, MessageBus message, PipelineFuture pipelineCallbackFuture) {
+        this.domain = domain;
         this.message = message;
+        this.pipelineCallbackFuture = pipelineCallbackFuture;
     }
 
-    public static DefaultResponseHandler newHandler(MessageBus message, PipelineFuture pipelineCallbackFuture) {
+    public static DefaultResponseHandler newHandler(int domain, MessageBus message, PipelineFuture pipelineCallbackFuture) {
+        Preconditions.checkArgument(domain >= 0);
         Preconditions.checkNotNull(message);
         Preconditions.checkNotNull(pipelineCallbackFuture);
-        return new DefaultResponseHandler(message, pipelineCallbackFuture);
+        return new DefaultResponseHandler(domain, message, pipelineCallbackFuture);
     }
 
-    public static DefaultResponseHandler newHandler(MessageBus message) {
+    public static DefaultResponseHandler newHandler(int domain, MessageBus message) {
+        Preconditions.checkArgument(domain >= 0);
         Preconditions.checkNotNull(message);
-        return new DefaultResponseHandler(message, null);
+        return new DefaultResponseHandler(domain, message, null);
     }
 
     public PipelineFuture getListener() {
@@ -36,4 +40,8 @@ public final class DefaultResponseHandler implements ResponseHandler {
         return this.message;
     }
 
+    @Override
+    public int getDomain() {
+        return this.domain;
+    }
 }
