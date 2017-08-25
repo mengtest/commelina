@@ -1,7 +1,7 @@
 package com.game.matching;
 
 import akka.actor.ActorSystem;
-import com.game.matching.portal.MatchingRequestRouter;
+import com.game.matching.portal.MatchingRouter;
 import com.typesafe.config.ConfigFactory;
 
 /**
@@ -12,7 +12,7 @@ public class MatchingApp {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MatchingWorkerSystem",
                 ConfigFactory.load(("matching")));
-        system.actorOf(MatchingRequestRouter.props(), "matchingRouter");
+        system.actorOf(MatchingRouter.props(), "matchingRouter");
     }
 
 }

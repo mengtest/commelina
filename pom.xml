@@ -59,7 +59,7 @@
             </dependency>
             <dependency>
                 <groupId>com.nexus.maven</groupId>
-                <artifactId>akka</artifactId>
+                <artifactId>core</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>

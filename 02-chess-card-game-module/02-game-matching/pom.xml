@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.nexus.maven</groupId>
-            <artifactId>akka</artifactId>
+            <artifactId>core</artifactId>
         </dependency>
     </dependencies>
 

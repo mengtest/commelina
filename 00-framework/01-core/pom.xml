@@ -2,25 +2,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.game.bussiess</groupId>
-        <artifactId>root</artifactId>
+        <groupId>com.nexus.maven</groupId>
+        <artifactId>framework-root</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>room</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+
 
     <dependencies>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.11</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-remote_2.11</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.nexus.maven</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
 </project>

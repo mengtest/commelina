@@ -21,7 +21,7 @@ public class MatchRouterActorTest {
         ActorSystem system = ActorSystem.create("test");
         TestKit probe = new TestKit(system);
 
-        ActorRef actorRef = system.actorOf(MatchingRequestRouter.props());
+        ActorRef actorRef = system.actorOf(MatchingRouter.props());
         actorRef.tell(AkkaRequest.newRequest("joinMatch", 1), probe.getRef());
 
         AkkaResponseMessage response = probe.expectMsgClass(AkkaResponseMessage.class);

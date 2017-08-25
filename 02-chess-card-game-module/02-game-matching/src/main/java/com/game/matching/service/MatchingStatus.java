@@ -6,7 +6,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.game.matching.MessageProvider;
 import com.game.matching.OpCodeConstants;
-import com.nexus.maven.akka.AkkaBroadcast;
+import com.nexus.maven.core.message.BroadcastMessage;
 
 /**
  * Created by @panyao on 2017/8/14.
@@ -28,7 +28,7 @@ public class MatchingStatus extends AbstractActor {
     }
 
     private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
-        AkkaBroadcast broadcast = AkkaBroadcast.newBroadcast(notifyMatchStatus.userIds,
+        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(notifyMatchStatus.userIds,
                 MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", notifyMatchStatus.userIds.length));
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
