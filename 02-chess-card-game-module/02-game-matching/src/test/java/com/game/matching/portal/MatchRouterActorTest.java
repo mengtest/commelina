@@ -6,7 +6,7 @@ import akka.testkit.javadsl.TestKit;
 import com.game.matching.OpCodeConstants;
 import com.nexus.maven.akka.AkkaBroadcast;
 import com.nexus.maven.akka.AkkaRequest;
-import com.nexus.maven.akka.AkkaResponse;
+import com.nexus.maven.akka.AkkaResponseMessage;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,10 +21,10 @@ public class MatchRouterActorTest {
         ActorSystem system = ActorSystem.create("test");
         TestKit probe = new TestKit(system);
 
-        ActorRef actorRef = system.actorOf(MatchingRouter.props());
+        ActorRef actorRef = system.actorOf(MatchingRequestRouter.props());
         actorRef.tell(AkkaRequest.newRequest("joinMatch", 1), probe.getRef());
 
-        AkkaResponse response = probe.expectMsgClass(AkkaResponse.class);
+        AkkaResponseMessage response = probe.expectMsgClass(AkkaResponseMessage.class);
         assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response.getMessage().getOpCode());
 
         AkkaBroadcast broadcast = probe.expectMsgClass(AkkaBroadcast.class);
@@ -40,7 +40,7 @@ public class MatchRouterActorTest {
 
         actorRef.tell(AkkaRequest.newRequest("joinMatch", 2), probe.getRef());
 
-        AkkaResponse response1 = probe.expectMsgClass(AkkaResponse.class);
+        AkkaResponseMessage response1 = probe.expectMsgClass(AkkaResponseMessage.class);
 
         assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response1.getMessage().getOpCode());
 
@@ -56,7 +56,7 @@ public class MatchRouterActorTest {
 
         actorRef.tell(AkkaRequest.newRequest("joinMatch", 3), probe.getRef());
 
-        AkkaResponse response2 = probe.expectMsgClass(AkkaResponse.class);
+        AkkaResponseMessage response2 = probe.expectMsgClass(AkkaResponseMessage.class);
 
         assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response2.getMessage().getOpCode());
 

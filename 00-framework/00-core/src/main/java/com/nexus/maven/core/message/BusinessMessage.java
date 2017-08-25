@@ -9,17 +9,13 @@ import java.io.Serializable;
  * @coding.net https://coding.net/u/pandaxia
  * @github https://github.com/freedompy
  */
-public final class BusinessMessage implements Serializable {
+public class BusinessMessage implements Serializable {
 
     private int businessCode;
     private DataEntity data;
 
     public static final String DEFAULT_DATA = null;
     public static final int DEFAULT_SUCCESS = 0;
-
-    public BusinessMessage() {
-
-    }
 
     private BusinessMessage(int businessCode, DataEntity data) {
         this.businessCode = businessCode;

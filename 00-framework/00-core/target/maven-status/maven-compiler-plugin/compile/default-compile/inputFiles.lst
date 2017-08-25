@@ -1,9 +1,13 @@
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\BusinessMessage.java
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\ApiRequest.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\ResponseMessage.java
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\JsonMessage.java
-E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\BroadcastResponse.java
-E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\NotifyResponse.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\WorldMessage.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\RequestArg.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\ApiPrepareResponse.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\ApiPrepareRequest.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\BroadcastMessage.java
+E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\NotifyMessage.java
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\AppVersion.java
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\DefaultJsonMessageProvider.java
-E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\ApiResponse.java
 E:\mount_file_root\cloud\condingnet\point24\00-framework\00-core\src\main\java\com\nexus\maven\core\message\MessageBus.java

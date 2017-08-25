@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AkkaRoom {
+
     private final ActorSystem roomSystem = ActorSystem.create("room");
 
 }

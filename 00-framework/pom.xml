@@ -10,8 +10,8 @@
     <modules>
         <module>00-core</module>
         <module>01-utils</module>
-        <module>02-netty</module>
-        <module>03-akka</module>
+        <module>02-akka</module>
+        <module>03-netty</module>
     </modules>
 
     <properties>
@@ -60,6 +60,12 @@
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.nexus.maven</groupId>
+                <artifactId>akka</artifactId>
                 <version>1.0.0</version>
             </dependency>
 

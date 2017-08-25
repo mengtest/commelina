@@ -6,12 +6,12 @@ import com.nexus.maven.utils.Generator;
 /**
  * Created by @panyao on 2017/8/10.
  */
-public final class JsonMessage implements MessageBus {
+final class JsonMessage implements MessageBus {
 
     private final int opCode;
     private final BusinessMessage message;
 
-    public JsonMessage(int opCode, BusinessMessage message) {
+    JsonMessage(int opCode, BusinessMessage message) {
         this.opCode = opCode;
         this.message = message;
     }

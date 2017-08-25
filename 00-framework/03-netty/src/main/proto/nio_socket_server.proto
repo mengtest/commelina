@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package socket.netty;
+
+option java_package = "io.socket.netty.proto";
+option java_outer_classname = "SocketNettyProtocol";
+
+// 基本数据类型
+enum DATA_TYPE {
+    INT = 0;
+    STRING = 1;
+    BOOL = 2;
+    LONG = 3;
+    DOUBLUE = 4;
+    FLOAT = 5;
+}
+
+enum BusinessProtocol {
+    JSON = 0;
+}
+
+// socket 请求体
+message SocketASK {
+    string apiPath = 1; // 接口地址
+    string version = 2; // 接口版本
+    repeated Arg args = 3; // 参数列表
+}
+
+// socket 消息
+message SocketMessage {
+    SYSTEM_CODE_CONSTANTS code = 1; // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
+    uint32 domain = 2; // 消息所在的作用域， 0 网络层作用域 > 0 业务作用域
+    BusinessMessage msg = 3; // 业务消息
+}
+
+// 业务消息体
+message BusinessMessage {
+    uint32 opCode = 1; // 操作码
+    string version = 2; // 版本
+    BusinessProtocol bp = 3; // 业务协议
+    bytes msg = 4; // 字节
+}
+
+// 参数格式
+message Arg {
+    string name = 1;
+    DATA_TYPE dataType = 2;
+    bytes value = 3;
+}
+
+// 系统错误码
+enum SYSTEM_CODE_CONSTANTS {
+    RESONSE_CODE = 0; // 成功响应
+    NOTIFY_CODE = 1; // 通知
+    PROTOCOL_FORMAT_ERROR = 2; // 协议解析错误
+    RPC_API_NOT_FOUND = 3; // 要调用的 api 不存在
+    SERVER_ERROR = 4; // 服务端内部错误
+}
