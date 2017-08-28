@@ -12,6 +12,7 @@ public class MatchingApp {
     public static void main(String[] args) {
         ActorSystem system = ActorSystem.create("MatchingWorkerSystem",
                 ConfigFactory.load(("matching")));
+
         system.actorOf(MatchingRouter.props(), "matchingRouter");
     }
 

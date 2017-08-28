@@ -18,9 +18,9 @@
     <modules>
         <!--<module>00-framework</module>-->
         <module>02-chess-card-game-module</module>
-        <module>21-ponint24-game-room</module>
-        <module>22-point24-api</module>
-        <module>23-point24-admin</module>
+        <module>21-game-room</module>
+        <module>22-apis</module>
+        <module>23-admin</module>
     </modules>
 
     <properties>
