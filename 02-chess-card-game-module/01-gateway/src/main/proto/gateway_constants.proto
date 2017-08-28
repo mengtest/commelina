@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.game.gateway;
+
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "ConstantsDef";
+
+enum DOMAIN_CONSTANTS {
+    GATE_WAY = 0;   // gateway_constants.proto
+    MATCHING = 1;   // matching_constants.proto
+    GAME_ROOM = 2;
+}
+
+enum ERROR_CODE_CONSTANTS {
+    TOKEN_PARSE_ERROR = 0;
+}
+
+enum OPCODE_CONSTANTS {
+    PASSPORT_CONNECT = 0;
+}

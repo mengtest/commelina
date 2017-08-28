@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package com.game.gateway;
+
+option java_package = "com.game.matching.proto";
+option java_outer_classname = "ConstantsDef";
+
+enum ERRORCODE_CONSTANTS {
+    EMPTY1 = 0;
+}
+
+enum OPCODE_CONSTANTS {
+    EMPTY2 = 0;
+}

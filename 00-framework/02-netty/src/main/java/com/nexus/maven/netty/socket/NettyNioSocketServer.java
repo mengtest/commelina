@@ -41,7 +41,7 @@ public class NettyNioSocketServer {
         return ((InetSocketAddress) localAddr).getPort();
     }
 
-    public void bind(String host, int port, final ActorAkkaContext router) throws IOException {
+    public void bind(String host, int port, final RouterContext router) throws IOException {
         ServerBootstrap boot = new ServerBootstrap();  //server启动管理配置
         boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -67,8 +67,8 @@ public class NettyNioSocketServer {
                         pipeline.addLast(new ProtobufDecoder(SocketNettyProtocol.SocketASK.getDefaultInstance()));
                         pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
                         pipeline.addLast(new ProtobufEncoder());
-                        ChannelInboundHandlerActorAkkaAdapter adapter = new ChannelInboundHandlerActorAkkaAdapter();
-                        adapter.setActorAkkaContext(router);
+                        ChannelInboundHandlerRouterContextAdapter adapter = new ChannelInboundHandlerRouterContextAdapter();
+                        adapter.setRouterContext(router);
                         pipeline.addLast(adapter);
                     }
                 });

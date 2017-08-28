@@ -1,9 +1,6 @@
 package com.nexus.maven.core.message;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-
-import java.util.List;
 
 /**
  * Created by @panyao on 2017/8/15.
@@ -12,21 +9,22 @@ import java.util.List;
  */
 public class BroadcastMessage {
 
-    private final List<Long> userIds;
+    private final long[] userIds;
     private final MessageBus message;
 
-    private BroadcastMessage(List<Long> userIds, MessageBus messageBus) {
+    private BroadcastMessage(long[] userIds, MessageBus messageBus) {
         Preconditions.checkNotNull(userIds);
         this.message = messageBus;
-        this.userIds = Lists.newArrayList(userIds);
+        this.userIds = userIds;
     }
 
-    public static BroadcastMessage newBroadcast(List<Long> userId, MessageBus messageBus) {
+    public static BroadcastMessage newBroadcast(long[] userIds, MessageBus messageBus) {
+        Preconditions.checkArgument(userIds != null && userIds.length > 0);
         Preconditions.checkNotNull(messageBus);
-        return new BroadcastMessage(userId, messageBus);
+        return new BroadcastMessage(userIds, messageBus);
     }
 
-    public List<Long> getUserIds() {
+    public long[] getUserIds() {
         return userIds;
     }
 

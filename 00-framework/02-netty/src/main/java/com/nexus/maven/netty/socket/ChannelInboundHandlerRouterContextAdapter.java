@@ -11,24 +11,25 @@ import java.util.logging.Logger;
 /**
  * Created by @panyao on 2017/8/24.
  */
-class ChannelInboundHandlerActorAkkaAdapter extends ChannelInboundHandlerAdapter {
+class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAdapter {
 
     private static final Logger LOGGER = Logger.getLogger(NettyNioSocketServer.class.getName());
     private final NettyServerContext nettyServerContext = NettyServerContext.getInstance();
 
-    private ActorAkkaContext actorAkkaContext;
+    private RouterContext routerContext;
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:" + ctx.channel().id() + ", login server:" + result);
+        routerContext.onlineEvent(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
-        actorAkkaContext.unRegister(ctx);
         LOGGER.info("client:" + ctx.channel().id() + ", logout userId:" + logoutUserId);
+        routerContext.offlineEvent(logoutUserId, ctx);
     }
 
     //当客户端发送数据到服务器会触发此函数
@@ -45,19 +46,18 @@ class ChannelInboundHandlerActorAkkaAdapter extends ChannelInboundHandlerAdapter
             SocketNettyProtocol.Arg arg = request.getArgsList().get(i);
             args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
         }
-
-        actorAkkaContext.apiRouter(ctx, new ApiRequest(request.getApiPath(), request.getVersion(), args));
+        routerContext.doRequestHandler(ctx, new ApiRequest(request.getApiPath(), request.getVersion(), args));
     }
 
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        routerContext.exceptionEvent(ctx, cause);
         ctx.close();
     }
 
-    public void setActorAkkaContext(ActorAkkaContext actorAkkaContext) {
-        this.actorAkkaContext = actorAkkaContext;
+    void setRouterContext(RouterContext routerContext) {
+        this.routerContext = routerContext;
     }
 
 }

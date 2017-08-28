@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ActorResponseContext {
+public class ActorOutputContext {
 
-    private final Logger LOGGER = Logger.getLogger(ActorResponseContext.class.getName());
+    private final Logger LOGGER = Logger.getLogger(ActorOutputContext.class.getName());
 
     ChannelHandlerContext channelHandlerContext;
 

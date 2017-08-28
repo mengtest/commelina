@@ -22,10 +22,6 @@
             <artifactId>netty-all</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
             <scope>compile</scope>

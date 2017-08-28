@@ -24,9 +24,9 @@ public class MessageAdapter {
 
     public static void addBroadcast(int domain, BroadcastMessage broadcastMessage) throws IOException {
         final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, broadcastMessage.getMessage());
-        Iterator<Long> iterator = broadcastMessage.getUserIds().iterator();
-        while (iterator.hasNext()) {
-            Channel channel = NettyServerContext.getInstance().getUserChannel(iterator.next());
+
+        for (long userId : broadcastMessage.getUserIds()) {
+            Channel channel = NettyServerContext.getInstance().getUserChannel(userId);
             channel.writeAndFlush(msg);
         }
     }

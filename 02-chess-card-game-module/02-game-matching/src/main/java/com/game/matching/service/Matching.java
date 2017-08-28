@@ -8,6 +8,7 @@ import akka.event.LoggingAdapter;
 import com.game.matching.MessageProvider;
 import com.game.matching.OpCodeConstants;
 import com.google.common.collect.Lists;
+import com.nexus.maven.core.message.ResponseMessage;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(MessageProvider.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE), getSelf());
+        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(OpCodeConstants.JOIN_SUCCESS_RESPONSE)), getSelf());
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];

@@ -1,11 +1,7 @@
 package com.nexus.maven.netty.starter;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.nexus.maven.netty.socket.ActorWithApiController;
-import com.nexus.maven.netty.socket.ActorWithApiRemote;
-import com.nexus.maven.netty.socket.ActorAkkaContext;
-import com.nexus.maven.netty.socket.NettyNioSocketServer;
+import com.google.common.collect.Maps;
+import com.nexus.maven.netty.socket.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +10,6 @@ import org.springframework.context.ApplicationContextAware;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,15 +33,24 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
         server = new NettyNioSocketServer();
 
         Map<String, Object> apis = context.getBeansWithAnnotation(ActorWithApiController.class);
-        List<ActorWithApiRemote> actorWithApiRemoteList = Lists.newArrayList();
+        Map<String, ActorWithApiHandler> actorWithApiHandlers = Maps.newHashMap();
+        Map<String, ActorWithApiRemoteHandler> actorWithApiRemoteHandlers = Maps.newHashMap();
 
         for (Object o : apis.values()) {
-            Preconditions.checkArgument(o instanceof ActorWithApiRemote, "ActorWithApiController class must be implements ActorWithApiRemote");
-            actorWithApiRemoteList.add((ActorWithApiRemote) o);
+            ActorWithApiController controller = o.getClass().getAnnotation(ActorWithApiController.class);
+            String apiName = controller.apiName();
+            if (o instanceof ActorWithApiHandler) {
+                actorWithApiHandlers.put(apiName, (ActorWithApiHandler) o);
+            } else if (o instanceof ActorWithApiRemoteHandler) {
+                actorWithApiRemoteHandlers.put(apiName, (ActorWithApiRemoteHandler) o);
+            } else {
+                throw new RuntimeException("undefined type " + o);
+            }
         }
 
         ActorAkkaContext router = new ActorAkkaContext();
-        router.initLocalRouters(actorWithApiRemoteList);
+        router.initRouters(actorWithApiHandlers);
+        router.initRemoteRouters(actorWithApiRemoteHandlers);
 
         server.bind(host, port, router);
     }

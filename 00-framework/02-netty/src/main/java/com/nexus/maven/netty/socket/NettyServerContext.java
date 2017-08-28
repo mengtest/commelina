@@ -38,7 +38,7 @@ class NettyServerContext {
     }
 
     // 把用户加入到登录会话中去
-    public Long userJoin(ChannelId channelId, long userId) {
+    Long userJoin(ChannelId channelId, long userId) {
         Channel channel = CHANNEL_GROUP.find(channelId);
         if (channel == null) {
             throw new UserChannelUnActiveException();
@@ -46,13 +46,44 @@ class NettyServerContext {
         return LOGIN_USERS.forcePut(channelId, userId);
     }
 
+
     // 用户注销了
-    public ChannelId userRemove(long userId) {
-        return LOGIN_USERS.inverse().remove(userId);
+    ChannelId userRemove(long userId) {
+        ChannelId channelId = LOGIN_USERS.inverse().remove(userId);
+//        CHANNEL_GROUP.remove(channelId);
+        return channelId;
+    }
+
+    long userRemove(ChannelId channelId) {
+        long userId = LOGIN_USERS.remove(channelId);
+//        CHANNEL_GROUP.remove(channelId);
+        return userId;
+    }
+
+    long getLoginUserId(ChannelId channelId) {
+        if (CHANNEL_GROUP.find(channelId) == null) {
+            return 0l;
+        }
+        Long userId = LOGIN_USERS.get(channelId);
+        if (userId == null || userId <= 0) {
+            return 0l;
+        }
+        return userId;
+    }
+
+    ChannelId getLoginChannelId(long userId) {
+        ChannelId channelId = LOGIN_USERS.inverse().get(userId);
+        if (channelId == null) {
+            return null;
+        }
+        if (CHANNEL_GROUP.find(channelId) != null) {
+            return channelId;
+        }
+        return null;
     }
 
     // 用户是否在线
-    public boolean isOnline(long userId) {
+    boolean isOnline(long userId) {
         ChannelId channelId = LOGIN_USERS.inverse().get(userId);
         if (channelId == null) {
             return false;
