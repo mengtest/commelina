@@ -1,5 +1,6 @@
 package com.nexus.maven.netty.socket;
 
+import com.nexus.maven.proto.SocketASK;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -10,7 +11,6 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.socket.netty.proto.SocketNettyProtocol;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -64,7 +64,7 @@ public class NettyNioSocketServer {
 
                         // protocol 协议
                         pipeline.addLast(new ProtobufVarint32FrameDecoder());
-                        pipeline.addLast(new ProtobufDecoder(SocketNettyProtocol.SocketASK.getDefaultInstance()));
+                        pipeline.addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
                         pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
                         pipeline.addLast(new ProtobufEncoder());
                         ChannelInboundHandlerRouterContextAdapter adapter = new ChannelInboundHandlerRouterContextAdapter();

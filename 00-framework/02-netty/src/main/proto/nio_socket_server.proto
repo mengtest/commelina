@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-package socket.netty;
+package netty.nio.socket.protocol;
 
-option java_package = "io.socket.netty.proto";
+option java_package = "com.nexus.maven.proto";
 option java_outer_classname = "SocketNettyProtocol";
+option java_multiple_files = true;
 
 // 基本数据类型
 enum DATA_TYPE {

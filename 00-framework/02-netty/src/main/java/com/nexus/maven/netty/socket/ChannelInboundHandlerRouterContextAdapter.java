@@ -2,9 +2,11 @@ package com.nexus.maven.netty.socket;
 
 import com.nexus.maven.core.message.ApiRequest;
 import com.nexus.maven.core.message.RequestArg;
+import com.nexus.maven.proto.Arg;
+import com.nexus.maven.proto.SYSTEM_CODE_CONSTANTS;
+import com.nexus.maven.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.socket.netty.proto.SocketNettyProtocol;
 
 import java.util.logging.Logger;
 
@@ -35,15 +37,15 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 协议格式错误
-        if (!(msg instanceof SocketNettyProtocol.SocketASK)) {
+        if (!(msg instanceof SocketASK)) {
             ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
-                    .createErrorMessage(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE));
+                    .createErrorMessage(SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE));
             return;
         }
-        SocketNettyProtocol.SocketASK request = (SocketNettyProtocol.SocketASK) msg;
+        SocketASK request = (SocketASK) msg;
         RequestArg[] args = new RequestArg[request.getArgsList().size()];
         for (int i = 0; i < request.getArgsList().size(); i++) {
-            SocketNettyProtocol.Arg arg = request.getArgsList().get(i);
+            Arg arg = request.getArgsList().get(i);
             args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
         }
         routerContext.doRequestHandler(ctx, new ApiRequest(request.getApiPath(), request.getVersion(), args));

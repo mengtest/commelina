@@ -3,9 +3,9 @@ package com.nexus.maven.netty.socket;
 import akka.actor.*;
 import com.google.common.collect.Maps;
 import com.nexus.maven.core.message.*;
+import com.nexus.maven.proto.SYSTEM_CODE_CONSTANTS;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
-import io.socket.netty.proto.SocketNettyProtocol;
 import scala.concurrent.duration.Duration;
 
 import java.util.Map;
@@ -62,7 +62,7 @@ public class ActorAkkaContext implements RouterContext {
             }
         }
         Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
-                .createErrorMessage(SocketNettyProtocol.SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
+                .createErrorMessage(SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
         ctx.writeAndFlush(msg);
     }
 
@@ -113,26 +113,20 @@ public class ActorAkkaContext implements RouterContext {
         final int domain;
         final String remotePath;
         final ActorOutputContext context;
-        final ActorWithApiRemoteHandler.RemoteRouterEvent remoteRouterEvent;
+        final ActorWithApiRemoteHandler.RequestEvent requestEvent;
         ActorRef remoteRouterActor = null;
         private Receive active;
 
-        public RemoteProxyActor(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RemoteRouterEvent remoteRouterEvent) {
+        public RemoteProxyActor(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RequestEvent requestEvent) {
             this.domain = domain;
             this.remotePath = remotePath;
             this.context = context;
-            this.remoteRouterEvent = remoteRouterEvent;
+            this.requestEvent = requestEvent;
 
             // FIXME: 2017/8/28 待测试
             this.active = receiveBuilder()
-                    .match(ApiRequest.class, apiRequest -> {
-                        AkkaActorApiRequest request = RemoteProxyActor.this.remoteRouterEvent.onRequest(apiRequest, RemoteProxyActor.this.context, this);
-                        if (request != null) {
-                            remoteRouterActor.forward(request, getContext());
-                        } else {
-                            //  nothing to do
-                        }
-                    })
+                    .match(ApiRequest.class, apiRequest -> RemoteProxyActor.this.requestEvent.onRequest(apiRequest, RemoteProxyActor.this.context, getSelf()))
+                    .match(AkkaActorApiRequest.class, request -> remoteRouterActor.forward(request, getContext()))
                     .match(ResponseMessage.class, responseMessage -> RemoteProxyActor.this.context.writeAndFlush(RemoteProxyActor.this.domain, responseMessage.getMessage()))
                     .match(NotifyMessage.class, n -> MessageAdapter.addNotify(RemoteProxyActor.this.domain, n))
                     .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(RemoteProxyActor.this.domain, b))
@@ -165,7 +159,7 @@ public class ActorAkkaContext implements RouterContext {
         public Receive createReceive() {
             return receiveBuilder()
                     .match(ActorIdentity.class, identity -> {
-                        remoteRouterActor = identity.getRef();
+                        remoteRouterActor = identity.getActorRef().get();
                         if (remoteRouterActor == null) {
                             System.out.println("Remote matching actor not available: " + remotePath);
                         } else {
@@ -177,7 +171,7 @@ public class ActorAkkaContext implements RouterContext {
                     .build();
         }
 
-        static Props props(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RemoteRouterEvent remoteRouterEvent) {
+        static Props props(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RequestEvent remoteRouterEvent) {
             return Props.create(RemoteProxyActor.class, domain, remotePath, context, remoteRouterEvent);
         }
 
@@ -197,7 +191,8 @@ public class ActorAkkaContext implements RouterContext {
         @Override
         public Receive createReceive() {
             return receiveBuilder()
-                    .match(ApiRequest.class, apiRequest -> context.writeAndFlush(domain, requestEvent.onRequest(apiRequest, context)))
+                    .match(ApiRequest.class, apiRequest -> requestEvent.onRequest(apiRequest, context, getSelf()))
+                    .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage.getMessage()))
                     .build();
         }
 

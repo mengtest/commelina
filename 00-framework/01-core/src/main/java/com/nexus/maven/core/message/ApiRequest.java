@@ -34,12 +34,12 @@ public final class ApiRequest implements AppVersion {
         if (args == null || args.length == 0) {
             return null;
         }
-        for (int i = 0; i < args.length; i++) {
-            if (i == argName) {
-                return args[i];
-            }
+
+        try {
+            return args[argName];
+        } catch (IndexOutOfBoundsException e) {
+            return null;
         }
-        return null;
     }
 
 }

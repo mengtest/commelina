@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package netty.nio.socket.protocol.apidesc;
+
+option java_package = "com.nexus.maven.proto";
+option java_outer_classname = "SocketNettyProtocolApiDesc";
+
+
+// 一级接口描述：
+// 会统一定义在 _apis.proto 文件下，
+// eg: gateway_apis.proto
+// 接口参数通过数组下标访问:
+// token string
+
+// 二级接口描述:
+// 会统一第一在 _redirect_apis.proto 文件下，
+// 格式如上，参数占位第一个默认为 重定向的 api 地址
+
+// fixme 明天增加协议描述文件
