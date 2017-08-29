@@ -18,7 +18,7 @@
     <modules>
         <module>../00-framework</module>
         <module>01-gateway</module>
-        <module>02-matching</module>
+        <!--<module>02-matching</module>-->
     </modules>
 
     <properties>
@@ -99,13 +99,11 @@
                 <artifactId>netty</artifactId>
                 <version>1.0.0</version>
             </dependency>
-
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>core</artifactId>
                 <version>1.0.0</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -141,6 +139,8 @@
                 <version>1.4.1.Final</version>
             </extension>
         </extensions>
+
+
         <plugins>
             <!--<plugin>-->
             <!--<groupId>org.springframework.boot</groupId>-->

@@ -28,7 +28,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.game.instruction.gateway.GatewaySpringBoot</mainClass>
+                    <mainClass>com.instruction.gateway.GatewaySpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

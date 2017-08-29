@@ -1,10 +1,9 @@
 syntax = "proto3";
 
-package com.game.gateway.apis;
+package def.apis;
 
-option java_package = "com.game.gateway.proto.apis";
+option java_package = "com.instruction.gateway.proto";
 option java_outer_classname = "ApisDef";
-
 option java_multiple_files = true;
 
 enum GATEWAY_APIS {
