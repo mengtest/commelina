@@ -20,18 +20,18 @@ public interface ActorWithApiHandler {
     }
 
     interface OnlineEvent {
-        void onOnline(ActorOutputContext context, AbstractActor actor);
+        void onOnline(ChannelOutputHandler context, AbstractActor actor);
     }
 
     interface OfflineEvent {
-        void onOffline(long userId, ActorOutputContext context, AbstractActor actor);
+        void onOffline(long userId, ChannelOutputHandler context, AbstractActor actor);
     }
 
 
     RequestEvent getRouterEvent();
 
     interface RequestEvent {
-        void onRequest(ApiRequest request, ActorOutputContext context, ActorRef sender);
+        void onRequest(ApiRequest request, ChannelOutputHandler context, ActorRef sender);
     }
 
 }

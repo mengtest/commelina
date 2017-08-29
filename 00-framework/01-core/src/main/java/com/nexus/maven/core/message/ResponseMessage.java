@@ -9,7 +9,7 @@ public class ResponseMessage {
 
     private final MessageBus message;
 
-    private ResponseMessage(MessageBus messageBus) {
+    protected ResponseMessage(MessageBus messageBus) {
         this.message = messageBus;
     }
 

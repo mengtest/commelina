@@ -11,7 +11,7 @@ import com.instruction.gateway.proto.OPCODE_CONSTANTS;
 import com.nexus.maven.core.message.ApiRequest;
 import com.nexus.maven.core.message.RequestArg;
 import com.nexus.maven.core.message.ResponseMessage;
-import com.nexus.maven.netty.socket.ActorOutputContext;
+import com.nexus.maven.netty.socket.ChannelOutputHandler;
 import com.nexus.maven.netty.socket.ActorWithApiController;
 import com.nexus.maven.netty.socket.ActorWithApiHandler;
 import com.nexus.maven.netty.socket.ContextAdapter;
@@ -31,7 +31,7 @@ public class GatewayConnectActor implements ActorWithApiHandler {
 
     @Override
     public RequestEvent getRouterEvent() {
-        return (ApiRequest request, ActorOutputContext context, ActorRef sender) -> {
+        return (ApiRequest request, ChannelOutputHandler context, ActorRef sender) -> {
             RequestArg tokenArg = request.getArg(0);
             if (tokenArg == null) {
                 // FIXME: 2017/8/25 null 处理

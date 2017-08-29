@@ -1,7 +1,5 @@
 package com.nexus.maven.core.message;
 
-import java.io.Serializable;
-
 /**
  * Created by @panyao on 2016/8/24.
  *
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @coding.net https://coding.net/u/pandaxia
  * @github https://github.com/freedompy
  */
-public class BusinessMessage implements Serializable {
+public class BusinessMessage {
 
     private int businessCode;
     private DataEntity data;

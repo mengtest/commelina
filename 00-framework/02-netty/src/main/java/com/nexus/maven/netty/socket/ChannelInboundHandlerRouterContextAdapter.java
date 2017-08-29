@@ -38,6 +38,7 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 协议格式错误
         if (!(msg instanceof SocketASK)) {
+            // TODO: 2017/8/29 output 这里可以再优化一下
             ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
                     .createErrorMessage(SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE));
             return;

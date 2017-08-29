@@ -9,19 +9,13 @@ import java.util.logging.Logger;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ActorOutputContext {
+public class ChannelOutputHandler {
 
-    private final Logger LOGGER = Logger.getLogger(ActorOutputContext.class.getName());
+    private final Logger LOGGER = Logger.getLogger(ChannelOutputHandler.class.getName());
 
     ChannelHandlerContext channelHandlerContext;
 
     public void writeAndFlush(int domain, MessageBus messageBus) {
-        byte[] bytes = messageBus.getBytes();
-        if (bytes == null) {
-            // FIXME: 2017/8/25 通知客户端错误
-            return;
-        }
-        // FIXME: 2017/8/25 处理结果
         ChannelFuture future = channelHandlerContext.writeAndFlush(
                 MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, messageBus));
 

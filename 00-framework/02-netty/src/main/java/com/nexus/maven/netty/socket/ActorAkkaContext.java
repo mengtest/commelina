@@ -69,7 +69,7 @@ public class ActorAkkaContext implements RouterContext {
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
         for (Map.Entry<String, ActorWithApiHandler> entry : ROUTERS.entrySet()) {
-            ActorOutputContext responseContext = new ActorOutputContext();
+            ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;
 
             ActorRef actorRef2 = system.actorOf(RequestRouterActor.props(
@@ -82,7 +82,7 @@ public class ActorAkkaContext implements RouterContext {
         }
 
         for (Map.Entry<String, ActorWithApiRemoteHandler> entry : REMOTE_ROUTERS.entrySet()) {
-            ActorOutputContext responseContext = new ActorOutputContext();
+            ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;
 
             ActorRef actorRef2 = system.actorOf(RemoteProxyActor.props(
@@ -116,12 +116,12 @@ public class ActorAkkaContext implements RouterContext {
 
         final int domain;
         final String remotePath;
-        final ActorOutputContext context;
+        final ChannelOutputHandler context;
         final ActorWithApiRemoteHandler.RequestEvent requestEvent;
         ActorRef remoteRouterActor = null;
         private Receive active;
 
-        public RemoteProxyActor(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RequestEvent requestEvent) {
+        public RemoteProxyActor(int domain, String remotePath, ChannelOutputHandler context, ActorWithApiRemoteHandler.RequestEvent requestEvent) {
             this.domain = domain;
             this.remotePath = remotePath;
             this.context = context;
@@ -175,7 +175,7 @@ public class ActorAkkaContext implements RouterContext {
                     .build();
         }
 
-        static Props props(int domain, String remotePath, ActorOutputContext context, ActorWithApiRemoteHandler.RequestEvent remoteRouterEvent) {
+        static Props props(int domain, String remotePath, ChannelOutputHandler context, ActorWithApiRemoteHandler.RequestEvent remoteRouterEvent) {
             return Props.create(RemoteProxyActor.class, domain, remotePath, context, remoteRouterEvent);
         }
 
@@ -184,9 +184,9 @@ public class ActorAkkaContext implements RouterContext {
     public static final class RequestRouterActor extends AbstractActor {
         final int domain;
         final ActorWithApiHandler.RequestEvent requestEvent;
-        final ActorOutputContext context;
+        final ChannelOutputHandler context;
 
-        public RequestRouterActor(int domain, ActorOutputContext context, ActorWithApiHandler.RequestEvent requestEvent) {
+        public RequestRouterActor(int domain, ChannelOutputHandler context, ActorWithApiHandler.RequestEvent requestEvent) {
             this.domain = domain;
             this.context = context;
             this.requestEvent = requestEvent;
@@ -200,7 +200,7 @@ public class ActorAkkaContext implements RouterContext {
                     .build();
         }
 
-        static Props props(int domain, ActorOutputContext context, ActorWithApiHandler.RequestEvent requestEvent) {
+        static Props props(int domain, ChannelOutputHandler context, ActorWithApiHandler.RequestEvent requestEvent) {
             return Props.create(RequestRouterActor.class, domain, context, requestEvent);
         }
 

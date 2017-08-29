@@ -9,7 +9,7 @@ public final class ApiRequestWithLogin extends ApiRequest implements AppVersion 
 
     private final long userId;
 
-    protected ApiRequestWithLogin(String apiName, String version, long userId, RequestArg[] args) {
+    private ApiRequestWithLogin(String apiName, String version, long userId, RequestArg[] args) {
         super(apiName, version, args);
         this.userId = userId;
     }

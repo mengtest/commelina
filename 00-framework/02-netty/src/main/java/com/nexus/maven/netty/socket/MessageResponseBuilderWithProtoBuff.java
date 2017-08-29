@@ -19,7 +19,7 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
 
     @Override
     public Object createResponseMessage(int domain, MessageBus responseMessage) {
-        return createMessageWithType(domain, responseMessage,SYSTEM_CODE_CONSTANTS.RESONSE_CODE);
+        return createMessageWithType(domain, responseMessage, SYSTEM_CODE_CONSTANTS.RESONSE_CODE);
     }
 
     @Override
@@ -33,7 +33,7 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
     private Object createMessageWithType(int domain, MessageBus messageBus, SYSTEM_CODE_CONSTANTS type) {
         byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
-            throw new RuntimeException("serialize failed.");
+            return null;
         }
         return SocketMessage.newBuilder()
                 .setCode(type)
