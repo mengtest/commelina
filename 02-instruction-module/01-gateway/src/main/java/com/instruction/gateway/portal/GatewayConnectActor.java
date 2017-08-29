@@ -1,7 +1,7 @@
 package com.instruction.gateway.portal;
 
 
-import akka.actor.ActorRef;
+import akka.actor.Props;
 import com.google.common.base.Splitter;
 import com.google.common.io.BaseEncoding;
 import com.instruction.gateway.MessageProvider;
@@ -11,10 +11,7 @@ import com.instruction.gateway.proto.OPCODE_CONSTANTS;
 import com.nexus.maven.core.message.ApiRequest;
 import com.nexus.maven.core.message.RequestArg;
 import com.nexus.maven.core.message.ResponseMessage;
-import com.nexus.maven.netty.socket.ChannelOutputHandler;
-import com.nexus.maven.netty.socket.ActorWithApiController;
-import com.nexus.maven.netty.socket.ActorWithApiHandler;
-import com.nexus.maven.netty.socket.ContextAdapter;
+import com.nexus.maven.netty.socket.*;
 
 import java.util.List;
 
@@ -25,13 +22,18 @@ import java.util.List;
 public class GatewayConnectActor implements ActorWithApiHandler {
 
     @Override
-    public int getDomain() {
-        return DOMAIN_CONSTANTS.GATE_WAY_VALUE;
+    public Props getProps(ChannelOutputHandler outputHandler) {
+        return GatewayActor.props(DOMAIN_CONSTANTS.GATE_WAY_VALUE, outputHandler);
     }
 
-    @Override
-    public RequestEvent getRouterEvent() {
-        return (ApiRequest request, ChannelOutputHandler context, ActorRef sender) -> {
+    private static class GatewayActor extends ActorWithRequestRouter {
+
+        public GatewayActor(int domain, ChannelOutputHandler context) {
+            super(domain, context);
+        }
+
+        @Override
+        protected void onRequest(ApiRequest request) {
             RequestArg tokenArg = request.getArg(0);
             if (tokenArg == null) {
                 // FIXME: 2017/8/25 null 处理
@@ -42,7 +44,8 @@ public class GatewayConnectActor implements ActorWithApiHandler {
             ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 
             // 回复自己完成了操作
-            sender.tell(ResponseMessage.newMessage(MessageProvider.newMessage(OPCODE_CONSTANTS.PASSPORT_CONNECT_VALUE)), sender);
-        };
+            getSelf().tell(ResponseMessage.newMessage(MessageProvider.newMessage(OPCODE_CONSTANTS.PASSPORT_CONNECT_VALUE)), getSender());
+        }
     }
+
 }

@@ -11,7 +11,9 @@ enum ERRORCODE_CONSTANTS {
 
 enum OPCODE_CONSTANTS {
     // 成功加入匹配
-    JOIN_SUCCESS_RESPONSE = 0;
+    JOIN_MATCH_RESPONSE = 0;
     // 通知匹配成功
     NOTIFY_MATCH_SUCCESS = 1;
+
+    REMOTE_MATCH_RESPONSE = 2;
 }

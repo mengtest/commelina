@@ -34,23 +34,19 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
 
         Map<String, Object> apis = context.getBeansWithAnnotation(ActorWithApiController.class);
         Map<String, ActorWithApiHandler> actorWithApiHandlers = Maps.newHashMap();
-        Map<String, ActorWithApiRemoteHandler> actorWithApiRemoteHandlers = Maps.newHashMap();
 
         for (Object o : apis.values()) {
             ActorWithApiController controller = o.getClass().getAnnotation(ActorWithApiController.class);
             String apiName = controller.apiName();
             if (o instanceof ActorWithApiHandler) {
                 actorWithApiHandlers.put(apiName, (ActorWithApiHandler) o);
-            } else if (o instanceof ActorWithApiRemoteHandler) {
-                actorWithApiRemoteHandlers.put(apiName, (ActorWithApiRemoteHandler) o);
-            } else {
+            } else{
                 throw new RuntimeException("undefined type " + o);
             }
         }
 
         ActorAkkaContext router = new ActorAkkaContext();
         router.initRouters(actorWithApiHandlers);
-        router.initRemoteRouters(actorWithApiRemoteHandlers);
 
         server.bind(host, port, router);
     }

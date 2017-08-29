@@ -24,7 +24,9 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:" + ctx.channel().id() + ", login server:" + result);
-        routerContext.onlineEvent(ctx);
+        if (result) {
+            routerContext.onlineEvent(ctx);
+        }
     }
 
     //当客户端断开连接的时候触发函数

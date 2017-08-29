@@ -16,9 +16,18 @@ public abstract class RouterActor extends AbstractActor {
                 .match(NotifyMessage.class, n -> getSender().tell(n, getSelf()))
                 .match(BroadcastMessage.class, b -> getSender().tell(b, getSelf()))
                 .match(WorldMessage.class, w -> getSender().tell(w, getSelf()))
+                .match(MemberOnlineEvent.class, this::onOnline)
+                .match(MemberOfflineEvent.class, this::onOffline)
                 .build();
     }
 
+    // 请求
     protected abstract void onRequest(ApiRequestWithLogin request);
+
+    // 上线
+    protected abstract void onOnline(MemberOnlineEvent onlineEventWithLogin);
+
+    // 下线
+    protected abstract void onOffline(MemberOfflineEvent offlineEvent);
 
 }

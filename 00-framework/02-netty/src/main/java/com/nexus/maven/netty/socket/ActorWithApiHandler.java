@@ -1,37 +1,12 @@
 package com.nexus.maven.netty.socket;
 
-import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
-import com.nexus.maven.core.message.ApiRequest;
+import akka.actor.Props;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
 public interface ActorWithApiHandler {
 
-    int getDomain();
-
-    default ActorWithApiHandler.OnlineEvent getOnlineEnvent() {
-        return null;
-    }
-
-    default ActorWithApiHandler.OfflineEvent getOfflineEnvent() {
-        return null;
-    }
-
-    interface OnlineEvent {
-        void onOnline(ChannelOutputHandler context, AbstractActor actor);
-    }
-
-    interface OfflineEvent {
-        void onOffline(long userId, ChannelOutputHandler context, AbstractActor actor);
-    }
-
-
-    RequestEvent getRouterEvent();
-
-    interface RequestEvent {
-        void onRequest(ApiRequest request, ChannelOutputHandler context, ActorRef sender);
-    }
+    Props getProps(ChannelOutputHandler outputHandler);
 
 }

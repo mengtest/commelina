@@ -46,17 +46,21 @@ class NettyServerContext {
         return LOGIN_USERS.forcePut(channelId, userId);
     }
 
-
     // 用户注销了
     ChannelId userRemove(long userId) {
         ChannelId channelId = LOGIN_USERS.inverse().remove(userId);
+        if (channelId != null) {
+            // FIXME: 2017/8/29 bian yi jian cha
+            CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
+        }
 //        CHANNEL_GROUP.remove(channelId);
         return channelId;
     }
 
     long userRemove(ChannelId channelId) {
         long userId = LOGIN_USERS.remove(channelId);
-//        CHANNEL_GROUP.remove(channelId);
+        // FIXME: 2017/8/29 bian yi jian cha
+        CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
         return userId;
     }
 

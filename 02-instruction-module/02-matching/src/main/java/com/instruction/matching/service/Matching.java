@@ -26,6 +26,7 @@ public class Matching extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JOIN_MATCH.class, this::joinMatch)
+                .match(REMOVE_MATCH.class, this::removeMatch)
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, this::createMatchFailed)
                 .matchAny(o -> log.info("Matching received unknown message" + o))
                 .build();
@@ -38,7 +39,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(ConstantsDef.OPCODE_CONSTANTS.JOIN_SUCCESS_RESPONSE_VALUE)), getSelf());
+        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(ConstantsDef.OPCODE_CONSTANTS.JOIN_MATCH_RESPONSE_VALUE)), getSelf());
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
@@ -57,6 +58,17 @@ public class Matching extends AbstractActor {
         }
     }
 
+    private void removeMatch(REMOVE_MATCH remove_match) {
+        long userId = remove_match.userId;
+
+        boolean rs = matchList.remove(userId);
+
+        log.info("remove queue userId " + userId + ", result " + rs);
+
+        // 回复 MatchingRouter 的 调用者成功
+        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(ConstantsDef.OPCODE_CONSTANTS.REMOTE_MATCH_RESPONSE_VALUE)), getSelf());
+    }
+
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
         for (long userId : failed.getUserIds()) {
             matchList.add(userId);
@@ -68,6 +80,15 @@ public class Matching extends AbstractActor {
         long userId;
 
         public JOIN_MATCH(long userId) {
+            this.userId = userId;
+        }
+
+    }
+
+    public static final class REMOVE_MATCH {
+        long userId;
+
+        public REMOVE_MATCH(long userId) {
             this.userId = userId;
         }
 

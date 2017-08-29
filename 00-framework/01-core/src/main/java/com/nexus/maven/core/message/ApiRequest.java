@@ -1,6 +1,5 @@
 package com.nexus.maven.core.message;
 
-import com.google.common.base.Strings;
 import com.nexus.maven.core.AppVersion;
 
 /**
@@ -18,12 +17,12 @@ public class ApiRequest implements AppVersion {
         this.args = args;
     }
 
-    public static  ApiRequest newApiRequest(String apiName, String version, RequestArg[] args) {
+    public static ApiRequest newApiRequest(String apiName, String version, RequestArg[] args) {
         return new ApiRequest(apiName, version, args);
     }
 
     public String getVersion() {
-        return Strings.isNullOrEmpty(this.version) ? AppVersion.FIRST_VERSION : this.version;
+        return this.version;
     }
 
     public String getApiName() {

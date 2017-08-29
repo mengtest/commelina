@@ -25,7 +25,7 @@ public class RequestArg {
 
     public String getAsString() {
         Preconditions.checkArgument(type == DATA_TYPE.STRING);
-        return String.valueOf(this.arg);
+        return this.arg != null ? this.arg.toString() : null;
     }
 
     public boolean getAsBool() {

@@ -1,53 +1,25 @@
 package com.instruction.gateway.portal;
 
-import com.instruction.gateway.proto.DOMAIN_CONSTANTS;
+import akka.actor.Props;
 import com.instruction.gateway.proto.GATEWAY_APIS;
-import com.nexus.maven.core.message.ApiRequestWithLogin;
-import com.nexus.maven.core.message.RequestArg;
 import com.nexus.maven.netty.socket.ActorWithApiController;
-import com.nexus.maven.netty.socket.ActorWithApiRemoteHandler;
-import com.nexus.maven.netty.socket.ContextAdapter;
+import com.nexus.maven.netty.socket.ActorWithApiHandler;
+import com.nexus.maven.netty.socket.ChannelOutputHandler;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
 @ActorWithApiController(apiName = "" + GATEWAY_APIS.GAME_ROOM_REDIRECT_v1_0_0_VALUE)
-public class GameRoomActor implements ActorWithApiRemoteHandler {
+public class GameRoomActor implements ActorWithApiHandler {
 
     @Value("akka.remote.actor.roomPath:xxxxxxxxxxxxxxxxxxxxxxxxx")
     private String remotePath;
 
     @Override
-    public int getDomain() {
-        return DOMAIN_CONSTANTS.GAME_ROOM_VALUE;
+    public Props getProps(ChannelOutputHandler outputHandler) {
+        return null;
     }
-
-    @Override
-    public String getRemoteActorPath() {
-        return remotePath;
-    }
-
-    @Override
-    public RequestEvent getRouterEvent() {
-        return ((request, context, sender) -> {
-            RequestArg redirectPathArg = request.getArg(0);
-            if (redirectPathArg == null) {
-                // FIXME: 2017/8/25 远程路由地址
-            }
-
-            RequestArg roomId = request.getArg(1);
-            if (roomId == null) {
-                // FIXME: 2017/8/25 必须是持有房间id
-            }
-
-            long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
-            if (userId <= 0) {
-                // FIXME: 2017/8/25 必须登陆
-            }
-
-            sender.tell(ApiRequestWithLogin.newInstance(redirectPathArg.getAsString(), request.getVersion(), userId, request.subArg(1)), sender);
-        });
-    }
+    // DOMAIN_CONSTANTS.GAME_ROOM_VALUE
 
 }
