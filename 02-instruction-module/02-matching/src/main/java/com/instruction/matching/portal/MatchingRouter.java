@@ -36,7 +36,8 @@ public class MatchingRouter extends RouterActor {
 
     @Override
     protected void onOffline(MemberOfflineEvent offlineEvent) {
-
+        //
+        matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), this.getSelf());
     }
 
     public static Props props() {

@@ -29,7 +29,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.game.instruction.gateway.GatewaySpringBoot</mainClass>
+                    <mainClass>com.instruction.matching.MatchingSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
