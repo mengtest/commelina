@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.apis;
 
-option java_package = "com.instruction.matching.apis";
+option java_package = "com.twofourpoints.room.apis";
 option java_outer_classname = "ApiDef";
 
 enum MATCHING_APIS {
