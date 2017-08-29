@@ -2,7 +2,7 @@ package com.instruction.gateway.portal;
 
 import com.instruction.gateway.proto.DOMAIN_CONSTANTS;
 import com.instruction.gateway.proto.GATEWAY_APIS;
-import com.nexus.maven.core.message.AkkaActorApiRequest;
+import com.nexus.maven.core.message.ApiRequestWithLogin;
 import com.nexus.maven.core.message.RequestArg;
 import com.nexus.maven.netty.socket.ActorWithApiController;
 import com.nexus.maven.netty.socket.ActorWithApiRemoteHandler;
@@ -46,14 +46,7 @@ public class GameRoomActor implements ActorWithApiRemoteHandler {
                 // FIXME: 2017/8/25 必须登陆
             }
 
-            String remoteApiPath = redirectPathArg.getAsString();
-
-            RequestArg[] args = new RequestArg[request.getArgs().length - 1];
-            for (int i = 1; i < request.getArgs().length; i++) {
-                args[i - 1] = request.getArgs()[i];
-            }
-
-            sender.tell(new AkkaActorApiRequest(remoteApiPath, request.getVersion(), userId, args), sender);
+            sender.tell(ApiRequestWithLogin.newInstance(redirectPathArg.getAsString(), request.getVersion(), userId, request.subArg(1)), sender);
         });
     }
 

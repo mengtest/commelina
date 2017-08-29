@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.instruction.matching.MessageProvider;
-import com.instruction.matching.OpCodeConstants;
+import com.instruction.matching.constants.ConstantsDef;
 import com.nexus.maven.core.message.BroadcastMessage;
 
 /**
@@ -17,22 +17,20 @@ public class MatchingStatus extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-//    private final ActorSelection matchingGroup = getContext().system().actorSelection(getContext().parent().path().parent());
-
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(NOTIFY_MATCH_STATUS.class, this::notifyMatchStatus)
-                .matchAny(o -> log.info("MatchingStatus received unknown message "))
+                .matchAny(o -> log.info("MatchingStatus received unknown message."))
                 .build();
     }
 
     private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
-        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(notifyMatchStatus.userIds,
-                MessageProvider.newMessageForKV(OpCodeConstants.NOTIFY_MATCH_SUCCESS, "matchUserCount", notifyMatchStatus.userIds.length));
+        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(notifyMatchStatus.userIds, MessageProvider.newMessageForKV(ConstantsDef.OPCODE_CONSTANTS.NOTIFY_MATCH_SUCCESS_VALUE, "matchUserCount", notifyMatchStatus.userIds.length));
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
         getSender().tell(broadcast, getSelf());
+        getContext().stop(getSelf());
     }
 
     static final class NOTIFY_MATCH_STATUS {

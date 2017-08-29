@@ -18,7 +18,7 @@
     <modules>
         <module>../00-framework</module>
         <module>01-gateway</module>
-        <!--<module>02-matching</module>-->
+        <module>02-matching</module>
     </modules>
 
     <properties>

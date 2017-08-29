@@ -32,7 +32,7 @@ public class MatchingRedirect extends AbstractActor {
         // FIXME: 2017/8/17 失败了就把元素投递回去 Matching 队列
         getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
         // 失败的重新投递回去，就关闭此次的 actor
-        // getContext().stop(getSelf());
+        getContext().stop(getSelf());
     }
 
     static final class CREATE_ROOM {

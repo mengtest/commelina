@@ -77,7 +77,8 @@ public class ActorAkkaContext implements RouterContext {
             Map<String, ActorRef> actorRefMap1 = Maps.newLinkedHashMap();
             actorRefMap1.put(entry.getKey(), actorRef2);
             CHANNEL_ACTORS.put(ctx.channel().id(), actorRefMap1);
-            actorRef2.tell("online", null);
+            // FIXME: 2017/8/29 上线下线事件
+//            actorRef2.tell("online", null);
         }
 
         for (Map.Entry<String, ActorWithApiRemoteHandler> entry : REMOTE_ROUTERS.entrySet()) {
@@ -89,7 +90,8 @@ public class ActorAkkaContext implements RouterContext {
             Map<String, ActorRef> actorRefMap1 = Maps.newLinkedHashMap();
             actorRefMap1.put(entry.getKey(), actorRef2);
             CHANNEL_ACTORS.put(ctx.channel().id(), actorRefMap1);
-            actorRef2.tell("online", null);
+            // FIXME: 2017/8/29 上线下线事件
+//            actorRef2.tell("online", null);
         }
     }
 
@@ -98,14 +100,16 @@ public class ActorAkkaContext implements RouterContext {
         Map<String, ActorRef> actorRefMap = CHANNEL_ACTORS.remove(ctx.channel().id());
         if (actorRefMap != null) {
             for (ActorRef actorRef : actorRefMap.values()) {
-                actorRef.tell("offline", null);
+                // FIXME: 2017/8/29 上线下线事件
+//                actorRef.tell("offline", null);
             }
         }
     }
 
     @Override
     public void exceptionEvent(ChannelHandlerContext ctx, Throwable cause) {
-
+        // FIXME: 2017/8/29 还没有处理的
+        throw new RuntimeException(cause);
     }
 
     public static final class RemoteProxyActor extends AbstractActor {
@@ -125,13 +129,13 @@ public class ActorAkkaContext implements RouterContext {
 
             // FIXME: 2017/8/28 待测试
             this.active = receiveBuilder()
-                    .match(ApiRequest.class, apiRequest -> RemoteProxyActor.this.requestEvent.onRequest(apiRequest, RemoteProxyActor.this.context, getSelf()))
-                    .match(AkkaActorApiRequest.class, request -> remoteRouterActor.forward(request, getContext()))
-                    .match(ResponseMessage.class, responseMessage -> RemoteProxyActor.this.context.writeAndFlush(RemoteProxyActor.this.domain, responseMessage.getMessage()))
+                    .match(ApiRequest.class, r -> RemoteProxyActor.this.requestEvent.onRequest(r, RemoteProxyActor.this.context, getSelf()))
+                    .match(ApiRequestWithLogin.class, r -> remoteRouterActor.forward(r, getContext()))
+                    .match(ResponseMessage.class, r -> RemoteProxyActor.this.context.writeAndFlush(RemoteProxyActor.this.domain, r.getMessage()))
                     .match(NotifyMessage.class, n -> MessageAdapter.addNotify(RemoteProxyActor.this.domain, n))
                     .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(RemoteProxyActor.this.domain, b))
                     .match(WorldMessage.class, w -> MessageAdapter.addWorld(RemoteProxyActor.this.domain, w))
-                    .match(Terminated.class, terminated -> {
+                    .match(Terminated.class, t -> {
                         System.out.println("Matching terminated");
                         sendIdentifyRequest();
                         getContext().unbecome();
@@ -159,7 +163,7 @@ public class ActorAkkaContext implements RouterContext {
         public Receive createReceive() {
             return receiveBuilder()
                     .match(ActorIdentity.class, identity -> {
-                        remoteRouterActor = identity.getActorRef().get();
+                        remoteRouterActor = identity.ref().get();
                         if (remoteRouterActor == null) {
                             System.out.println("Remote matching actor not available: " + remotePath);
                         } else {

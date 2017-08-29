@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package com.module.matching.constants;
+package def.constants;
 
-option java_package = "proto.matching.constants";
+option java_package = "com.instruction.matching.constants";
 option java_outer_classname = "ConstantsDef";
 
 enum ERRORCODE_CONSTANTS {
@@ -10,5 +10,8 @@ enum ERRORCODE_CONSTANTS {
 }
 
 enum OPCODE_CONSTANTS {
-    EMPTY2 = 0;
+    // 成功加入匹配
+    JOIN_SUCCESS_RESPONSE = 0;
+    // 通知匹配成功
+    NOTIFY_MATCH_SUCCESS = 1;
 }

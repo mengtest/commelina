@@ -18,7 +18,7 @@ public class MatchRouterActorTest {
         TestKit probe = new TestKit(system);
 
         ActorRef actorRef = system.actorOf(MatchingRouter.props());
-        actorRef.tell(new ApiRequest("joinMatch", "1.0.0", new RequestArg[]{
+        actorRef.tell(ApiRequest.newApiRequest("joinMatch", "1.0.0", new RequestArg[]{
                 new RequestArg("1", RequestArg.DATA_TYPE.LONG),
         }), probe.getRef());
 

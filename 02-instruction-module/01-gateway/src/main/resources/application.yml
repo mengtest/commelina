@@ -6,3 +6,4 @@ akka:
   remote:
     actor:
       matchingPath: akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRouter
+      roomPath: akka.tcp://MatchingWorkerSystem@127.0.0.1:2552/user/matchingRouter
