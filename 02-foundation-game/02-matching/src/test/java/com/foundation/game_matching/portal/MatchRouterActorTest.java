@@ -3,7 +3,7 @@ package com.foundation.game_matching.portal;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
-import com.module.foundation.game.matching.methods.MATCHING_METHODS;
+import com.foundation.game_matching.proto.MATCHING_METHODS;
 import com.framework.core_message.ApiRequestWithActor;
 import com.framework.core_message.RequestArg;
 import org.junit.Test;
