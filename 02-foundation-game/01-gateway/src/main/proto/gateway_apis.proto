@@ -18,6 +18,9 @@ enum GATEWAY_APIS {
     BUILT_GAME_ROOM_V1_0_0 = 3;
 }
 
+// BusinessMessage 定义:
+// json:
+
 // 作用域
 // gateway_domain_constants.proto
 // gateway_error_code_constants.proto

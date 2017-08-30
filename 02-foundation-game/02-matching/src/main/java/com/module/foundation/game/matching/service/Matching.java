@@ -40,7 +40,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.newMessage()), getSelf());
+        getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
@@ -67,7 +67,7 @@ public class Matching extends AbstractActor {
         log.info("cancel queue userId " + userId + ", result " + rs);
 
         // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.newMessage()), getSelf());
+        getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
     }
 
     private void removeMatch(REMOVE_MATCH removeMatch) {

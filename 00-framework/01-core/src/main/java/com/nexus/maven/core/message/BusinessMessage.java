@@ -1,5 +1,8 @@
 package com.nexus.maven.core.message;
 
+import com.google.common.base.Preconditions;
+import com.google.protobuf.Internal;
+
 /**
  * Created by @panyao on 2016/8/24.
  *
@@ -9,52 +12,40 @@ package com.nexus.maven.core.message;
  */
 public class BusinessMessage {
 
-    private int businessCode;
-    private DataEntity data;
+    private final int businessCode;
+    private final Object data;
 
-    public static final String DEFAULT_DATA = null;
-    public static final int DEFAULT_SUCCESS = 0;
+    static final String DEFAULT_DATA = null;
+    static final int DEFAULT_SUCCESS = 0;
 
-    private BusinessMessage(int businessCode, DataEntity data) {
+    private BusinessMessage(int businessCode, Object data) {
         this.businessCode = businessCode;
         this.data = data;
     }
 
-    public static BusinessMessage error(int code) {
+    public static BusinessMessage error(Internal.EnumLite code) {
+        Preconditions.checkArgument(code.getNumber() > 0);
         return success(code, DEFAULT_DATA);
     }
 
     public static BusinessMessage success() {
-        return success(DEFAULT_SUCCESS, DEFAULT_DATA);
+        return new BusinessMessage(DEFAULT_SUCCESS, DEFAULT_DATA);
     }
 
     public static BusinessMessage success(Object data) {
-        return success(DEFAULT_SUCCESS, data);
+        return new BusinessMessage(DEFAULT_SUCCESS, data);
     }
 
-    public static BusinessMessage success(int code, Object data) {
-        DataEntity dataEntity = new DataEntity();
-        dataEntity.data = data;
-        return new BusinessMessage(code, dataEntity);
-    }
-
-    public static final class DataEntity {
-        Object data;
+    public static BusinessMessage success(Internal.EnumLite code, Object data) {
+        return new BusinessMessage(code.getNumber(), data);
     }
 
     public int getBusinessCode() {
         return businessCode;
     }
 
-    public void setBusinessCode(int businessCode) {
-        this.businessCode = businessCode;
-    }
-
-    public DataEntity getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(DataEntity data) {
-        this.data = data;
-    }
 }

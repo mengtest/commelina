@@ -8,6 +8,10 @@ option java_multiple_files = true;
 
 // 错误码定义
 enum ERROR_CODE_CONSTANTS {
+    // 成功
+    SUCESS = 0;
     // token 转换错误
-    TOKEN_PARSE_ERROR = 0;
+    TOKEN_PARSE_ERROR = 1;
+    // 匹配接口必须登录才能访问
+    MATCHING_API_UNAUTHORIZED = 2;
 }

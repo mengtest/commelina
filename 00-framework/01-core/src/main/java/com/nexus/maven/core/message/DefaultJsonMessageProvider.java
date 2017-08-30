@@ -11,16 +11,16 @@ public class DefaultJsonMessageProvider {
     private static final BusinessMessage EMPTY_RESPONSE_MESSAGE =
             BusinessMessage.success();
 
-    public static MessageBus newMessage() {
+    public static MessageBus produceMessage() {
         return new JsonMessage(EMPTY_RESPONSE_MESSAGE);
     }
 
-    public static MessageBus newMessage(BusinessMessage message) {
+    public static MessageBus produceMessage(BusinessMessage message) {
         Preconditions.checkNotNull(message);
         return new JsonMessage(message);
     }
 
-    public static MessageBus newMessageForKV(String k, Object v) {
+    public static MessageBus produceMessageForKV(String k, Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
         KVEntity entity = new KVEntity();
@@ -33,4 +33,5 @@ public class DefaultJsonMessageProvider {
         String k;
         Object v;
     }
+
 }
