@@ -10,29 +10,25 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.twentyfourpoints.bussiess</groupId>
-    <artifactId>root</artifactId>
+    <groupId>com.module.foundation.game</groupId>
+    <artifactId>game-root</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
-        <module>00-framework</module>
-        <!--<module>01-foundation-app</module>-->
-        <module>02-foundation-game</module>
-        <module>21-game-room</module>
-
-
-        <module>32-apis</module>
-        <module>33-admin</module>
+        <module>01-gateway</module>
+        <module>02-matching</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <file.encoding>UTF-8</file.encoding>
         <java.version>1.8</java.version>
+        <docker.image.prefix>instruction-service</docker.image.prefix>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -90,9 +86,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 本地依赖 -->
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>utils</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nexus.maven</groupId>
+                <artifactId>netty</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>
@@ -135,6 +137,8 @@
                 <version>1.4.1.Final</version>
             </extension>
         </extensions>
+
+
         <plugins>
             <!--<plugin>-->
             <!--<groupId>org.springframework.boot</groupId>-->
@@ -181,6 +185,24 @@
                     </includes>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
