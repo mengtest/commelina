@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiName = "" + GATEWAY_APIS.GATEWAY_PASSPORT_CONNECT_V1_0_0_VALUE)
-public class GatewayConnectActor implements ActorWithApiHandler {
+@ActorWithApiController(apiName = "" + GATEWAY_APIS.GATEWAY_PASSPORT_V1_0_0_VALUE)
+public class GatewayRouterActor implements ActorWithApiHandler {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
@@ -43,6 +43,7 @@ public class GatewayConnectActor implements ActorWithApiHandler {
             List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
             ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 
+            // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
             // 回复自己完成了操作
             getSelf().tell(ResponseMessage.newMessage(MessageProvider.newMessage(OPCODE_CONSTANTS.PASSPORT_CONNECT_VALUE)), getSender());
         }

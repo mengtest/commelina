@@ -2,7 +2,6 @@ package com.nexus.maven.netty.socket;
 
 import com.nexus.maven.core.message.ApiRequest;
 import com.nexus.maven.core.message.MemberOfflineEvent;
-import com.nexus.maven.core.message.MemberOnlineEvent;
 
 /**
  * Created by panyao on 2017/8/30.

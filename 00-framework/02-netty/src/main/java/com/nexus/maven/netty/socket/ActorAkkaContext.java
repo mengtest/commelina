@@ -69,6 +69,7 @@ public class ActorAkkaContext implements RouterContext {
 
     @Override
     public void offlineEvent(long userId, ChannelHandlerContext ctx) {
+        // 没有登录的下线通知，对于业务层来说没有意义，忽略
         if (userId <= 0) {
             return;
         }

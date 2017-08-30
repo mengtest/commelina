@@ -13,7 +13,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 public abstract class ActorWithRemoteProxyRouter extends AbstractActor implements ActorRouterWatching {
 
-    private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+    protected final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
     final int domain;
     final String remotePath;
@@ -32,9 +32,9 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 .match(ApiRequest.class, this::onRequest)
                 // 转发远程 router
                 .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
-                //
+                // 告诉远程的 server 用户重新上线了
                 .match(MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
-                //
+                // 告诉远程的 server 用户下线了
                 .match(MemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 回复消息
                 .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r.getMessage()))
@@ -88,6 +88,17 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
 
     public void onOfflineEvent(MemberOfflineEvent offlineEvent) {
         getSelf().tell(new MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
+    }
+
+    @Override
+    public void onOnlineEvent(ActorMemberOnlineEvent onlineEvent) {
+        long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
+        if (userId > 0) {
+            // 由自己的  router 发送到远程
+            getSelf().tell(new MemberOnlineEvent(userId), getSelf());
+            return;
+        }
+        log.info("nothing to do , channel id:" + context.getRawContext().channel().id().asShortText());
     }
 
     public static Props props(Class<? extends ActorWithRemoteProxyRouter> clazz, int domain, String remotePath, ChannelOutputHandler context) {

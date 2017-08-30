@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
  * Created by @panyao on 2017/8/25.
  */
 @ActorWithApiController(apiName = "" + GATEWAY_APIS.MATCHING_REDIRECT_V1_0_0_VALUE)
-public class MatchingActor implements ActorWithApiHandler {
+public class MatchingRouterActor implements ActorWithApiHandler {
 
     @Value("akka.remote.actor.matchingPath:akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRouter")
     private String remotePath;
@@ -29,7 +29,6 @@ public class MatchingActor implements ActorWithApiHandler {
 
         @Override
         public void onRequest(ApiRequest request) {
-
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 // FIXME: 2017/8/25 必须登陆
@@ -37,6 +36,7 @@ public class MatchingActor implements ActorWithApiHandler {
 
             getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiMethod(), request.getVersion(), request.getArgs()), getSelf());
         }
+
     }
 
 }
