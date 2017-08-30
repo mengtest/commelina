@@ -50,7 +50,7 @@ class NettyServerContext {
     ChannelId userRemove(long userId) {
         ChannelId channelId = LOGIN_USERS.inverse().remove(userId);
         if (channelId != null) {
-            // FIXME: 2017/8/29 bian yi jian cha
+            // FIXME: 2017/8/29 这里是因为编辑检查泛型不过才这样写的，实际上是可以运行的 netty 这set实现太锤子了
             CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
         }
 //        CHANNEL_GROUP.remove(channelId);
