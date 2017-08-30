@@ -2,40 +2,43 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.nexus.maven</groupId>
-        <artifactId>framework-root</artifactId>
+        <groupId>com.module.foundation.app</groupId>
+        <artifactId>app-root</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>netty</artifactId>
+    <artifactId>foundation-app-platform</artifactId>
     <packaging>jar</packaging>
-    <name>framework-netty</name>
 
     <dependencies>
         <dependency>
             <groupId>com.nexus.maven</groupId>
-            <artifactId>core</artifactId>
-            <scope>compile</scope>
+            <artifactId>utils</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.jctools</groupId>-->
-            <!--<artifactId>jctools-core</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.nexus.maven</groupId>
-            <artifactId>utils</artifactId>
-            <scope>compile</scope>
-            <optional>true</optional>
+            <artifactId>netty</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.module.foundation.game.gateway.GatewaySpringBoot</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- protobuff 配置 -->
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
@@ -53,6 +56,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

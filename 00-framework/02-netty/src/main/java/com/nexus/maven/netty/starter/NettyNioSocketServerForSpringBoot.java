@@ -1,7 +1,10 @@
 package com.nexus.maven.netty.starter;
 
 import com.google.common.collect.Maps;
-import com.nexus.maven.netty.socket.*;
+import com.nexus.maven.netty.socket.ActorAkkaContext;
+import com.nexus.maven.netty.socket.ActorWithApiController;
+import com.nexus.maven.netty.socket.ActorWithApiHandler;
+import com.nexus.maven.netty.socket.NettyNioSocketServer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -40,7 +43,7 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
             String apiName = controller.apiName();
             if (o instanceof ActorWithApiHandler) {
                 actorWithApiHandlers.put(apiName, (ActorWithApiHandler) o);
-            } else{
+            } else {
                 throw new RuntimeException("undefined type " + o);
             }
         }
