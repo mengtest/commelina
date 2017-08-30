@@ -67,9 +67,9 @@ public class NettyNioSocketServer {
                         pipeline.addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
                         pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
                         pipeline.addLast(new ProtobufEncoder());
-                        ChannelInboundHandlerRouterContextAdapter adapter = new ChannelInboundHandlerRouterContextAdapter();
-                        adapter.setRouterContext(router);
-                        pipeline.addLast(adapter);
+                        ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
+                        routerAdapter.setRouterContext(router);
+                        pipeline.addLast(routerAdapter);
                     }
                 });
 

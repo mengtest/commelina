@@ -9,7 +9,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.unknowngamename.bussiess</groupId>
+    <groupId>com.twentyfourpoints.bussiess</groupId>
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>

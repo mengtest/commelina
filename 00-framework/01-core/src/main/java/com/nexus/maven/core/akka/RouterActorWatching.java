@@ -5,7 +5,7 @@ import com.nexus.maven.core.message.MemberOfflineEvent;
 import com.nexus.maven.core.message.MemberOnlineEvent;
 
 /**
- * Created by panyao on 2017/8/30.
+ * Created by @panyao on 2017/8/30.
  */
 public interface RouterActorWatching {
 

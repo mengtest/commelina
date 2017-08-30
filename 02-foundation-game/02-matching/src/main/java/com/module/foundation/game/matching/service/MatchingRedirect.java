@@ -14,10 +14,10 @@ public class MatchingRedirect extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    @Override
-    public void postStop() throws Exception {
-        log.info("MatchingRedirect Application stopped");
-    }
+//    @Override
+//    public void postStop() throws Exception {
+//        log.info("MatchingRedirect Application stopped");
+//    }
 
     @Override
     public Receive createReceive() {

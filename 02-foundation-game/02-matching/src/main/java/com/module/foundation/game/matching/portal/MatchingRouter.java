@@ -19,10 +19,10 @@ public class MatchingRouter extends RouterActor {
     public boolean onRequest(ApiRequestWithActor request) {
         switch (request.getApiOpcode().getNumber()) {
             case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
-                matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
+                matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), getSelf());
                 return true;
             case MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE:
-                matching.tell(new Matching.CANCEL_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
+                matching.tell(new Matching.CANCEL_MATCH(request.getUserId(), request.getApiOpcode()), getSelf());
                 return true;
         }
         return false;
@@ -31,7 +31,7 @@ public class MatchingRouter extends RouterActor {
     @Override
     public void onOffline(MemberOfflineEvent offlineEvent) {
         // 把用户从匹配队列里面移除
-        matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), this.getSelf());
+        matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), getSelf());
     }
 
     public static Props props() {

@@ -27,7 +27,7 @@ public class Matching extends AbstractActor {
         return receiveBuilder()
                 .match(JOIN_MATCH.class, this::joinMatch)
                 .match(REMOVE_MATCH.class, this::removeMatch)
-                .match(CANCEL_MATCH.class, this::removeMatch)
+                .match(CANCEL_MATCH.class, this::cancelMatch)
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, this::createMatchFailed)
                 .matchAny(o -> log.info("Matching received unknown message" + o))
                 .build();
@@ -59,7 +59,7 @@ public class Matching extends AbstractActor {
         }
     }
 
-    private void removeMatch(CANCEL_MATCH cancelMatch) {
+    private void cancelMatch(CANCEL_MATCH cancelMatch) {
         long userId = cancelMatch.userId;
 
         boolean rs = matchList.remove(userId);

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * Created by @panyao on 2016/4/27.
  *
  * @author panyao
- * @coding.net https://coding.net/u/pandaxia
- * @github https://github.com/freedompy
  */
 public final class Generator {
 
