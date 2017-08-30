@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.module.foundation.game.matching.MessageProvider;
-import com.module.foundation.game.matching.constants.ConstantsDef;
+import com.module.foundation.game.matching.constants.OPCODE_CONSTANTS;
 import com.nexus.maven.core.message.BroadcastMessage;
 
 /**
@@ -26,7 +26,7 @@ public class MatchingStatus extends AbstractActor {
     }
 
     private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
-        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(notifyMatchStatus.userIds, MessageProvider.newMessageForKV(ConstantsDef.OPCODE_CONSTANTS.NOTIFY_MATCH_SUCCESS_VALUE, "matchUserCount", notifyMatchStatus.userIds.length));
+        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(OPCODE_CONSTANTS.NOTIFY_MATCH_SUCCESS, notifyMatchStatus.userIds, MessageProvider.newMessageForKV("matchUserCount", notifyMatchStatus.userIds.length));
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
         getSender().tell(broadcast, getSelf());

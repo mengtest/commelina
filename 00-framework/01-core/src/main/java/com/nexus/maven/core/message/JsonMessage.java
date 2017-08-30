@@ -8,11 +8,9 @@ import com.nexus.maven.utils.Generator;
  */
 final class JsonMessage implements MessageBus {
 
-    private final int opCode;
     private final BusinessMessage message;
 
-    JsonMessage(int opCode, BusinessMessage message) {
-        this.opCode = opCode;
+    JsonMessage(BusinessMessage message) {
         this.message = message;
     }
 
@@ -23,10 +21,6 @@ final class JsonMessage implements MessageBus {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public int getOpCode() {
-        return opCode;
     }
 
     public MessageBus.BusinessProtocol getBp() {

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiName = "" + GATEWAY_APIS.MATCHING_REDIRECT_V1_0_0_VALUE)
+@ActorWithApiController(apiPathCode =  GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
 public class MatchingRouterActor implements ActorWithApiHandler {
 
     @Value("akka.remote.actor.matchingPath:akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRouter")
@@ -34,7 +34,7 @@ public class MatchingRouterActor implements ActorWithApiHandler {
                 // FIXME: 2017/8/25 必须登陆
             }
 
-            getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiMethod(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

@@ -1,24 +1,24 @@
 package com.nexus.maven.core.message;
 
-import com.google.common.base.Preconditions;
+import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/8/15.
  */
 public class NotifyMessage {
 
+    private final Internal.EnumLite opcode;
     private final long userId;
     private final MessageBus message;
 
-    private NotifyMessage(long userId, MessageBus messageBus) {
-        Preconditions.checkArgument(userId > 0);
+    private NotifyMessage(Internal.EnumLite opcode, long userId, MessageBus messageBus) {
+        this.opcode = opcode;
         this.userId = userId;
         this.message = messageBus;
     }
 
-    public static NotifyMessage newMessage(long userId, MessageBus messageBus) {
-        Preconditions.checkNotNull(messageBus);
-        return new NotifyMessage(userId, messageBus);
+    public static NotifyMessage newMessage(Internal.EnumLite opcode, long userId, MessageBus messageBus) {
+        return new NotifyMessage(opcode, userId, messageBus);
     }
 
     public long getUserId() {
@@ -29,4 +29,7 @@ public class NotifyMessage {
         return message;
     }
 
+    public Internal.EnumLite getOpcode() {
+        return opcode;
+    }
 }

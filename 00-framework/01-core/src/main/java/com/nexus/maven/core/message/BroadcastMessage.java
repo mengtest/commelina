@@ -1,6 +1,6 @@
 package com.nexus.maven.core.message;
 
-import com.google.common.base.Preconditions;
+import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/8/15.
@@ -9,19 +9,18 @@ import com.google.common.base.Preconditions;
  */
 public class BroadcastMessage {
 
+    private final Internal.EnumLite opcode;
     private final long[] userIds;
     private final MessageBus message;
 
-    private BroadcastMessage(long[] userIds, MessageBus messageBus) {
-        Preconditions.checkNotNull(userIds);
+    private BroadcastMessage(Internal.EnumLite opcode, long[] userIds, MessageBus messageBus) {
+        this.opcode = opcode;
         this.message = messageBus;
         this.userIds = userIds;
     }
 
-    public static BroadcastMessage newBroadcast(long[] userIds, MessageBus messageBus) {
-        Preconditions.checkArgument(userIds != null && userIds.length > 0);
-        Preconditions.checkNotNull(messageBus);
-        return new BroadcastMessage(userIds, messageBus);
+    public static BroadcastMessage newBroadcast(Internal.EnumLite opcode, long[] userIds, MessageBus messageBus) {
+        return new BroadcastMessage(opcode, userIds, messageBus);
     }
 
     public long[] getUserIds() {
@@ -32,4 +31,7 @@ public class BroadcastMessage {
         return message;
     }
 
+    public Internal.EnumLite getOpcode() {
+        return opcode;
+    }
 }

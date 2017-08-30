@@ -1,5 +1,6 @@
 package com.nexus.maven.core.akka;
 
+import com.google.protobuf.Internal;
 import com.nexus.maven.core.message.MessageBus;
 import com.nexus.maven.core.message.ResponseMessage;
 
@@ -9,8 +10,7 @@ import com.nexus.maven.core.message.ResponseMessage;
  */
 public class ActorRouterResponseMessageAck extends ResponseMessage{
 
-    protected ActorRouterResponseMessageAck(MessageBus messageBus) {
-        super(messageBus);
+    protected ActorRouterResponseMessageAck(Internal.EnumLite opcode, MessageBus messageBus) {
+        super(opcode, messageBus);
     }
-
 }

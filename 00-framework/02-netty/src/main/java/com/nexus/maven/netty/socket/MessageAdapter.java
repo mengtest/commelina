@@ -15,22 +15,22 @@ class MessageAdapter {
 
 //    private static final Logger LOGGER = Logger.getLogger(MessageAdapter.class.getName());
 
-    static void addNotify(int domain, NotifyMessage notifyResponse) throws IOException {
-        Channel channel = NettyServerContext.getInstance().getUserChannel(notifyResponse.getUserId());
-        channel.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, notifyResponse.getMessage()));
+    static void addNotify(int domain,  NotifyMessage message) throws IOException {
+        Channel channel = NettyServerContext.getInstance().getUserChannel(message.getUserId());
+        channel.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage()));
     }
 
-    static void addBroadcast(int domain, BroadcastMessage broadcastMessage) throws IOException {
-        final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, broadcastMessage.getMessage());
+    static void addBroadcast(int domain, BroadcastMessage message) throws IOException {
+        final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
-        for (long userId : broadcastMessage.getUserIds()) {
+        for (long userId : message.getUserIds()) {
             Channel channel = NettyServerContext.getInstance().getUserChannel(userId);
             channel.writeAndFlush(msg);
         }
     }
 
-    static void addWorld(int domain, WorldMessage worldMessage) throws IOException {
-        final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, worldMessage.getMessage());
+    static void addWorld(int domain, WorldMessage message) throws IOException {
+        final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
         for (Long userId : NettyServerContext.getInstance().LOGIN_USERS.values()) {
             Channel channel = NettyServerContext.getInstance().getUserChannel(userId);

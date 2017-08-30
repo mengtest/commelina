@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiName = "" + GATEWAY_APIS.GAME_ROOM_REDIRECT_v1_0_0_VALUE)
+@ActorWithApiController(apiPathCode = GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
 public class GameRoomRouterActor implements ActorWithApiHandler {
 
     @Value("akka.remote.actor.roomPath:xxxxxxxxxxxxxxxxxxxxxxxxx")

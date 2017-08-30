@@ -43,13 +43,13 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
                     .createErrorMessage(SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE));
             return;
         }
-        SocketASK request = (SocketASK) msg;
+        final SocketASK request = (SocketASK) msg;
         RequestArg[] args = new RequestArg[request.getArgsList().size()];
         for (int i = 0; i < request.getArgsList().size(); i++) {
             Arg arg = request.getArgsList().get(i);
             args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
         }
-        routerContext.doRequestHandler(ctx, ApiRequest.newApiRequest(request.getApiPath(), request.getApiMethod(), request.getVersion(), args));
+        routerContext.doRequestHandler(ctx, ApiRequest.newApiRequest(() -> request.getApiOpcode(), () -> request.getApiOpcode(), request.getVersion(), args));
     }
 
     // 调用异常的处理

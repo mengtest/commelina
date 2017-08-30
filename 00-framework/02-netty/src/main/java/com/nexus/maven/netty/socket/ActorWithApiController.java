@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface ActorWithApiController {
 
-    String apiName();
+    int apiPathCode();
 
 }

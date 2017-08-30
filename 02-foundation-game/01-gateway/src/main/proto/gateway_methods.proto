@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package def.methods;
+
+option java_package = "com.module.foundation.game.gateway.proto";
+option java_outer_classname = "MethodsDef";
+option java_multiple_files = true;
+
+// 接口列表
+enum GATEWAY_METHODS {
+    // 登录
+    PASPPORT_CONNECT = 0;
+}

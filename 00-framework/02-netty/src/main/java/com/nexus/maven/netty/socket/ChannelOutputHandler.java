@@ -1,6 +1,6 @@
 package com.nexus.maven.netty.socket;
 
-import com.nexus.maven.core.message.MessageBus;
+import com.nexus.maven.core.message.ResponseMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -15,9 +15,9 @@ public class ChannelOutputHandler {
 
     ChannelHandlerContext channelHandlerContext;
 
-    public void writeAndFlush(int domain, MessageBus messageBus) {
+    public void writeAndFlush(int domain, ResponseMessage message) {
         ChannelFuture future = channelHandlerContext.writeAndFlush(
-                MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, messageBus));
+                MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, message.getOpcode().getNumber(), message.getMessage()));
 
         if (future.isSuccess()) {
             // 成功

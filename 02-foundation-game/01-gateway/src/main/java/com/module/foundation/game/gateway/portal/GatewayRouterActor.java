@@ -7,7 +7,6 @@ import com.google.common.io.BaseEncoding;
 import com.module.foundation.game.gateway.MessageProvider;
 import com.module.foundation.game.gateway.proto.DOMAIN_CONSTANTS;
 import com.module.foundation.game.gateway.proto.GATEWAY_APIS;
-import com.module.foundation.game.gateway.proto.OPCODE_CONSTANTS;
 import com.nexus.maven.core.message.ApiRequest;
 import com.nexus.maven.core.message.RequestArg;
 import com.nexus.maven.core.message.ResponseMessage;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiName = "" + GATEWAY_APIS.GATEWAY_PASSPORT_V1_0_0_VALUE)
+@ActorWithApiController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
 public class GatewayRouterActor implements ActorWithApiHandler {
 
     @Override
@@ -45,7 +44,7 @@ public class GatewayRouterActor implements ActorWithApiHandler {
 
             // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
             // 回复自己完成了操作
-            getSelf().tell(ResponseMessage.newMessage(MessageProvider.newMessage(OPCODE_CONSTANTS.PASSPORT_CONNECT_VALUE)), getSender());
+            getSelf().tell(ResponseMessage.newMessage(request.getApiOpcode(), MessageProvider.newMessage()), getSender());
         }
     }
 

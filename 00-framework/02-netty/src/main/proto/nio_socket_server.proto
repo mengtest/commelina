@@ -6,6 +6,62 @@ option java_package = "com.nexus.maven.proto";
 option java_outer_classname = "SocketNettyProtocol";
 option java_multiple_files = true;
 
+// socket 请求体
+message SocketASK {
+    // 接口域
+    uint32 apiPathCode = 1;
+    // 接口操作码
+    uint32 apiOpcode = 2;
+    // 接口版本
+    string version = 3;
+    // 参数列表
+    repeated Arg args = 4;
+}
+
+// socket 消息
+message SocketMessage {
+    // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
+    SYSTEM_CODE_CONSTANTS code = 1;
+    // 服务端预定义 消息的域
+    uint32 domain = 2;
+    // 操作码  code = 0 , opCode 与 请求的 apiMethod 保持一致，code = 1 则会新定义操作码
+    uint32 opCode = 3;
+    // 业务消息
+    BusinessMessage msg = 4;
+}
+
+// 业务消息体
+message BusinessMessage {
+    // 业务协议
+    BusinessProtocol bp = 1;
+    // 消息内容 字节
+    bytes msg = 2;
+    // 消息版本，在 服务端下行的消息里有效
+    string version = 3;
+}
+
+// 参数格式
+message Arg {
+    // 参数类型
+    DATA_TYPE dataType = 1;
+    // 值内容
+    bytes value = 2;
+}
+
+// 系统错误码
+enum SYSTEM_CODE_CONSTANTS {
+    // 成功响应
+    RESONSE_CODE = 0;
+    // 通知
+    NOTIFY_CODE = 1;
+    // 协议解析错误
+    PROTOCOL_FORMAT_ERROR = 2;
+    // 要调用的 api 不存在
+    RPC_API_NOT_FOUND = 3;
+    // 服务端内部错误
+    SERVER_ERROR = 4;
+}
+
 // 基本数据类型
 enum DATA_TYPE {
     INT = 0;
@@ -18,43 +74,4 @@ enum DATA_TYPE {
 
 enum BusinessProtocol {
     JSON = 0;
-}
-
-// socket 请求体
-message SocketASK {
-    string apiPath = 1; // 接口地址
-    string apiMethod = 2; // 接口方法
-    string version = 3; // 接口版本
-    repeated Arg args = 4; // 参数列表
-}
-
-// socket 消息
-message SocketMessage {
-    SYSTEM_CODE_CONSTANTS code = 1; // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
-    uint32 domain = 2; // 消息所在的作用域， 0 网络层作用域 > 0 业务作用域
-    BusinessMessage msg = 3; // 业务消息
-}
-
-// 业务消息体
-message BusinessMessage {
-    uint32 opCode = 1; // 操作码
-    string version = 2; // 版本
-    BusinessProtocol bp = 3; // 业务协议
-    bytes msg = 4; // 字节
-}
-
-// 参数格式
-message Arg {
-    string name = 1;
-    DATA_TYPE dataType = 2;
-    bytes value = 3;
-}
-
-// 系统错误码
-enum SYSTEM_CODE_CONSTANTS {
-    RESONSE_CODE = 0; // 成功响应
-    NOTIFY_CODE = 1; // 通知
-    PROTOCOL_FORMAT_ERROR = 2; // 协议解析错误
-    RPC_API_NOT_FOUND = 3; // 要调用的 api 不存在
-    SERVER_ERROR = 4; // 服务端内部错误
 }

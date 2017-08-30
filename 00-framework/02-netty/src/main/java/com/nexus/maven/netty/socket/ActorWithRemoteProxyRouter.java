@@ -37,7 +37,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 // 告诉远程的 server 用户下线了
                 .match(MemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 回复消息
-                .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r.getMessage()))
+                .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r))
                 // 通知
                 .match(NotifyMessage.class, n -> MessageAdapter.addNotify(domain, n))
                 // 广播

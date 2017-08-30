@@ -6,12 +6,20 @@ option java_package = "com.module.foundation.game.gateway.proto";
 option java_outer_classname = "ApisDef";
 option java_multiple_files = true;
 
+// 接口列表
 enum GATEWAY_APIS {
-    // 网关登陆验证接口 args： token string
-    GATEWAY_PASSPORT_V1_0_0 = 0;
-    // 匹配重定向接口
-    MATCHING_REDIRECT_V1_0_0 = 1;
-    // 房间服务器重定向接口
-    GAME_ROOM_REDIRECT_v1_0_0 = 2;
+    // 网关接口
+    GATEWAY_V1_0_0 = 0;
+    // 匹配接口
+    MATCHING_V1_0_0 = 1;
+    // 房间接口
+    GAME_ROOM_V1_0_0 = 2;
+    // 自建房间接口
+    BUILT_GAME_ROOM_V1_0_0 = 3;
 }
 
+// 作用域
+// gateway_domain_constants.proto
+// gateway_error_code_constants.proto
+// gateway_methods.proto
+// gateway_notify_opcode_constants.proto

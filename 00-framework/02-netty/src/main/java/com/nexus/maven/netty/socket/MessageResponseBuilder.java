@@ -7,10 +7,10 @@ import com.nexus.maven.core.message.MessageBus;
  */
 interface MessageResponseBuilder {
 
-    Object createPushMessage(int domain, MessageBus responseMessage);
+    Object createPushMessage(int domain, int opcode, MessageBus messageBus);
 
-    Object createResponseMessage(int domain, MessageBus responseMessage);
+    Object createResponseMessage(int domain, int opcode, MessageBus messageBus);
 
-    Object createErrorMessage(int errorCode);
+    Object createErrorMessage(int systemErrorCode);
 
 }

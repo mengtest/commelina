@@ -1,5 +1,6 @@
 package com.nexus.maven.core.message;
 
+import com.google.protobuf.Internal;
 import com.nexus.maven.core.AppVersion;
 
 /**
@@ -7,29 +8,32 @@ import com.nexus.maven.core.AppVersion;
  */
 public class ApiRequest implements AppVersion {
 
-    private final String apiPath;
-    private final String apiMethod;
+    private final Internal.EnumLite apiPathCode;
+    private final Internal.EnumLite apiOpcode;
     private final String version;
     private final RequestArg[] args;
 
-    public ApiRequest(String apiPath, String apiMethod, String version, RequestArg[] args) {
-        this.apiPath = apiPath;
-        this.apiMethod = apiMethod;
+    private ApiRequest(Internal.EnumLite apiPathCode, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        this.apiPathCode = apiPathCode;
+        this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
     }
 
+    public static ApiRequest newApiRequest(Internal.EnumLite apiPathCode, Internal.EnumLite apiMethod, String version, RequestArg[] args) {
+        return new ApiRequest(apiPathCode, apiMethod, version, args);
+    }
 
-    public static ApiRequest newApiRequest(String apiName, String apiMethod, String version, RequestArg[] args) {
-        return new ApiRequest(apiName, apiMethod, version, args);
+    public Internal.EnumLite getApiPathCode() {
+        return this.apiPathCode;
+    }
+
+    public Internal.EnumLite getApiOpcode() {
+        return apiOpcode;
     }
 
     public String getVersion() {
         return this.version;
-    }
-
-    public String getApiPath() {
-        return this.apiPath;
     }
 
     public RequestArg[] getArgs() {
@@ -59,7 +63,4 @@ public class ApiRequest implements AppVersion {
         return args;
     }
 
-    public String getApiMethod() {
-        return apiMethod;
-    }
 }

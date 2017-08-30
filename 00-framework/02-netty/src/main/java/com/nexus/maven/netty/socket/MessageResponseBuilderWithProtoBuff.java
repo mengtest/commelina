@@ -13,24 +13,24 @@ import com.nexus.maven.proto.SocketMessage;
 class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
 
     @Override
-    public Object createPushMessage(int domain, MessageBus responseMessage) {
-        return createMessageWithType(domain, responseMessage, SYSTEM_CODE_CONSTANTS.NOTIFY_CODE);
+    public Object createPushMessage(int domain, int opcode, MessageBus messageBus) {
+        return createMessageWithType(domain, opcode, messageBus, SYSTEM_CODE_CONSTANTS.NOTIFY_CODE);
     }
 
     @Override
-    public Object createResponseMessage(int domain, MessageBus responseMessage) {
-        return createMessageWithType(domain, responseMessage, SYSTEM_CODE_CONSTANTS.RESONSE_CODE);
+    public Object createResponseMessage(int domain, int opcode, MessageBus messageBus) {
+        return createMessageWithType(domain, opcode, messageBus, SYSTEM_CODE_CONSTANTS.RESONSE_CODE);
     }
 
     @Override
-    public Object createErrorMessage(int errorCode) {
+    public Object createErrorMessage(int systemErrorCode) {
         return SocketMessage
                 .newBuilder()
-                .setCode(SYSTEM_CODE_CONSTANTS.forNumber(errorCode))
+                .setCode(SYSTEM_CODE_CONSTANTS.forNumber(systemErrorCode))
                 .build();
     }
 
-    private Object createMessageWithType(int domain, MessageBus messageBus, SYSTEM_CODE_CONSTANTS type) {
+    private Object createMessageWithType(int domain, int opcode, MessageBus messageBus, SYSTEM_CODE_CONSTANTS type) {
         byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
             return null;
@@ -38,8 +38,8 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
         return SocketMessage.newBuilder()
                 .setCode(type)
                 .setDomain(domain)
+                .setOpCode(opcode)
                 .setMsg(BusinessMessage.newBuilder()
-                        .setOpCode(messageBus.getOpCode())
                         .setVersion(messageBus.getVersion())
                         .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                         .setMsg(ByteString.copyFrom(bytes))

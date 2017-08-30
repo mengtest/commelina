@@ -25,7 +25,7 @@ public abstract class ActorWithRequestRouter extends AbstractActor implements Ac
                 // 请求事件
                 .match(ApiRequest.class, this::onRequest)
                 //
-                .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage.getMessage()))
+                .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage))
                 // 上线事件
                 .match(ActorMemberOnlineEvent.class, this::onOnlineEvent)
                 // 下线事件

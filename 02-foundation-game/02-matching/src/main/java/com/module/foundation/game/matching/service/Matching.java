@@ -6,8 +6,8 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.google.common.collect.Lists;
+import com.google.protobuf.Internal;
 import com.module.foundation.game.matching.MessageProvider;
-import com.module.foundation.game.matching.constants.ConstantsDef;
 import com.nexus.maven.core.message.ResponseMessage;
 
 import java.util.List;
@@ -27,6 +27,7 @@ public class Matching extends AbstractActor {
         return receiveBuilder()
                 .match(JOIN_MATCH.class, this::joinMatch)
                 .match(REMOVE_MATCH.class, this::removeMatch)
+                .match(CANCEL_MATCH.class, this::removeMatch)
                 .match(MatchingRedirect.CREATE_ROOM_FAILED.class, this::createMatchFailed)
                 .matchAny(o -> log.info("Matching received unknown message" + o))
                 .build();
@@ -39,7 +40,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(ConstantsDef.OPCODE_CONSTANTS.JOIN_MATCH_RESPONSE_VALUE)), getSelf());
+        getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.newMessage()), getSelf());
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
@@ -58,15 +59,23 @@ public class Matching extends AbstractActor {
         }
     }
 
-    private void removeMatch(REMOVE_MATCH remove_match) {
-        long userId = remove_match.userId;
+    private void removeMatch(CANCEL_MATCH cancelMatch) {
+        long userId = cancelMatch.userId;
+
+        boolean rs = matchList.remove(userId);
+
+        log.info("cancel queue userId " + userId + ", result " + rs);
+
+        // 回复 MatchingRouter 的 调用者成功
+        getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.newMessage()), getSelf());
+    }
+
+    private void removeMatch(REMOVE_MATCH removeMatch) {
+        long userId = removeMatch.userId;
 
         boolean rs = matchList.remove(userId);
 
         log.info("remove queue userId " + userId + ", result " + rs);
-
-        // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(MessageProvider.newMessage(ConstantsDef.OPCODE_CONSTANTS.REMOTE_MATCH_RESPONSE_VALUE)), getSelf());
     }
 
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
@@ -78,11 +87,23 @@ public class Matching extends AbstractActor {
     // http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html
     public static final class JOIN_MATCH {
         long userId;
+        Internal.EnumLite apiOpcode;
 
-        public JOIN_MATCH(long userId) {
+        public JOIN_MATCH(long userId, Internal.EnumLite apiOpcode) {
             this.userId = userId;
+            this.apiOpcode = apiOpcode;
         }
 
+    }
+
+    public static final class CANCEL_MATCH {
+        long userId;
+        Internal.EnumLite apiOpcode;
+
+        public CANCEL_MATCH(long userId, Internal.EnumLite apiOpcode) {
+            this.userId = userId;
+            this.apiOpcode = apiOpcode;
+        }
     }
 
     public static final class REMOVE_MATCH {
@@ -91,7 +112,6 @@ public class Matching extends AbstractActor {
         public REMOVE_MATCH(long userId) {
             this.userId = userId;
         }
-
     }
 
     public static Props props() {

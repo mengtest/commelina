@@ -2,7 +2,7 @@ package com.module.foundation.game.matching.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.module.foundation.game.matching.apis.ApiDef;
+import com.module.foundation.game.matching.methods.MATCHING_METHODS;
 import com.module.foundation.game.matching.service.Matching;
 import com.nexus.maven.core.akka.RouterActor;
 import com.nexus.maven.core.message.ApiRequestWithActor;
@@ -17,12 +17,12 @@ public class MatchingRouter extends RouterActor {
 
     @Override
     public void onRequest(ApiRequestWithActor request) {
-        switch (Integer.valueOf(request.getApiMethod())) {
-            case ApiDef.MATCHING_APIS.JOIN_MATCH_QUENE_VALUE:
-                matching.tell(new Matching.JOIN_MATCH(request.getUserId()), this.getSelf());
+        switch (request.getApiOpcode().getNumber()) {
+            case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
+                matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
                 break;
-            case ApiDef.MATCHING_APIS.REMOVE_MATCH_QUENE_VALUE:
-                matching.tell(new Matching.REMOVE_MATCH(request.getUserId()), this.getSelf());
+            case MATCHING_METHODS.REMOVE_MATCH_QUENE_VALUE:
+                matching.tell(new Matching.CANCEL_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
                 break;
             // FIXME: 2017/8/29 处理 接口不存在的情况
         }

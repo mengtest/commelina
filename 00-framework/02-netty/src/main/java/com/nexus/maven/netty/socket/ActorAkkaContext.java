@@ -19,24 +19,24 @@ public class ActorAkkaContext implements RouterContext {
     private final ActorSystem system = ActorSystem.create("akkaContext");
 
     /**
-     * apiName -> ActorWithApiHandler
+     * apiPathCode -> ActorWithApiHandler
      */
-    private final Map<String, ActorWithApiHandler> ROUTERS = Maps.newLinkedHashMap();
+    private final Map<Integer, ActorWithApiHandler> ROUTERS = Maps.newLinkedHashMap();
 
-    private final Map<ChannelId, Map<String, ActorRef>> CHANNEL_ACTORS = Maps.newLinkedHashMap();
+    private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_ACTORS = Maps.newLinkedHashMap();
 
     // 初始化本机的 router
-    public final void initRouters(final Map<String, ActorWithApiHandler> actorWithApiHandlers) {
-        for (Map.Entry<String, ActorWithApiHandler> entry : actorWithApiHandlers.entrySet()) {
+    public final void initRouters(final Map<Integer, ActorWithApiHandler> actorWithApiHandlers) {
+        for (Map.Entry<Integer, ActorWithApiHandler> entry : actorWithApiHandlers.entrySet()) {
             ROUTERS.put(entry.getKey(), entry.getValue());
         }
     }
 
     @Override
     public void doRequestHandler(ChannelHandlerContext ctx, ApiRequest apiRequest) {
-        Map<String, ActorRef> actorRefMap = CHANNEL_ACTORS.get(ctx.channel().id());
+        Map<Integer, ActorRef> actorRefMap = CHANNEL_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(apiRequest.getApiPath());
+            ActorRef actorRef1 = actorRefMap.get(apiRequest.getApiPathCode());
             // 远程复用 actor
             if (actorRef1 != null) {
                 actorRef1.tell(apiRequest, null);
@@ -51,13 +51,13 @@ public class ActorAkkaContext implements RouterContext {
 
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
-        for (Map.Entry<String, ActorWithApiHandler> entry : ROUTERS.entrySet()) {
+        for (Map.Entry<Integer, ActorWithApiHandler> entry : ROUTERS.entrySet()) {
             ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;
 
             ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(responseContext));
 
-            Map<String, ActorRef> actorRefMap1 = CHANNEL_ACTORS.get(ctx.channel().id());
+            Map<Integer, ActorRef> actorRefMap1 = CHANNEL_ACTORS.get(ctx.channel().id());
             if (actorRefMap1 == null) {
                 actorRefMap1 = Maps.newLinkedHashMap();
             }
@@ -73,7 +73,7 @@ public class ActorAkkaContext implements RouterContext {
         if (userId <= 0) {
             return;
         }
-        Map<String, ActorRef> actorRefMap = CHANNEL_ACTORS.remove(ctx.channel().id());
+        Map<Integer, ActorRef> actorRefMap = CHANNEL_ACTORS.remove(ctx.channel().id());
         if (actorRefMap != null) {
             for (ActorRef actorRef : actorRefMap.values()) {
                 // 用户下线事件

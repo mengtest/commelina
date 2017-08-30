@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.notify_opcode_constants;
+
+option java_package = "com.module.foundation.game.gateway.proto";
+option java_outer_classname = "NotifyOpcodeConstantsDef";
+option java_multiple_files = true;
+
+enum OPCODE_CONSTANTS {
+    PASSPORT_CONNECT = 0;
+}
+

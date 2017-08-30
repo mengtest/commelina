@@ -15,10 +15,11 @@ public interface RouterActorWatching {
     // 上线
     default void onOnline(MemberOnlineEvent onlineEventWithLogin){
 
-    };
+    }
 
     // 下线
     default void onOffline(MemberOfflineEvent offlineEvent){
 
-    };
+    }
+
 }

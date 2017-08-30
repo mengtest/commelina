@@ -36,11 +36,11 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
         server = new NettyNioSocketServer();
 
         Map<String, Object> apis = context.getBeansWithAnnotation(ActorWithApiController.class);
-        Map<String, ActorWithApiHandler> actorWithApiHandlers = Maps.newHashMap();
+        Map<Integer, ActorWithApiHandler> actorWithApiHandlers = Maps.newHashMap();
 
         for (Object o : apis.values()) {
             ActorWithApiController controller = o.getClass().getAnnotation(ActorWithApiController.class);
-            String apiName = controller.apiName();
+            int apiName = controller.apiPathCode();
             if (o instanceof ActorWithApiHandler) {
                 actorWithApiHandlers.put(apiName, (ActorWithApiHandler) o);
             } else {

@@ -1,5 +1,6 @@
 package com.nexus.maven.core.message;
 
+import com.google.protobuf.Internal;
 import com.nexus.maven.core.AppVersion;
 
 /**
@@ -9,20 +10,19 @@ public final class ApiRequestWithActor implements AppVersion {
 
     private final long userId;
 
-    private final String apiMethod;
+    private final Internal.EnumLite apiOpcode;
     private final String version;
     private final RequestArg[] args;
 
-    public ApiRequestWithActor(long userId, String apiMethod, String version, RequestArg[] args) {
+    public ApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
         this.userId = userId;
-        this.apiMethod = apiMethod;
+        this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
     }
 
-
-    public static ApiRequestWithActor newApiRequestWithActor(long userId, String apiMethod, String version, RequestArg[] args) {
-        return new ApiRequestWithActor(userId, apiMethod, version, args);
+    public static ApiRequestWithActor newApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        return new ApiRequestWithActor(userId, apiOpcode, version, args);
     }
 
     public long getUserId() {
@@ -61,8 +61,8 @@ public final class ApiRequestWithActor implements AppVersion {
         return args;
     }
 
-    public String getApiMethod() {
-        return apiMethod;
+    public Internal.EnumLite getApiOpcode() {
+        return apiOpcode;
     }
 
 }

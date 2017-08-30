@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package def.error_code_constants;
+
+option java_package = "com.module.foundation.game.gateway.proto";
+option java_outer_classname = "ErrorCodeConstantsDef";
+option java_multiple_files = true;
+
+// 错误码定义
+enum ERROR_CODE_CONSTANTS {
+    // token 转换错误
+    TOKEN_PARSE_ERROR = 0;
+}

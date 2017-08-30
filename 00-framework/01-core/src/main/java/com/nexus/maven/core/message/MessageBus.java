@@ -11,8 +11,6 @@ public interface MessageBus extends AppVersion {
         JSON
     }
 
-    int getOpCode();
-
     BusinessProtocol getBp();
 
     byte[] getBytes();

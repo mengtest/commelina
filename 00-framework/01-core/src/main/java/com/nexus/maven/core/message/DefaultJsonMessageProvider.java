@@ -11,25 +11,22 @@ public class DefaultJsonMessageProvider {
     private static final BusinessMessage EMPTY_RESPONSE_MESSAGE =
             BusinessMessage.success();
 
-    public static MessageBus newMessage(int opCode) {
-        Preconditions.checkArgument(opCode >= 0);
-        return new JsonMessage(opCode, EMPTY_RESPONSE_MESSAGE);
+    public static MessageBus newMessage() {
+        return new JsonMessage(EMPTY_RESPONSE_MESSAGE);
     }
 
-    public static MessageBus newMessage(int opCode, BusinessMessage message) {
-        Preconditions.checkArgument(opCode >= 0);
+    public static MessageBus newMessage(BusinessMessage message) {
         Preconditions.checkNotNull(message);
-        return new JsonMessage(opCode, message);
+        return new JsonMessage(message);
     }
 
-    public static MessageBus newMessageForKV(int opCode, String k, Object v) {
-        Preconditions.checkArgument(opCode >= 0);
+    public static MessageBus newMessageForKV(String k, Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
         KVEntity entity = new KVEntity();
         entity.k = k;
         entity.v = v;
-        return new JsonMessage(opCode, BusinessMessage.success(entity));
+        return new JsonMessage(BusinessMessage.success(entity));
     }
 
     public static final class KVEntity {
