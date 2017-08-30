@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.twentyfourpoints.bussiess</groupId>
+        <groupId>com.unknowngamename.bussiess</groupId>
         <artifactId>root</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>twentyfourpoints-room</artifactId>
+    <artifactId>unknowngamename-room</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
 
