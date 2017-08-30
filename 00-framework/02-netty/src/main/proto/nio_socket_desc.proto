@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package netty.nio.socket.protocol.desc;
 
-option java_package = "com.framework.prot";
+option java_package = "com.framework.proto";
 option java_outer_classname = "SocketNettyProtocolDesc";
 
 // 编码

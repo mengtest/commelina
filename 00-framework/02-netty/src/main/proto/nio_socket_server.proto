@@ -25,7 +25,7 @@ message SocketMessage {
     // 服务端预定义 消息的域
     uint32 domain = 2;
     // 操作码  code = 0 , opCode 与 请求的 apiMethod 保持一致，code = 1 则会新定义操作码
-    uint32 opCode = 3;
+    uint32 opcode = 3;
     // 业务消息
     BusinessMessage msg = 4;
 }

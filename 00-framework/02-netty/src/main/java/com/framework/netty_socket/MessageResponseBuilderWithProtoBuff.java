@@ -38,7 +38,7 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
         return SocketMessage.newBuilder()
                 .setCode(type)
                 .setDomain(domain)
-                .setOpCode(opcode)
+                .setOpcode(opcode)
                 .setMsg(BusinessMessage.newBuilder()
                         .setVersion(messageBus.getVersion())
                         .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
