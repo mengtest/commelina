@@ -34,9 +34,14 @@ public class Matching extends AbstractActor {
     }
 
     private void joinMatch(JOIN_MATCH joinMatch) {
-        long userId = joinMatch.userId;
+        final long userId = joinMatch.userId;
+        if (matchList.contains(userId)) {
+            log.info("userId exists in queue " + userId + ", ignored.");
+            // 回复 MatchingRouter 的 调用者成功
+            getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+            return;
+        }
         log.info("add queue userId " + userId);
-
         matchList.add(userId);
 
         // 回复 MatchingRouter 的 调用者成功
@@ -79,7 +84,8 @@ public class Matching extends AbstractActor {
     }
 
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
-        for (long userId : failed.getUserIds()) {
+        // fixme 待测试
+        for (final long userId : failed.getUserIds()) {
             matchList.add(userId);
         }
     }
