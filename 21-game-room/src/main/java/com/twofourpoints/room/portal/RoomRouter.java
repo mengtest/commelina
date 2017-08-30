@@ -1,7 +1,7 @@
 package com.twofourpoints.room.portal;
 
-import com.nexus.maven.core.akka.RouterActor;
-import com.nexus.maven.core.message.ApiRequestWithActor;
+import com.framework.coreakka.RouterActor;
+import com.framework.core_message.ApiRequestWithActor;
 
 /**
  * Created by @panyao on 2017/8/17.

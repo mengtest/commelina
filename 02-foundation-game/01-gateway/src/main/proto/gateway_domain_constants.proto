@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.domain_constants;
 
-option java_package = "com.module.foundation.game.gateway.proto";
+option java_package = "com.foundation.game_gateway.proto";
 option java_outer_classname = "DomainConstantsDef";
 option java_multiple_files = true;
 

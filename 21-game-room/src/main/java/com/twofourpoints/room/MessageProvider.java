@@ -1,6 +1,6 @@
 package com.twofourpoints.room;
 
-import com.nexus.maven.core.message.DefaultJsonMessageProvider;
+import com.framework.core_message.DefaultJsonMessageProvider;
 
 /**
  * Created by @panyao on 2017/8/16.

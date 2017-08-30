@@ -1,0 +1,13 @@
+package com.framework.netty_socket;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by @panyao on 2017/8/25.
+ */
+@Component
+public @interface ActorWithApiController {
+
+    int apiPathCode();
+
+}

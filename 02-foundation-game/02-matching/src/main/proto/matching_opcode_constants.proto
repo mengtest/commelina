@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.opcode_constants;
 
-option java_package = "com.module.foundation.game.matching.constants";
+option java_package = "com.foundation.game_matching.proto";
 option java_outer_classname = "OpcodeConstantsDef";
 option java_multiple_files = true;
 

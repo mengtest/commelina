@@ -40,6 +40,9 @@
         <jedis.version>2.9.0</jedis.version>
         <mysql.connector.version>6.0.6</mysql.connector.version>
         <spring.boot.version>1.5.6.RELEASE</spring.boot.version>
+
+        <servlet.version>3.0.1</servlet.version>
+
     </properties>
 
     <dependencies>
@@ -276,6 +279,13 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <!-- ignore web servlet jar-->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-jpa -->
