@@ -18,7 +18,7 @@ public class MatchingActor implements ActorWithApiHandler {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return MatchingRemoteProxyRouterActor.props(DOMAIN_CONSTANTS.MATCHING_VALUE, remotePath, outputHandler);
+        return MatchingRemoteProxyRouterActor.props(MatchingRemoteProxyRouterActor.class, DOMAIN_CONSTANTS.MATCHING_VALUE, remotePath, outputHandler);
     }
 
     private static class MatchingRemoteProxyRouterActor extends ActorWithRemoteProxyRouter {
@@ -28,18 +28,14 @@ public class MatchingActor implements ActorWithApiHandler {
         }
 
         @Override
-        protected void onRequest(ApiRequest request) {
-            RequestArg pathArg = request.getArg(0);
-            if (pathArg == null) {
-                // FIXME: 2017/8/25 远程路由地址
-            }
+        public void onRequest(ApiRequest request) {
 
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 // FIXME: 2017/8/25 必须登陆
             }
 
-            getSelf().tell(ApiRequestWithLogin.newInstance(pathArg.getAsString(), request.getVersion(), userId, request.subArg(1)), getSelf());
+            getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiMethod(), request.getVersion(), request.getArgs()), getSelf());
         }
     }
 

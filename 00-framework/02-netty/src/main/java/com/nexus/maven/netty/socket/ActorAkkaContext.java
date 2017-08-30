@@ -36,7 +36,7 @@ public class ActorAkkaContext implements RouterContext {
     public void doRequestHandler(ChannelHandlerContext ctx, ApiRequest apiRequest) {
         Map<String, ActorRef> actorRefMap = CHANNEL_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(apiRequest.getApiName());
+            ActorRef actorRef1 = actorRefMap.get(apiRequest.getApiPath());
             // 远程复用 actor
             if (actorRef1 != null) {
                 actorRef1.tell(apiRequest, null);

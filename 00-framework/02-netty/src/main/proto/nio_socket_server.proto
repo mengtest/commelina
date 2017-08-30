@@ -23,8 +23,9 @@ enum BusinessProtocol {
 // socket 请求体
 message SocketASK {
     string apiPath = 1; // 接口地址
-    string version = 2; // 接口版本
-    repeated Arg args = 3; // 参数列表
+    string apiMethod = 2; // 接口方法
+    string version = 3; // 接口版本
+    repeated Arg args = 4; // 参数列表
 }
 
 // socket 消息

@@ -23,7 +23,7 @@ public class GatewayConnectActor implements ActorWithApiHandler {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return GatewayActor.props(DOMAIN_CONSTANTS.GATE_WAY_VALUE, outputHandler);
+        return GatewayActor.props(GatewayActor.class, DOMAIN_CONSTANTS.GATE_WAY_VALUE, outputHandler);
     }
 
     private static class GatewayActor extends ActorWithRequestRouter {
@@ -33,7 +33,7 @@ public class GatewayConnectActor implements ActorWithApiHandler {
         }
 
         @Override
-        protected void onRequest(ApiRequest request) {
+        public void onRequest(ApiRequest request) {
             RequestArg tokenArg = request.getArg(0);
             if (tokenArg == null) {
                 // FIXME: 2017/8/25 null 处理

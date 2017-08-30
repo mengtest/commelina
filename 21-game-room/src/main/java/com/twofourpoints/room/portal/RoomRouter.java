@@ -1,7 +1,7 @@
 package com.twofourpoints.room.portal;
 
 import com.nexus.maven.core.akka.RouterActor;
-import com.nexus.maven.core.message.ApiRequestWithLogin;
+import com.nexus.maven.core.message.ApiRequestWithActor;
 import com.nexus.maven.core.message.MemberOfflineEvent;
 import com.nexus.maven.core.message.MemberOnlineEvent;
 
@@ -11,17 +11,7 @@ import com.nexus.maven.core.message.MemberOnlineEvent;
 public class RoomRouter extends RouterActor {
 
     @Override
-    protected void onRequest(ApiRequestWithLogin request) {
-
-    }
-
-    @Override
-    protected void onOnline(MemberOnlineEvent onlineEventWithLogin) {
-
-    }
-
-    @Override
-    protected void onOffline(MemberOfflineEvent offlineEvent) {
+    public void onRequest(ApiRequestWithActor request) {
 
     }
 

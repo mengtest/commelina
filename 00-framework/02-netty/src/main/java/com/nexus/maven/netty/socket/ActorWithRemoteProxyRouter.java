@@ -11,7 +11,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class ActorWithRemoteProxyRouter extends AbstractActor {
+public abstract class ActorWithRemoteProxyRouter extends AbstractActor implements ActorRouterWatching {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -31,7 +31,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor {
                 // 请求事件
                 .match(ApiRequest.class, this::onRequest)
                 // 转发远程 router
-                .match(ApiRequestWithLogin.class, r -> remoteRouterActor.forward(r, getContext()))
+                .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
                 //
                 .match(MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 //
@@ -86,18 +86,12 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor {
                 .build();
     }
 
-    protected abstract void onRequest(ApiRequest request);
-
-    protected void onOnlineEvent(ActorMemberOnlineEvent onlineEvent) {
-        // TODO: 2017/8/29 nothing
-    }
-
-    protected void onOfflineEvent(MemberOfflineEvent offlineEvent) {
+    public void onOfflineEvent(MemberOfflineEvent offlineEvent) {
         getSelf().tell(new MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
     }
 
-    public static Props props(int domain, String remotePath, ChannelOutputHandler context) {
-        return Props.create(ActorWithRemoteProxyRouter.class, domain, remotePath, context);
+    public static Props props(Class<? extends ActorWithRemoteProxyRouter> clazz, int domain, String remotePath, ChannelOutputHandler context) {
+        return Props.create(clazz, domain, remotePath, context);
     }
 
 }

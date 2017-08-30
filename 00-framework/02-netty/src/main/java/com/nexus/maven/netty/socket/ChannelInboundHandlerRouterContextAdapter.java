@@ -51,7 +51,7 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
             Arg arg = request.getArgsList().get(i);
             args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
         }
-        routerContext.doRequestHandler(ctx, ApiRequest.newApiRequest(request.getApiPath(), request.getVersion(), args));
+        routerContext.doRequestHandler(ctx, ApiRequest.newApiRequest(request.getApiPath(), request.getApiMethod(), request.getVersion(), args));
     }
 
     // 调用异常的处理

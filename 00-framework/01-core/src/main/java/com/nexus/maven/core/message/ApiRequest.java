@@ -7,26 +7,29 @@ import com.nexus.maven.core.AppVersion;
  */
 public class ApiRequest implements AppVersion {
 
-    private final String apiName;
+    private final String apiPath;
+    private final String apiMethod;
     private final String version;
     private final RequestArg[] args;
 
-    protected ApiRequest(String apiName, String version, RequestArg[] args) {
-        this.apiName = apiName;
+    public ApiRequest(String apiPath, String apiMethod, String version, RequestArg[] args) {
+        this.apiPath = apiPath;
+        this.apiMethod = apiMethod;
         this.version = version;
         this.args = args;
     }
 
-    public static ApiRequest newApiRequest(String apiName, String version, RequestArg[] args) {
-        return new ApiRequest(apiName, version, args);
+
+    public static ApiRequest newApiRequest(String apiName, String apiMethod, String version, RequestArg[] args) {
+        return new ApiRequest(apiName, apiMethod, version, args);
     }
 
     public String getVersion() {
         return this.version;
     }
 
-    public String getApiName() {
-        return this.apiName;
+    public String getApiPath() {
+        return this.apiPath;
     }
 
     public RequestArg[] getArgs() {
@@ -56,4 +59,7 @@ public class ApiRequest implements AppVersion {
         return args;
     }
 
+    public String getApiMethod() {
+        return apiMethod;
+    }
 }

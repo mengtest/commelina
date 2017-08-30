@@ -20,7 +20,7 @@ public abstract class RouterActorAndAck extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequestWithLogin.class, this::onRequest)
+                .match(ApiRequestWithActor.class, this::onRequest)
                 .match(ResponseMessage.class, r -> getSender().tell(r, getSelf()))
                 .match(ActorRouterResponseMessageAck.class, r -> {
                     if (ackId >= Long.MAX_VALUE) {
@@ -42,6 +42,6 @@ public abstract class RouterActorAndAck extends AbstractActor {
                 .build();
     }
 
-    protected abstract void onRequest(ApiRequestWithLogin request);
+    protected abstract void onRequest(ApiRequestWithActor request);
 
 }

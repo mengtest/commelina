@@ -5,9 +5,8 @@ import akka.actor.Props;
 import com.instruction.matching.apis.ApiDef;
 import com.instruction.matching.service.Matching;
 import com.nexus.maven.core.akka.RouterActor;
-import com.nexus.maven.core.message.ApiRequestWithLogin;
+import com.nexus.maven.core.message.ApiRequestWithActor;
 import com.nexus.maven.core.message.MemberOfflineEvent;
-import com.nexus.maven.core.message.MemberOnlineEvent;
 
 /**
  * Created by @panyao on 2017/8/29.
@@ -17,8 +16,8 @@ public class MatchingRouter extends RouterActor {
     private final ActorRef matching = getContext().actorOf(Matching.props(), "matching");
 
     @Override
-    protected void onRequest(ApiRequestWithLogin request) {
-        switch (Integer.valueOf(request.getApiName())) {
+    public void onRequest(ApiRequestWithActor request) {
+        switch (Integer.valueOf(request.getApiMethod())) {
             case ApiDef.MATCHING_APIS.JOIN_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.JOIN_MATCH(request.getUserId()), this.getSelf());
                 break;
@@ -30,13 +29,8 @@ public class MatchingRouter extends RouterActor {
     }
 
     @Override
-    protected void onOnline(MemberOnlineEvent onlineEventWithLogin) {
-
-    }
-
-    @Override
-    protected void onOffline(MemberOfflineEvent offlineEvent) {
-        //
+    public void onOffline(MemberOfflineEvent offlineEvent) {
+        // 把用户从匹配队列里面移除
         matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), this.getSelf());
     }
 

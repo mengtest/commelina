@@ -9,7 +9,7 @@ import com.nexus.maven.core.message.ResponseMessage;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class ActorWithRequestRouter extends AbstractActor {
+public abstract class ActorWithRequestRouter extends AbstractActor implements ActorRouterWatching {
 
     final int domain;
     protected final ChannelOutputHandler context;
@@ -33,18 +33,12 @@ public abstract class ActorWithRequestRouter extends AbstractActor {
                 .build();
     }
 
-    protected abstract void onRequest(ApiRequest request);
-
-    protected void onOnlineEvent(ActorMemberOnlineEvent onlineEvent) {
-
-    }
-
-    protected void onOfflineEvent(MemberOfflineEvent offlineEvent) {
+    public void onOfflineEvent(MemberOfflineEvent offlineEvent) {
         getContext().stop(getSelf());
     }
 
-    public static Props props(int domain, ChannelOutputHandler context) {
-        return Props.create(ActorWithRequestRouter.class, domain, context);
+    public static Props props(Class<? extends ActorWithRequestRouter> clazz, int domain, ChannelOutputHandler context) {
+        return Props.create(clazz, domain, context);
     }
 
 }
