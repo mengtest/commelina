@@ -35,8 +35,8 @@
         <akka.version>2.5.4</akka.version>
 
         <spring.version>4.3.10.RELEASE</spring.version>
-        <spring.d.jpa.version>1.11.6.RELEASE</spring.d.jpa.version>
-        <spring.d.redis.version>1.8.6.RELEASE</spring.d.redis.version>
+        <spring.data.jpa.version>1.11.6.RELEASE</spring.data.jpa.version>
+        <spring.data.redis.version>1.8.6.RELEASE</spring.data.redis.version>
         <jedis.version>2.9.0</jedis.version>
         <mysql.connector.version>6.0.6</mysql.connector.version>
         <spring.boot.version>1.5.6.RELEASE</spring.boot.version>
@@ -281,8 +281,8 @@
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-jpa -->
             <dependency>
                 <groupId>org.springframework.d</groupId>
-                <artifactId>spring-d-jpa</artifactId>
-                <version>${spring.d.jpa.version}</version>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
             </dependency>
 
             <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager &ndash;&gt;-->
@@ -295,7 +295,7 @@
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-redis -->
             <dependency>
                 <groupId>org.springframework.d</groupId>
-                <artifactId>spring-d-redis</artifactId>
+                <artifactId>spring-data-redis</artifactId>
                 <version>${spring.d.redis.version}</version>
             </dependency>
 
@@ -329,20 +329,20 @@
             <name>Ali Nexus Release Repository</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
         </repository>
-        <!--maven 标准仓库地址-->
-        <repository>
-            <id>maven</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <!-- spring 的仓库 -->
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
+        <!--&lt;!&ndash;maven 标准仓库地址&ndash;&gt;-->
+        <!--<repository>-->
+            <!--<id>maven</id>-->
+            <!--<url>http://repo.maven.apache.org/maven2/</url>-->
+        <!--</repository>-->
+        <!--&lt;!&ndash; spring 的仓库 &ndash;&gt;-->
+        <!--<repository>-->
+            <!--<id>spring-milestones</id>-->
+            <!--<name>Spring Milestones</name>-->
+            <!--<url>https://repo.spring.io/milestone</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
     </repositories>
 
     <build>

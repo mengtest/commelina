@@ -1,8 +1,5 @@
 package com.nexus.maven.netty.socket;
 
-import com.nexus.maven.core.message.ApiRequest;
-import com.nexus.maven.core.message.RequestArg;
-import com.nexus.maven.proto.Arg;
 import com.nexus.maven.proto.SYSTEM_CODE_CONSTANTS;
 import com.nexus.maven.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
@@ -43,13 +40,7 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
                     .createErrorMessage(SYSTEM_CODE_CONSTANTS.PROTOCOL_FORMAT_ERROR_VALUE));
             return;
         }
-        final SocketASK request = (SocketASK) msg;
-        RequestArg[] args = new RequestArg[request.getArgsList().size()];
-        for (int i = 0; i < request.getArgsList().size(); i++) {
-            Arg arg = request.getArgsList().get(i);
-            args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
-        }
-        routerContext.doRequestHandler(ctx, ApiRequest.newApiRequest(() -> request.getApiOpcode(), () -> request.getApiOpcode(), request.getVersion(), args));
+        routerContext.doRequestHandler(ctx, (SocketASK) msg);
     }
 
     // 调用异常的处理

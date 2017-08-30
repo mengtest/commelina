@@ -16,7 +16,7 @@
     <name>root-foundation-game</name>
 
     <modules>
-        <module>../00-framework</module>
+        <!--<module>../00-framework</module>-->
         <module>01-gateway</module>
         <module>02-matching</module>
     </modules>

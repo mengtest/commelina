@@ -1,6 +1,6 @@
 package com.nexus.maven.netty.socket;
 
-import com.nexus.maven.core.message.ApiRequest;
+import com.nexus.maven.core.message.ApiRouterRequest;
 import com.nexus.maven.core.message.MemberOfflineEvent;
 
 /**
@@ -8,8 +8,7 @@ import com.nexus.maven.core.message.MemberOfflineEvent;
  */
 public interface ActorRouterWatching {
 
-
-    void onRequest(ApiRequest request);
+    boolean onRequest(ApiRouterRequest request);
 
     default void onOnlineEvent(ActorMemberOnlineEvent onlineEvent) {
         // TODO: 2017/8/29 nothing

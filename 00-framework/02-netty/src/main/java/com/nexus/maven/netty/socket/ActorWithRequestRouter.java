@@ -2,7 +2,7 @@ package com.nexus.maven.netty.socket;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import com.nexus.maven.core.message.ApiRequest;
+import com.nexus.maven.core.message.ApiRouterRequest;
 import com.nexus.maven.core.message.MemberOfflineEvent;
 import com.nexus.maven.core.message.ResponseMessage;
 
@@ -23,7 +23,11 @@ public abstract class ActorWithRequestRouter extends AbstractActor implements Ac
     public AbstractActor.Receive createReceive() {
         return receiveBuilder()
                 // 请求事件
-                .match(ApiRequest.class, this::onRequest)
+                .match(ApiRouterRequest.class, (r) -> {
+                    if (!this.onRequest(r)) {
+                        this.unhandled(r);
+                    }
+                })
                 // 效应消息
                 .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage))
                 // 上线事件

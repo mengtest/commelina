@@ -3,9 +3,12 @@ package com.nexus.maven.netty.socket;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.google.common.collect.Maps;
-import com.nexus.maven.core.message.ApiRequest;
+import com.nexus.maven.core.message.ApiRouterRequest;
 import com.nexus.maven.core.message.MemberOfflineEvent;
+import com.nexus.maven.core.message.RequestArg;
+import com.nexus.maven.proto.Arg;
 import com.nexus.maven.proto.SYSTEM_CODE_CONSTANTS;
+import com.nexus.maven.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 
@@ -33,18 +36,24 @@ public class ActorAkkaContext implements RouterContext {
     }
 
     @Override
-    public void doRequestHandler(ChannelHandlerContext ctx, ApiRequest apiRequest) {
+    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK socketASK) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(apiRequest.getApiPathCode());
+            ActorRef actorRef1 = actorRefMap.get(socketASK.getApiPathCode());
             // 远程复用 actor
             if (actorRef1 != null) {
-                actorRef1.tell(apiRequest, null);
+                final RequestArg[] args = new RequestArg[socketASK.getArgsList().size()];
+                for (int i = 0; i < socketASK.getArgsList().size(); i++) {
+                    Arg arg = socketASK.getArgsList().get(i);
+                    args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
+                }
+                actorRef1.tell(ApiRouterRequest.newApiRequest(() -> socketASK.getApiOpcode(), socketASK.getVersion(), args), null);
                 return;
             }
         }
         Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
                 .createErrorMessage(SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
+
         ctx.writeAndFlush(msg);
         // FIXME: 2017/8/29 返回值未处理
     }

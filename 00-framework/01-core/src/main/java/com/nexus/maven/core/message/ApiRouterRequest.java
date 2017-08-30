@@ -6,26 +6,20 @@ import com.nexus.maven.core.AppVersion;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ApiRequest implements AppVersion {
+public class ApiRouterRequest implements AppVersion {
 
-    private final Internal.EnumLite apiPathCode;
     private final Internal.EnumLite apiOpcode;
     private final String version;
     private final RequestArg[] args;
 
-    private ApiRequest(Internal.EnumLite apiPathCode, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        this.apiPathCode = apiPathCode;
+    private ApiRouterRequest(Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
         this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
     }
 
-    public static ApiRequest newApiRequest(Internal.EnumLite apiPathCode, Internal.EnumLite apiMethod, String version, RequestArg[] args) {
-        return new ApiRequest(apiPathCode, apiMethod, version, args);
-    }
-
-    public Internal.EnumLite getApiPathCode() {
-        return this.apiPathCode;
+    public static ApiRouterRequest newApiRequest(Internal.EnumLite apiMethod, String version, RequestArg[] args) {
+        return new ApiRouterRequest(apiMethod, version, args);
     }
 
     public Internal.EnumLite getApiOpcode() {

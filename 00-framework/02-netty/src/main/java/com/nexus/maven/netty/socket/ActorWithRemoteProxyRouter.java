@@ -29,7 +29,11 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
         // FIXME: 2017/8/28 待测试
         this.active = receiveBuilder()
                 // 请求事件
-                .match(ApiRequest.class, this::onRequest)
+                .match(ApiRouterRequest.class, (r) -> {
+                    if (!this.onRequest(r)) {
+                        this.unhandled(r);
+                    }
+                })
                 // 转发远程 router
                 .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
                 // 告诉远程的 server 用户重新上线了

@@ -3,6 +3,7 @@ package com.module.foundation.game.matching.portal;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
+import com.module.foundation.game.matching.methods.MATCHING_METHODS;
 import com.nexus.maven.core.message.ApiRequestWithActor;
 import com.nexus.maven.core.message.RequestArg;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class MatchRouterActorTest {
         TestKit probe = new TestKit(system);
 
         ActorRef actorRef = system.actorOf(MatchingRouter.props());
-        actorRef.tell(ApiRequestWithActor.newApiRequestWithActor(0l, "joinMatch", "1.0.0", new RequestArg[]{
+        actorRef.tell(ApiRequestWithActor.newApiRequestWithActor(0l, MATCHING_METHODS.JOIN_MATCH_QUENE, "1.0.0", new RequestArg[]{
                 new RequestArg("1", RequestArg.DATA_TYPE.LONG),
         }), probe.getRef());
 

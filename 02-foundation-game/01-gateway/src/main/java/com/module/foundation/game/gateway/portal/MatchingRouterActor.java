@@ -5,7 +5,7 @@ import com.module.foundation.game.gateway.MessageProvider;
 import com.module.foundation.game.gateway.proto.DOMAIN_CONSTANTS;
 import com.module.foundation.game.gateway.proto.ERROR_CODE_CONSTANTS;
 import com.module.foundation.game.gateway.proto.GATEWAY_APIS;
-import com.nexus.maven.core.message.ApiRequest;
+import com.nexus.maven.core.message.ApiRouterRequest;
 import com.nexus.maven.core.message.ApiRequestWithActor;
 import com.nexus.maven.core.message.BusinessMessage;
 import com.nexus.maven.core.message.ResponseMessage;
@@ -33,15 +33,17 @@ public class MatchingRouterActor implements ActorWithApiHandler {
         }
 
         @Override
-        public void onRequest(ApiRequest request) {
+        public boolean onRequest(ApiRouterRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
+                // 不登录直接告诉客户端错误
                 getSelf().tell(ResponseMessage.newMessage(request.getApiOpcode(),
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.MATCHING_API_UNAUTHORIZED))
                 ), getSelf());
-                return;
+                return true;
             }
             getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            return true;
         }
 
     }

@@ -1,6 +1,6 @@
 package com.nexus.maven.netty.socket;
 
-import com.nexus.maven.core.message.ApiRequest;
+import com.nexus.maven.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public interface RouterContext {
 
-    void doRequestHandler(ChannelHandlerContext ctx, ApiRequest apiRequest);
+    void doRequestHandler(ChannelHandlerContext ctx, SocketASK socketASK);
 
     void onlineEvent(ChannelHandlerContext ctx);
 

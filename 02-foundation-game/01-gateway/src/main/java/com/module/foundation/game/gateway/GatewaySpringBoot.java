@@ -4,7 +4,6 @@ import com.nexus.maven.netty.starter.NettyNioSocketServerForSpringBoot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 
 /**
@@ -12,8 +11,6 @@ import org.springframework.context.annotation.ImportResource;
  */
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-gateway-context.xml"})
-//@ComponentScan("com.game.foundation.gateway")
-@ComponentScan("com.nexus.maven.netty")
 public class GatewaySpringBoot {
 
     public static void main(String[] args) {

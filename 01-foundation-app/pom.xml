@@ -16,7 +16,7 @@
     <name>root-foundation-app</name>
 
     <modules>
-        <module>../00-framework</module>
+        <!--<module>../00-framework</module>-->
         <module>01-platform-api</module>
     </modules>
 

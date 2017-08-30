@@ -16,16 +16,16 @@ public class MatchingRouter extends RouterActor {
     private final ActorRef matching = getContext().actorOf(Matching.props(), "matching");
 
     @Override
-    public void onRequest(ApiRequestWithActor request) {
+    public boolean onRequest(ApiRequestWithActor request) {
         switch (request.getApiOpcode().getNumber()) {
             case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
-                break;
-            case MATCHING_METHODS.REMOVE_MATCH_QUENE_VALUE:
+                return true;
+            case MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.CANCEL_MATCH(request.getUserId(), request.getApiOpcode()), this.getSelf());
-                break;
-            // FIXME: 2017/8/29 处理 接口不存在的情况
+                return true;
         }
+        return false;
     }
 
     @Override
