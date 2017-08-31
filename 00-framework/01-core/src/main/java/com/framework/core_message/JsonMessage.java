@@ -1,6 +1,7 @@
 package com.framework.core_message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.framework.core.BusinessMessage;
 import com.framework.utils.Generator;
 
 /**

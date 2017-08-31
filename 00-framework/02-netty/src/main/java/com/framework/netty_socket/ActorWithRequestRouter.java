@@ -31,7 +31,7 @@ public abstract class ActorWithRequestRouter extends AbstractActor implements Ac
                 // 效应消息
                 .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage))
                 // 上线事件
-                .match(ActorMemberOnlineEvent.class, this::onOnlineEvent)
+                .match(MemberOnlineEvent.class, this::onOnlineEvent)
                 // 下线事件
                 .match(MemberOfflineEvent.class, this::onOfflineEvent)
                 .build();

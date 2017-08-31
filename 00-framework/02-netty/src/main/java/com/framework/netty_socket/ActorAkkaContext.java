@@ -2,13 +2,13 @@ package com.framework.netty_socket;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.framework.core_message.ApiRouterRequest;
 import com.framework.core_message.MemberOfflineEvent;
+import com.framework.core_message.RequestArg;
 import com.framework.proto.Arg;
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;
-import com.google.common.collect.Maps;
-import com.framework.core_message.ApiRouterRequest;
-import com.framework.core_message.RequestArg;
 import com.framework.proto.SocketASK;
+import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 
@@ -72,7 +72,7 @@ public class ActorAkkaContext implements RouterContext {
             }
             actorRefMap1.put(entry.getKey(), actorRef2);
             CHANNEL_ACTORS.put(ctx.channel().id(), actorRefMap1);
-            actorRef2.tell(new ActorMemberOnlineEvent(), null);
+            actorRef2.tell(new ActorRouterWatching.MemberOnlineEvent(), null);
         }
     }
 

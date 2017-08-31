@@ -14,11 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.nexus.maven</groupId>
-            <artifactId>utils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.nexus.maven</groupId>
-            <artifactId>netty</artifactId>
+            <artifactId>web-with-springmvc</artifactId>
         </dependency>
     </dependencies>
 

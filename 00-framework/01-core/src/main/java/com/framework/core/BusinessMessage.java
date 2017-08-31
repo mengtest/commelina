@@ -1,4 +1,4 @@
-package com.framework.core_message;
+package com.framework.core;
 
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;

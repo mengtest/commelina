@@ -37,7 +37,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 // 转发远程 router
                 .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
                 // 告诉远程的 server 用户重新上线了
-                .match(MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
+                .match(com.framework.core_message.MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 告诉远程的 server 用户下线了
                 .match(MemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 回复消息
@@ -49,7 +49,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 // 世界消息
                 .match(WorldMessage.class, w -> MessageAdapter.addWorld(domain, w))
                 // 上线事件
-                .match(ActorMemberOnlineEvent.class, this::onOnlineEvent)
+                .match(MemberOnlineEvent.class, this::onOnlineEvent)
                 // 下线事件
                 .match(MemberOfflineEvent.class, this::onOfflineEvent)
                 .match(Terminated.class, t -> {
@@ -91,15 +91,15 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
     }
 
     public void onOfflineEvent(MemberOfflineEvent offlineEvent) {
-        getSelf().tell(new MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
+        getSelf().tell(new com.framework.core_message.MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
     }
 
     @Override
-    public void onOnlineEvent(ActorMemberOnlineEvent onlineEvent) {
+    public void onOnlineEvent(MemberOnlineEvent onlineEvent) {
         long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
         if (userId > 0) {
             // 由自己的  router 发送到远程
-            getSelf().tell(new MemberOnlineEvent(userId), getSelf());
+            getSelf().tell(new com.framework.core_message.MemberOnlineEvent(userId), getSelf());
             return;
         }
         log.info("nothing to do , channel id:" + context.getRawContext().channel().id().asShortText());
