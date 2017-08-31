@@ -29,7 +29,7 @@ public class ActorAkkaContext implements RouterContext {
     private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_ACTORS = Maps.newLinkedHashMap();
 
     // 初始化本机的 router
-    public final void initRouters(final Map<Integer, ActorWithApiHandler> actorWithApiHandlers) {
+    final void initRouters(final Map<Integer, ActorWithApiHandler> actorWithApiHandlers) {
         for (Map.Entry<Integer, ActorWithApiHandler> entry : actorWithApiHandlers.entrySet()) {
             ROUTERS.put(entry.getKey(), entry.getValue());
         }
@@ -60,6 +60,7 @@ public class ActorAkkaContext implements RouterContext {
 
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
+        // todo 初始化全局逻辑有待商榷
         for (Map.Entry<Integer, ActorWithApiHandler> entry : ROUTERS.entrySet()) {
             ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;

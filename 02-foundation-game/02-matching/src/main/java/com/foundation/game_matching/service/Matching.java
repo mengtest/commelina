@@ -5,10 +5,11 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.google.common.collect.Lists;
-import com.google.protobuf.Internal;
+import com.foundation.game_matching.MatchingSpringBoot;
 import com.foundation.game_matching.MessageProvider;
 import com.framework.core_message.ResponseMessage;
+import com.google.common.collect.Lists;
+import com.google.protobuf.Internal;
 
 import java.util.List;
 
@@ -19,8 +20,12 @@ public class Matching extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private final List<Long> matchList = Lists.newArrayList();
-    private static final int MATCH_SUCCESS_PEOPLE = 100;
+    private final List<Long> matchList;
+    private final int MATCH_SUCCESS_PEOPLE = MatchingSpringBoot.getConfigEntity().getMatchSuccessPeople();
+
+    public Matching() {
+        matchList = Lists.newArrayListWithExpectedSize(MATCH_SUCCESS_PEOPLE);
+    }
 
     @Override
     public Receive createReceive() {
@@ -37,38 +42,29 @@ public class Matching extends AbstractActor {
         final long userId = joinMatch.userId;
         if (matchList.contains(userId)) {
             log.info("userId exists in queue " + userId + ", ignored.");
-            // 回复 MatchingRouter 的 调用者成功
-            getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+            if (joinMatch.apiOpcode != null) {
+                // 回复 MatchingRouter 的 调用者成功
+                getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+            }
             return;
         }
         log.info("add queue userId " + userId);
         matchList.add(userId);
 
-        // 回复 MatchingRouter 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+        if (joinMatch.apiOpcode != null) {
+            // 回复 MatchingRouter 的 调用者成功
+            getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+        }
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
-            final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
-//            int lastPoint = 0;
-//            nextIterator:
-//            while (userIds.length != MATCH_SUCCESS_PEOPLE && matchList.iterator().hasNext()) {
-//                final Long findUserId = matchList.iterator().next();
-//                for (int i = 0; i < userIds.length; i++) {
-//                    if (userIds[i] == findUserId) {
-//                        matchList.remove(findUserId);
-//                        continue nextIterator;
-//                    }
-//                }
-//                matchList.remove(findUserId);
-//                userIds[lastPoint++] = findUserId;
-//            }
-
-            for (int i = 0; i < MATCH_SUCCESS_PEOPLE; i++) {
-                userIds[i] = matchList.remove(i);
-            }
-
-            final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
-            matchingRedirect.forward(new MatchingRedirect.CREATE_ROOM(userIds), getContext());
+            do {
+                final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
+                for (int i = 0; i < MATCH_SUCCESS_PEOPLE; i++) {
+                    userIds[i] = matchList.remove(i);
+                }
+                final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
+                matchingRedirect.forward(new MatchingRedirect.CREATE_ROOM(userIds), getContext());
+            } while (matchList.size() >= MATCH_SUCCESS_PEOPLE);
         } else {
             long[] userIds = new long[matchList.size()];
             for (int i = 0; i < matchList.size(); i++) {
@@ -99,9 +95,10 @@ public class Matching extends AbstractActor {
     }
 
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
-        // 这里最好能够通知客户端匹配失败
-        // fixme 待测试
-        // 记录匹配失败
+        // 把用户重新加入失败队列
+        for (long userId : failed.getUserIds()) {
+            getSelf().tell(new JOIN_MATCH(userId, null), getSelf());
+        }
     }
 
     // http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html
