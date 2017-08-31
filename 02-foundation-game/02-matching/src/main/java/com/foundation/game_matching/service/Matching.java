@@ -49,9 +49,24 @@ public class Matching extends AbstractActor {
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
+//            int lastPoint = 0;
+//            nextIterator:
+//            while (userIds.length != MATCH_SUCCESS_PEOPLE && matchList.iterator().hasNext()) {
+//                final Long findUserId = matchList.iterator().next();
+//                for (int i = 0; i < userIds.length; i++) {
+//                    if (userIds[i] == findUserId) {
+//                        matchList.remove(findUserId);
+//                        continue nextIterator;
+//                    }
+//                }
+//                matchList.remove(findUserId);
+//                userIds[lastPoint++] = findUserId;
+//            }
+
             for (int i = 0; i < MATCH_SUCCESS_PEOPLE; i++) {
                 userIds[i] = matchList.remove(i);
             }
+
             final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
             matchingRedirect.forward(new MatchingRedirect.CREATE_ROOM(userIds), getContext());
         } else {
@@ -84,10 +99,9 @@ public class Matching extends AbstractActor {
     }
 
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
+        // 这里最好能够通知客户端匹配失败
         // fixme 待测试
-        for (final long userId : failed.getUserIds()) {
-            matchList.add(userId);
-        }
+        // 记录匹配失败
     }
 
     // http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html
