@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- netty server config -->
+    <!-- netty serclientConfignfig -->
     <!--<import resource="classpath*:/spring-netty-context.xml"></import>-->
 
     <!-- spring ioc 容器配置 -->

@@ -3,15 +3,15 @@ package com.framework.netty_socket;
 import com.framework.core_message.ResponseMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
 public class ChannelOutputHandler {
 
-    private final Logger LOGGER = Logger.getLogger(ChannelOutputHandler.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelOutputHandler.class);
 
     ChannelHandlerContext channelHandlerContext;
 
@@ -25,11 +25,11 @@ public class ChannelOutputHandler {
             // FIXME: 2017/8/8 全部转换为领域模型
             // 异常
             //  throw new Exception(future.cause());
-            LOGGER.info(future.cause().getMessage());
+            LOGGER.error("{}", future.cause());
         } else {
             // 取消
             //  throw new Exception("客户端取消执行");
-            LOGGER.info("client cancel receive message.");
+            LOGGER.error("client cancel receive message.");
         }
     }
 

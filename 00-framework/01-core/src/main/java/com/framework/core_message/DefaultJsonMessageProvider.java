@@ -1,6 +1,5 @@
 package com.framework.core_message;
 
-import com.framework.core.BusinessMessage;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 

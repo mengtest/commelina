@@ -1,4 +1,4 @@
-package com.framework.core;
+package com.framework.core_message;
 
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;
@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
  * @coding.net https://coding.net/u/pandaxia
  * @github https://github.com/freedompy
  */
-public class BusinessMessage {
+public final class BusinessMessage {
 
     private final int businessCode;
     private final Object data;

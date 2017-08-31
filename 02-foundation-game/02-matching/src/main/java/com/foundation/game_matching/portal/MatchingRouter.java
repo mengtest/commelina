@@ -6,7 +6,7 @@ import com.foundation.game_matching.proto.MATCHING_METHODS;
 import com.foundation.game_matching.service.Matching;
 import com.framework.core_message.ApiRequestWithActor;
 import com.framework.core_message.MemberOfflineEvent;
-import com.framework.coreakka.RouterActor;
+import com.framework.core_akka.RouterActor;
 
 /**
  * Created by @panyao on 2017/8/29.

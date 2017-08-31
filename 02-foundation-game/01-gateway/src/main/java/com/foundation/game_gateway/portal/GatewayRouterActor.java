@@ -7,7 +7,7 @@ import com.foundation.game_gateway.proto.DOMAIN_CONSTANTS;
 import com.foundation.game_gateway.proto.ERROR_CODE_CONSTANTS;
 import com.foundation.game_gateway.proto.GATEWAY_APIS;
 import com.framework.core_message.ApiRouterRequest;
-import com.framework.core.BusinessMessage;
+import com.framework.core_message.BusinessMessage;
 import com.framework.core_message.RequestArg;
 import com.framework.core_message.ResponseMessage;
 import com.framework.netty_socket.*;

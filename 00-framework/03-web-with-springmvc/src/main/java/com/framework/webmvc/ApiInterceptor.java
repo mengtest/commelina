@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ApiInterceptor extends HandlerInterceptorAdapter {
 
     /**
-     * controller 执行之前执行，做一些预处理
-     *
      * @param request
      * @param response
      * @param handler
@@ -22,7 +20,6 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
     @Override
     public final boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        // 会话上下文
 
         return true;
     }

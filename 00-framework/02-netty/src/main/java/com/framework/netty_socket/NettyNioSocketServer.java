@@ -11,20 +11,19 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
 /**
  * Created by @panyao on 2017/8/3.
  */
 public class NettyNioSocketServer {
 
-    private static final Logger LOGGER = Logger.getLogger(NettyNioSocketServer.class.getName());
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
     private Channel serverChannel;
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     // 默认线程数是 cpu 核数的两倍
@@ -84,7 +83,7 @@ public class NettyNioSocketServer {
         if (!future.isSuccess()) {
             throw new IOException("Failed to bind", future.cause());
         }
-        LOGGER.info(String.format("listen port:%d started.", port));
+        LOGGER.info("listen port:{} started.", port);
         serverChannel = future.channel();
     }
 

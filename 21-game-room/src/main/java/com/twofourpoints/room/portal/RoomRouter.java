@@ -1,6 +1,6 @@
 package com.twofourpoints.room.portal;
 
-import com.framework.coreakka.RouterActor;
+import com.framework.core_akka.RouterActor;
 import com.framework.core_message.ApiRequestWithActor;
 
 /**

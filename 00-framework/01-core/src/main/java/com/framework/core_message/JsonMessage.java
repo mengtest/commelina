@@ -1,13 +1,16 @@
 package com.framework.core_message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.framework.core.BusinessMessage;
 import com.framework.utils.Generator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by @panyao on 2017/8/10.
  */
 final class JsonMessage implements MessageBus {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonMessage.class);
 
     private final BusinessMessage message;
 
@@ -19,7 +22,7 @@ final class JsonMessage implements MessageBus {
         try {
             return Generator.getJsonHolder().writeValueAsBytes(this.message);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getOriginalMessage());
             return null;
         }
     }

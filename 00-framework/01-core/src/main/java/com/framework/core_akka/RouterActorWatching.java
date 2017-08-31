@@ -1,4 +1,4 @@
-package com.framework.coreakka;
+package com.framework.core_akka;
 
 import com.framework.core_message.ApiRequestWithActor;
 import com.framework.core_message.MemberOfflineEvent;
