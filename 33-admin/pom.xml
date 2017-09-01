@@ -2,9 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.twentyfourpoints.bussiess</groupId>
-        <artifactId>root</artifactId>
+        <groupId>com.module.foundation.app</groupId>
+        <artifactId>app-root</artifactId>
         <version>1.0.0</version>
+        <relativePath>../01-foundation-app</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

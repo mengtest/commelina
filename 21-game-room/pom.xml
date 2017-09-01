@@ -2,9 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.twentyfourpoints.bussiess</groupId>
-        <artifactId>root</artifactId>
+        <groupId>com.module.foundation.game</groupId>
+        <artifactId>game-root</artifactId>
         <version>1.0.0</version>
+        <relativePath>../02-foundation-game</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -17,6 +18,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>utils</artifactId>
