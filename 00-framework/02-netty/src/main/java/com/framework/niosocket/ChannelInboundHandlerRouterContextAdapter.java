@@ -1,4 +1,4 @@
-package com.framework.netty_socket;
+package com.framework.niosocket;
 
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;
 import com.framework.proto.SocketASK;

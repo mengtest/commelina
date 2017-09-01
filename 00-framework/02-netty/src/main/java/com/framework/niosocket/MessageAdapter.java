@@ -1,4 +1,4 @@
-package com.framework.netty_socket;
+package com.framework.niosocket;
 
 import com.framework.core_message.BroadcastMessage;
 import com.framework.core_message.NotifyMessage;

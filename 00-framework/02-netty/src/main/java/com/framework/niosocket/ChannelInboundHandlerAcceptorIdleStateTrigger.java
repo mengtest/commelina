@@ -1,4 +1,4 @@
-package com.framework.netty_socket;
+package com.framework.niosocket;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

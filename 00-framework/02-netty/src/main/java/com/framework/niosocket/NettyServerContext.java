@@ -1,4 +1,4 @@
-package com.framework.netty_socket;
+package com.framework.niosocket;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

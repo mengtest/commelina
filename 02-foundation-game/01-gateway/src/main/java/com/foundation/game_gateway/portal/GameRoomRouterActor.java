@@ -2,9 +2,9 @@ package com.foundation.game_gateway.portal;
 
 import akka.actor.Props;
 import com.foundation.game_gateway.proto.GATEWAY_APIS;
-import com.framework.netty_socket.ActorWithApiController;
-import com.framework.netty_socket.ActorWithApiHandler;
-import com.framework.netty_socket.ChannelOutputHandler;
+import com.framework.niosocket.ActorWithApiController;
+import com.framework.niosocket.ActorWithApiHandler;
+import com.framework.niosocket.ChannelOutputHandler;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
