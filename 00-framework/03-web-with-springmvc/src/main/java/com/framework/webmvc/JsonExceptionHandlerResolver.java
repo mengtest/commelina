@@ -17,7 +17,6 @@ import java.io.PrintWriter;
 /**
  * Created by @panyao on 2016/8/19.
  */
-
 public final class JsonExceptionHandlerResolver extends ExceptionHandlerExceptionResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonExceptionHandlerResolver.class);

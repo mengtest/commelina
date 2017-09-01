@@ -1,18 +1,26 @@
 package com.foundation.app.passport.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import com.framework.webmvc.ResponseBodyMessage;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by @panyao on 2017/8/31.
  */
 @RestController
-@Controller
-@ControllerAdvice
+@RequestMapping("/api/passport/connect")
 public class Connect {
 
+    @RequestMapping("/haochang/tel")
+    public ResponseBodyMessage haochang() {
 
+        return null;
+    }
 
+    @RequestMapping("/haochang/wx")
+    public ResponseBodyMessage wx() {
+
+        return null;
+    }
 
 }

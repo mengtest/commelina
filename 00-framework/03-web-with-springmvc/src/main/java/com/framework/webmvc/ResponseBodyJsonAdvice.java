@@ -1,5 +1,7 @@
 package com.framework.webmvc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -14,12 +16,16 @@ import org.springframework.web.servlet.mvc.method.annotation.AbstractMappingJack
 @Configuration
 public class ResponseBodyJsonAdvice extends AbstractMappingJacksonResponseBodyAdvice {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseBodyJsonAdvice.class);
+
     @Override
     protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType,
                                            MethodParameter returnType, ServerHttpRequest request,
                                            ServerHttpResponse response) {
-        if (!(bodyContainer.getValue() instanceof ResponseBodyMessage)) {
-            throw new RuntimeException("response message must be instanceof " + ResponseBodyMessage.class);
+        if (LOGGER.isDebugEnabled()) {
+            if (!(bodyContainer.getValue() instanceof ResponseBodyMessage)) {
+                throw new RuntimeException("response message must be instanceof " + ResponseBodyMessage.class);
+            }
         }
     }
 
