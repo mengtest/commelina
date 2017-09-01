@@ -37,9 +37,13 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
                     }
                 }
             }
-            response.setHeader("authenticated-token", sessionHandler.iniAnonymous());
+            response.setHeader("authenticated-token", sessionHandler.initAnonymous());
         } while (false);
         return true;
+    }
+
+    public static void addLogin(String token, HttpServletResponse response) {
+        response.setHeader("authenticated-token", token);
     }
 
 }

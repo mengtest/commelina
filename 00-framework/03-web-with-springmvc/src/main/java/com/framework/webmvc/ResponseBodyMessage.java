@@ -6,9 +6,6 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2016/8/24.
  *
- * @author panyao
- * @coding.net https://coding.net/u/pandaxia
- * @github https://github.com/freedompy
  */
 public final class ResponseBodyMessage {
 
@@ -48,6 +45,18 @@ public final class ResponseBodyMessage {
 
     public static ResponseBodyMessage success(Internal.EnumLite code, Object data) {
         return new ResponseBodyMessage(code.getNumber(), data);
+    }
+
+    public int getBusinessCode() {
+        return businessCode;
+    }
+
+    public long getServerTimeMillis() {
+        return serverTimeMillis;
+    }
+
+    public Object getData() {
+        return data;
     }
 
 }

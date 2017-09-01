@@ -2,7 +2,6 @@ package com.framework.webmvc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -13,9 +12,7 @@ import java.io.IOException;
  * Created by @panyao on 2016/4/25.
  * http://jackyrong.iteye.com/blog/2247621
  */
-@Configuration
 public class JsonMessageConverter extends MappingJackson2HttpMessageConverter {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonMessageConverter.class);
 
     /**

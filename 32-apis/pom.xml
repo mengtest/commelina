@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.module.foundation.app</groupId>
+        <groupId>com.foundation.app</groupId>
         <artifactId>app-root</artifactId>
         <version>1.0.0</version>
         <relativePath>../01-foundation-app</relativePath>
@@ -16,6 +16,13 @@
     <properties>
         <docker.image.prefix>app-api</docker.image.prefix>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.foundation.app</groupId>
+            <artifactId>foundation-app-platform</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -34,6 +41,20 @@
                         </resource>
                     </resources>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.twentyfourpoints.api.ApiBoot</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

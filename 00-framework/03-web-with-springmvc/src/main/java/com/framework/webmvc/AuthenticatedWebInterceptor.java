@@ -29,46 +29,53 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        Breaking:
-        do {
-            for (Cookie cookie : request.getCookies()) {
-                if ("sid".equals(cookie.getName())) {
-                    if (!Strings.isNullOrEmpty(cookie.getValue())) {
-                        SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(cookie.getValue());
-                        if (entity.userId > 0) {
-                            request.setAttribute("userId", entity.userId);
-                            if (!cookie.getValue().equals(entity.newToken)) {
-                                this.addSessionCookie(entity.newToken, request, response);
-                            }
-                            break Breaking;
-                        }
-                    }
-                    break;
-                }
-            }
-            this.addSessionCookie(sessionHandler.iniAnonymous(), request, response);
-        } while (false);
-        return true;
-    }
-
-    private void addSessionCookie(String token, HttpServletRequest request, HttpServletResponse response) {
-        Cookie session = new Cookie("authenticated-token", token);
 
         if (domain == null) {
             // passport.example.com -> example.com
             String pattenDomain = URLUtils.getDomain(request.getServerName());
             if (pattenDomain != null) {
                 domain = "." + pattenDomain;
-                session.setDomain(domain);
             }
-        } else {
-            session.setDomain(domain);
         }
 
+        Breaking:
+        do {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : request.getCookies()) {
+                    if ("sid".equals(cookie.getName())) {
+                        if (!Strings.isNullOrEmpty(cookie.getValue())) {
+                            SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(cookie.getValue());
+                            if (entity.userId > 0) {
+                                request.setAttribute("userId", entity.userId);
+                                if (!cookie.getValue().equals(entity.newToken)) {
+                                    addSessionCookie(entity.newToken, response);
+                                }
+                                break Breaking;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            addSessionCookie(sessionHandler.initAnonymous(), response);
+        } while (false);
+        return true;
+    }
+
+    private static void addSessionCookie(String token, HttpServletResponse response) {
+        Cookie session = new Cookie("authenticated-token", token);
+        if (domain != null) {
+            session.setDomain(domain);
+        }
         session.setPath("/");
         session.setHttpOnly(true);
 
         response.addCookie(session);
+    }
+
+    public static void addLogin(String token, HttpServletResponse response) {
+        addSessionCookie(token, response);
     }
 
 }

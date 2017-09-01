@@ -9,10 +9,18 @@ public interface SessionHandler {
 
     String doSignIn(long userId);
 
-    String iniAnonymous();
+    String initAnonymous();
 
     class ValidTokenEntity {
         long userId;
         String newToken;
+
+        public void setUserId(long userId) {
+            this.userId = userId;
+        }
+
+        public void setNewToken(String newToken) {
+            this.newToken = newToken;
+        }
     }
 }

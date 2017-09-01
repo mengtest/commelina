@@ -1,7 +1,5 @@
 package com.foundation.app;
 
-import com.framework.webmvc.JsonMessageConverter;
-import com.framework.webmvc.ResponseBodyJsonAdvice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,19 +11,12 @@ import org.springframework.context.annotation.Bean;
 public class AppBoot {
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(AppBoot.class);
-        app.setWebEnvironment(false);
-        app.run(args);
+        SpringApplication.run(AppBoot.class);
     }
 
     @Bean
-    public ResponseBodyJsonAdvice createJsonAdvice() {
-        return new ResponseBodyJsonAdvice();
-    }
-
-    @Bean
-    public JsonMessageConverter converter() {
-        return new JsonMessageConverter();
+    public PlatformConfig platformConfig() {
+        return new PlatformConfig();
     }
 
 }
