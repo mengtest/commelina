@@ -5,7 +5,6 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.foundation.game_matching.MatchingSpringBoot;
 import com.foundation.game_matching.MessageProvider;
 import com.framework.core_message.ResponseMessage;
 import com.google.common.collect.Lists;
@@ -21,10 +20,11 @@ public class Matching extends AbstractActor {
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
     private final List<Long> matchList;
-    private final int MATCH_SUCCESS_PEOPLE = MatchingSpringBoot.getConfigEntity().getMatchSuccessPeople();
+    private final int MATCH_SUCCESS_PEOPLE;
 
-    public Matching() {
-        matchList = Lists.newArrayListWithExpectedSize(MATCH_SUCCESS_PEOPLE);
+    public Matching(int successPeople, int queueRate) {
+        MATCH_SUCCESS_PEOPLE = successPeople;
+        matchList = Lists.newArrayListWithExpectedSize(MATCH_SUCCESS_PEOPLE * queueRate);
     }
 
     @Override
@@ -131,8 +131,8 @@ public class Matching extends AbstractActor {
         }
     }
 
-    public static Props props() {
-        return Props.create(Matching.class);
+    public static Props props(int successPeople, int queueRate) {
+        return Props.create(Matching.class, successPeople, queueRate);
     }
 
     //    @Override

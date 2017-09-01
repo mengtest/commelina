@@ -1,17 +1,33 @@
 package com.foundation.game_matching;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
  * Created by @panyao on 2017/8/31.
  */
-public final class MatchingConfigEntity {
+@ConfigurationProperties(prefix = "matching")
+public class MatchingConfigEntity {
 
-    private final int matchSuccessPeople;
+    private int queueSucessPeople;
+    private int queueSizeRate;
 
-    MatchingConfigEntity(int matchSuccessPeople) {
-        this.matchSuccessPeople = matchSuccessPeople;
+    public int getQueueSuccessPeople() {
+        return queueSucessPeople;
     }
 
-    public int getMatchSuccessPeople() {
-        return matchSuccessPeople;
+    public int getQueueSizeRate() {
+        return queueSizeRate;
+    }
+
+    public int getQueueSucessPeople() {
+        return queueSucessPeople;
+    }
+
+    public void setQueueSucessPeople(int queueSucessPeople) {
+        this.queueSucessPeople = queueSucessPeople;
+    }
+
+    public void setQueueSizeRate(int queueSizeRate) {
+        this.queueSizeRate = queueSizeRate;
     }
 }

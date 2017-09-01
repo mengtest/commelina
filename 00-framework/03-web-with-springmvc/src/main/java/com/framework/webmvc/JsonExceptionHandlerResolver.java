@@ -34,24 +34,20 @@ public final class JsonExceptionHandlerResolver extends ExceptionHandlerExceptio
             message = ResponseBodyMessage.success(() -> ResponseBodyMessage.SERVER_ERROR, exception);
         }
 
-        PrintWriter printWriter;
-        try {
-            printWriter = response.getWriter();
-        } catch (IOException e) {
-            LOGGER.error("{}", e);
-            return null;
-        }
-
         String bytes;
         try {
             bytes = Generator.getJsonHolder().writeValueAsString(message);
         } catch (JsonProcessingException e) {
             LOGGER.error("{}", e);
-            printWriter.print("{\"businessCode\":-1,\"data\":\"unknown error.\"}");
-            return null;
+            bytes = ResponseBodyMessage.getServerErrorJson();
         }
 
-        printWriter.print(bytes);
+        try (PrintWriter printWriter = response.getWriter()) {
+            printWriter.print(bytes);
+        } catch (IOException e) {
+            LOGGER.error("{}", e);
+        }
+
         return null;
 //        return super.doResolveHandlerMethodException(request, response, handlerMethod, exception);
     }

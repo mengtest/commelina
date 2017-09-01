@@ -2,18 +2,23 @@ package com.foundation.game_matching.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import com.foundation.game_matching.MatchingConfigEntity;
 import com.foundation.game_matching.proto.MATCHING_METHODS;
 import com.foundation.game_matching.service.Matching;
+import com.framework.core_akka.RouterActor;
 import com.framework.core_message.ApiRequestWithActor;
 import com.framework.core_message.MemberOfflineEvent;
-import com.framework.core_akka.RouterActor;
 
 /**
  * Created by @panyao on 2017/8/29.
  */
 public class MatchingRouter extends RouterActor {
 
-    private final ActorRef matching = getContext().actorOf(Matching.props(), "matching");
+    private final ActorRef matching;
+
+    public MatchingRouter(MatchingConfigEntity configEntity) {
+        matching = getContext().actorOf(Matching.props(configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
+    }
 
     @Override
     public boolean onRequest(ApiRequestWithActor request) {
@@ -34,8 +39,8 @@ public class MatchingRouter extends RouterActor {
         matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), getSelf());
     }
 
-    public static Props props() {
-        return Props.create(MatchingRouter.class);
+    public static Props props(MatchingConfigEntity configEntity) {
+        return Props.create(MatchingRouter.class, configEntity);
     }
 
 }

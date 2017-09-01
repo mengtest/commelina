@@ -1,3 +1,3 @@
 matching:
-  queue:
-    successPeople: 10
+  queueSuccessPeople: 10
+  queueSizeRate: 2

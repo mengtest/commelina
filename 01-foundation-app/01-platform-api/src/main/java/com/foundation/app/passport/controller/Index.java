@@ -1,6 +1,7 @@
 package com.foundation.app.passport.controller;
 
 import com.framework.webmvc.ResponseBodyMessage;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -8,5 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class Index {
+
+    @RequestMapping("/")
+    public ResponseBodyMessage home() {
+        return ResponseBodyMessage.success();
+    }
 
 }

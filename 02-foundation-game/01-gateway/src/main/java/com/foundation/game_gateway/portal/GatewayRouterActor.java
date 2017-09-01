@@ -22,7 +22,6 @@ import java.util.List;
 @ActorWithApiController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
 public class GatewayRouterActor implements ActorWithApiHandler {
 
-    @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
         return GatewayActor.props(GatewayActor.class, DOMAIN_CONSTANTS.GATE_WAY_VALUE, outputHandler);
     }
