@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ImportResource;
  * Created by @panyao on 2017/8/10.
  */
 @SpringBootApplication
-@ImportResource(locations={"classpath:spring-gateway-context.xml"})
 public class GatewaySpringBoot {
 
     public static void main(String[] args) {

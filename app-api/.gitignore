@@ -1,4 +1,4 @@
-*.class
+target/classes/com/foundation/app/client_app/controller/Resource.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

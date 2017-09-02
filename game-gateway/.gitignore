@@ -12,7 +12,7 @@
 hs_err_pid*
 
 # IDE intellij忽略
-*.iml
+foundation-game-gateway.iml
 /.idea
 /*/.idea
 /*/*/.idea

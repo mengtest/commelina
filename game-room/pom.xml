@@ -1,34 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+
     <parent>
-        <groupId>com.nexus.maven</groupId>
-        <artifactId>framework-root</artifactId>
+        <groupId>com.game</groupId>
+        <artifactId>game-root</artifactId>
         <version>1.0.0</version>
-        <relativePath>../00-framework</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.module.foundation.game</groupId>
-    <artifactId>game-root</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>game-room</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>root-foundation-game</name>
-
-    <modules>
-        <!--<module>../00-framework</module>-->
-        <module>01-gateway</module>
-        <module>02-matching</module>
-    </modules>
 
     <properties>
-        <docker.image.prefix>instruction-service</docker.image.prefix>
+        <docker.image.prefix>game-room</docker.image.prefix>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>core</artifactId>
         </dependency>
     </dependencies>
 
@@ -50,6 +50,7 @@
                     </resources>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

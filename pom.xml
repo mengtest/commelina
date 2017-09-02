@@ -1,20 +1,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <parent>
+        <groupId>com.nexus.maven</groupId>
+        <artifactId>framework-root</artifactId>
+        <version>1.0.0</version>
+        <relativePath>./framework</relativePath>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.twentyfourpoints.bussiess</groupId>
-    <artifactId>root</artifactId>
+    <groupId>com.game</groupId>
+    <artifactId>game-root</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    <name>root</name>
 
     <modules>
-        <module>00-framework</module>
-        <module>01-foundation-app</module>
-        <module>02-foundation-game</module>
-        <!-- 本地包管理结束 -->
-        <module>21-game-room</module>
-        <module>32-apis</module>
-        <module>33-admin</module>
+        <module>framework</module>
+        <module>app-api</module>
+        <module>game-gateway</module>
+        <module>game-matching</module>
+        <module>game-room</module>
     </modules>
+
+    <properties>
+        <docker.image.prefix>instruction-service</docker.image.prefix>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
