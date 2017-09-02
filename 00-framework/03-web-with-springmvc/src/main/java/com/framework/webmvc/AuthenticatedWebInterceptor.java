@@ -42,7 +42,7 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
         do {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
-                for (Cookie cookie : request.getCookies()) {
+                for (Cookie cookie : cookies) {
                     if ("sid".equals(cookie.getName())) {
                         if (!Strings.isNullOrEmpty(cookie.getValue())) {
                             SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(cookie.getValue());
@@ -64,7 +64,7 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
     }
 
     private static void addSessionCookie(String token, HttpServletResponse response) {
-        Cookie session = new Cookie("authenticated-token", token);
+        Cookie session = new Cookie("sid", token);
         if (domain != null) {
             session.setDomain(domain);
         }

@@ -21,16 +21,16 @@ public class MatchingRouter extends RouterActor {
     }
 
     @Override
-    public boolean onRequest(ApiRequestWithActor request) {
+    public void onRequest(ApiRequestWithActor request) {
         switch (request.getApiOpcode().getNumber()) {
             case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), getSelf());
-                return true;
+                return;
             case MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.CANCEL_MATCH(request.getUserId(), request.getApiOpcode()), getSelf());
-                return true;
+                return;
         }
-        return false;
+        this.unhandled(request);
     }
 
     @Override

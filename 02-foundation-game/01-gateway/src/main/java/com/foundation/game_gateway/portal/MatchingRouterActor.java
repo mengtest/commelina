@@ -33,17 +33,16 @@ public class MatchingRouterActor implements ActorWithApiHandler {
         }
 
         @Override
-        public boolean onRequest(ApiRouterRequest request) {
+        public void onRequest(ApiRouterRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 // 不登录直接告诉客户端错误
                 getSelf().tell(ResponseMessage.newMessage(request.getApiOpcode(),
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.MATCHING_API_UNAUTHORIZED))
                 ), getSelf());
-                return true;
+                return;
             }
             getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
-            return true;
         }
 
     }

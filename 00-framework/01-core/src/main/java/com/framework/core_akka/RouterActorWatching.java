@@ -10,7 +10,7 @@ import com.framework.core_message.MemberOnlineEvent;
 public interface RouterActorWatching {
 
     // 请求
-    boolean onRequest(ApiRequestWithActor request);
+    void onRequest(ApiRequestWithActor request);
 
     // 上线
     default void onOnline(MemberOnlineEvent onlineEventWithLogin){

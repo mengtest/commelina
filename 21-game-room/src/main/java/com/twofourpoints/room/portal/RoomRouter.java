@@ -9,9 +9,8 @@ import com.framework.core_message.ApiRequestWithActor;
 public class RoomRouter extends RouterActor {
 
     @Override
-    public boolean onRequest(ApiRequestWithActor request) {
+    public void onRequest(ApiRequestWithActor request) {
 
-        return true;
     }
 
     //      [

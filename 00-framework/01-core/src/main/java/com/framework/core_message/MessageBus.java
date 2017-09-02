@@ -15,4 +15,6 @@ public interface MessageBus extends AppVersion {
 
     byte[] getBytes();
 
+    String getVersion();
+
 }

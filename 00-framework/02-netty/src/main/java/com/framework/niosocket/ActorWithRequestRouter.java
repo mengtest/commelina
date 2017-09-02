@@ -24,9 +24,7 @@ public abstract class ActorWithRequestRouter extends AbstractActor implements Ac
         return receiveBuilder()
                 // 请求事件
                 .match(ApiRouterRequest.class, (r) -> {
-                    if (!this.onRequest(r)) {
-                        this.unhandled(r);
-                    }
+                    this.onRequest(r);
                 })
                 // 效应消息
                 .match(ResponseMessage.class, responseMessage -> context.writeAndFlush(domain, responseMessage))

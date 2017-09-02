@@ -6,9 +6,6 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2016/8/24.
  *
- * @author panyao
- * @coding.net https://coding.net/u/pandaxia
- * @github https://github.com/freedompy
  */
 public final class BusinessMessage {
 

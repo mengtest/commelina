@@ -33,7 +33,7 @@ public class GatewayRouterActor implements ActorWithApiHandler {
         }
 
         @Override
-        public boolean onRequest(ApiRouterRequest request) {
+        public void onRequest(ApiRouterRequest request) {
             switch (request.getApiOpcode().getNumber()) {
                 case 0:
                     RequestArg tokenArg = request.getArg(0);
@@ -51,9 +51,9 @@ public class GatewayRouterActor implements ActorWithApiHandler {
                     // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
                     // 回复自己完成了操作
                     getSelf().tell(ResponseMessage.newMessage(request.getApiOpcode(), MessageProvider.produceMessage()), getSender());
-                    return true;
+                    return;
             }
-            return false;
+            this.unhandled(request);
         }
     }
 

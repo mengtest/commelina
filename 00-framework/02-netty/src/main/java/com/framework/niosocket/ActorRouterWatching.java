@@ -9,7 +9,7 @@ import com.framework.core_message.MemberOfflineEvent;
  */
 public interface ActorRouterWatching {
 
-    boolean onRequest(ApiRouterRequest request);
+    void onRequest(ApiRouterRequest request);
 
     default void onOnlineEvent(ActorRouterWatching.MemberOnlineEvent onlineEvent) {
         // TODO: 2017/8/29 nothing

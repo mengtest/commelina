@@ -27,18 +27,17 @@ public final class JsonExceptionHandlerResolver extends ExceptionHandlerExceptio
                                                            HandlerMethod handlerMethod,
                                                            Exception exception) {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        ResponseBodyMessage message;
-        if (LOGGER.isDebugEnabled()) {
-            message = ResponseBodyMessage.error(() -> ResponseBodyMessage.SERVER_ERROR);
-        } else {
-            message = ResponseBodyMessage.success(() -> ResponseBodyMessage.SERVER_ERROR, exception);
-        }
-
         String bytes;
-        try {
-            bytes = Generator.getJsonHolder().writeValueAsString(message);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("{}", e);
+        if (LOGGER.isDebugEnabled()) {
+            ResponseBodyMessage message = ResponseBodyMessage.success(() -> ResponseBodyMessage.SERVER_ERROR, exception);
+            try {
+                bytes = Generator.getJsonHolder().writeValueAsString(message);
+            } catch (JsonProcessingException e) {
+                LOGGER.error("{}", e);
+                bytes = ResponseBodyMessage.getServerErrorJson();
+                response.addHeader("debug-failed", "1");
+            }
+        } else {
             bytes = ResponseBodyMessage.getServerErrorJson();
         }
 

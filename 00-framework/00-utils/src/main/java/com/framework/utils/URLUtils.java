@@ -18,12 +18,12 @@ public final class URLUtils {
      */
     public static String getDomain(String url) {
         Pattern pattern = Pattern
-                .compile("[\\w-]+\\.(com|net|org|cn|gov|cc|biz|info|cn|co|com.cn|net.cn|gov.cn|org.cn)\\b()*$");
+                .compile("[\\w-]+\\.(com|net|org|cn)\\b()*$");
         Matcher matcher = pattern.matcher(url);
         if (matcher.find()) {
             String domain = matcher.group();
-            // a.b
-            if (domain != null && domain.trim().length() >= 3) {
+            // a.cn
+            if (domain != null && domain.trim().length() >= 4) {
                 return domain;
             }
         }

@@ -25,7 +25,7 @@ public final class Generator {
     /**
      * --------------------------------------------分割线---------------------------------------------------------------
      */
-    public static class JsonHolder {
+    private static class JsonHolder {
 
         private static ObjectMapper objectMapper = new ObjectMapper() {
             {

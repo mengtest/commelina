@@ -5,7 +5,6 @@ import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2016/8/24.
- *
  */
 public final class ResponseBodyMessage {
 
@@ -17,11 +16,9 @@ public final class ResponseBodyMessage {
     private static final int DEFAULT_SUCCESS = 0;
     static final int SERVER_ERROR = -1;
 
-    private static final String SERVER_ERROR_WITH_JSON1 = "{\"businessCode\":" + SERVER_ERROR + ",\"serverTimeMillis\":";
-    private static final String SERVER_ERROR_WITH_JSON2 = ",\"data\":\"unknown error.\"}";
-
     static String getServerErrorJson() {
-        return SERVER_ERROR_WITH_JSON1 + System.currentTimeMillis() + SERVER_ERROR_WITH_JSON2;
+        return "{\"businessCode\":" + SERVER_ERROR + ",\"serverTimeMillis\":"
+                + System.currentTimeMillis() + ",\"data\":\"unknown error.\"}";
     }
 
     private ResponseBodyMessage(int businessCode, Object data) {

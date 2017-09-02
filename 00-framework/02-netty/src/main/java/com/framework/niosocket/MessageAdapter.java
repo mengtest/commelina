@@ -15,12 +15,12 @@ class MessageAdapter {
 
 //    private static final Logger LOGGER = Logger.getLogger(MessageAdapter.class.getName());
 
-    static void addNotify(int domain,  NotifyMessage message) throws IOException {
+    static void addNotify(int domain, NotifyMessage message) {
         Channel channel = NettyServerContext.getInstance().getUserChannel(message.getUserId());
         channel.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage()));
     }
 
-    static void addBroadcast(int domain, BroadcastMessage message) throws IOException {
+    static void addBroadcast(int domain, BroadcastMessage message) {
         final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
         for (long userId : message.getUserIds()) {
@@ -29,7 +29,7 @@ class MessageAdapter {
         }
     }
 
-    static void addWorld(int domain, WorldMessage message) throws IOException {
+    static void addWorld(int domain, WorldMessage message) {
         final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
         for (Long userId : NettyServerContext.getInstance().LOGIN_USERS.values()) {

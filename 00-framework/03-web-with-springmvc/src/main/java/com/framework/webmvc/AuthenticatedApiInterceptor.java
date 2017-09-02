@@ -27,17 +27,17 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
             throws Exception {
         String token = request.getHeader("authenticated-token");
         do {
-            if (Strings.isNullOrEmpty(token)) {
+            if (!Strings.isNullOrEmpty(token)) {
                 SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(token);
                 if (entity.userId > 0) {
                     request.setAttribute("userId", entity.userId);
                     if (!token.equals(entity.newToken)) {
-                        response.setHeader("authenticated-token", entity.newToken);
+                        addLogin(entity.newToken, response);
                         break;
                     }
                 }
             }
-            response.setHeader("authenticated-token", sessionHandler.initAnonymous());
+            addLogin(sessionHandler.initAnonymous(), response);
         } while (false);
         return true;
     }

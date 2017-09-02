@@ -40,9 +40,9 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
                 .setDomain(domain)
                 .setOpcode(opcode)
                 .setMsg(BusinessMessage.newBuilder()
-                        .setVersion(messageBus.getVersion())
                         .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                         .setMsg(ByteString.copyFrom(bytes))
+                        .setVersion(messageBus.getVersion())
                 ).build();
     }
 
