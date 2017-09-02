@@ -6,7 +6,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.foundation.game_matching.MessageProvider;
 import com.foundation.game_matching.proto.OPCODE_CONSTANTS;
-import com.framework.core_message.BroadcastMessage;
+import com.framework.core.BroadcastMessage;
 
 /**
  * Created by @panyao on 2017/8/14.

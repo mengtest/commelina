@@ -17,7 +17,7 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
-            <bean class="com.framework.webmvc.JsonMessageConverter"/>
+            <bean class="com.framework.web.JsonMessageConverter"/>
             <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
@@ -26,13 +26,13 @@
         <mvc:interceptor>
             <mvc:mapping path="/api"/>
             <mvc:mapping path="/api/*"/>
-            <bean class="com.framework.webmvc.AuthenticatedApiInterceptor"></bean>
+            <bean class="com.framework.web.AuthenticatedApiInterceptor"></bean>
         </mvc:interceptor>
-        <bean class="com.framework.webmvc.AuthenticatedWebInterceptor"></bean>
+        <bean class="com.framework.web.AuthenticatedWebInterceptor"></bean>
     </mvc:interceptors>
 
     <!-- 拦截器配置 -->
-    <bean class="com.framework.webmvc.JsonExceptionHandlerResolver"></bean>
+    <bean class="com.framework.web.JsonExceptionHandlerResolver"></bean>
 
     <!-- session 实现 -->
     <bean class="com.foundation.app.SessionHandlerImpl"></bean>

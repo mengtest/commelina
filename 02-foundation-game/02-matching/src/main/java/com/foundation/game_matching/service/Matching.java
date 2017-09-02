@@ -6,7 +6,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.foundation.game_matching.MessageProvider;
-import com.framework.core_message.ResponseMessage;
+import com.framework.core.ResponseMessage;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
 

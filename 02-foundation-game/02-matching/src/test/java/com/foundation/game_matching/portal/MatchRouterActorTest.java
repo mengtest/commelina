@@ -5,8 +5,8 @@ import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
 import com.foundation.game_matching.MatchingConfigEntity;
 import com.foundation.game_matching.proto.MATCHING_METHODS;
-import com.framework.core_message.ApiRequestWithActor;
-import com.framework.core_message.RequestArg;
+import com.framework.core.ApiRequestWithActor;
+import com.framework.core.RequestArg;
 import org.junit.Test;
 
 /**

@@ -1,7 +1,7 @@
 package com.foundation.app;
 
 import com.foundation.app.passport.service.SessionService;
-import com.framework.webmvc.SessionHandler;
+import com.framework.web.SessionHandler;
 
 import java.util.UUID;
 

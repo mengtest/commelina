@@ -1,6 +1,6 @@
 package com.twofourpoints.room;
 
-import com.framework.core_message.JsonMessageProvider;
+import com.framework.core.JsonMessageProvider;
 
 /**
  * Created by @panyao on 2017/8/16.

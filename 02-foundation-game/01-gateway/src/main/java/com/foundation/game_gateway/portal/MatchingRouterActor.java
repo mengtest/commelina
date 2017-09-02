@@ -5,10 +5,10 @@ import com.foundation.game_gateway.MessageProvider;
 import com.foundation.game_gateway.proto.DOMAIN_CONSTANTS;
 import com.foundation.game_gateway.proto.ERROR_CODE_CONSTANTS;
 import com.foundation.game_gateway.proto.GATEWAY_APIS;
-import com.framework.core_message.ApiRequestWithActor;
-import com.framework.core_message.ApiRouterRequest;
-import com.framework.core_message.BusinessMessage;
-import com.framework.core_message.ResponseMessage;
+import com.framework.core.ApiRequestWithActor;
+import com.framework.core.ApiRouterRequest;
+import com.framework.core.BusinessMessage;
+import com.framework.core.ResponseMessage;
 import com.framework.niosocket.*;
 import org.springframework.beans.factory.annotation.Value;
 

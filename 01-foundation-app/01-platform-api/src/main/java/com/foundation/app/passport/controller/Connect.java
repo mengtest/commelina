@@ -1,6 +1,6 @@
 package com.foundation.app.passport.controller;
 
-import com.framework.webmvc.ResponseBodyMessage;
+import com.framework.web.ResponseBodyMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
