@@ -3,9 +3,9 @@ package com.game.gateway.portal;
 
 import akka.actor.Props;
 import com.game.gateway.MessageProvider;
-import com.game_gateway.proto.DOMAIN_CONSTANTS;
-import com.game_gateway.proto.ERROR_CODE_CONSTANTS;
-import com.game_gateway.proto.GATEWAY_APIS;
+import com.game.gateway.proto.DOMAIN_CONSTANTS;
+import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
+import com.game.gateway.proto.GATEWAY_APIS;
 import com.framework.message.ApiRouterRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;

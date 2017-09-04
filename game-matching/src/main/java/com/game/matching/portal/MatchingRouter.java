@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.game.matching.service.Matching;
 import com.game.matching.MatchingConfigEntity;
-import com.game_matching.proto.MATCHING_METHODS;
+import com.game.matching.proto.MATCHING_METHODS;
 import com.framework.message.RouterActor;
 import com.framework.message.ApiRequestWithActor;
 import com.framework.message.MemberOfflineEvent;

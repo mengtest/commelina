@@ -23,7 +23,7 @@ public class Captcha {
     @RequestMapping(value = "/sms", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBodyMessage telephone(@RequestParam String tel) {
-        
+
         return null;
     }
 

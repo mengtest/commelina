@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.game.matching.MessageProvider;
-import com.game_matching.proto.OPCODE_CONSTANTS;
+import com.game.matching.proto.OPCODE_CONSTANTS;
 import com.framework.message.BroadcastMessage;
 
 /**
