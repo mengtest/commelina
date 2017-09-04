@@ -4,7 +4,7 @@ import com.framework.proto.BusinessMessage;
 import com.framework.proto.BusinessProtocol;
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;
 import com.google.protobuf.ByteString;
-import com.framework.core.MessageBus;
+import com.framework.message.MessageBus;
 import com.framework.proto.SocketMessage;
 
 /**

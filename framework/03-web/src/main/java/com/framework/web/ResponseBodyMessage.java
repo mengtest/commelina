@@ -3,16 +3,17 @@ package com.framework.web;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;
 
+import java.io.Serializable;
+
 /**
  * Created by @panyao on 2016/8/24.
  */
-public final class ResponseBodyMessage {
+public final class ResponseBodyMessage<T extends Serializable> {
 
     private final int businessCode;
     private final long serverTimeMillis;
-    private final Object data;
+    private final T data;
 
-    private static final String DEFAULT_DATA = null;
     private static final int DEFAULT_SUCCESS = 0;
     static final int SERVER_ERROR = -1;
 
@@ -21,27 +22,27 @@ public final class ResponseBodyMessage {
                 + System.currentTimeMillis() + ",\"data\":\"unknown error.\"}";
     }
 
-    private ResponseBodyMessage(int businessCode, Object data) {
+    private ResponseBodyMessage(int businessCode, T data) {
         this.businessCode = businessCode;
         this.serverTimeMillis = System.currentTimeMillis();
         this.data = data;
     }
 
-    public static ResponseBodyMessage error(Internal.EnumLite code) {
+    public static ResponseBodyMessage<String> error(Internal.EnumLite code) {
         Preconditions.checkArgument(code.getNumber() > 0);
-        return success(code, DEFAULT_DATA);
+        return success(code, null);
     }
 
-    public static ResponseBodyMessage success() {
-        return new ResponseBodyMessage(DEFAULT_SUCCESS, DEFAULT_DATA);
+    public static ResponseBodyMessage<String> success() {
+        return new ResponseBodyMessage<String>(DEFAULT_SUCCESS, null);
     }
 
-    public static ResponseBodyMessage success(Object data) {
-        return new ResponseBodyMessage(DEFAULT_SUCCESS, data);
+    public static <T extends Serializable> ResponseBodyMessage<T> success(T data) {
+        return new ResponseBodyMessage<>(DEFAULT_SUCCESS, data);
     }
 
-    public static ResponseBodyMessage success(Internal.EnumLite code, Object data) {
-        return new ResponseBodyMessage(code.getNumber(), data);
+    public static <T extends Serializable> ResponseBodyMessage<T> success(Internal.EnumLite code, T data) {
+        return new ResponseBodyMessage<>(code.getNumber(), data);
     }
 
     public int getBusinessCode() {
@@ -52,7 +53,7 @@ public final class ResponseBodyMessage {
         return serverTimeMillis;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 

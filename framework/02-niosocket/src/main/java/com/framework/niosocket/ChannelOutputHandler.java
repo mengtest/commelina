@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.core.ResponseMessage;
+import com.framework.message.ResponseMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;

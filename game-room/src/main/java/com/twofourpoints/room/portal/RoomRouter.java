@@ -1,7 +1,7 @@
 package com.twofourpoints.room.portal;
 
-import com.framework.core.RouterActor;
-import com.framework.core.ApiRequestWithActor;
+import com.framework.message.RouterActor;
+import com.framework.message.ApiRequestWithActor;
 
 /**
  * Created by @panyao on 2017/8/17.

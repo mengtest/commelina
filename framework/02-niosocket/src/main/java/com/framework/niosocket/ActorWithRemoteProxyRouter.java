@@ -3,7 +3,7 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.core.*;
+import com.framework.message.*;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -33,7 +33,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 // 转发远程 router
                 .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
                 // 告诉远程的 server 用户重新上线了
-                .match(com.framework.core.MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
+                .match(com.framework.message.MemberOnlineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 告诉远程的 server 用户下线了
                 .match(MemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 回复消息
@@ -87,7 +87,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
     }
 
     public void onOfflineEvent(MemberOfflineEvent offlineEvent) {
-        getSelf().tell(new com.framework.core.MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
+        getSelf().tell(new com.framework.message.MemberOnlineEvent(offlineEvent.getUserId()), getSelf());
     }
 
     @Override
@@ -95,7 +95,7 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
         long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
         if (userId > 0) {
             // 由自己的  router 发送到远程
-            getSelf().tell(new com.framework.core.MemberOnlineEvent(userId), getSelf());
+            getSelf().tell(new com.framework.message.MemberOnlineEvent(userId), getSelf());
             return;
         }
         log.info("nothing to do , channel id:" + context.getRawContext().channel().id().asShortText());

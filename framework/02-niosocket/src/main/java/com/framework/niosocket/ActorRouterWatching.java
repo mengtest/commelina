@@ -1,8 +1,8 @@
 package com.framework.niosocket;
 
 
-import com.framework.core.ApiRouterRequest;
-import com.framework.core.MemberOfflineEvent;
+import com.framework.message.ApiRouterRequest;
+import com.framework.message.MemberOfflineEvent;
 
 /**
  * Created by panyao on 2017/8/30.

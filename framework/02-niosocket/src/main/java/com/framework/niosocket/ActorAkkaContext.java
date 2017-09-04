@@ -2,9 +2,9 @@ package com.framework.niosocket;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.framework.core.ApiRouterRequest;
-import com.framework.core.MemberOfflineEvent;
-import com.framework.core.RequestArg;
+import com.framework.message.ApiRouterRequest;
+import com.framework.message.MemberOfflineEvent;
+import com.framework.message.RequestArg;
 import com.framework.proto.Arg;
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;
 import com.framework.proto.SocketASK;

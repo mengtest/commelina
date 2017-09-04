@@ -1,7 +1,7 @@
 package com.framework.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.framework.core.Generator;
+import com.framework.utils.Generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public final class JsonExceptionHandlerResolver extends ExceptionHandlerExceptio
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         String bytes;
         if (LOGGER.isDebugEnabled()) {
-            ResponseBodyMessage message = ResponseBodyMessage.success(() -> ResponseBodyMessage.SERVER_ERROR, exception);
+            ResponseBodyMessage<Exception> message = ResponseBodyMessage.success(() -> ResponseBodyMessage.SERVER_ERROR, exception);
             try {
                 bytes = Generator.getJsonHolder().writeValueAsString(message);
             } catch (JsonProcessingException e) {

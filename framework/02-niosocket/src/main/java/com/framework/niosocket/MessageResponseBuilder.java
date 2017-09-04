@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.core.MessageBus;
+import com.framework.message.MessageBus;
 
 /**
  * Created by @panyao on 2017/8/24.

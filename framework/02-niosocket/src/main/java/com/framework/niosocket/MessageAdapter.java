@@ -1,8 +1,8 @@
 package com.framework.niosocket;
 
-import com.framework.core.BroadcastMessage;
-import com.framework.core.NotifyMessage;
-import com.framework.core.WorldMessage;
+import com.framework.message.BroadcastMessage;
+import com.framework.message.NotifyMessage;
+import com.framework.message.WorldMessage;
 import io.netty.channel.Channel;
 
 /**

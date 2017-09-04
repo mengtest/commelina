@@ -31,7 +31,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.foundation.game_matching.MatchingSpringBoot</mainClass>
+                    <mainClass>com.game.matching.MatchingSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
