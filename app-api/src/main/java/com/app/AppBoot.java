@@ -15,6 +15,9 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource(locations = {
         "classpath:spring-beans.xml",
         "classpath:spring-mvc.xml",
+        "classpath:data-redis-connection-factory.xml",
+        "classpath:data-jpa-session-factory.xml",
+        "classpath:data-beans.xml",
 })
 @ComponentScan("com.framework.data")
 public class AppBoot {
