@@ -18,16 +18,26 @@ public class RedisKvRepositoryImpl implements RedisKvRepository {
 
     @Override
     public void put(String k, Integer v, Long pTtl) {
-        stringRedisTemplate.opsForValue().set(k, v + "", pTtl, TimeUnit.MICROSECONDS);
+        stringRedisTemplate.opsForValue().set("kv:" + k, v + "", pTtl, TimeUnit.MICROSECONDS);
+    }
+
+    @Override
+    public void remove(String k) {
+        stringRedisTemplate.delete("kv:" + k);
     }
 
     @Override
     public int getAsInt(String k) {
-        String val = stringRedisTemplate.opsForValue().get(k);
+        String val = this.getAsString(k);
         if (Strings.isNullOrEmpty(val)) {
             return 0;
         }
         return Integer.valueOf(val);
+    }
+
+    @Override
+    public String getAsString(String k) {
+        return stringRedisTemplate.opsForValue().get("kv:" + k);
     }
 
 }

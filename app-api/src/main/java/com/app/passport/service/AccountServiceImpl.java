@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setPwd(PWDUitls.createPwd(tel));
+        memberEntity.setPwd(PWDUtils.createPwd(tel));
         memberEntity = memberRepository.save(memberEntity);
 
         AccountEntity accountEntity = new AccountEntity();
@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
             return ServiceDomainEmptyMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_EXISTS);
         }
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setPwd(PWDUitls.createPwd(pwd));
+        memberEntity.setPwd(PWDUtils.createPwd(pwd));
         memberEntity = memberRepository.save(memberEntity);
 
         AccountEntity accountEntity = new AccountEntity();
@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_MEMBER_NOT_FOUND);
         }
 
-        String inputHashPwd = PWDUitls.createPwd(pwd);
+        String inputHashPwd = PWDUtils.createPwd(pwd);
         if (!inputHashPwd.equals(memberEntity.getPwd())) {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.PASSWORD_VALID_ERROR);
         }

@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
 import com.game.matching.MatchingConfigEntity;
-import com.game_matching.proto.MATCHING_METHODS;
+import com.game.matching.proto.MATCHING_METHODS;
 import com.framework.message.ApiRequestWithActor;
 import com.framework.message.RequestArg;
 import org.junit.Test;

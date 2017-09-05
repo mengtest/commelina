@@ -7,6 +7,10 @@ public interface RedisKvRepository {
 
     void put(String k, Integer v, Long pTtl);
 
+    void remove(String k);
+
     int getAsInt(String k);
+
+    String getAsString(String k);
 
 }

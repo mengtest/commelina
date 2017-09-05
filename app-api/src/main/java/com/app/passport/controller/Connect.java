@@ -3,6 +3,7 @@ package com.app.passport.controller;
 import com.app.passport.entity.MemberEntity;
 import com.app.passport.proto.ERROR_CODE_CONSTANTS;
 import com.app.passport.service.AccountService;
+import com.app.passport.service.CaptchaService;
 import com.framework.utils.ServiceDomainMessage;
 import com.framework.web.AuthenticatedApiInterceptor;
 import com.framework.web.ResponseBodyMessage;
@@ -29,6 +30,9 @@ public class Connect {
     @Resource
     private SessionHandler sessionHandler;
 
+    @Resource
+    private CaptchaService captchaService;
+
     /**
      * 手机免密登录
      *
@@ -44,11 +48,9 @@ public class Connect {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
         }
 
-        // INPUT_CODE_ERROR
-
-//        if (pwd == null || pwd.length() < 6 || pwd.length() > 16) {
-//            return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_PWD_LENGTH_ERROR);
-//        }
+        if (!captchaService.validTelephoneCode(tel, smsCode + "")) {
+            return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_SMS_CODE_ERROR);
+        }
 
         ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelAndNoPassword(tel);
         if (message.isSucess()) {

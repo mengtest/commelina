@@ -13,9 +13,9 @@ class ParamValid {
     static boolean telephone(String tel) {
         Matcher matcher = telephonePattern.matcher(tel);
         if (matcher.find()) {
-            String pregTel = matcher.group();
+            String matchedTelephone = matcher.group();
             // a.cn
-            if (pregTel != null && pregTel.trim().length() >= 4) {
+            if (matchedTelephone != null && matchedTelephone.trim().length() == 11) {
                 return true;
             }
         }
