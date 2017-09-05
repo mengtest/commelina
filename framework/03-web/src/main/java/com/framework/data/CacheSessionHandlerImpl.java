@@ -24,7 +24,7 @@ public class CacheSessionHandlerImpl implements SessionHandler {
     private static final Long SESSION_EXPIRE_TTL = 7 * 86400 * 1000L;
     private static final Long ANONYMOUS_EXPIRE_TTL = 5 * 60 * 1000L;
 
-    private static final int tokenChangeTime = 60000;
+    private static final Long TOKEN_CHANGE_TIME = 60000L;
 
     private final Logger logger = LoggerFactory.getLogger(CacheSessionHandlerImpl.class);
 
@@ -48,22 +48,30 @@ public class CacheSessionHandlerImpl implements SessionHandler {
         if (tokenEntity.getUid() > 0) {
             final long sid = cacheKvRepository.getAsLong(prefix + tokenEntity.getUid());
             if (sid != tokenEntity.getSid()) {
+                // 明天最好改成 list
+                final long userId = cacheKvRepository.getAsLong(prefix + tokenEntity.getSid());
+                if (userId <= 0 || userId != tokenEntity.getUid()) {
+                    cacheKvRepository.remove(prefix + tokenEntity.getSid());
+                    return null;
+                }
+
                 // 令被劫持的 uid 下的 token 失效
-                if (System.currentTimeMillis() - tokenEntity.getExpireTime() - SESSION_EXPIRE_TTL > tokenChangeTime) {
+                if (System.currentTimeMillis() - tokenEntity.getExpireTime() - SESSION_EXPIRE_TTL > TOKEN_CHANGE_TIME) {
+                    cacheKvRepository.remove(prefix + tokenEntity.getSid());
                     cacheKvRepository.remove(prefix + tokenEntity.getUid());
                     return null;
                 }
                 // 在此期间，两个 token 都有效
             } else {
                 // token 快要过期就交换 token
-                if (tokenEntity.getExpireTime() - tokenChangeTime < System.currentTimeMillis()) {
+                if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
                     validTokenEntity.setNewToken(doSignIn(tokenEntity.getUid()));
                 }
             }
             validTokenEntity.setUserId(tokenEntity.getUid());
         } else {
             // 匿名用户
-            if (tokenEntity.getExpireTime() - tokenChangeTime < System.currentTimeMillis()) {
+            if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
                 validTokenEntity.setNewToken(refreshAnonymousToken(tokenEntity.getSid()));
             }
         }
@@ -75,9 +83,12 @@ public class CacheSessionHandlerImpl implements SessionHandler {
     public String doSignIn(long userId) {
         final long sid = snowflakeIdWorker.nextId();
         String token = TokenUtils.encodeToken(userId, sid, SESSION_EXPIRE_TTL);
+        // FIXME: 2017/9/5 这里明天要改成一个用户持有一个 list 才对，
+        // 交换 token ，永远只保留最新的一个 token
         long oldSid = cacheKvRepository.getAndSet(prefix + userId, sid, SESSION_EXPIRE_TTL);
         if (oldSid > 0) {
             logger.info("Old sid {}, new sid {}.", oldSid, userId);
+            cacheKvRepository.put(prefix + sid, userId, TOKEN_CHANGE_TIME);
         }
         return token;
     }
