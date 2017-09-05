@@ -3,6 +3,7 @@ package com.app;
 import com.app.passport.service.SessionService;
 import com.framework.web.SessionHandler;
 
+import javax.annotation.Resource;
 import java.util.UUID;
 
 /**
@@ -10,7 +11,7 @@ import java.util.UUID;
  */
 public class SessionHandlerImpl implements SessionHandler {
 
-//    @Resource
+    @Resource
     private SessionService sessionService;
 
     @Override

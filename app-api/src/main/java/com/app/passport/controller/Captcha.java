@@ -27,7 +27,9 @@ public class Captcha {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
         }
+
         captchaService.telephoneSms(tel);
+
         return ResponseBodyMessage.success();
     }
 
