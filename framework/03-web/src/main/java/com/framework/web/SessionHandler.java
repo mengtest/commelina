@@ -5,25 +5,41 @@ package com.framework.web;
  */
 public interface SessionHandler {
 
-    ValidTokenEntity validToken(String token);
+    String ATTRIBUTE_USER_ID = "userId";
+    String ATTRIBUTE_SID = "sid";
 
-    String doSignIn(long userId);
+    // 成功 != null
+    SessionTokenEntity validToken(String token);
 
-    String initAnonymous();
+    SessionTokenEntity doSignIn(long userId);
 
-    class ValidTokenEntity {
+    TokenEntity initAnonymous();
+
+    class SessionTokenEntity {
         long userId;
-        String newToken;
+        TokenEntity tokenEntity;
 
         public void setUserId(long userId) {
             this.userId = userId;
         }
 
-        public void setNewToken(String newToken) {
-            this.newToken = newToken;
+        public void setTokenEntity(TokenEntity tokenEntity) {
+            this.tokenEntity = tokenEntity;
         }
     }
 
-    ValidTokenEntity EMPTY_TOKEN_ENTITY = new ValidTokenEntity();
+    class TokenEntity {
+        long sid;
+        String newToken;
+
+        public void setSid(long sid) {
+            this.sid = sid;
+        }
+
+        public void setNewToken(String newToken) {
+            this.newToken = newToken;
+        }
+
+    }
 
 }

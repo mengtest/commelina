@@ -28,8 +28,10 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(CacheSessionHandlerImpl.class);
 
+    // FIXME: 2017/9/5 两个问题，1 token 需要改成list维护 2 sessionHandler 还需要打磨
+
     @Override
-    public ValidTokenEntity validToken(String token) {
+    public SessionTokenEntity validToken(String token) {
         TokenEntity tokenEntity = TokenUtils.decodeToken(token);
         if (tokenEntity == null) {
             return null;
@@ -43,7 +45,7 @@ public class CacheSessionHandlerImpl implements SessionHandler {
             return null;
         }
 
-        ValidTokenEntity validTokenEntity = new ValidTokenEntity();
+        SessionTokenEntity sessionTokenEntity = new SessionTokenEntity();
         // 登录用户
         if (tokenEntity.getUid() > 0) {
             final long sid = cacheKvRepository.getAsLong(prefix + tokenEntity.getUid());
@@ -65,18 +67,18 @@ public class CacheSessionHandlerImpl implements SessionHandler {
             } else {
                 // token 快要过期就交换 token
                 if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
-                    validTokenEntity.setNewToken(doSignIn(tokenEntity.getUid()));
+                    sessionTokenEntity.setNewToken(doSignIn(tokenEntity.getUid()));
                 }
             }
-            validTokenEntity.setUserId(tokenEntity.getUid());
+            sessionTokenEntity.setUserId(tokenEntity.getUid());
         } else {
-            // 匿名用户
+            // 匿名用户 不需要验证
             if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
-                validTokenEntity.setNewToken(refreshAnonymousToken(tokenEntity.getSid()));
+                return null;
             }
         }
 
-        return validTokenEntity;
+        return sessionTokenEntity;
     }
 
     @Override
@@ -95,13 +97,7 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
     @Override
     public String initAnonymous() {
-        return refreshAnonymousToken(anonymousSnowflakeIdWorker.nextId());
-    }
-
-    private String refreshAnonymousToken(long sid) {
-        String token = TokenUtils.encodeToken(0, sid, ANONYMOUS_EXPIRE_TTL);
-        cacheKvRepository.put(prefix + sid, 0, ANONYMOUS_EXPIRE_TTL);
-        return token;
+        return TokenUtils.encodeToken(0, anonymousSnowflakeIdWorker.nextId(), ANONYMOUS_EXPIRE_TTL);
     }
 
 }

@@ -43,7 +43,8 @@ public class Connect {
      */
     @RequestMapping(value = "/nopasswordtel", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode, HttpServletResponse response) {
+    public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode,
+                                                 HttpServletResponse response) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
         }
