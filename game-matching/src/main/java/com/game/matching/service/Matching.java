@@ -10,7 +10,9 @@ import com.framework.message.ResponseMessage;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by @panyao on 2017/8/10.
@@ -59,8 +61,9 @@ public class Matching extends AbstractActor {
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             do {
                 final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
-                for (int i = 0; i < MATCH_SUCCESS_PEOPLE; i++) {
-                    userIds[i] = matchList.remove(i);
+                for (int i = 0; i < MATCH_SUCCESS_PEOPLE && matchList.iterator().hasNext(); i++) {
+                    userIds[i] = matchList.iterator().next();
+                    matchList.iterator().remove();
                 }
                 final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
                 matchingRedirect.forward(new MatchingRedirect.CREATE_ROOM(userIds), getContext());

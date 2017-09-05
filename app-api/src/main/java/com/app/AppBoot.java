@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ImportResource;
 public class AppBoot {
 
     public static void main(String[] args) {
+
         SpringApplication.run(AppBoot.class);
     }
 
