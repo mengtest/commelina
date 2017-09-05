@@ -44,6 +44,7 @@ public class CacheSessionHandlerImpl implements SessionHandler {
         }
 
         ValidTokenEntity validTokenEntity = new ValidTokenEntity();
+        // 登录用户
         if (tokenEntity.getUid() > 0) {
             final long sid = cacheKvRepository.getAsLong(prefix + tokenEntity.getUid());
             if (sid != tokenEntity.getSid()) {
@@ -54,12 +55,14 @@ public class CacheSessionHandlerImpl implements SessionHandler {
                 }
                 // 在此期间，两个 token 都有效
             } else {
+                // token 快要过期就交换 token
                 if (tokenEntity.getExpireTime() - tokenChangeTime < System.currentTimeMillis()) {
                     validTokenEntity.setNewToken(doSignIn(tokenEntity.getUid()));
                 }
             }
             validTokenEntity.setUserId(tokenEntity.getUid());
         } else {
+            // 匿名用户
             if (tokenEntity.getExpireTime() - tokenChangeTime < System.currentTimeMillis()) {
                 validTokenEntity.setNewToken(refreshAnonymousToken(tokenEntity.getSid()));
             }

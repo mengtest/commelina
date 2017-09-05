@@ -7,6 +7,6 @@ public interface CaptchaService {
 
     void telephoneSms(String tel);
 
-    boolean validTelephoneCode(String tel, String code);
+    boolean validTelephoneCode(String tel, int code);
 
 }

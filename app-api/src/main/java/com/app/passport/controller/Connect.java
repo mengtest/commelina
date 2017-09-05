@@ -48,7 +48,7 @@ public class Connect {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
         }
 
-        if (!captchaService.validTelephoneCode(tel, smsCode + "")) {
+        if (!captchaService.validTelephoneCode(tel, smsCode)) {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_SMS_CODE_ERROR);
         }
 

@@ -1,8 +1,7 @@
 package com.app.passport.service;
 
-import com.framework.utils.RandomEnhanced;
 import com.framework.data.CacheKvRepository;
-import com.google.common.base.Strings;
+import com.framework.utils.RandomEnhanced;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -30,12 +29,16 @@ public class CaptchaServiceImpl implements CaptchaService {
     }
 
     @Override
-    public boolean validTelephoneCode(String tel, String code) {
-        if (Strings.isNullOrEmpty(code)) {
+    public boolean validTelephoneCode(String tel, int code) {
+        if (code <= 0) {
             return false;
         }
         final int cacheCode = cacheKvRepository.getAsInt(tel);
-        cacheKvRepository.remove(tel);
-        return Integer.valueOf(code).equals(cacheCode);
+        // 验证成功，移除 code
+        if (Integer.valueOf(code).equals(cacheCode)) {
+            cacheKvRepository.remove(tel);
+            return true;
+        }
+        return false;
     }
 }
