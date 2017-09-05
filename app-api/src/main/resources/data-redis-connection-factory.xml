@@ -5,9 +5,14 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         ">
 
-    <bean class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
+    <bean id="lettuceConnectionFactory"
+          class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
         <property name="hostName" value="127.0.0.1"/>
         <property name="port" value="6379"/>
+    </bean>
+
+    <bean class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="lettuceConnectionFactory"/>
     </bean>
 
 </beans>

@@ -59,13 +59,11 @@
         <!--实体类位置-->
         <property name="packagesToScan">
             <list>
-                <value>com.foundation.app.client_app.entity</value>
-                <value>com.foundation.app.passport.entity</value>
-                <value>com.foundation.app.pay.entity</value>
+                <value>com.app.passport.entity</value>
             </list>
         </property>
         <!--持久化单元名-->
-        <property name="persistenceUnitName" value="TestJPA"/>
+        <property name="persistenceUnitName" value="GlobalJPA"/>
         <!--JPA提供者-->
         <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence"/>
         <!--JPA属性-->
@@ -97,7 +95,7 @@
     <!--定义接口实现的后缀，通常用Impl-->
     <!--定义实体工厂的引用-->
     <!--定义事务管理器的引用-->
-    <jpa:repositories base-package="com.foundation.app.version.dao"
+    <jpa:repositories base-package="com.app.passport.dao"
                       repository-impl-postfix="Impl"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
