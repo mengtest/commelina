@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,18 +16,30 @@ public class RedisCacheKvRepositoryImpl implements CacheKvRepository {
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public void put(String k, Long v, Long pTtl) {
+    public void put(String k, long v, Long pTtl) {
         stringRedisTemplate.opsForValue().set("kv:" + k, v + "", pTtl, TimeUnit.MICROSECONDS);
+    }
+
+    @Override
+    public void put(String k, int v, Long pTtl) {
+        put(k, (long) v, pTtl);
+    }
+
+    @Override
+    public Long getAndSet(String k, Long v, Long pTtl) {
+        stringRedisTemplate.multi();
+        stringRedisTemplate.opsForValue().getAndSet("kv" + k, v + "");
+        stringRedisTemplate.expire("kv" + k, pTtl, TimeUnit.MICROSECONDS);
+        List<Object> execResult = stringRedisTemplate.exec();
+        if (execResult.get(0) == null) {
+            return 0L;
+        }
+        return Long.valueOf(execResult.get(0).toString());
     }
 
     @Override
     public void remove(String k) {
         stringRedisTemplate.delete("kv:" + k);
-    }
-
-    @Override
-    public boolean expire(String k, Long pTtl) {
-       return stringRedisTemplate.expire("kv:" + k, pTtl, TimeUnit.MICROSECONDS);
     }
 
     @Override
@@ -36,6 +49,15 @@ public class RedisCacheKvRepositoryImpl implements CacheKvRepository {
             return 0;
         }
         return Long.valueOf(val);
+    }
+
+    @Override
+    public int getAsInt(String k) {
+        String val = this.getAsString(k);
+        if (Strings.isNullOrEmpty(val)) {
+            return 0;
+        }
+        return Integer.valueOf(val);
     }
 
     @Override

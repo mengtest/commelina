@@ -8,11 +8,11 @@ import com.google.protobuf.Internal;
 public final class ServiceDomainMessage<T> {
 
     private final Internal.EnumLite errorCode;
-    private final T t;
+    private final T data;
 
-    private ServiceDomainMessage(Internal.EnumLite errorCode, T t) {
+    private ServiceDomainMessage(Internal.EnumLite errorCode, T data) {
         this.errorCode = errorCode;
-        this.t = t;
+        this.data = data;
     }
 
     public static <T> ServiceDomainMessage<T> newMessage(T t) {
@@ -31,8 +31,8 @@ public final class ServiceDomainMessage<T> {
         return errorCode;
     }
 
-    public T getT() {
-        return t;
+    public T getData() {
+        return data;
     }
 
     public boolean isSucess() {

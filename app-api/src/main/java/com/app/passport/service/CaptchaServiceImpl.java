@@ -31,11 +31,11 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     @Override
     public boolean validTelephoneCode(String tel, String code) {
-        String cacheCode = cacheKvRepository.getAsString(tel);
-        if (Strings.isNullOrEmpty(cacheCode)) {
+        if (Strings.isNullOrEmpty(code)) {
             return false;
         }
+        final int cacheCode = cacheKvRepository.getAsInt(tel);
         cacheKvRepository.remove(tel);
-        return cacheCode.equals(code);
+        return Integer.valueOf(code).equals(cacheCode);
     }
 }

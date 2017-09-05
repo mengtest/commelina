@@ -54,7 +54,7 @@ public class Connect {
 
         ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelAndNoPassword(tel);
         if (message.isSucess()) {
-            String token = sessionHandler.doSignIn(message.getT().getUid());
+            String token = sessionHandler.doSignIn(message.getData().getUid());
             AuthenticatedApiInterceptor.addLogin(token, response);
             return ResponseBodyMessage.success();
         }

@@ -5,13 +5,17 @@ package com.framework.data;
  */
 public interface CacheKvRepository {
 
-    void put(String k, Long v, Long pTtl);
+    void put(String k, long v, Long pTtl);
+
+    void put(String k, int v, Long pTtl);
+
+    Long getAndSet(String k, Long v, Long pTtl);
 
     void remove(String k);
 
-    boolean expire(String k, Long pTtl);
-
     long getAsLong(String k);
+
+    int getAsInt(String k);
 
     String getAsString(String k);
 
