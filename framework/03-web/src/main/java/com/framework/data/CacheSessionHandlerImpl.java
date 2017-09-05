@@ -38,6 +38,7 @@ public class CacheSessionHandlerImpl implements SessionHandler {
         }
 
         // 如果存在 token 验证不过，那么就有被劫持的风险，所以需要令登录的用户 token 失效，引导用户创建新的token
+        // 这里似乎还要给用户单独加上盐 list "sid, slat","sid, slat","sid, slat"
         if (!tokenEntity.isValid() || tokenEntity.getExpireTime() < System.currentTimeMillis()) {
             if (tokenEntity.getUid() > 0) {
                 cacheKvRepository.remove(prefix + tokenEntity.getUid());
