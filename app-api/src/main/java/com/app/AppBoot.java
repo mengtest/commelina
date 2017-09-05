@@ -1,5 +1,6 @@
 package com.app;
 
+import com.framework.data.CacheSessionHandlerImpl;
 import com.framework.web.SessionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,7 +25,7 @@ public class AppBoot {
 
     @Bean
     public SessionHandler sessionHandler() {
-        return new SessionHandlerImpl();
+        return new CacheSessionHandlerImpl();
     }
 
 }

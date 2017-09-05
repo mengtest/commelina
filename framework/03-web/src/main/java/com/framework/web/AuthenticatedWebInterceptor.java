@@ -51,9 +51,11 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
                     if ("sid".equals(cookie.getName())) {
                         if (!Strings.isNullOrEmpty(cookie.getValue())) {
                             SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(cookie.getValue());
-                            if (entity.userId > 0) {
-                                request.setAttribute("userId", entity.userId);
-                                if (!cookie.getValue().equals(entity.newToken)) {
+                            if (entity != null) {
+                                if (entity.userId > 0) {
+                                    request.setAttribute("userId", entity.userId);
+                                }
+                                if (!Strings.isNullOrEmpty(entity.newToken) && !cookie.getValue().equals(entity.newToken)) {
                                     addSessionCookie(entity.newToken, response);
                                 }
                                 break Breaking;

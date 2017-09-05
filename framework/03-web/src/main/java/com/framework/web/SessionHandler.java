@@ -23,4 +23,7 @@ public interface SessionHandler {
             this.newToken = newToken;
         }
     }
+
+    ValidTokenEntity EMPTY_TOKEN_ENTITY = new ValidTokenEntity();
+
 }

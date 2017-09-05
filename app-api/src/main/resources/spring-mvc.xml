@@ -35,6 +35,6 @@
     <bean class="com.framework.web.JsonExceptionHandlerResolver"/>
 
     <!-- session 实现 -->
-    <bean class="com.app.SessionHandlerImpl"/>
+    <bean class="com.framework.data.CacheSessionHandlerImpl"/>
 
 </beans>

@@ -2,7 +2,6 @@ package com.framework.data;
 
 import com.google.common.base.Strings;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -10,14 +9,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by @panyao on 2017/9/4.
  */
-@Component
-public class RedisKvRepositoryImpl implements RedisKvRepository {
+public class RedisCacheKvRepositoryImpl implements CacheKvRepository {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
-    public void put(String k, Integer v, Long pTtl) {
+    public void put(String k, Long v, Long pTtl) {
         stringRedisTemplate.opsForValue().set("kv:" + k, v + "", pTtl, TimeUnit.MICROSECONDS);
     }
 
@@ -27,12 +25,17 @@ public class RedisKvRepositoryImpl implements RedisKvRepository {
     }
 
     @Override
-    public int getAsInt(String k) {
+    public boolean expire(String k, Long pTtl) {
+       return stringRedisTemplate.expire("kv:" + k, pTtl, TimeUnit.MICROSECONDS);
+    }
+
+    @Override
+    public long getAsLong(String k) {
         String val = this.getAsString(k);
         if (Strings.isNullOrEmpty(val)) {
             return 0;
         }
-        return Integer.valueOf(val);
+        return Long.valueOf(val);
     }
 
     @Override

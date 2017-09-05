@@ -29,9 +29,11 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
         do {
             if (!Strings.isNullOrEmpty(token)) {
                 SessionHandler.ValidTokenEntity entity = sessionHandler.validToken(token);
-                if (entity.userId > 0) {
-                    request.setAttribute("userId", entity.userId);
-                    if (!token.equals(entity.newToken)) {
+                if (entity != null) {
+                    if (entity.userId > 0) {
+                        request.setAttribute("userId", entity.userId);
+                    }
+                    if (!Strings.isNullOrEmpty(entity.newToken) && !token.equals(entity.newToken)) {
                         addLogin(entity.newToken, response);
                         break;
                     }
