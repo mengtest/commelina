@@ -1,4 +1,4 @@
-package com.twofourpoints.room.service;
+package com.game.room.service;
 
 /**
  * Created by @panyao on 2017/8/17.

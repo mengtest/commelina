@@ -12,11 +12,11 @@ import com.framework.akka.MemberOfflineEvent;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public class MatchingAbstractRouter extends AbstractRouterActor {
+public class MatchingRouter extends AbstractRouterActor {
 
     private final ActorRef matching;
 
-    public MatchingAbstractRouter(MatchingConfigEntity configEntity) {
+    public MatchingRouter(MatchingConfigEntity configEntity) {
         matching = getContext().actorOf(Matching.props(configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
     }
 
@@ -40,7 +40,7 @@ public class MatchingAbstractRouter extends AbstractRouterActor {
     }
 
     public static Props props(MatchingConfigEntity configEntity) {
-        return Props.create(MatchingAbstractRouter.class, configEntity);
+        return Props.create(MatchingRouter.class, configEntity);
     }
 
 }

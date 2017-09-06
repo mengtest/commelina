@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.constants;
 
-option java_package = "com.twofourpoints.room.constants";
+option java_package = "com.game.room.constants";
 option java_outer_classname = "ConstantsDef";
 
 enum ERRORCODE_CONSTANTS {

@@ -1,4 +1,4 @@
-package com.twofourpoints.room;
+package com.game.room;
 
 import com.framework.message.JsonMessageProvider;
 
