@@ -1,72 +1,61 @@
 package com.game.room.portal;
 
 import akka.actor.ActorRef;
-import com.framework.akka.AbstractRouterActor;
+import akka.actor.Props;
+import com.framework.akka.AbstractClientActorClientRouter;
 import com.framework.akka.ApiRequestWithActor;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
-import com.framework.message.ServerRouterMessage;
 import com.game.room.MessageProvider;
 import com.game.room.proto.ErrorCodeDef;
-import com.game.room.service.RoomManger;
-import com.game.room.service.RoomRouterEntity;
+import com.game.room.service.RoomClientRouterEntity;
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomRouter extends AbstractRouterActor {
+public class RoomClientClientRouter extends AbstractClientActorClientRouter {
 
     private final ActorRef roomManger;
 
-    public RoomRouter() {
-        roomManger = getContext().actorOf(RoomManger.props(), "roomManger");
+    public RoomClientClientRouter(ActorRef roomManger) {
+        this.roomManger = roomManger;
     }
 
     @Override
     public void onRequest(ApiRequestWithActor request) {
-        // 服务端请求
-        if (!request.isServer()) {
-            clientRequest(request);
-            return;
-        }
-        // 服务端直接的请求
-        serverRequest(request);
-    }
-
-    public static ResponseMessage NotFoundMessage(Internal.EnumLite apiOpcode) {
-        return ResponseMessage.newMessage(apiOpcode, MessageProvider.produceMessage(BusinessMessage.error(ErrorCodeDef.ERROR_CODE.ROOM_NOT_FOUND)));
-    }
-
-    private void serverRequest(ApiRequestWithActor request) {
-        roomManger.forward(ServerRouterMessage.newServerRouterMessage(request), getContext());
-    }
-
-    private void clientRequest(ApiRequestWithActor request) {
         // 客户端请求
         RequestArg roomIdArg = request.getArg(0);
         if (roomIdArg != null) {
             long roomId = roomIdArg.getAsLong();
             if (roomId > 0) {
-                RoomRouterEntity roomRouterEntity = new RoomRouterEntity();
-                roomRouterEntity.setRoomId(roomId);
+                RoomClientRouterEntity roomClientRouterEntity = new RoomClientRouterEntity();
+                roomClientRouterEntity.setRoomId(roomId);
                 ApiRequestWithActor apiRequestWithActor = ApiRequestWithActor.newClientApiRequestWithActor(
                         request.getUserId(),
                         request.getApiOpcode(),
                         request.getVersion(),
                         request.subArg(1)
                 );
-                roomRouterEntity.setApiRequestWithActor(apiRequestWithActor);
+                roomClientRouterEntity.setApiRequestWithActor(apiRequestWithActor);
                 // 重定向到
-                roomManger.forward(roomRouterEntity, getContext());
+                roomManger.forward(roomClientRouterEntity, getContext());
                 return;
             }
         }
         getSelf().tell(NotFoundMessage(request.getApiOpcode()), getSelf());
     }
 
-    //      [
+    public static ResponseMessage NotFoundMessage(Internal.EnumLite apiOpcode) {
+        return ResponseMessage.newMessage(apiOpcode, MessageProvider.produceMessage(BusinessMessage.error(ErrorCodeDef.ERROR_CODE.ROOM_NOT_FOUND)));
+    }
+
+    public static Props props(ActorRef roomManger) {
+        return Props.create(RoomClientClientRouter.class, roomManger);
+    }
+
+//      [
 //          0 => [ 0 => {},1 => {}, 2 => {} ],
 //          1 => [ 0 => {},1 => {}, 2 => {} ],
 //          2 => [ 0 => {},1 => {}, 2 => {} ],

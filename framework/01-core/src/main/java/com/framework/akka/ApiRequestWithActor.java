@@ -15,22 +15,19 @@ public final class ApiRequestWithActor implements AppVersion {
     private final String version;
     private final RequestArg[] args;
 
-    private final boolean isServer;
-
-    private ApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args, boolean isServer) {
+    private ApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
         this.userId = userId;
         this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
-        this.isServer = isServer;
     }
 
     public static ApiRequestWithActor newClientApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiRequestWithActor(userId, apiOpcode, version, args, false);
+        return new ApiRequestWithActor(userId, apiOpcode, version, args);
     }
 
     public static ApiRequestWithActor newServerApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiRequestWithActor(userId, apiOpcode, version, args, true);
+        return new ApiRequestWithActor(userId, apiOpcode, version, args);
     }
 
     public long getUserId() {
@@ -69,7 +66,7 @@ public final class ApiRequestWithActor implements AppVersion {
      * @return
      */
     public RequestArg[] subArg(int subSize) {
-        if (args == null || args.length < 2) {
+        if (args == null || args.length < 1) {
             return null;
         }
         RequestArg[] args = new RequestArg[this.getArgs().length - subSize];
@@ -83,7 +80,4 @@ public final class ApiRequestWithActor implements AppVersion {
         return apiOpcode;
     }
 
-    public boolean isServer() {
-        return isServer;
-    }
 }

@@ -3,6 +3,7 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka.ActorRouterWatching;
 import com.framework.akka.ApiRequestWithActor;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.message.*;

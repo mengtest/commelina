@@ -6,7 +6,7 @@ import com.framework.message.*;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class AbstractRouterActor extends AbstractActor implements RouterActorWatching {
+public abstract class AbstractClientActorClientRouter extends AbstractActor implements ActorClientRouterWatching {
 
     @Override
     public Receive createReceive() {

@@ -5,14 +5,12 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.game.matching.MessageProvider;
 import com.framework.message.ResponseMessage;
+import com.game.matching.MessageProvider;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by @panyao on 2017/8/10.
@@ -45,7 +43,7 @@ public class Matching extends AbstractActor {
         if (matchList.contains(userId)) {
             log.info("userId exists in queue " + userId + ", ignored.");
             if (joinMatch.apiOpcode != null) {
-                // 回复 MatchingRouter 的 调用者成功
+                // 回复 MatchingClientClientRouter 的 调用者成功
                 getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
             }
             return;
@@ -54,7 +52,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         if (joinMatch.apiOpcode != null) {
-            // 回复 MatchingRouter 的 调用者成功
+            // 回复 MatchingClientClientRouter 的 调用者成功
             getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
         }
 
@@ -85,7 +83,7 @@ public class Matching extends AbstractActor {
 
         log.info("cancel queue userId " + userId + ", result " + rs);
 
-        // 回复 MatchingRouter 的 调用者成功
+        // 回复 MatchingClientClientRouter 的 调用者成功
         getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
     }
 
@@ -113,7 +111,6 @@ public class Matching extends AbstractActor {
             this.userId = userId;
             this.apiOpcode = apiOpcode;
         }
-
     }
 
     public static final class CANCEL_MATCH {

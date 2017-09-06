@@ -5,7 +5,7 @@ import com.framework.akka.ApiRequestWithActor;
 /**
  * Created by @panyao on 2017/9/6.
  */
-public class RoomRouterEntity {
+public class RoomClientRouterEntity {
     private long roomId;
     private ApiRequestWithActor apiRequestWithActor;
 

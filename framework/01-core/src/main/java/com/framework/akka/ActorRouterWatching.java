@@ -1,15 +1,9 @@
-package com.framework.niosocket;
-
-
-import com.framework.message.ApiRouterRequest;
-import com.framework.akka.MemberOfflineEvent;
+package com.framework.akka;
 
 /**
  * Created by panyao on 2017/8/30.
  */
-public interface ActorRouterWatching {
-
-    void onRequest(ApiRouterRequest request);
+public interface ActorRouterWatching extends ActorWatching {
 
     default void onOnlineEvent(ActorRouterWatching.MemberOnlineEvent onlineEvent) {
         // TODO: 2017/8/29 nothing

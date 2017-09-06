@@ -3,7 +3,7 @@ package com.framework.akka;
 /**
  * Created by @panyao on 2017/8/30.
  */
-public interface RouterActorWatching {
+public interface ActorClientRouterWatching {
 
     // 请求
     void onRequest(ApiRequestWithActor request);
