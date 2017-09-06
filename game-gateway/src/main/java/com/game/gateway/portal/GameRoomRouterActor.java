@@ -6,8 +6,8 @@ import com.framework.message.*;
 import com.framework.niosocket.*;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.MessageProvider;
-import com.game.gateway.proto.DOMAIN_CONSTANTS;
-import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
+import com.game.gateway.proto.DOMAIN;
+import com.game.gateway.proto.ERROR_CODE;
 
 import javax.annotation.Resource;
 
@@ -24,7 +24,7 @@ public class GameRoomRouterActor implements ActorWithApiHandler {
     public Props getProps(ChannelOutputHandler outputHandler) {
         return ActorWithRemoteProxyRouter.props(
                 RoomRemoteProxyRouterActor.class,
-                DOMAIN_CONSTANTS.GAME_ROOM_VALUE,
+                DOMAIN.GAME_ROOM_VALUE,
                 akkaRemoteActorEntity.getRoomPath(),
                 outputHandler
         );
@@ -44,9 +44,9 @@ public class GameRoomRouterActor implements ActorWithApiHandler {
             if (userId <= 0) {
                 // 不登录,直接告诉客户端错误
                 ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
-                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.ROOM_API_UNAUTHORIZED)));
+                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED)));
 
-                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN_CONSTANTS.MATCHING_VALUE, message);
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN.MATCHING_VALUE, message);
 
                 // 回复消息到 gateway domain
                 getSelf().tell(messageDomain, getSelf());
@@ -57,10 +57,10 @@ public class GameRoomRouterActor implements ActorWithApiHandler {
             if (roomId == null || roomId.getAsLong() <= 0) {
                 // 第一个参数必须是 room Id
                 ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
-                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.ROOM_API_IMPORT_ROOM_ID))
+                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_IMPORT_ROOM_ID))
                 );
 
-                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN_CONSTANTS.MATCHING_VALUE, message);
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN.MATCHING_VALUE, message);
 
                 // 回复消息到 gateway domain
                 getSelf().tell(messageDomain, getSelf());

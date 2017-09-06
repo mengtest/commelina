@@ -5,8 +5,7 @@ package def.constants;
 option java_package = "com.game.room.proto";
 option java_outer_classname = "NotifyOpcodeDef";
 
-enum OPCODE_CONSTANTS {
+enum OPCODE {
     // 通知匹配成功
     EMPTY = 0;
-
 }

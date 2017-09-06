@@ -6,6 +6,6 @@ option java_package = "com.game.matching.proto";
 option java_outer_classname = "ErrorCodeDef";
 option java_multiple_files = true;
 
-enum ERRORCODE_CONSTANTS {
+enum ERROR_CODE {
     EMPTY = 0;
 }

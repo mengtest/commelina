@@ -51,6 +51,16 @@ public final class ApiRequestWithActor implements AppVersion {
         }
     }
 
+    /**
+     * 要截取的数组数量 [1,2,3]
+     * subArg(1) -> [2,3]
+     * subArg(2) -> [3]
+     * subArg(3) -> []
+     * subArg(4) -> error
+     *
+     * @param subSize
+     * @return
+     */
     public RequestArg[] subArg(int subSize) {
         if (args == null || args.length < 2) {
             return null;

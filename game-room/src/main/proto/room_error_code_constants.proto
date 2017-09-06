@@ -5,7 +5,7 @@ package def.constants;
 option java_package = "com.game.room.proto";
 option java_outer_classname = "ErrorCodeDef";
 
-enum OPCODE_CONSTANTS {
+enum ERROR_CODE {
     // 房间不存在
     ROOM_NOT_FOUND = 0;
 }

@@ -9,8 +9,8 @@ import com.framework.message.ResponseMessageDomain;
 import com.framework.niosocket.*;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.MessageProvider;
-import com.game.gateway.proto.DOMAIN_CONSTANTS;
-import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
+import com.game.gateway.proto.DOMAIN;
+import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 
 import javax.annotation.Resource;
@@ -28,7 +28,7 @@ public class MatchingRouterActor implements ActorWithApiHandler {
     public Props getProps(ChannelOutputHandler outputHandler) {
         return ActorWithRemoteProxyRouter.props(
                 MatchingRemoteProxyRouterActor.class,
-                DOMAIN_CONSTANTS.MATCHING_VALUE,
+                DOMAIN.MATCHING_VALUE,
                 akkaRemoteActorEntity.getMatchingPath(),
                 outputHandler
         );
@@ -45,9 +45,9 @@ public class MatchingRouterActor implements ActorWithApiHandler {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
-                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.MATCHING_API_UNAUTHORIZED)));
+                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
 
-                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN_CONSTANTS.MATCHING_VALUE, message);
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN.MATCHING_VALUE, message);
 
                 // 回复消息到 gateway domain
                 getSelf().tell(messageDomain, getSelf());

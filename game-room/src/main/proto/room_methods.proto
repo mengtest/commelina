@@ -5,7 +5,7 @@ package def.constants;
 option java_package = "com.game.room.proto";
 option java_outer_classname = "MethodDef";
 
-enum MATCHING_APIS {
-    EMPTY = 0;
+enum ROOM_METHODS {
+    EMPTY1 = 0;
 
 }

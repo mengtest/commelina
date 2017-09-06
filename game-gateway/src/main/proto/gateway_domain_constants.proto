@@ -7,7 +7,7 @@ option java_outer_classname = "DomainDef";
 option java_multiple_files = true;
 
 // 响应的 domain 列表，目前就这三个
-enum DOMAIN_CONSTANTS {
+enum DOMAIN {
     GATE_WAY = 0; // 网关
     MATCHING = 1; // 匹配
     GAME_ROOM = 2; // 游戏房间

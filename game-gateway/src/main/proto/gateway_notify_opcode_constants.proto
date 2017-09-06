@@ -6,7 +6,7 @@ option java_package = "com.game.gateway.proto";
 option java_outer_classname = "NotifyOpcodeDef";
 option java_multiple_files = true;
 
-enum OPCODE_CONSTANTS {
+enum OPCODE {
     EMPTY1 = 0;
 }
 

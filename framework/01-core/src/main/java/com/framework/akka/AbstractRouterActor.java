@@ -11,7 +11,7 @@ public abstract class AbstractRouterActor extends AbstractActor implements Route
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequestWithActor.class, (r) -> this.onRequest(r))
+                .match(ApiRequestWithActor.class, this::onRequest)
                 .match(ResponseMessage.class, r -> getSender().tell(r, getSelf()))
                 .match(NotifyMessage.class, n -> getSender().tell(n, getSelf()))
                 .match(BroadcastMessage.class, b -> getSender().tell(b, getSelf()))
