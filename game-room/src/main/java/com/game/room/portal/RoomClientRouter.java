@@ -8,18 +8,18 @@ import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
 import com.game.room.MessageProvider;
-import com.game.room.proto.ErrorCodeDef;
+import com.game.room.proto.ERROR_CODE;
 import com.game.room.service.RoomClientRouterEntity;
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomClientClientRouter extends AbstractClientActorClientRouter {
+public class RoomClientRouter extends AbstractClientActorClientRouter {
 
     private final ActorRef roomManger;
 
-    public RoomClientClientRouter(ActorRef roomManger) {
+    public RoomClientRouter(ActorRef roomManger) {
         this.roomManger = roomManger;
     }
 
@@ -48,11 +48,11 @@ public class RoomClientClientRouter extends AbstractClientActorClientRouter {
     }
 
     public static ResponseMessage NotFoundMessage(Internal.EnumLite apiOpcode) {
-        return ResponseMessage.newMessage(apiOpcode, MessageProvider.produceMessage(BusinessMessage.error(ErrorCodeDef.ERROR_CODE.ROOM_NOT_FOUND)));
+        return ResponseMessage.newMessage(apiOpcode, MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND)));
     }
 
     public static Props props(ActorRef roomManger) {
-        return Props.create(RoomClientClientRouter.class, roomManger);
+        return Props.create(RoomClientRouter.class, roomManger);
     }
 
 //      [
