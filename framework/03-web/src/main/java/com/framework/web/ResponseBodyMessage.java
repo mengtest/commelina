@@ -34,7 +34,7 @@ public final class ResponseBodyMessage<T extends Serializable> {
     }
 
     public static ResponseBodyMessage<String> success() {
-        return new ResponseBodyMessage<String>(DEFAULT_SUCCESS, null);
+        return new ResponseBodyMessage<>(DEFAULT_SUCCESS, null);
     }
 
     public static <T extends Serializable> ResponseBodyMessage<T> success(T data) {
