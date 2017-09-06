@@ -26,13 +26,13 @@ public class RedisCacheKvRepositoryImpl implements CacheKvRepository {
     }
 
     @Override
-    public Long getAndSet(String k, Long v, Long pTtl) {
+    public long getAndSet(String k, Long v, Long pTtl) {
         stringRedisTemplate.multi();
         stringRedisTemplate.opsForValue().getAndSet("kv" + k, v + "");
         stringRedisTemplate.expire("kv" + k, pTtl, TimeUnit.MICROSECONDS);
         List<Object> execResult = stringRedisTemplate.exec();
         if (execResult.get(0) == null) {
-            return 0L;
+            return 0;
         }
         return Long.valueOf(execResult.get(0).toString());
     }

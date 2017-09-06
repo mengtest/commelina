@@ -9,7 +9,7 @@ public interface CacheKvRepository {
 
     void put(String k, int v, Long pTtl);
 
-    Long getAndSet(String k, Long v, Long pTtl);
+    long getAndSet(String k, Long v, Long pTtl);
 
     void remove(String k);
 

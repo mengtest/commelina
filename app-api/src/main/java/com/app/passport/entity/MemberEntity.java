@@ -14,7 +14,7 @@ public class MemberEntity {
     @Column(updatable = false, nullable = false)
     private long uid;
 
-    @Column(length = 90, nullable = false)
+    @Column(length = 60, nullable = false)
     private String pwd;
 
     public long getUid() {
