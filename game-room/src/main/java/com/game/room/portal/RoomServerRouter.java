@@ -3,9 +3,10 @@ package com.game.room.portal;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.framework.akka.AbstractServerRouterActor;
-import com.framework.akka.ApiRequestWithActor;
-import com.framework.message.ServerRouterMessage;
+import com.framework.message.ApiRouterRequest;
 import com.game.room.entity.PlayerEntity;
+import com.google.common.collect.Lists;
+import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
 
 import java.util.List;
 
@@ -21,9 +22,28 @@ public class RoomServerRouter extends AbstractServerRouterActor {
     }
 
     @Override
-    public void onRequest(ApiRequestWithActor request) {
+    public void onRequest(ApiRouterRequest request) {
+        switch (request.getApiOpcode().getNumber()) {
+            case MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE:
+                this.createRoom(request);
+                break;
+        }
+
         // 服务端直接的请求
-        roomManger.forward(ServerRouterMessage.newServerRouterMessage(request), getContext());
+//        roomManger.forward(ServerRouterMessage.newServerRouterMessage(request), getContext());
+    }
+
+    private void createRoom(ApiRouterRequest request) {
+        long[] userIds = new long[request.getArgs().length];
+        for (int i = 0; i < request.getArgs().length; i++) {
+            userIds[i] = request.getArgs()[i].getAsLong();
+        }
+
+        // 加载用户信息
+        final List<PlayerEntity> playerEntities = Lists.newArrayListWithExpectedSize(request.getArgs().length);
+        final CreateRoomEntity createRoomEntity = new CreateRoomEntity();
+        createRoomEntity.setPlayers(playerEntities);
+        roomManger.tell(createRoomEntity, getSelf());
     }
 
     public static Props props(ActorRef roomManger) {
