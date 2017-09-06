@@ -30,13 +30,13 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
             if (!Strings.isNullOrEmpty(token)) {
                 SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.validToken(token);
                 if (sessionTokenEntity != null) {
-                    if (!Strings.isNullOrEmpty(sessionTokenEntity.tokenEntity.newToken)) {
+                    if (!Strings.isNullOrEmpty(sessionTokenEntity.newTokenEntity.newToken)) {
                         addLogin(request, response, sessionTokenEntity);
                     } else {
                         if (sessionTokenEntity.userId > 0) {
                             request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);
                         }
-                        request.setAttribute(SessionHandler.ATTRIBUTE_SID, sessionTokenEntity.tokenEntity.sid);
+                        request.setAttribute(SessionHandler.ATTRIBUTE_SID, sessionTokenEntity.newTokenEntity.sid);
                     }
                     break;
                 }
@@ -49,14 +49,14 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
     public static void addLogin(HttpServletRequest request, HttpServletResponse response,
                                 SessionHandler.SessionTokenEntity sessionTokenEntity) {
         request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);
-        anonymous(request, response, sessionTokenEntity.tokenEntity);
+        anonymous(request, response, sessionTokenEntity.newTokenEntity);
 
     }
 
     private static void anonymous(HttpServletRequest request, HttpServletResponse response,
-                                  SessionHandler.TokenEntity tokenEntity) {
-        request.setAttribute(SessionHandler.ATTRIBUTE_SID, tokenEntity.sid);
-        response.setHeader("authenticated-newToken", tokenEntity.newToken);
+                                  SessionHandler.NewTokenEntity newTokenEntity) {
+        request.setAttribute(SessionHandler.ATTRIBUTE_SID, newTokenEntity.sid);
+        response.setHeader("authenticated-newToken", newTokenEntity.newToken);
     }
 
 }

@@ -28,8 +28,6 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(CacheSessionHandlerImpl.class);
 
-    // FIXME: 2017/9/5 两个问题，1 token 需要改成list维护 2 sessionHandler 还需要打磨
-
     @Override
     public SessionTokenEntity validToken(String token) {
         TokenEntity tokenEntity = TokenUtils.decodeToken(token);
@@ -40,13 +38,9 @@ public class CacheSessionHandlerImpl implements SessionHandler {
         // 如果存在 token 验证不过，那么就有被劫持的风险，所以需要令登录的用户 token 失效，引导用户创建新的token
         // 这里似乎还要给用户单独加上盐 list "sid, slat","sid, slat","sid, slat"
         if (!tokenEntity.isValid() || tokenEntity.getExpireTime() < System.currentTimeMillis()) {
-            if (tokenEntity.getUid() > 0) {
-                cacheKvRepository.remove(prefix + tokenEntity.getUid());
-            }
             return null;
         }
 
-        SessionTokenEntity sessionTokenEntity = new SessionTokenEntity();
         // 登录用户
         if (tokenEntity.getUid() > 0) {
             final long sid = cacheKvRepository.getAsLong(prefix + tokenEntity.getUid());
@@ -68,37 +62,54 @@ public class CacheSessionHandlerImpl implements SessionHandler {
             } else {
                 // token 快要过期就交换 token
                 if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
-                    sessionTokenEntity.setNewToken(doSignIn(tokenEntity.getUid()));
+                    return doSignIn(tokenEntity.getUid());
                 }
             }
+            SessionTokenEntity sessionTokenEntity = new SessionTokenEntity();
             sessionTokenEntity.setUserId(tokenEntity.getUid());
+            NewTokenEntity newTokenEntity = new NewTokenEntity();
+            newTokenEntity.setSid(sid);
+            sessionTokenEntity.setNewTokenEntity(newTokenEntity);
+
+            return sessionTokenEntity;
         } else {
             // 匿名用户 不需要验证
             if (tokenEntity.getExpireTime() - TOKEN_CHANGE_TIME < System.currentTimeMillis()) {
                 return null;
             }
+            return ANONYMOUS;
         }
 
+    }
+
+    @Override
+    public SessionTokenEntity doSignIn(long userId) {
+        final long sid = snowflakeIdWorker.nextId();
+        final String token = TokenUtils.encodeToken(userId, sid, SESSION_EXPIRE_TTL);
+        final long oldSid = cacheKvRepository.getAndSet(prefix + userId, sid, SESSION_EXPIRE_TTL);
+        if (oldSid > 0) {
+            logger.info("Old sid {}, new sid {}.", oldSid, sid);
+            cacheKvRepository.put(prefix + sid, userId, TOKEN_CHANGE_TIME);
+        }
+
+        NewTokenEntity tokenEntity = new NewTokenEntity();
+        tokenEntity.setNewToken(token);
+        tokenEntity.setSid(sid);
+
+        SessionTokenEntity sessionTokenEntity = new SessionTokenEntity();
+        sessionTokenEntity.setUserId(userId);
+        sessionTokenEntity.setNewTokenEntity(tokenEntity);
         return sessionTokenEntity;
     }
 
     @Override
-    public String doSignIn(long userId) {
-        final long sid = snowflakeIdWorker.nextId();
-        String token = TokenUtils.encodeToken(userId, sid, SESSION_EXPIRE_TTL);
-        // FIXME: 2017/9/5 这里明天要改成一个用户持有一个 list 才对，
-        // 交换 token ，永远只保留最新的一个 token
-        long oldSid = cacheKvRepository.getAndSet(prefix + userId, sid, SESSION_EXPIRE_TTL);
-        if (oldSid > 0) {
-            logger.info("Old sid {}, new sid {}.", oldSid, userId);
-            cacheKvRepository.put(prefix + sid, userId, TOKEN_CHANGE_TIME);
-        }
-        return token;
-    }
-
-    @Override
-    public String initAnonymous() {
-        return TokenUtils.encodeToken(0, anonymousSnowflakeIdWorker.nextId(), ANONYMOUS_EXPIRE_TTL);
+    public NewTokenEntity initAnonymous() {
+        final long sid = anonymousSnowflakeIdWorker.nextId();
+        final String token = TokenUtils.encodeToken(0, sid, ANONYMOUS_EXPIRE_TTL);
+        NewTokenEntity tokenEntity = new NewTokenEntity();
+        tokenEntity.setNewToken(token);
+        tokenEntity.setSid(sid);
+        return tokenEntity;
     }
 
 }

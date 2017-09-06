@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -44,6 +45,7 @@ public class Connect {
     @RequestMapping(value = "/nopasswordtel", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode,
+                                                 HttpServletRequest request,
                                                  HttpServletResponse response) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
@@ -55,8 +57,8 @@ public class Connect {
 
         ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelAndNoPassword(tel);
         if (message.isSucess()) {
-            String token = sessionHandler.doSignIn(message.getData().getUid());
-            AuthenticatedApiInterceptor.addLogin(token, response);
+            SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.doSignIn(message.getData().getUid());
+            AuthenticatedApiInterceptor.addLogin(request, response, sessionTokenEntity);
             return ResponseBodyMessage.success();
         }
 

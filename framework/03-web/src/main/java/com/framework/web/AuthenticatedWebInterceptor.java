@@ -50,22 +50,26 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
                 for (Cookie cookie : cookies) {
                     if ("sid".equals(cookie.getName())) {
                         if (!Strings.isNullOrEmpty(cookie.getValue())) {
-                            SessionHandler.SessionTokenEntity entity = sessionHandler.validToken(cookie.getValue());
-                            if (entity != null) {
-                                if (entity.userId > 0) {
-                                    request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, entity.userId);
-                                }
-                                if (!Strings.isNullOrEmpty(entity.newToken) && !cookie.getValue().equals(entity.newToken)) {
-                                    addSessionCookie(entity.newToken, response);
+                            SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.validToken(cookie.getValue());
+                            if (sessionTokenEntity != null) {
+                                if (!Strings.isNullOrEmpty(sessionTokenEntity.newTokenEntity.newToken)) {
+                                    addLogin(request, response, sessionTokenEntity);
+                                } else {
+                                    if (sessionTokenEntity.userId > 0) {
+                                        request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);
+                                    }
+                                    request.setAttribute(SessionHandler.ATTRIBUTE_SID, sessionTokenEntity.newTokenEntity.sid);
                                 }
                                 break Breaking;
                             }
                         }
                         break;
+                        // to @ line anonymous
                     }
                 }
             }
-            addSessionCookie(sessionHandler.initAnonymous(), response);
+            // @ line anonymous
+            anonymous(request, response, sessionHandler.initAnonymous());
         } while (false);
         return true;
     }
@@ -81,8 +85,17 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
         response.addCookie(session);
     }
 
-    public static void addLogin(String token, HttpServletResponse response) {
-        addSessionCookie(token, response);
+    public static void addLogin(HttpServletRequest request, HttpServletResponse response,
+                                SessionHandler.SessionTokenEntity sessionTokenEntity) {
+        request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);
+        anonymous(request, response, sessionTokenEntity.newTokenEntity);
     }
+
+    private static void anonymous(HttpServletRequest request, HttpServletResponse response, SessionHandler.NewTokenEntity newTokenEntity) {
+        request.setAttribute(SessionHandler.ATTRIBUTE_SID, newTokenEntity.sid);
+        addSessionCookie(newTokenEntity.newToken, response);
+
+    }
+
 
 }

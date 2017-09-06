@@ -13,22 +13,22 @@ public interface SessionHandler {
 
     SessionTokenEntity doSignIn(long userId);
 
-    TokenEntity initAnonymous();
+    NewTokenEntity initAnonymous();
 
     class SessionTokenEntity {
         long userId;
-        TokenEntity tokenEntity;
+        NewTokenEntity newTokenEntity;
 
         public void setUserId(long userId) {
             this.userId = userId;
         }
 
-        public void setTokenEntity(TokenEntity tokenEntity) {
-            this.tokenEntity = tokenEntity;
+        public void setNewTokenEntity(NewTokenEntity newTokenEntity) {
+            this.newTokenEntity = newTokenEntity;
         }
     }
 
-    class TokenEntity {
+    class NewTokenEntity {
         long sid;
         String newToken;
 
@@ -41,5 +41,7 @@ public interface SessionHandler {
         }
 
     }
+
+    SessionTokenEntity ANONYMOUS = new SessionTokenEntity();
 
 }
