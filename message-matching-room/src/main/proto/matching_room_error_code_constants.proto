@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package def.constants;
+
+option java_package = "com.message.matching_room.proto";
+option java_outer_classname = "ErrorCodeDef";
+
+enum MATCHING_ROOM_ERROR_CODE {
+    // 房间不存在
+    ROOM_NOT_FOUND = 0;
+}

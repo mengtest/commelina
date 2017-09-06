@@ -23,6 +23,10 @@
             <groupId>com.nexus.maven</groupId>
             <artifactId>core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.game</groupId>
+            <artifactId>message-matching-to-room</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

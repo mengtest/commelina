@@ -21,11 +21,23 @@
         <module>game-gateway</module>
         <module>game-matching</module>
         <module>game-room</module>
+
+        <module>message-matching-room</module>
     </modules>
 
     <properties>
         <docker.image.prefix>instruction-service</docker.image.prefix>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.game</groupId>
+                <artifactId>message-matching-to-room</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

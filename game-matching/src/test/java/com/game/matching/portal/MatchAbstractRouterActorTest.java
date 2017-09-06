@@ -22,7 +22,7 @@ public class MatchAbstractRouterActorTest {
         configEntity.setQueueSuccessPeople(10);
         configEntity.setQueueSizeRate(2);
         ActorRef actorRef = system.actorOf(MatchingRouter.props(configEntity));
-        actorRef.tell(ApiRequestWithActor.newApiRequestWithActor(0l, MATCHING_METHODS.JOIN_MATCH_QUENE, "1.0.0", new RequestArg[]{
+        actorRef.tell(ApiRequestWithActor.newClientApiRequestWithActor(0l, MATCHING_METHODS.JOIN_MATCH_QUENE, "1.0.0", new RequestArg[]{
                 new RequestArg("1", RequestArg.DATA_TYPE.LONG),
         }), probe.getRef());
 

@@ -53,7 +53,7 @@ public class MatchingRouterActor implements ActorWithApiHandler {
                 getSelf().tell(messageDomain, getSelf());
                 return;
             }
-            getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestWithActor.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

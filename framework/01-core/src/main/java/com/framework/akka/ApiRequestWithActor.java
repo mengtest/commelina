@@ -15,15 +15,22 @@ public final class ApiRequestWithActor implements AppVersion {
     private final String version;
     private final RequestArg[] args;
 
-    public ApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+    private final boolean isServer;
+
+    private ApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args, boolean isServer) {
         this.userId = userId;
         this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
+        this.isServer = isServer;
     }
 
-    public static ApiRequestWithActor newApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiRequestWithActor(userId, apiOpcode, version, args);
+    public static ApiRequestWithActor newClientApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        return new ApiRequestWithActor(userId, apiOpcode, version, args, false);
+    }
+
+    public static ApiRequestWithActor newServerApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        return new ApiRequestWithActor(userId, apiOpcode, version, args, true);
     }
 
     public long getUserId() {
@@ -76,4 +83,7 @@ public final class ApiRequestWithActor implements AppVersion {
         return apiOpcode;
     }
 
+    public boolean isServer() {
+        return isServer;
+    }
 }
