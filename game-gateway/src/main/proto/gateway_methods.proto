@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package def.methods;
+package def.constants;
 
 option java_package = "com.game.gateway.proto";
-option java_outer_classname = "MethodsDef";
+option java_outer_classname = "MethodDef";
 option java_multiple_files = true;
 
 // 接口列表

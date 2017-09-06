@@ -8,23 +8,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "matching")
 public class MatchingConfigEntity {
 
-    private int queueSucessPeople;
+    private int queueSuccessPeople;
     private int queueSizeRate;
 
     public int getQueueSuccessPeople() {
-        return queueSucessPeople;
+        return queueSuccessPeople;
     }
 
     public int getQueueSizeRate() {
         return queueSizeRate;
     }
 
-    public int getQueueSucessPeople() {
-        return queueSucessPeople;
-    }
-
-    public void setQueueSucessPeople(int queueSucessPeople) {
-        this.queueSucessPeople = queueSucessPeople;
+    public void setQueueSuccessPeople(int queueSuccessPeople) {
+        this.queueSuccessPeople = queueSuccessPeople;
     }
 
     public void setQueueSizeRate(int queueSizeRate) {

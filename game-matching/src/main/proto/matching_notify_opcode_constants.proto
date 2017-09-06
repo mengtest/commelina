@@ -2,11 +2,10 @@ syntax = "proto3";
 
 package def.constants;
 
-option java_package = "com.game.gateway.proto";
+option java_package = "com.game.matching.proto";
 option java_outer_classname = "NotifyOpcodeDef";
 option java_multiple_files = true;
 
 enum OPCODE_CONSTANTS {
-    EMPTY1 = 0;
+    NOTIFY_MATCH_SUCCESS = 0;
 }
-

@@ -1,19 +1,19 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
-import com.framework.niosocket.ActorWithApiController;
-import com.framework.niosocket.ActorWithApiHandler;
-import com.framework.niosocket.ActorWithRemoteProxyRouter;
-import com.game.gateway.MessageProvider;
-import com.game.gateway.proto.DOMAIN_CONSTANTS;
-import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
-import com.game.gateway.proto.GATEWAY_APIS;
 import com.framework.akka.ApiRequestWithActor;
 import com.framework.message.ApiRouterRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.ResponseMessage;
+import com.framework.message.ResponseMessageDomain;
 import com.framework.niosocket.*;
-import org.springframework.beans.factory.annotation.Value;
+import com.game.gateway.AkkaRemoteActorEntity;
+import com.game.gateway.MessageProvider;
+import com.game.gateway.proto.DOMAIN_CONSTANTS;
+import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
+import com.game.gateway.proto.GATEWAY_APIS;
+
+import javax.annotation.Resource;
 
 /**
  * Created by @panyao on 2017/8/25.
@@ -21,12 +21,17 @@ import org.springframework.beans.factory.annotation.Value;
 @ActorWithApiController(apiPathCode = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
 public class MatchingRouterActor implements ActorWithApiHandler {
 
-    @Value("akka.remote.actor.matchingPath:akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRouter")
-    private String remotePath;
+    @Resource
+    private AkkaRemoteActorEntity akkaRemoteActorEntity;
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return MatchingRemoteProxyRouterActor.props(MatchingRemoteProxyRouterActor.class, DOMAIN_CONSTANTS.MATCHING_VALUE, remotePath, outputHandler);
+        return ActorWithRemoteProxyRouter.props(
+                MatchingRemoteProxyRouterActor.class,
+                DOMAIN_CONSTANTS.MATCHING_VALUE,
+                akkaRemoteActorEntity.getMatchingPath(),
+                outputHandler
+        );
     }
 
     private static class MatchingRemoteProxyRouterActor extends ActorWithRemoteProxyRouter {
@@ -39,10 +44,13 @@ public class MatchingRouterActor implements ActorWithApiHandler {
         public void onRequest(ApiRouterRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
-                // 不登录直接告诉客户端错误
-                getSelf().tell(ResponseMessage.newMessage(request.getApiOpcode(),
-                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.MATCHING_API_UNAUTHORIZED))
-                ), getSelf());
+                ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
+                        MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE_CONSTANTS.MATCHING_API_UNAUTHORIZED)));
+
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN_CONSTANTS.MATCHING_VALUE, message);
+
+                // 回复消息到 gateway domain
+                getSelf().tell(messageDomain, getSelf());
                 return;
             }
             getSelf().tell(ApiRequestWithActor.newApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());

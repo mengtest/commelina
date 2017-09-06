@@ -22,4 +22,9 @@ public class GatewaySpringBoot {
         return new NettyNioSocketServerForSpringBoot();
     }
 
+    @Bean
+    public AkkaRemoteActorEntity akkaRemoteAcotrEntity() {
+        return new AkkaRemoteActorEntity();
+    }
+
 }

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package def.domain_constants;
+package def.constants;
 
 option java_package = "com.game.gateway.proto";
-option java_outer_classname = "DomainConstantsDef";
+option java_outer_classname = "DomainDef";
 option java_multiple_files = true;
 
 // 响应的 domain 列表，目前就这三个

@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package def.error_code_constants;
+package def.constants;
 
 option java_package = "com.game.matching.proto";
-option java_outer_classname = "ErrorCodeConstantsDef";
+option java_outer_classname = "ErrorCodeDef";
 option java_multiple_files = true;
 
 enum ERRORCODE_CONSTANTS {
-    EMPTY1 = 0;
+    EMPTY = 0;
 }

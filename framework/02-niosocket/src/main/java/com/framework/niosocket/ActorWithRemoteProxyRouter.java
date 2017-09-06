@@ -40,6 +40,8 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
                 .match(MemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 回复消息
                 .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r))
+                // 回复消息到自定义 domain 下
+                .match(ResponseMessageDomain.class, r -> context.writeAndFlush(r.getDomain(), r.getMessage()))
                 // 通知
                 .match(NotifyMessage.class, n -> MessageAdapter.addNotify(domain, n))
                 // 广播

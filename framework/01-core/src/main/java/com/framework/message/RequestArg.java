@@ -39,7 +39,7 @@ public class RequestArg {
     public long getAsLong() {
         Preconditions.checkArgument(type == DATA_TYPE.LONG);
         if (this.arg == null) {
-            return 0L;
+            return 0;
         }
         return Long.valueOf(this.arg.toString());
     }
