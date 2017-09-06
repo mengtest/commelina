@@ -1,6 +1,7 @@
-package com.framework.message;
+package com.framework.akka;
 
 import com.framework.core.AppVersion;
+import com.framework.message.RequestArg;
 import com.google.protobuf.Internal;
 
 /**

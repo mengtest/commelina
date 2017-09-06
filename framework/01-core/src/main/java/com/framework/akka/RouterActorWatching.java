@@ -1,4 +1,4 @@
-package com.framework.message;
+package com.framework.akka;
 
 /**
  * Created by @panyao on 2017/8/30.
@@ -9,7 +9,7 @@ public interface RouterActorWatching {
     void onRequest(ApiRequestWithActor request);
 
     // 上线
-    default void onOnline(MemberOnlineEvent onlineEventWithLogin){
+    default void onOnline(MemberOfflineEvent.MemberOnlineEvent onlineEventWithLogin){
 
     }
 

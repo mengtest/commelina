@@ -1,11 +1,14 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
+import com.framework.niosocket.ActorWithApiController;
+import com.framework.niosocket.ActorWithApiHandler;
+import com.framework.niosocket.ActorWithRemoteProxyRouter;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN_CONSTANTS;
 import com.game.gateway.proto.ERROR_CODE_CONSTANTS;
 import com.game.gateway.proto.GATEWAY_APIS;
-import com.framework.message.ApiRequestWithActor;
+import com.framework.akka.ApiRequestWithActor;
 import com.framework.message.ApiRouterRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.ResponseMessage;

@@ -2,7 +2,7 @@ package com.framework.niosocket;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import com.framework.message.MemberOfflineEvent;
+import com.framework.akka.MemberOfflineEvent;
 import com.framework.message.ResponseMessage;
 import com.framework.message.ApiRouterRequest;
 

@@ -1,12 +1,12 @@
 package com.twofourpoints.room.portal;
 
-import com.framework.message.RouterActor;
-import com.framework.message.ApiRequestWithActor;
+import com.framework.akka.AbstractRouterActor;
+import com.framework.akka.ApiRequestWithActor;
 
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomRouter extends RouterActor {
+public class RoomAbstractRouter extends AbstractRouterActor {
 
     @Override
     public void onRequest(ApiRequestWithActor request) {

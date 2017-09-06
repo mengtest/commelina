@@ -5,14 +5,14 @@ import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
 import com.game.matching.MatchingConfigEntity;
 import com.game.matching.proto.MATCHING_METHODS;
-import com.framework.message.ApiRequestWithActor;
+import com.framework.akka.ApiRequestWithActor;
 import com.framework.message.RequestArg;
 import org.junit.Test;
 
 /**
  * Created by @panyao on 2017/8/15.
  */
-public class MatchRouterActorTest {
+public class MatchAbstractRouterActorTest {
 
     @Test
     public void testMatchingRun() throws Exception {
@@ -21,7 +21,7 @@ public class MatchRouterActorTest {
         MatchingConfigEntity configEntity = new MatchingConfigEntity();
         configEntity.setQueueSucessPeople(10);
         configEntity.setQueueSizeRate(2);
-        ActorRef actorRef = system.actorOf(MatchingRouter.props(configEntity));
+        ActorRef actorRef = system.actorOf(MatchingAbstractRouter.props(configEntity));
         actorRef.tell(ApiRequestWithActor.newApiRequestWithActor(0l, MATCHING_METHODS.JOIN_MATCH_QUENE, "1.0.0", new RequestArg[]{
                 new RequestArg("1", RequestArg.DATA_TYPE.LONG),
         }), probe.getRef());

@@ -3,7 +3,7 @@ package com.framework.niosocket;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.framework.message.ApiRouterRequest;
-import com.framework.message.MemberOfflineEvent;
+import com.framework.akka.MemberOfflineEvent;
 import com.framework.message.RequestArg;
 import com.framework.proto.Arg;
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;

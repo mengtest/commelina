@@ -1,11 +1,12 @@
-package com.framework.message;
+package com.framework.akka;
 
 import akka.actor.AbstractActor;
+import com.framework.message.*;
 
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class RouterActor extends AbstractActor implements RouterActorWatching {
+public abstract class AbstractRouterActor extends AbstractActor implements RouterActorWatching {
 
     @Override
     public Receive createReceive() {
@@ -15,7 +16,7 @@ public abstract class RouterActor extends AbstractActor implements RouterActorWa
                 .match(NotifyMessage.class, n -> getSender().tell(n, getSelf()))
                 .match(BroadcastMessage.class, b -> getSender().tell(b, getSelf()))
                 .match(WorldMessage.class, w -> getSender().tell(w, getSelf()))
-                .match(MemberOnlineEvent.class, this::onOnline)
+                .match(MemberOfflineEvent.MemberOnlineEvent.class, this::onOnline)
                 .match(MemberOfflineEvent.class, this::onOffline)
                 .build();
     }
