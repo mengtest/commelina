@@ -30,6 +30,8 @@ public abstract class ActorWithRemoteProxyRouter extends AbstractActor implement
         this.context = context;
 
         // FIXME: 2017/8/28 待测试
+        // 明天把 request response 和 notify 分开
+        先改这里
         this.active = receiveBuilder()
                 // 请求事件
                 .match(ApiRouterRequest.class, this::onRequest)
