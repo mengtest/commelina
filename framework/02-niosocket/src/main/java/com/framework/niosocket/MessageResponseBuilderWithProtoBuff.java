@@ -1,11 +1,11 @@
 package com.framework.niosocket;
 
-import com.framework.proto.BusinessMessage;
-import com.framework.proto.BusinessProtocol;
-import com.framework.proto.SYSTEM_CODE_CONSTANTS;
-import com.google.protobuf.ByteString;
 import com.framework.message.MessageBus;
-import com.framework.proto.SocketMessage;
+import com.framework.niosocket.proto.BusinessMessage;
+import com.framework.niosocket.proto.BusinessProtocol;
+import com.framework.niosocket.proto.SYSTEM_CODE_CONSTANTS;
+import com.framework.niosocket.proto.SocketMessage;
+import com.google.protobuf.ByteString;
 
 /**
  * Created by @panyao on 2017/8/24.

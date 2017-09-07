@@ -1,1 +1,1 @@
-copy by game-gateway, game-matching, game-room
+validate copy by game-gateway, game-matching, game-room

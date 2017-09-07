@@ -15,16 +15,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.game</groupId>
-            <artifactId>message-matching-to-room</artifactId>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>nioscoket</artifactId>
         </dependency>
     </dependencies>
 

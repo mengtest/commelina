@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.proto.SocketASK;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -48,12 +48,10 @@ public class NettyNioSocketServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-
                         // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
-                        pipeline.addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
-                        pipeline.addLast("heartbeatTrigger", new ChannelInboundHandlerAcceptorIdleStateTrigger());
+                        ch.pipeline().addLast("heartbeatTrigger", new ChannelInboundHandlerAcceptorIdleStateTrigger());
 
 //                        字符串协议
 //                        pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
@@ -62,13 +60,13 @@ public class NettyNioSocketServer {
 //                        pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
 
                         // protocol 协议
-                        pipeline.addLast(new ProtobufVarint32FrameDecoder());
-                        pipeline.addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
-                        pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
-                        pipeline.addLast(new ProtobufEncoder());
+                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                        ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
+                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        ch.pipeline().addLast(new ProtobufEncoder());
                         ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
                         routerAdapter.setRouterContext(router);
-                        pipeline.addLast(routerAdapter);
+                        ch.pipeline().addLast(routerAdapter);
                     }
                 });
 

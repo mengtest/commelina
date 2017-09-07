@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.proto.SocketASK;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

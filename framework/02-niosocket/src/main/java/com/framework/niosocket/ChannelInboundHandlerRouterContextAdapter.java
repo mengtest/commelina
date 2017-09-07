@@ -1,7 +1,7 @@
 package com.framework.niosocket;
 
-import com.framework.proto.SYSTEM_CODE_CONSTANTS;
-import com.framework.proto.SocketASK;
+import com.framework.niosocket.proto.SYSTEM_CODE_CONSTANTS;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
