@@ -95,6 +95,7 @@ public class ActorContext implements RouterContext {
         }
         ActorSocketMemberEvent.SocketMemberOfflineEvent event = new ActorSocketMemberEvent.SocketMemberOfflineEvent();
         event.userId = userId;
+        event.channelId = ctx.channel().id();
         memberEvent.onOfflineEvent(event);
     }
 

@@ -1,10 +1,10 @@
 package com.game.gateway.portal;
 
 import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
 import com.framework.akka.MemberOfflineEvent;
+import com.framework.akka.MemberOnlineEvent;
+import com.framework.niosocket.AbstractMemberEventActorManger;
 import com.framework.niosocket.ActorNotifyRemoteHandler;
-import com.framework.niosocket.ActorSocketMemberEvent;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.proto.DOMAIN;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,7 @@ import javax.annotation.Resource;
  * Created by @panyao on 2017/9/7.
  */
 @Component
-public class MemberEventManger implements ActorSocketMemberEvent {
-
-    private final ActorSystem system = ActorSystem.create("akkaNotifyContext");
+public class MemberEventManger extends AbstractMemberEventActorManger {
 
     @Resource
     private AkkaRemoteActorEntity akkaRemoteActorEntity;
@@ -28,26 +26,22 @@ public class MemberEventManger implements ActorSocketMemberEvent {
 
     @PostConstruct
     public void init() {
-        matching = system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingPath()));
-        room = system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomPath()));
+        matching = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingPath()));
+        room = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomPath()));
     }
 
     @Override
-    public void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {
-//        matching.tell(onlineEvent, null);
-//        room.tell(onlineEvent, null);
-    }
-
-    @Override
-    public void onOfflineEvent(SocketMemberOfflineEvent offlineEvent) {
-        // 离线事件
-        final long userId = offlineEvent.getUserId();
-        MemberOfflineEvent event = new MemberOfflineEvent();
-        event.setUserId(userId);
-
+    protected void onlineEvent(MemberOnlineEvent event) {
         // 分表发送给 远程
-        matching.tell(offlineEvent, null);
-        room.tell(offlineEvent, null);
+        matching.tell(event, null);
+        room.tell(event, null);
+    }
+
+    @Override
+    protected void offlineEvent(MemberOfflineEvent event) {
+        // 分表发送给 远程
+        matching.tell(event, null);
+        room.tell(event, null);
     }
 
 }

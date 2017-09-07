@@ -27,10 +27,15 @@ public interface ActorSocketMemberEvent {
 
     // 长连接用户下线通知
     class SocketMemberOfflineEvent {
+        ChannelId channelId;
         long userId;
 
         public long getUserId() {
             return userId;
+        }
+
+        public ChannelId getChannelId() {
+            return channelId;
         }
     }
 
