@@ -7,8 +7,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Created by @panyao on 2017/8/24.
  */
@@ -55,11 +53,11 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        if (cause instanceof IOException) {
-            long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
-            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        }
-//        routerContext.exceptionEvent(ctx, cause);
+//        if (cause instanceof IOException) {
+//            long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
+//            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+//        }
+        routerContext.exceptionEvent(ctx, cause);
         ctx.close();
     }
 
