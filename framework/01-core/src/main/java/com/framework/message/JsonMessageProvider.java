@@ -12,19 +12,14 @@ public class JsonMessageProvider {
             BusinessMessage.success();
 
     public static MessageBus produceMessage() {
-        return new JsonMessage(EMPTY_RESPONSE_MESSAGE, null);
+        return new JsonMessage(EMPTY_RESPONSE_MESSAGE);
     }
 
     public static MessageBus produceMessage(BusinessMessage message) {
         Preconditions.checkNotNull(message);
-        return new JsonMessage(message, null);
+        return new JsonMessage(message);
     }
 
-    public static MessageBus produceMessage(BusinessMessage message, String version) {
-        Preconditions.checkNotNull(message);
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
-        return new JsonMessage(message, version);
-    }
 
     public static MessageBus produceMessageForKV(String k, Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
@@ -32,17 +27,7 @@ public class JsonMessageProvider {
         KVEntity entity = new KVEntity();
         entity.k = k;
         entity.v = v;
-        return new JsonMessage(BusinessMessage.success(entity), null);
-    }
-
-    public static MessageBus produceMessageForKV(String k, Object v, String version) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
-        Preconditions.checkNotNull(v);
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
-        KVEntity entity = new KVEntity();
-        entity.k = k;
-        entity.v = v;
-        return new JsonMessage(BusinessMessage.success(entity), version);
+        return new JsonMessage(BusinessMessage.success(entity));
     }
 
     public static final class KVEntity {

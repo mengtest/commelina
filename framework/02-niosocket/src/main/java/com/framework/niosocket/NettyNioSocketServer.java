@@ -33,11 +33,11 @@ public class NettyNioSocketServer {
         if (serverChannel == null) {
             return -1;
         }
-        SocketAddress localAddr = serverChannel.localAddress();
-        if (!(localAddr instanceof InetSocketAddress)) {
+        SocketAddress socketAddress = serverChannel.localAddress();
+        if (!(socketAddress instanceof InetSocketAddress)) {
             return -1;
         }
-        return ((InetSocketAddress) localAddr).getPort();
+        return ((InetSocketAddress) socketAddress).getPort();
     }
 
     public void bind(String host, int port, final RouterContext router) throws IOException {
@@ -48,8 +48,9 @@ public class NettyNioSocketServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        // http://blog.csdn.net/z69183787/article/details/52625095
                         // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
-                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(15, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
                         ch.pipeline().addLast("heartbeatTrigger", new ChannelInboundHandlerAcceptorIdleStateTrigger());
 

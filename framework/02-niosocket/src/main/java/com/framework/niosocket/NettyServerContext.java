@@ -30,11 +30,11 @@ class NettyServerContext {
     }
 
     // 用户下线
-    Long channelInactive(Channel channel) {
+    long channelInactive(Channel channel) {
         // 先把这个 channel 的用户都下线了
         Long userId = LOGIN_USERS.remove(channel.id());
         CHANNEL_GROUP.remove(channel);
-        return userId;
+        return userId == null ? 0 : userId;
     }
 
     // 根据 id 获取 channel
@@ -43,12 +43,13 @@ class NettyServerContext {
     }
 
     // 把用户加入到登录会话中去
-    Long userJoin(ChannelId channelId, long userId) {
+    long userJoin(ChannelId channelId, long userId) {
         Channel channel = CHANNEL_GROUP.find(channelId);
         if (channel == null) {
             throw new UserChannelUnActiveException();
         }
-        return LOGIN_USERS.forcePut(channelId, userId);
+        LOGIN_USERS.forcePut(channelId, userId);
+        return userId;
     }
 
     // 用户注销了
@@ -63,21 +64,18 @@ class NettyServerContext {
     }
 
     long userRemove(ChannelId channelId) {
-        long userId = LOGIN_USERS.remove(channelId);
+        Long userId = LOGIN_USERS.remove(channelId);
         // FIXME: 2017/8/29 bian yi jian cha
         CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
-        return userId;
+        return userId == null ? 0 : userId;
     }
 
     long getLoginUserId(ChannelId channelId) {
         if (CHANNEL_GROUP.find(channelId) == null) {
-            return 0l;
+            return 0;
         }
         Long userId = LOGIN_USERS.get(channelId);
-        if (userId == null || userId <= 0) {
-            return 0l;
-        }
-        return userId;
+        return userId == null ? 0 : userId;
     }
 
     ChannelId getLoginChannelId(long userId) {

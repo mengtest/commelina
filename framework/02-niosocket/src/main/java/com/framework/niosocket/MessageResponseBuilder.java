@@ -1,6 +1,7 @@
 package com.framework.niosocket;
 
 import com.framework.message.MessageBus;
+import com.framework.niosocket.proto.SERVER_CODE;
 
 /**
  * Created by @panyao on 2017/8/24.
@@ -11,6 +12,6 @@ interface MessageResponseBuilder {
 
     Object createResponseMessage(int domain, int opcode, MessageBus messageBus);
 
-    Object createErrorMessage(int systemErrorCode);
+    Object createErrorMessage(SERVER_CODE serverCode);
 
 }

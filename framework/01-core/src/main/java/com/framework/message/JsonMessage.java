@@ -13,11 +13,9 @@ final class JsonMessage implements MessageBus {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonMessage.class);
 
     private final BusinessMessage message;
-    private final String version;
 
-    JsonMessage(BusinessMessage message, String version) {
+    JsonMessage(BusinessMessage message) {
         this.message = message;
-        this.version = version;
     }
 
     public byte[] getBytes() {
@@ -27,11 +25,6 @@ final class JsonMessage implements MessageBus {
             LOGGER.error("{}", e);
             return null;
         }
-    }
-
-    @Override
-    public String getVersion() {
-        return this.version;
     }
 
     public MessageBus.BusinessProtocol getBp() {

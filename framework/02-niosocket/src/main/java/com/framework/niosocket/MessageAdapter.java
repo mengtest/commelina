@@ -21,7 +21,7 @@ class MessageAdapter {
     static void addBroadcast(int domain, BroadcastMessage message) {
         final Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
-        for (long userId : message.getUserIds()) {
+        for (Long userId : message.getUserIds()) {
             Channel channel = NettyServerContext.getInstance().getUserChannel(userId);
             channel.writeAndFlush(msg);
         }

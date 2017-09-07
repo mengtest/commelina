@@ -5,8 +5,8 @@ import akka.actor.ActorSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.niosocket.proto.Arg;
-import com.framework.niosocket.proto.SYSTEM_CODE_CONSTANTS;
-import com.framework.niosocket.proto.SocketASK;
+import com.framework.niosocket.proto.SERVER_CODE;
+import com.framework.niosocket.proto.SocketRequest;
 import com.google.common.collect.Maps;
 import com.typesafe.config.ConfigFactory;
 import io.netty.channel.ChannelHandlerContext;
@@ -43,23 +43,22 @@ public class ActorContext implements RouterContext {
     }
 
     @Override
-    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK socketASK) {
+    public void doRequestHandler(ChannelHandlerContext ctx, final SocketRequest request) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(socketASK.getApiPathCode());
+            ActorRef actorRef1 = actorRefMap.get(request.getApiPathCode());
             // 远程复用 actor
             if (actorRef1 != null) {
-                final RequestArg[] args = new RequestArg[socketASK.getArgsList().size()];
-                for (int i = 0; i < socketASK.getArgsList().size(); i++) {
-                    Arg arg = socketASK.getArgsList().get(i);
+                final RequestArg[] args = new RequestArg[request.getArgsList().size()];
+                for (int i = 0; i < request.getArgsList().size(); i++) {
+                    Arg arg = request.getArgsList().get(i);
                     args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
                 }
-                actorRef1.tell(ApiRequest.newApiRequest(() -> socketASK.getApiOpcode(), socketASK.getVersion(), args), null);
+                actorRef1.tell(ApiRequest.newApiRequest(() -> request.getApiOpcode(), request.getVersion(), args), null);
                 return;
             }
         }
-        Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
-                .createErrorMessage(SYSTEM_CODE_CONSTANTS.RPC_API_NOT_FOUND_VALUE);
+        Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.RPC_API_NOT_FOUND);
 
         ctx.writeAndFlush(msg);
         // FIXME: 2017/8/29 返回值未处理

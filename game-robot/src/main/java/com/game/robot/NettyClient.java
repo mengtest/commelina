@@ -34,7 +34,7 @@ public class NettyClient {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
 
-                    ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+                    ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS));
 
                     ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));

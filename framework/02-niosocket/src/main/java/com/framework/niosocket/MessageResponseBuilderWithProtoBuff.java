@@ -1,10 +1,10 @@
 package com.framework.niosocket;
 
 import com.framework.message.MessageBus;
-import com.framework.niosocket.proto.BusinessMessage;
 import com.framework.niosocket.proto.BusinessProtocol;
-import com.framework.niosocket.proto.SYSTEM_CODE_CONSTANTS;
+import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
+import com.framework.niosocket.proto.SocketResponse;
 import com.google.protobuf.ByteString;
 
 /**
@@ -14,36 +14,36 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
 
     @Override
     public Object createPushMessage(int domain, int opcode, MessageBus messageBus) {
-        return createMessageWithType(domain, opcode, messageBus, SYSTEM_CODE_CONSTANTS.NOTIFY_CODE);
+        return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.NOTIFY_CODE);
     }
 
     @Override
     public Object createResponseMessage(int domain, int opcode, MessageBus messageBus) {
-        return createMessageWithType(domain, opcode, messageBus, SYSTEM_CODE_CONSTANTS.RESONSE_CODE);
+        return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.RESONSE_CODE);
     }
 
     @Override
-    public Object createErrorMessage(int systemErrorCode) {
+    public Object createErrorMessage(SERVER_CODE serverCode) {
         return SocketMessage
                 .newBuilder()
-                .setCode(SYSTEM_CODE_CONSTANTS.forNumber(systemErrorCode))
+                .setCode(serverCode)
                 .build();
     }
 
-    private Object createMessageWithType(int domain, int opcode, MessageBus messageBus, SYSTEM_CODE_CONSTANTS type) {
+    private Object createMessageWithType(int domain, int opcode, MessageBus messageBus, SERVER_CODE type) {
         byte[] bytes = messageBus.getBytes();
         if (bytes == null) {
             return null;
         }
         return SocketMessage.newBuilder()
                 .setCode(type)
-                .setDomain(domain)
-                .setOpcode(opcode)
-                .setMsg(BusinessMessage.newBuilder()
+                .setResponse(SocketResponse.newBuilder().setDomain(domain)
+                        .setOpcode(opcode)
                         .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                         .setMsg(ByteString.copyFrom(bytes))
-                        .setVersion(messageBus.getVersion())
-                ).build();
+                        .build()
+                )
+                .build();
     }
 
 }
