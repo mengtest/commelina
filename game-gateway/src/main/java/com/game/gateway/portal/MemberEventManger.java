@@ -4,9 +4,7 @@ import akka.actor.ActorRef;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
 import com.framework.niosocket.AbstractMemberEventActorManger;
-import com.framework.niosocket.ActorNotifyRemoteHandler;
 import com.game.gateway.AkkaRemoteActorEntity;
-import com.game.gateway.proto.DOMAIN;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -26,22 +24,22 @@ public class MemberEventManger extends AbstractMemberEventActorManger {
 
     @PostConstruct
     public void init() {
-        matching = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingNotifyPath()));
-        room = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomNotifyPath()));
+//        matching = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingNotifyPath()));
+//        room = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomNotifyPath()));
     }
 
     @Override
     protected void onlineEvent(MemberOnlineEvent event) {
         // 分表发送给 远程
-        matching.tell(event, null);
-        room.tell(event, null);
+//        matching.tell(event, null);
+//        room.tell(event, null);
     }
 
     @Override
     protected void offlineEvent(MemberOfflineEvent event) {
         // 分表发送给 远程
-        matching.tell(event, null);
-        room.tell(event, null);
+//        matching.tell(event, null);
+//        room.tell(event, null);
     }
 
 }

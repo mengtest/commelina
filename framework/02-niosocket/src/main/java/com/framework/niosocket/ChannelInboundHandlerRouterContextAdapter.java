@@ -7,6 +7,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * Created by @panyao on 2017/8/24.
  */
@@ -22,14 +24,14 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
-        routerContext.onlineEvent(ctx);
+//        routerContext.onlineEvent(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        routerContext.offlineEvent(logoutUserId, ctx);
+//        routerContext.offlineEvent(logoutUserId, ctx);
     }
 
     //当客户端发送数据到服务器会触发此函数
@@ -46,14 +48,18 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
             ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
                     .createErrorMessage(SERVER_CODE.HEARTBEAT_CODE));
         } else {
-            routerContext.doRequestHandler(ctx, ask.getRequest());
+//            routerContext.doRequestHandler(ctx, ask.getRequest());
         }
     }
 
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        routerContext.exceptionEvent(ctx, cause);
+        if (cause instanceof IOException) {
+            long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
+            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+        }
+//        routerContext.exceptionEvent(ctx, cause);
         ctx.close();
     }
 

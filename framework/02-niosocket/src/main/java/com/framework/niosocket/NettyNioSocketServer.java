@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
+
 /**
  * Created by @panyao on 2017/8/3.
  */
@@ -28,6 +29,8 @@ public class NettyNioSocketServer {
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     // 默认线程数是 cpu 核数的两倍
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+    private final ChannelInboundHandlerAcceptorIdleStateTrigger trigger = new ChannelInboundHandlerAcceptorIdleStateTrigger();
 
     public int getPort() {
         if (serverChannel == null) {
@@ -52,7 +55,7 @@ public class NettyNioSocketServer {
                         // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
                         ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(15, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
-                        ch.pipeline().addLast("heartbeatTrigger", new ChannelInboundHandlerAcceptorIdleStateTrigger());
+                        ch.pipeline().addLast("heartbeatTrigger", trigger);
 
 //                        字符串协议
 //                        pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
@@ -65,9 +68,11 @@ public class NettyNioSocketServer {
                         ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
                         ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                         ch.pipeline().addLast(new ProtobufEncoder());
-                        ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
+
+                        final ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
                         routerAdapter.setRouterContext(router);
                         ch.pipeline().addLast(routerAdapter);
+//                        ch.pipeline().addLast(new ChannelInboundHandlerRouterContextAdapter());
                     }
                 });
 
