@@ -29,7 +29,7 @@ public class MatchingRequest implements ActorRequest {
         return ActorRequestRemoteProxyHandler.props(
                 MatchingRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.MATCHING_VALUE,
-                akkaRemoteActorEntity.getMatchingPath(),
+                akkaRemoteActorEntity.getMatchingRequestPath(),
                 outputHandler
         );
     }

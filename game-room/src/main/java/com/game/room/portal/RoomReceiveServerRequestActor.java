@@ -2,7 +2,7 @@ package com.game.room.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractServerRouterActorRequest;
+import com.framework.akka.AbstractReceiveServerRequestActor;
 import com.framework.message.ApiRequest;
 import com.game.room.entity.PlayerEntity;
 import com.google.common.collect.Lists;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomServerRouter extends AbstractServerRouterActorRequest {
+public class RoomReceiveServerRequestActor extends AbstractReceiveServerRequestActor {
 
     private final ActorRef roomManger;
 
-    public RoomServerRouter(ActorRef roomManger) {
+    public RoomReceiveServerRequestActor(ActorRef roomManger) {
         this.roomManger = roomManger;
     }
 
@@ -47,7 +47,7 @@ public class RoomServerRouter extends AbstractServerRouterActorRequest {
     }
 
     public static Props props(ActorRef roomManger) {
-        return Props.create(RoomServerRouter.class, roomManger);
+        return Props.create(RoomReceiveServerRequestActor.class, roomManger);
     }
 
     public static class CreateRoomEntity {

@@ -26,7 +26,7 @@ public class RoomRequest implements ActorRequest {
         return ActorRequestRemoteProxyHandler.props(
                 RoomRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.GAME_ROOM_VALUE,
-                akkaRemoteActorEntity.getRoomPath(),
+                akkaRemoteActorEntity.getRoomRequestPath(),
                 outputHandler
         );
     }

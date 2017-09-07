@@ -26,8 +26,8 @@ public class MemberEventManger extends AbstractMemberEventActorManger {
 
     @PostConstruct
     public void init() {
-        matching = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingPath()));
-        room = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomPath()));
+        matching = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingNotifyPath()));
+        room = super.system.actorOf(ActorNotifyRemoteHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomNotifyPath()));
     }
 
     @Override

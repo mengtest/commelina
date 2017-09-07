@@ -2,8 +2,9 @@ package com.game.room;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.game.room.portal.RoomReceiveNotifyActor;
 import com.game.room.portal.RoomReceiveRequestActor;
-import com.game.room.portal.RoomServerRouter;
+import com.game.room.portal.RoomReceiveServerRequestActor;
 import com.game.room.service.RoomManger;
 import com.typesafe.config.ConfigFactory;
 
@@ -21,9 +22,15 @@ public class RoomActorApp {
 
         ActorRef roomManger = system.actorOf(RoomManger.props(), "roomManger");
 
-        system.actorOf(RoomReceiveRequestActor.props(roomManger), "roomClientRouter");
+        ActorRef roomRequestActor
+                = system.actorOf(RoomReceiveRequestActor.props(roomManger), "roomRequestActor");
 
-        system.actorOf(RoomServerRouter.props(roomManger), "roomServerRouter");
+        ActorRef roomServerRequestActor
+                = system.actorOf(RoomReceiveServerRequestActor.props(roomManger), "roomServerRequestActor");
+
+        ActorRef roomNotifyActor
+                = system.actorOf(RoomReceiveNotifyActor.props(), "roomNotifyActor");
+
 
     }
 

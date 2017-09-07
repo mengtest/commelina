@@ -5,12 +5,8 @@ package com.framework.akka;
  */
 public interface ActorMemberEvent {
 
-    default void onOnlineEvent(MemberOnlineEvent onlineEvent) {
-        // TODO: 2017/9/7
-    }
+    void onOnlineEvent(MemberOnlineEvent onlineEvent);
 
-    default void onOfflineEvent(MemberOfflineEvent offlineEvent) {
-        // TODO: 2017/9/7
-    }
+    void onOfflineEvent(MemberOfflineEvent offlineEvent);
 
 }

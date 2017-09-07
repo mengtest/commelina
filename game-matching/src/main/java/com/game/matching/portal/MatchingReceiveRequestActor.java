@@ -33,11 +33,11 @@ public class MatchingReceiveRequestActor extends AbstractReceiveRequestActor {
         this.unhandled(request);
     }
 
-    @Override
-    public void onOffline(MemberOfflineEvent offlineEvent) {
-        // 把用户从匹配队列里面移除
-        matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), getSelf());
-    }
+//    @Override
+//    public void onOffline(MemberOfflineEvent offlineEvent) {
+//        // 把用户从匹配队列里面移除
+//        matching.tell(new Matching.REMOVE_MATCH(offlineEvent.getUserId()), getSelf());
+//    }
 
     public static Props props(MatchingConfigEntity configEntity) {
         return Props.create(MatchingReceiveRequestActor.class, configEntity);

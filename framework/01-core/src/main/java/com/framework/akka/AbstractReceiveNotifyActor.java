@@ -17,7 +17,6 @@ public abstract class AbstractReceiveNotifyActor extends AbstractActor implement
                 .match(MemberOfflineEvent.class, this::onOfflineEvent)
                 // 用户上线事件，直接发送到远程
                 .match(MemberOnlineEvent.class, this::onOnlineEvent)
-
                 .match(NotifyMessage.class, n -> getSender().tell(n, getSelf()))
                 .match(BroadcastMessage.class, b -> getSender().tell(b, getSelf()))
                 .match(WorldMessage.class, w -> getSender().tell(w, getSelf()))

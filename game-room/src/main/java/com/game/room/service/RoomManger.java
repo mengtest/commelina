@@ -4,7 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.game.room.portal.RoomReceiveRequestActor;
-import com.game.room.portal.RoomServerRouter;
+import com.game.room.portal.RoomReceiveServerRequestActor;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -21,7 +21,7 @@ public class RoomManger extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RoomClientRouterEntity.class, this::onClientRequest)
-                .match(RoomServerRouter.CreateRoomEntity.class, this::createRoom)
+                .match(RoomReceiveServerRequestActor.CreateRoomEntity.class, this::createRoom)
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class RoomManger extends AbstractActor {
         roomContext.forward(roomClientRouterEntity, getContext());
     }
 
-    private void createRoom(RoomServerRouter.CreateRoomEntity createRoomEntity) {
+    private void createRoom(RoomReceiveServerRequestActor.CreateRoomEntity createRoomEntity) {
         final long newRoomId = ++roomId;
         ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, createRoomEntity.getPlayers()), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);

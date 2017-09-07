@@ -1,6 +1,8 @@
 package com.game.matching;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.game.matching.portal.MatchingReceiveNotifyActor;
 import com.game.matching.portal.MatchingReceiveRequestActor;
 import com.typesafe.config.ConfigFactory;
 
@@ -19,7 +21,13 @@ public class MatchingActorApp {
     public void init() {
         ActorSystem system = ActorSystem.create("MatchingWorkerSystem",
                 ConfigFactory.load(("matching")));
-        system.actorOf(MatchingReceiveRequestActor.props(configEntity), "matchingRouter");
+        ActorRef matchingRequestRouter =
+                system.actorOf(MatchingReceiveRequestActor.props(configEntity), "matchingRequestActor");
+        ActorRef matchingNotifyRouter =
+                system.actorOf(MatchingReceiveNotifyActor.props(), "matchingNotifyActor");
+
+        PortalActorContainer.getInstance().matchingRequestActor = matchingRequestRouter;
+        PortalActorContainer.getInstance().matchingNotifyActor = matchingNotifyRouter;
     }
 
 }

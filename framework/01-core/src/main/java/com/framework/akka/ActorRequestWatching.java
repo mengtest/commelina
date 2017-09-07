@@ -1,4 +1,4 @@
-package com.framework.niosocket;
+package com.framework.akka;
 
 import com.framework.message.ApiRequest;
 

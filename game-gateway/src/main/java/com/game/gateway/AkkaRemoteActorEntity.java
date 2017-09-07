@@ -9,22 +9,50 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "akkaRemoteActor")
 public class AkkaRemoteActorEntity {
 
-    private String matchingPath;
-    private String roomPath;
+    private String matchingRequestPath;
+    private String matchingNotifyPath;
 
-    public String getMatchingPath() {
-        return matchingPath;
+    private String roomRequestPath;
+    private String roomServerRequestPath;
+    private String roomNotifyPath;
+
+    public String getMatchingRequestPath() {
+        return matchingRequestPath;
     }
 
-    public void setMatchingPath(String matchingPath) {
-        this.matchingPath = matchingPath;
+    public void setMatchingRequestPath(String matchingRequestPath) {
+        this.matchingRequestPath = matchingRequestPath;
     }
 
-    public String getRoomPath() {
-        return roomPath;
+    public String getRoomRequestPath() {
+        return roomRequestPath;
     }
 
-    public void setRoomPath(String roomPath) {
-        this.roomPath = roomPath;
+    public void setRoomRequestPath(String roomRequestPath) {
+        this.roomRequestPath = roomRequestPath;
+    }
+
+    public String getMatchingNotifyPath() {
+        return matchingNotifyPath;
+    }
+
+    public void setMatchingNotifyPath(String matchingNotifyPath) {
+        this.matchingNotifyPath = matchingNotifyPath;
+    }
+
+    public String getRoomServerRequestPath() {
+        return roomServerRequestPath;
+    }
+
+    public void setRoomServerRequestPath(String roomServerRequestPath) {
+        this.roomServerRequestPath = roomServerRequestPath;
+    }
+
+    public String getRoomNotifyPath() {
+        return roomNotifyPath;
+    }
+
+    public void setRoomNotifyPath(String roomNotifyPath) {
+        this.roomNotifyPath = roomNotifyPath;
     }
 }
