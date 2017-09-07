@@ -2,7 +2,7 @@ package com.game.room;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.game.room.portal.RoomClientRouter;
+import com.game.room.portal.RoomReceiveClientActor;
 import com.game.room.portal.RoomServerRouter;
 import com.game.room.service.RoomManger;
 import com.typesafe.config.ConfigFactory;
@@ -21,7 +21,7 @@ public class RoomActorApp {
 
         ActorRef roomManger = system.actorOf(RoomManger.props(), "roomManger");
 
-        system.actorOf(RoomClientRouter.props(roomManger), "roomClientRouter");
+        system.actorOf(RoomReceiveClientActor.props(roomManger), "roomClientRouter");
 
         system.actorOf(RoomServerRouter.props(roomManger), "roomServerRouter");
 

@@ -1,13 +1,13 @@
 package com.game.room.service;
 
-import com.framework.akka.ApiRequestWithActor;
+import com.framework.message.ApiLoginRequest;
 
 /**
  * Created by @panyao on 2017/9/6.
  */
 public class RoomClientRouterEntity {
     private long roomId;
-    private ApiRequestWithActor apiRequestWithActor;
+    private ApiLoginRequest apiLoginRequest;
 
     public long getRoomId() {
         return roomId;
@@ -17,11 +17,11 @@ public class RoomClientRouterEntity {
         this.roomId = roomId;
     }
 
-    public ApiRequestWithActor getApiRequestWithActor() {
-        return apiRequestWithActor;
+    public ApiLoginRequest getApiLoginRequest() {
+        return apiLoginRequest;
     }
 
-    public void setApiRequestWithActor(ApiRequestWithActor apiRequestWithActor) {
-        this.apiRequestWithActor = apiRequestWithActor;
+    public void setApiLoginRequest(ApiLoginRequest apiLoginRequest) {
+        this.apiLoginRequest = apiLoginRequest;
     }
 }

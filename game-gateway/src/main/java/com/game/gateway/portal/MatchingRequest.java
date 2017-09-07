@@ -1,7 +1,7 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
-import com.framework.akka.ApiRequestWithActor;
+import com.framework.message.ApiLoginRequest;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.ResponseMessage;
@@ -53,7 +53,7 @@ public class MatchingRequest implements ActorRequest {
                 getSelf().tell(messageDomain, getSelf());
                 return;
             }
-            getSelf().tell(ApiRequestWithActor.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiLoginRequest.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

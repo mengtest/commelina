@@ -29,7 +29,7 @@ public class ActorContext implements RouterContext {
     private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_REQUEST_ACTORS = Maps.newLinkedHashMap();
 
     // 通知  actors
-    private ActorMemberEvent memberEvent;
+    private ActorSocketMemberEvent memberEvent;
 
     // 初始化 router
     final void initRouters(final Map<Integer, ActorRequest> handlers) {
@@ -38,7 +38,7 @@ public class ActorContext implements RouterContext {
         }
     }
 
-    final void setMemberEvent(ActorMemberEvent memberEvent) {
+    final void setMemberEvent(ActorSocketMemberEvent memberEvent) {
         this.memberEvent = memberEvent;
     }
 
@@ -82,7 +82,7 @@ public class ActorContext implements RouterContext {
             CHANNEL_REQUEST_ACTORS.put(ctx.channel().id(), actorRefMap1);
         }
 
-        memberEvent.onOnlineEvent(new ActorMemberEvent.SocketMemberOnlineEvent());
+        memberEvent.onOnlineEvent(new ActorSocketMemberEvent.SocketMemberOnlineEvent());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ActorContext implements RouterContext {
         if (userId <= 0) {
             return;
         }
-        ActorMemberEvent.SocketMemberOfflineEvent event = new ActorMemberEvent.SocketMemberOfflineEvent();
+        ActorSocketMemberEvent.SocketMemberOfflineEvent event = new ActorSocketMemberEvent.SocketMemberOfflineEvent();
         event.userId = userId;
         memberEvent.onOfflineEvent(event);
     }

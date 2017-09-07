@@ -3,7 +3,7 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka.ApiRequestWithActor;
+import com.framework.message.ApiLoginRequest;
 import com.framework.message.ApiRequest;
 import com.framework.message.*;
 import scala.concurrent.duration.Duration;
@@ -35,7 +35,7 @@ public abstract class ActorRemoteProxyRequestHandler extends AbstractActor imple
                 // 请求事件
                 .match(ApiRequest.class, this::onRequest)
                 // 转发远程 router
-                .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
+                .match(ApiLoginRequest.class, r -> remoteRouterActor.forward(r, getContext()))
                 // 回复消息
                 .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r))
                 // 回复消息到自定义 domain 下

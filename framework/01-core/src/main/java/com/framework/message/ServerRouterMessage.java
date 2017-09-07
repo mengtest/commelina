@@ -1,25 +1,23 @@
 package com.framework.message;
 
-import com.framework.akka.ApiRequestWithActor;
-
 /**
  * Created by @panyao on 2017/9/6.
  */
 public class ServerRouterMessage {
 
-    private final ApiRequestWithActor apiRequestWithActor;
+    private final ApiLoginRequest apiLoginRequest;
 
-    private ServerRouterMessage(ApiRequestWithActor apiRequestWithActor) {
-        this.apiRequestWithActor = apiRequestWithActor;
+    private ServerRouterMessage(ApiLoginRequest apiLoginRequest) {
+        this.apiLoginRequest = apiLoginRequest;
     }
 
-    public static ServerRouterMessage newServerRouterMessage(ApiRequestWithActor apiRequestWithActor) {
-        return new ServerRouterMessage(apiRequestWithActor);
+    public static ServerRouterMessage newServerRouterMessage(ApiLoginRequest apiLoginRequest) {
+        return new ServerRouterMessage(apiLoginRequest);
     }
 
 
-    public ApiRequestWithActor getApiRequestWithActor() {
-        return apiRequestWithActor;
+    public ApiLoginRequest getApiLoginRequest() {
+        return apiLoginRequest;
     }
 
 

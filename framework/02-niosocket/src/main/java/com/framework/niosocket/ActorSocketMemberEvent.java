@@ -3,7 +3,7 @@ package com.framework.niosocket;
 /**
  * Created by @panyao on 2017/9/7.
  */
-public interface ActorMemberEvent {
+public interface ActorSocketMemberEvent {
 
     default void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {
         // TODO: 2017/9/7  

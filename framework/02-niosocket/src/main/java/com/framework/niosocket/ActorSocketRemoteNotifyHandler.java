@@ -10,7 +10,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/9/7.
  */
-public class ActorRemoteNotifyHandler extends AbstractActor implements ActorMemberEvent {
+public class ActorSocketRemoteNotifyHandler extends AbstractActor implements ActorSocketMemberEvent {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -19,7 +19,7 @@ public class ActorRemoteNotifyHandler extends AbstractActor implements ActorMemb
     ActorRef remoteRouterActor = null;
     private final AbstractActor.Receive active;
 
-    public ActorRemoteNotifyHandler(final int domain, final String remotePath) {
+    public ActorSocketRemoteNotifyHandler(final int domain, final String remotePath) {
         this.domain = domain;
         this.remotePath = remotePath;
 
@@ -66,7 +66,7 @@ public class ActorRemoteNotifyHandler extends AbstractActor implements ActorMemb
     }
 
     public static Props props(int domain, String remotePath) {
-        return Props.create(ActorRemoteNotifyHandler.class, domain, remotePath);
+        return Props.create(ActorSocketRemoteNotifyHandler.class, domain, remotePath);
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.game.gateway.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.framework.niosocket.ActorMemberEvent;
-import com.framework.niosocket.ActorRemoteNotifyHandler;
+import com.framework.niosocket.ActorSocketMemberEvent;
+import com.framework.niosocket.ActorSocketRemoteNotifyHandler;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.proto.DOMAIN;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * Created by @panyao on 2017/9/7.
  */
 @Component
-public class MemberEventManger implements ActorMemberEvent {
+public class SocketMemberEventMangerForRemoteActor implements ActorSocketMemberEvent {
 
     private final ActorSystem system = ActorSystem.create("akkaNotifyContext");
 
@@ -27,8 +27,8 @@ public class MemberEventManger implements ActorMemberEvent {
 
     @PostConstruct
     public void init() {
-        matching = system.actorOf(ActorRemoteNotifyHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingPath()));
-        room = system.actorOf(ActorRemoteNotifyHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomPath()));
+        matching = system.actorOf(ActorSocketRemoteNotifyHandler.props(DOMAIN.MATCHING_VALUE, akkaRemoteActorEntity.getMatchingPath()));
+        room = system.actorOf(ActorSocketRemoteNotifyHandler.props(DOMAIN.GAME_ROOM_VALUE, akkaRemoteActorEntity.getRoomPath()));
     }
 
     @Override

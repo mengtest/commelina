@@ -3,7 +3,7 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka.ApiRequestWithActor;
+import com.framework.message.ApiLoginRequest;
 import com.framework.message.ApiRequest;
 import com.framework.message.*;
 import scala.concurrent.duration.Duration;
@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * Created by @panyao on 2017/8/29.
  */
 @Deprecated
-public abstract class ActorRequestWithRemoteProxyRouterVold extends AbstractActor implements ActorRequestWatching, ActorMemberEvent {
+public abstract class ActorSocketRequestWithRemoteProxyRouterVold extends AbstractActor implements ActorRequestWatching, ActorSocketMemberEvent {
 
     protected final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -24,7 +24,7 @@ public abstract class ActorRequestWithRemoteProxyRouterVold extends AbstractActo
     ActorRef remoteRouterActor = null;
     private Receive active;
 
-    public ActorRequestWithRemoteProxyRouterVold(final int domain, final String remotePath, final ChannelOutputHandler context) {
+    public ActorSocketRequestWithRemoteProxyRouterVold(final int domain, final String remotePath, final ChannelOutputHandler context) {
         this.domain = domain;
         this.remotePath = remotePath;
         this.context = context;
@@ -36,7 +36,7 @@ public abstract class ActorRequestWithRemoteProxyRouterVold extends AbstractActo
                 // 请求事件
                 .match(ApiRequest.class, this::onRequest)
                 // 转发远程 router
-                .match(ApiRequestWithActor.class, r -> remoteRouterActor.forward(r, getContext()))
+                .match(ApiLoginRequest.class, r -> remoteRouterActor.forward(r, getContext()))
                 // 告诉远程的 server 用户重新上线了
                 .match(SocketMemberOfflineEvent.class, r -> remoteRouterActor.tell(r, getSelf()))
                 // 告诉远程的 server 用户下线了
@@ -108,7 +108,7 @@ public abstract class ActorRequestWithRemoteProxyRouterVold extends AbstractActo
         log.info("nothing to do , channel id:" + context.getRawContext().channel().id().asShortText());
     }
 
-    public static Props props(Class<? extends ActorRequestWithRemoteProxyRouterVold> clazz, int domain, String remotePath, ChannelOutputHandler context) {
+    public static Props props(Class<? extends ActorSocketRequestWithRemoteProxyRouterVold> clazz, int domain, String remotePath, ChannelOutputHandler context) {
         return Props.create(clazz, domain, remotePath, context);
     }
 

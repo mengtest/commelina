@@ -46,7 +46,7 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
 
         ActorContext router = new ActorContext();
         router.initRouters(actorWithApiHandlers);
-        router.setMemberEvent(context.getBean(ActorMemberEvent.class));
+        router.setMemberEvent(context.getBean(ActorSocketMemberEvent.class));
 
         server.bind(host, port, router);
     }

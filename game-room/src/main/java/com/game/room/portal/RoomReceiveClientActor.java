@@ -2,8 +2,8 @@ package com.game.room.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractActorClientRouter;
-import com.framework.akka.ApiRequestWithActor;
+import com.framework.akka.AbstractReceiveClientActor;
+import com.framework.message.ApiLoginRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
@@ -15,16 +15,16 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomClientRouter extends AbstractActorClientRouter {
+public class RoomReceiveClientActor extends AbstractReceiveClientActor {
 
     private final ActorRef roomManger;
 
-    public RoomClientRouter(ActorRef roomManger) {
+    public RoomReceiveClientActor(ActorRef roomManger) {
         this.roomManger = roomManger;
     }
 
     @Override
-    public void onRequest(ApiRequestWithActor request) {
+    public void onRequest(ApiLoginRequest request) {
         // 客户端请求
         RequestArg roomIdArg = request.getArg(0);
         if (roomIdArg != null) {
@@ -32,13 +32,13 @@ public class RoomClientRouter extends AbstractActorClientRouter {
             if (roomId > 0) {
                 RoomClientRouterEntity roomClientRouterEntity = new RoomClientRouterEntity();
                 roomClientRouterEntity.setRoomId(roomId);
-                ApiRequestWithActor apiRequestWithActor = ApiRequestWithActor.newClientApiRequestWithActor(
+                ApiLoginRequest apiLoginRequest = ApiLoginRequest.newClientApiRequestWithActor(
                         request.getUserId(),
                         request.getApiOpcode(),
                         request.getVersion(),
                         request.subArg(1)
                 );
-                roomClientRouterEntity.setApiRequestWithActor(apiRequestWithActor);
+                roomClientRouterEntity.setApiLoginRequest(apiLoginRequest);
                 // 重定向到
                 roomManger.forward(roomClientRouterEntity, getContext());
                 return;
@@ -52,7 +52,7 @@ public class RoomClientRouter extends AbstractActorClientRouter {
     }
 
     public static Props props(ActorRef roomManger) {
-        return Props.create(RoomClientRouter.class, roomManger);
+        return Props.create(RoomReceiveClientActor.class, roomManger);
     }
 
 //      [
