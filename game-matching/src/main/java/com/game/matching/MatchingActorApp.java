@@ -5,6 +5,7 @@ import akka.actor.ActorSystem;
 import com.game.matching.portal.MatchingReceiveNotifyActor;
 import com.game.matching.portal.MatchingReceiveRequestActor;
 import com.typesafe.config.ConfigFactory;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/9/1.
  */
+@Component
 public class MatchingActorApp {
 
     @Resource

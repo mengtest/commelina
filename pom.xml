@@ -23,10 +23,12 @@
         <module>game-room</module>
 
         <module>message-matching-room</module>
+
+        <module>game-robot</module>
     </modules>
 
     <properties>
-        <docker.image.prefix>instruction-service</docker.image.prefix>
+        <docker.image.prefix>game</docker.image.prefix>
     </properties>
 
     <dependencyManagement>

@@ -1,19 +1,16 @@
-package com.game.room;
+package com.game.robot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import javax.annotation.PostConstruct;
 
 /**
- * Created by @panyao on 2017/8/29.
+ * Created by @panyao on 2017/9/7.
  */
 @SpringBootApplication
-public class RoomSpringBoot {
+public class RobotSpringBoot {
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(RoomSpringBoot.class);
+        SpringApplication app = new SpringApplication(RobotSpringBoot.class);
         app.setWebEnvironment(false);
         app.run(args);
     }

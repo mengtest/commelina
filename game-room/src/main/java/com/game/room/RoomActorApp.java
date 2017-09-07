@@ -7,12 +7,14 @@ import com.game.room.portal.RoomReceiveRequestActor;
 import com.game.room.portal.RoomReceiveServerRequestActor;
 import com.game.room.service.RoomManger;
 import com.typesafe.config.ConfigFactory;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by @panyao on 2017/9/6.
  */
+@Component
 public class RoomActorApp {
 
     @PostConstruct
