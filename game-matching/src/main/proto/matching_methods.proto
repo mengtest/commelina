@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package def.constants;
+package def.matching.constants;
 
 option java_package = "com.game.matching.proto";
 option java_outer_classname = "MethodDef";

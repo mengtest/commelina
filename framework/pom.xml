@@ -294,6 +294,7 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>1.0.31</version>
+                <scope>runtime</scope>
             </dependency>
 
         </dependencies>
@@ -382,6 +383,7 @@
             </plugin>
 
             <!-- protobuff 配置 -->
+            <!-- https://github.com/mjkonarski/amber-java-clients/blob/master/amber-ninedof/pom.xml -->
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
@@ -398,7 +400,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>

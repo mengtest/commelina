@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package def.constants;
+package def.gateway.constants;
 
 option java_package = "com.game.gateway.proto";
 option java_outer_classname = "NotifyOpcodeDef";

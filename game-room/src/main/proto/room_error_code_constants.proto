@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package def.constants;
+package def.room.constants;
 
 option java_package = "com.game.room.proto";
 option java_outer_classname = "ErrorCodeDef";
