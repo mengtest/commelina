@@ -2,7 +2,7 @@ package com.game.room.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractClientActorClientRouter;
+import com.framework.akka.AbstractActorClientRouter;
 import com.framework.akka.ApiRequestWithActor;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
@@ -15,7 +15,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomClientRouter extends AbstractClientActorClientRouter {
+public class RoomClientRouter extends AbstractActorClientRouter {
 
     private final ActorRef roomManger;
 

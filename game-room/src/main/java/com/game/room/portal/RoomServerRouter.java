@@ -2,8 +2,8 @@ package com.game.room.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractServerRouterActor;
-import com.framework.message.ApiRouterRequest;
+import com.framework.akka.AbstractServerRouterActorRequest;
+import com.framework.message.ApiRequest;
 import com.game.room.entity.PlayerEntity;
 import com.google.common.collect.Lists;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomServerRouter extends AbstractServerRouterActor {
+public class RoomServerRouter extends AbstractServerRouterActorRequest {
 
     private final ActorRef roomManger;
 
@@ -22,7 +22,7 @@ public class RoomServerRouter extends AbstractServerRouterActor {
     }
 
     @Override
-    public void onRequest(ApiRouterRequest request) {
+    public void onRequest(ApiRequest request) {
         switch (request.getApiOpcode().getNumber()) {
             case MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE:
                 this.createRoom(request);
@@ -33,7 +33,7 @@ public class RoomServerRouter extends AbstractServerRouterActor {
 //        roomManger.forward(ServerRouterMessage.newServerRouterMessage(request), getContext());
     }
 
-    private void createRoom(ApiRouterRequest request) {
+    private void createRoom(ApiRequest request) {
         long[] userIds = new long[request.getArgs().length];
         for (int i = 0; i < request.getArgs().length; i++) {
             userIds[i] = request.getArgs()[i].getAsLong();

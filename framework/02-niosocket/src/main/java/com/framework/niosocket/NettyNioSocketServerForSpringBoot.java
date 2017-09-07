@@ -31,21 +31,22 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
     public void initServer() throws IOException {
         server = new NettyNioSocketServer();
 
-        Map<String, Object> apis = context.getBeansWithAnnotation(ActorWithApiController.class);
-        Map<Integer, ActorWithApiHandler> actorWithApiHandlers = Maps.newHashMap();
+        Map<String, Object> apis = context.getBeansWithAnnotation(ActorRequestController.class);
+        Map<Integer, ActorRequest> actorWithApiHandlers = Maps.newHashMap();
 
         for (Object o : apis.values()) {
-            ActorWithApiController controller = o.getClass().getAnnotation(ActorWithApiController.class);
+            ActorRequestController controller = o.getClass().getAnnotation(ActorRequestController.class);
             int apiName = controller.apiPathCode();
-            if (o instanceof ActorWithApiHandler) {
-                actorWithApiHandlers.put(apiName, (ActorWithApiHandler) o);
+            if (o instanceof ActorRequest) {
+                actorWithApiHandlers.put(apiName, (ActorRequest) o);
             } else {
                 throw new RuntimeException("undefined type " + o);
             }
         }
 
-        ActorAkkaContext router = new ActorAkkaContext();
+        ActorContext router = new ActorContext();
         router.initRouters(actorWithApiHandlers);
+        router.setMemberEvent(context.getBean(ActorMemberEvent.class));
 
         server.bind(host, port, router);
     }

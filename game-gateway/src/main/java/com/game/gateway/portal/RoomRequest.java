@@ -2,6 +2,7 @@ package com.game.gateway.portal;
 
 import akka.actor.Props;
 import com.framework.akka.ApiRequestWithActor;
+import com.framework.message.ApiRequest;
 import com.framework.message.*;
 import com.framework.niosocket.*;
 import com.game.gateway.AkkaRemoteActorEntity;
@@ -14,16 +15,16 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiPathCode = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
-public class GameRoomRouterActor implements ActorWithApiHandler {
+@ActorRequestController(apiPathCode = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
+public class RoomRequest implements ActorRequest {
 
     @Resource
     private AkkaRemoteActorEntity akkaRemoteActorEntity;
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorWithRemoteProxyRouter.props(
-                RoomRemoteProxyRouterActor.class,
+        return ActorRemoteProxyRequestHandler.props(
+                RoomRemoteProxyRouterActorRequestRequest.class,
                 DOMAIN.GAME_ROOM_VALUE,
                 akkaRemoteActorEntity.getRoomPath(),
                 outputHandler
@@ -32,14 +33,14 @@ public class GameRoomRouterActor implements ActorWithApiHandler {
     // DOMAIN_CONSTANTS.GAME_ROOM_VALUE
 
 
-    private static class RoomRemoteProxyRouterActor extends ActorWithRemoteProxyRouter {
+    private static class RoomRemoteProxyRouterActorRequestRequest extends ActorRemoteProxyRequestHandler {
 
-        public RoomRemoteProxyRouterActor(int domain, String remotePath, ChannelOutputHandler context) {
+        public RoomRemoteProxyRouterActorRequestRequest(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
         }
 
         @Override
-        public void onRequest(ApiRouterRequest request) {
+        public void onRequest(ApiRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 // 不登录,直接告诉客户端错误

@@ -43,7 +43,7 @@ public class Matching extends AbstractActor {
         if (matchList.contains(userId)) {
             log.info("userId exists in queue " + userId + ", ignored.");
             if (joinMatch.apiOpcode != null) {
-                // 回复 MatchingClientClientRouter 的 调用者成功
+                // 回复 MatchingClientRouter 的 调用者成功
                 getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
             }
             return;
@@ -52,7 +52,7 @@ public class Matching extends AbstractActor {
         matchList.add(userId);
 
         if (joinMatch.apiOpcode != null) {
-            // 回复 MatchingClientClientRouter 的 调用者成功
+            // 回复 MatchingClientRouter 的 调用者成功
             getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
         }
 
@@ -83,7 +83,7 @@ public class Matching extends AbstractActor {
 
         log.info("cancel queue userId " + userId + ", result " + rs);
 
-        // 回复 MatchingClientClientRouter 的 调用者成功
+        // 回复 MatchingClientRouter 的 调用者成功
         getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
     }
 

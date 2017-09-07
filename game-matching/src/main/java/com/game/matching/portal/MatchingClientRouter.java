@@ -2,22 +2,21 @@ package com.game.matching.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractClientActorClientRouter;
+import com.framework.akka.AbstractActorClientRouter;
 import com.game.matching.service.Matching;
 import com.game.matching.MatchingConfigEntity;
 import com.game.matching.proto.MATCHING_METHODS;
 import com.framework.akka.ApiRequestWithActor;
-import com.framework.akka.MemberOfflineEvent;
 
 /**
  * Created by @panyao on 2017/8/29.
  */
-public class MatchingClientClientRouter extends AbstractClientActorClientRouter {
+public class MatchingClientRouter extends AbstractActorClientRouter {
 
     private final ActorRef matching;
 
     // FIXME: 2017/9/6 这里留着 room 这边处理了再改
-    public MatchingClientClientRouter(MatchingConfigEntity configEntity) {
+    public MatchingClientRouter(MatchingConfigEntity configEntity) {
         matching = getContext().actorOf(Matching.props(configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
     }
 
@@ -41,7 +40,7 @@ public class MatchingClientClientRouter extends AbstractClientActorClientRouter 
     }
 
     public static Props props(MatchingConfigEntity configEntity) {
-        return Props.create(MatchingClientClientRouter.class, configEntity);
+        return Props.create(MatchingClientRouter.class, configEntity);
     }
 
 }

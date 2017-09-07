@@ -2,7 +2,7 @@ package com.game.gateway.portal;
 
 import akka.actor.Props;
 import com.framework.akka.ApiRequestWithActor;
-import com.framework.message.ApiRouterRequest;
+import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.ResponseMessage;
 import com.framework.message.ResponseMessageDomain;
@@ -18,30 +18,30 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorWithApiController(apiPathCode = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
-public class MatchingRouterActor implements ActorWithApiHandler {
+@ActorRequestController(apiPathCode = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
+public class MatchingRequest implements ActorRequest {
 
     @Resource
     private AkkaRemoteActorEntity akkaRemoteActorEntity;
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorWithRemoteProxyRouter.props(
-                MatchingRemoteProxyRouterActor.class,
+        return ActorRemoteProxyRequestHandler.props(
+                MatchingRemoteProxyRouterActorRequestRequest.class,
                 DOMAIN.MATCHING_VALUE,
                 akkaRemoteActorEntity.getMatchingPath(),
                 outputHandler
         );
     }
 
-    private static class MatchingRemoteProxyRouterActor extends ActorWithRemoteProxyRouter {
+    private static class MatchingRemoteProxyRouterActorRequestRequest extends ActorRemoteProxyRequestHandler {
 
-        public MatchingRemoteProxyRouterActor(int domain, String remotePath, ChannelOutputHandler context) {
+        public MatchingRemoteProxyRouterActorRequestRequest(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
         }
 
         @Override
-        public void onRequest(ApiRouterRequest request) {
+        public void onRequest(ApiRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.getRawContext().channel().id());
             if (userId <= 0) {
                 ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),

@@ -37,6 +37,11 @@ class NettyServerContext {
         return userId;
     }
 
+    // 根据 id 获取 channel
+    Channel getChannel(ChannelId channelId) {
+        return CHANNEL_GROUP.find(channelId);
+    }
+
     // 把用户加入到登录会话中去
     Long userJoin(ChannelId channelId, long userId) {
         Channel channel = CHANNEL_GROUP.find(channelId);

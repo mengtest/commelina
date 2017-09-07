@@ -2,9 +2,7 @@ package com.framework.niosocket;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.framework.akka.ActorRouterWatching;
-import com.framework.message.ApiRouterRequest;
-import com.framework.akka.MemberOfflineEvent;
+import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.proto.Arg;
 import com.framework.proto.SYSTEM_CODE_CONSTANTS;
@@ -18,27 +16,35 @@ import java.util.Map;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ActorAkkaContext implements RouterContext {
+public class ActorContext implements RouterContext {
 
     private final ActorSystem system = ActorSystem.create("akkaContext");
 
     /**
-     * apiPathCode -> ActorWithApiHandler
+     * apiPathCode -> ActorRequest
      */
-    private final Map<Integer, ActorWithApiHandler> ROUTERS = Maps.newLinkedHashMap();
+    private final Map<Integer, ActorRequest> ROUTERS = Maps.newLinkedHashMap();
 
-    private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_ACTORS = Maps.newLinkedHashMap();
+    // 请求 actors
+    private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_REQUEST_ACTORS = Maps.newLinkedHashMap();
 
-    // 初始化本机的 router
-    final void initRouters(final Map<Integer, ActorWithApiHandler> actorWithApiHandlers) {
-        for (Map.Entry<Integer, ActorWithApiHandler> entry : actorWithApiHandlers.entrySet()) {
+    // 通知  actors
+    private ActorMemberEvent memberEvent;
+
+    // 初始化 router
+    final void initRouters(final Map<Integer, ActorRequest> handlers) {
+        for (Map.Entry<Integer, ActorRequest> entry : handlers.entrySet()) {
             ROUTERS.put(entry.getKey(), entry.getValue());
         }
     }
 
+    final void setMemberEvent(ActorMemberEvent memberEvent) {
+        this.memberEvent = memberEvent;
+    }
+
     @Override
     public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK socketASK) {
-        Map<Integer, ActorRef> actorRefMap = CHANNEL_ACTORS.get(ctx.channel().id());
+        Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
             ActorRef actorRef1 = actorRefMap.get(socketASK.getApiPathCode());
             // 远程复用 actor
@@ -48,7 +54,7 @@ public class ActorAkkaContext implements RouterContext {
                     Arg arg = socketASK.getArgsList().get(i);
                     args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
                 }
-                actorRef1.tell(ApiRouterRequest.newApiRequest(() -> socketASK.getApiOpcode(), socketASK.getVersion(), args), null);
+                actorRef1.tell(ApiRequest.newApiRequest(() -> socketASK.getApiOpcode(), socketASK.getVersion(), args), null);
                 return;
             }
         }
@@ -62,20 +68,21 @@ public class ActorAkkaContext implements RouterContext {
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
         // todo 初始化全局逻辑有待商榷
-        for (Map.Entry<Integer, ActorWithApiHandler> entry : ROUTERS.entrySet()) {
+        for (Map.Entry<Integer, ActorRequest> entry : ROUTERS.entrySet()) {
             ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;
 
             ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(responseContext));
 
-            Map<Integer, ActorRef> actorRefMap1 = CHANNEL_ACTORS.get(ctx.channel().id());
+            Map<Integer, ActorRef> actorRefMap1 = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
             if (actorRefMap1 == null) {
                 actorRefMap1 = Maps.newLinkedHashMap();
             }
             actorRefMap1.put(entry.getKey(), actorRef2);
-            CHANNEL_ACTORS.put(ctx.channel().id(), actorRefMap1);
-            actorRef2.tell(new ActorRouterWatching.MemberOnlineEvent(), null);
+            CHANNEL_REQUEST_ACTORS.put(ctx.channel().id(), actorRefMap1);
         }
+
+        memberEvent.onOnlineEvent(new ActorMemberEvent.SocketMemberOnlineEvent());
     }
 
     @Override
@@ -84,13 +91,9 @@ public class ActorAkkaContext implements RouterContext {
         if (userId <= 0) {
             return;
         }
-        Map<Integer, ActorRef> actorRefMap = CHANNEL_ACTORS.remove(ctx.channel().id());
-        if (actorRefMap != null) {
-            for (ActorRef actorRef : actorRefMap.values()) {
-                // 用户下线事件
-                actorRef.tell(new MemberOfflineEvent(userId), null);
-            }
-        }
+        ActorMemberEvent.SocketMemberOfflineEvent event = new ActorMemberEvent.SocketMemberOfflineEvent();
+        event.userId = userId;
+        memberEvent.onOfflineEvent(event);
     }
 
     @Override
