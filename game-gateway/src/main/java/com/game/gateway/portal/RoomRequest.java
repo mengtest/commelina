@@ -23,17 +23,17 @@ public class RoomRequest implements ActorRequest {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorRemoteProxyRequestHandler.props(
-                RoomRemoteProxyRouterActorRequestRequest.class,
+        return ActorRequestRemoteProxyHandler.props(
+                RoomRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.GAME_ROOM_VALUE,
                 akkaRemoteActorEntity.getRoomPath(),
                 outputHandler
         );
     }
 
-    private static class RoomRemoteProxyRouterActorRequestRequest extends ActorRemoteProxyRequestHandler {
+    private static class RoomRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyHandler {
 
-        public RoomRemoteProxyRouterActorRequestRequest(int domain, String remotePath, ChannelOutputHandler context) {
+        public RoomRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
         }
 

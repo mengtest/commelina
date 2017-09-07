@@ -13,7 +13,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class ActorRemoteProxyRequestHandler extends AbstractActor implements ActorRequestWatching {
+public abstract class ActorRequestRemoteProxyHandler extends AbstractActor implements ActorRequestWatching {
 
     protected final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -23,7 +23,7 @@ public abstract class ActorRemoteProxyRequestHandler extends AbstractActor imple
     ActorRef remoteRouterActor = null;
     private AbstractActor.Receive active;
 
-    public ActorRemoteProxyRequestHandler(final int domain, final String remotePath, final ChannelOutputHandler context) {
+    public ActorRequestRemoteProxyHandler(final int domain, final String remotePath, final ChannelOutputHandler context) {
         this.domain = domain;
         this.remotePath = remotePath;
         this.context = context;
@@ -78,7 +78,7 @@ public abstract class ActorRemoteProxyRequestHandler extends AbstractActor imple
                 .build();
     }
 
-    public static Props props(Class<? extends ActorRemoteProxyRequestHandler> clazz, int domain, String remotePath, ChannelOutputHandler context) {
+    public static Props props(Class<? extends ActorRequestRemoteProxyHandler> clazz, int domain, String remotePath, ChannelOutputHandler context) {
         return Props.create(clazz, domain, remotePath, context);
     }
 

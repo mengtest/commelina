@@ -26,17 +26,17 @@ public class MatchingRequest implements ActorRequest {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorRemoteProxyRequestHandler.props(
-                MatchingRemoteProxyRouterActorRequestRequest.class,
+        return ActorRequestRemoteProxyHandler.props(
+                MatchingRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.MATCHING_VALUE,
                 akkaRemoteActorEntity.getMatchingPath(),
                 outputHandler
         );
     }
 
-    private static class MatchingRemoteProxyRouterActorRequestRequest extends ActorRemoteProxyRequestHandler {
+    private static class MatchingRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyHandler {
 
-        public MatchingRemoteProxyRouterActorRequestRequest(int domain, String remotePath, ChannelOutputHandler context) {
+        public MatchingRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
         }
 

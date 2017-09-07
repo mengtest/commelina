@@ -2,7 +2,7 @@ package com.game.matching.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractReceiveClientActor;
+import com.framework.akka.AbstractReceiveRequestActor;
 import com.game.matching.service.Matching;
 import com.game.matching.MatchingConfigEntity;
 import com.game.matching.proto.MATCHING_METHODS;
@@ -11,12 +11,12 @@ import com.framework.message.ApiLoginRequest;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public class MatchingReceiveClientActor extends AbstractReceiveClientActor {
+public class MatchingReceiveRequestActor extends AbstractReceiveRequestActor {
 
     private final ActorRef matching;
 
     // FIXME: 2017/9/6 这里留着 room 这边处理了再改
-    public MatchingReceiveClientActor(MatchingConfigEntity configEntity) {
+    public MatchingReceiveRequestActor(MatchingConfigEntity configEntity) {
         matching = getContext().actorOf(Matching.props(configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
     }
 
@@ -40,7 +40,7 @@ public class MatchingReceiveClientActor extends AbstractReceiveClientActor {
     }
 
     public static Props props(MatchingConfigEntity configEntity) {
-        return Props.create(MatchingReceiveClientActor.class, configEntity);
+        return Props.create(MatchingReceiveRequestActor.class, configEntity);
     }
 
 }

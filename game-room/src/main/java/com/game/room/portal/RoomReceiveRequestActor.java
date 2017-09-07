@@ -2,7 +2,7 @@ package com.game.room.portal;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.framework.akka.AbstractReceiveClientActor;
+import com.framework.akka.AbstractReceiveRequestActor;
 import com.framework.message.ApiLoginRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
@@ -15,11 +15,11 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomReceiveClientActor extends AbstractReceiveClientActor {
+public class RoomReceiveRequestActor extends AbstractReceiveRequestActor {
 
     private final ActorRef roomManger;
 
-    public RoomReceiveClientActor(ActorRef roomManger) {
+    public RoomReceiveRequestActor(ActorRef roomManger) {
         this.roomManger = roomManger;
     }
 
@@ -52,7 +52,7 @@ public class RoomReceiveClientActor extends AbstractReceiveClientActor {
     }
 
     public static Props props(ActorRef roomManger) {
-        return Props.create(RoomReceiveClientActor.class, roomManger);
+        return Props.create(RoomReceiveRequestActor.class, roomManger);
     }
 
 //      [

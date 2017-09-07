@@ -1,5 +1,7 @@
 package com.framework.niosocket;
 
+import io.netty.channel.ChannelId;
+
 /**
  * Created by @panyao on 2017/9/7.
  */
@@ -15,11 +17,21 @@ public interface ActorSocketMemberEvent {
 
     // 长连接用户上线通知
     class SocketMemberOnlineEvent {
+        ChannelId channelId;
+
+        public ChannelId getChannelId() {
+            return channelId;
+        }
 
     }
 
     // 长连接用户下线通知
     class SocketMemberOfflineEvent {
         long userId;
+
+        public long getUserId() {
+            return userId;
+        }
     }
+
 }

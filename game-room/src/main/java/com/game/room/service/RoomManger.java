@@ -3,7 +3,7 @@ package com.game.room.service;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.game.room.portal.RoomReceiveClientActor;
+import com.game.room.portal.RoomReceiveRequestActor;
 import com.game.room.portal.RoomServerRouter;
 import com.google.common.collect.Maps;
 
@@ -28,7 +28,7 @@ public class RoomManger extends AbstractActor {
     private void onClientRequest(RoomClientRouterEntity roomClientRouterEntity) {
         ActorRef roomContext = roomIdToRoomContextActor.get(roomClientRouterEntity.getRoomId());
         if (roomContext == null) {
-            getSender().tell(RoomReceiveClientActor.NotFoundMessage(roomClientRouterEntity.getApiLoginRequest().getApiOpcode()), getSelf());
+            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiLoginRequest().getApiOpcode()), getSelf());
             return;
         }
         roomContext.forward(roomClientRouterEntity, getContext());

@@ -67,7 +67,7 @@ public class ActorContext implements RouterContext {
 
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
-        // todo 初始化全局逻辑有待商榷
+        // 给用户生成单独的 request 事件
         for (Map.Entry<Integer, ActorRequest> entry : ROUTERS.entrySet()) {
             ChannelOutputHandler responseContext = new ChannelOutputHandler();
             responseContext.channelHandlerContext = ctx;
@@ -82,7 +82,9 @@ public class ActorContext implements RouterContext {
             CHANNEL_REQUEST_ACTORS.put(ctx.channel().id(), actorRefMap1);
         }
 
-        memberEvent.onOnlineEvent(new ActorSocketMemberEvent.SocketMemberOnlineEvent());
+        ActorSocketMemberEvent.SocketMemberOnlineEvent event = new ActorSocketMemberEvent.SocketMemberOnlineEvent();
+        event.channelId = ctx.channel().id();
+        memberEvent.onOnlineEvent(event);
     }
 
     @Override

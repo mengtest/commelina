@@ -3,6 +3,11 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka.MemberOfflineEvent;
+import com.framework.akka.MemberOnlineEvent;
+import com.framework.message.BroadcastMessage;
+import com.framework.message.NotifyMessage;
+import com.framework.message.WorldMessage;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -10,7 +15,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/9/7.
  */
-public class ActorSocketRemoteNotifyHandler extends AbstractActor implements ActorSocketMemberEvent {
+public class ActorNotifyRemoteHandler extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -19,13 +24,21 @@ public class ActorSocketRemoteNotifyHandler extends AbstractActor implements Act
     ActorRef remoteRouterActor = null;
     private final AbstractActor.Receive active;
 
-    public ActorSocketRemoteNotifyHandler(final int domain, final String remotePath) {
+    public ActorNotifyRemoteHandler(final int domain, final String remotePath) {
         this.domain = domain;
         this.remotePath = remotePath;
 
         this.active = receiveBuilder()
-                .match(SocketMemberOnlineEvent.class, this::onOnlineEvent)
-                .match(SocketMemberOfflineEvent.class, this::onOfflineEvent)
+                // 用户离线事件 直接发送到远程
+                .match(MemberOfflineEvent.class, off -> remoteRouterActor.tell(off, getSelf()))
+                // 用户上线事件，直接发送到远程
+                .match(MemberOnlineEvent.class, on -> remoteRouterActor.tell(on, getSelf()))
+                // 通知
+                .match(NotifyMessage.class, n -> MessageAdapter.addNotify(domain, n))
+                // 广播
+                .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(domain, b))
+                // 世界消息
+                .match(WorldMessage.class, w -> MessageAdapter.addWorld(domain, w))
                 .match(Terminated.class, t -> {
                     log.info("Matching terminated");
                     sendIdentifyRequest();
@@ -66,16 +79,7 @@ public class ActorSocketRemoteNotifyHandler extends AbstractActor implements Act
     }
 
     public static Props props(int domain, String remotePath) {
-        return Props.create(ActorSocketRemoteNotifyHandler.class, domain, remotePath);
+        return Props.create(ActorNotifyRemoteHandler.class, domain, remotePath);
     }
 
-    @Override
-    public void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {
-
-    }
-
-    @Override
-    public void onOfflineEvent(SocketMemberOfflineEvent offlineEvent) {
-
-    }
 }

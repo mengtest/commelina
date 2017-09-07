@@ -21,7 +21,7 @@ public class MatchAbstractClientRouterActorTest {
         MatchingConfigEntity configEntity = new MatchingConfigEntity();
         configEntity.setQueueSuccessPeople(10);
         configEntity.setQueueSizeRate(2);
-        ActorRef actorRef = system.actorOf(MatchingReceiveClientActor.props(configEntity));
+        ActorRef actorRef = system.actorOf(MatchingReceiveRequestActor.props(configEntity));
         actorRef.tell(ApiLoginRequest.newClientApiRequestWithActor(0l, MATCHING_METHODS.JOIN_MATCH_QUENE, "1.0.0", new RequestArg[]{
                 new RequestArg("1", RequestArg.DATA_TYPE.LONG),
         }), probe.getRef());
