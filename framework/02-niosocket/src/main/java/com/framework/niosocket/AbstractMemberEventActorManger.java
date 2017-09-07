@@ -3,6 +3,7 @@ package com.framework.niosocket;
 import akka.actor.ActorSystem;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
+import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ public abstract class AbstractMemberEventActorManger implements ActorSocketMembe
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected final ActorSystem system = ActorSystem.create("akkaNotifyContext");
+    protected final ActorSystem system = ActorSystem.create("akkaNotifyContext", ConfigFactory.load(("akkanotify")));
 
     @Override
     public final void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {

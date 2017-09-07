@@ -8,6 +8,7 @@ import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SYSTEM_CODE_CONSTANTS;
 import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.Maps;
+import com.typesafe.config.ConfigFactory;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 
@@ -18,8 +19,7 @@ import java.util.Map;
  */
 public class ActorContext implements RouterContext {
 
-    private final ActorSystem system = ActorSystem.create("akkaContext");
-
+    private final ActorSystem system = ActorSystem.create("akkaRouterContext", ConfigFactory.load(("akkarequest")));
     /**
      * apiPathCode -> ActorRequest
      */

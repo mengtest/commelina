@@ -32,8 +32,6 @@ public class RoomActorApp {
 
         ActorRef roomNotifyActor
                 = system.actorOf(RoomReceiveNotifyActor.props(), "roomNotifyActor");
-
-
     }
 
 }

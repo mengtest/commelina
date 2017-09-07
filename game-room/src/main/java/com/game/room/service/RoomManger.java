@@ -41,7 +41,7 @@ public class RoomManger extends AbstractActor {
     }
 
     public static Props props() {
-        return null;
+        return Props.create(RoomManger.class);
     }
 
 }
