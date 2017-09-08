@@ -1,5 +1,4 @@
-#!/usr/bin/env
-
+#!/usr/bin/env bash
 # 覆盖配置文件
 cp -i `pwd`/setting.xml /etc/maven
 mv -u /etc/maven/setting.xml /etc/maven/settings.xml

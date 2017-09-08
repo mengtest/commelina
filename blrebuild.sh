@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env bash
 
 # 覆盖配置文件
 sudo cp -i `pwd`/setting.xml /etc/maven
