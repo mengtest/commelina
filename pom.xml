@@ -17,6 +17,7 @@
 
     <modules>
         <module>framework</module>
+
         <module>app-api</module>
         <module>game-gateway</module>
         <module>game-matching</module>
