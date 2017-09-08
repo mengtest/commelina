@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>room</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
     <name>game-room</name>
 
     <dependencies>
@@ -21,10 +20,6 @@
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.game</groupId>
-            <artifactId>message-matching-to-room</artifactId>
         </dependency>
     </dependencies>
 
@@ -59,6 +54,29 @@
                         </resource>
                     </resources>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../messages/matching-room/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

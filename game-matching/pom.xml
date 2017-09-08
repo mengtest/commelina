@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-
     <parent>
         <groupId>com.game</groupId>
         <artifactId>game-root</artifactId>
@@ -11,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>matching</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
     <name>game-matching</name>
 
     <dependencies>
@@ -22,10 +20,6 @@
         <dependency>
             <groupId>com.nexus.maven</groupId>
             <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.game</groupId>
-            <artifactId>message-matching-to-room</artifactId>
         </dependency>
     </dependencies>
 
@@ -61,6 +55,31 @@
                     </resources>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../messages/matching-room/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

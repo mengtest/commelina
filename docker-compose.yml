@@ -48,6 +48,8 @@ services:
   game-robot:
         image: game/robot
         restart: always
+        depends_on:
+          - game-gateway
         links:
           - game-gateway
 #          - app-api

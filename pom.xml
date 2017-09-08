@@ -22,23 +22,11 @@
         <module>game-matching</module>
         <module>game-room</module>
 
-        <module>message-matching-room</module>
-
         <module>game-robot</module>
     </modules>
 
     <properties>
         <docker.image.prefix>game</docker.image.prefix>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.game</groupId>
-                <artifactId>message-matching-to-room</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
