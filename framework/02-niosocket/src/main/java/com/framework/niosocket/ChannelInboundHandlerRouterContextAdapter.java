@@ -34,13 +34,6 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
 
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        // 协议格式错误
-        if (LOGGER.isDebugEnabled() && !(msg instanceof SocketASK)) {
-            // TODO: 2017/8/29 output 这里可以再优化一下
-            ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
-                    .createErrorMessage(SERVER_CODE.PROTOCOL_FORMAT_ERROR));
-            return;
-        }
         SocketASK ask = (SocketASK) msg;
         if (ask.getIsHeartbeat()) {
             ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
@@ -57,8 +50,8 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
 //            long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
 //            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
 //        }
+        ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.SERVER_ERROR));
         routerContext.exceptionEvent(ctx, cause);
-        ctx.close();
     }
 
     void setRouterContext(RouterContext routerContext) {

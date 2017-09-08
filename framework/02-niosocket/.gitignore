@@ -11,13 +11,12 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+/.mvn
+
 # IDE intellij忽略
 *.iml
 /.idea
-/*/.idea
-/*/*/.idea
-/*/*/*/.idea
-/*/*/*/*/.idea
+/target
 
 # IDE eclipse忽略
 /.myeclipse
@@ -25,5 +24,3 @@ hs_err_pid*
 .classpath
 .mymetadata
 .project
-
-/target

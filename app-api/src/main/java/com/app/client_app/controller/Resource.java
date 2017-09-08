@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by @panyao on 2017/8/31.
+ *
+ * 没有额外限制
  */
 @Controller
 @RequestMapping("/api/client/app")

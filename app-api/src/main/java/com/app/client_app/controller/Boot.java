@@ -23,21 +23,9 @@ public class Boot {
     }
 
     static class BootEntity implements Serializable {
-        ConfigEntity config;
-        VersionEntity version;
-        ResourceEntity resource;
-    }
-
-    static class ConfigEntity {
-
-    }
-
-    static class VersionEntity {
-
-    }
-
-    static class ResourceEntity {
-
+        boolean config;
+        boolean version;
+        boolean resource;
     }
 
 }
