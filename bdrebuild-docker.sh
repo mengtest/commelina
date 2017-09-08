@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# 覆盖配置文件
+#cp -i `pwd`/setting.xml /etc/maven
+#mv -u /etc/maven/setting.xml /etc/maven/settings.xml
+
+# 清除，重新编译
+#sudo `pwd`/mvnw clean
+#sudo `pwd`/mvnw validate
+#sudo `pwd`/mvnw package
+
+# 编译 docker 镜像d
+#sudo `pwd`/mvnw -f app-api/ docker:build
+#
+#sudo `pwd`/mvnw -f game-matching/ docker:build
+#sudo `pwd`/mvnw -f game-room/ docker:build
+
+sudo `pwd`/mvnw -f game-gateway/ docker:build
+
+sudo `pwd`/mvnw -f game-robot/ docker:build
+
+sudo docker-compose up
+#sudo docker-compose restart

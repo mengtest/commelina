@@ -45,7 +45,7 @@
                 <version>0.4.3</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/docker</dockerDirectory>
+                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

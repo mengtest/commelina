@@ -1,4 +1,3 @@
-#FROM java:7
 FROM hub.c.163.com/library/java:8
 ADD app-api-1.0.0.jar app.jar
 VOLUME /tmp

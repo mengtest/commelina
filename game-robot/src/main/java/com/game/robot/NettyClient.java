@@ -1,5 +1,6 @@
 package com.game.robot;
 
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,14 +14,26 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-import com.framework.niosocket.proto.SocketASK;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/9/7.
  */
+@Component
 public class NettyClient {
+
+    @PostConstruct
+    public void init() {
+        NettyClient client = new NettyClient();
+        try {
+            client.connect("127.0.0.1", 9005);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void connect(String host, int port) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -57,8 +70,4 @@ public class NettyClient {
 
     }
 
-    public static void main(String[] args) throws Exception {
-        NettyClient client = new NettyClient();
-        client.connect("127.0.0.1", 9005);
-    }
 }

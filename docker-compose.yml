@@ -1,33 +1,33 @@
 version: "3"
 services:
 
-  # app 接口部分
-  app-api:
-    image: app/app
-    restart: always
-    ports:
-      # web 端口，暴露给外网
-      - 8887:8887
-      # 内网端口 暴露给 内网调用
-      - 8888:8888
+#  app 接口部分
+#  app-api:
+#    image: app/api
+#    restart: always
+#    ports:
+#      # web 端口，暴露给外网
+#      - 8887:8887
+#      # 内网端口 暴露给 内网调用
+#      - "127.0.0.1:8888:8888"
 
-  # 游戏匹配
-  game-matching:
-      image: game/matching
-      restart: always
-      ports:
-        # 内网端口
-        - 2551:2551
-
-  # 游戏房间逻辑
-  game-room:
-        image: game/room
-        restart: always
-        ports:
-        # 内网端口
-          - 2552:2552
-        links:
-          - app-api
+#  # 游戏匹配
+#  game-matching:
+#      image: game/matching
+#      restart: always
+#      ports:
+#        # 内网端口
+#        - "127.0.0.1:2551:2551"
+#
+#  # 游戏房间逻辑
+#  game-room:
+#        image: game/room
+#        restart: always
+#        ports:
+#        # 内网端口
+#          - "127.0.0.1:2552:2552"
+#        links:
+#          - app-api
 
   # 网关服务器
   game-gateway:
@@ -35,14 +35,14 @@ services:
       restart: always
       ports:
         # 外网端口
-        - 9005:9005
+        - "9005:9005"
         # 内网端口，用于和依赖节点进行 request/response
-        - 3003:3003
+        - "3003:3003"
         # 内网端口，用于和依赖节点进行 notify
-        - 3004:3004
-      links:
-        - game-matching
-        - game-room
+        - "3004:3004"
+#      links:
+#        - game-matching
+#        - game-room
 
   # 客户端测试机器人
   game-robot:
@@ -50,4 +50,4 @@ services:
         restart: always
         links:
           - game-gateway
-          - app-api
+#          - app-api

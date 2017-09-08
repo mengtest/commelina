@@ -20,7 +20,7 @@
     </modules>
 
     <properties>
-        <docker.image.prefix>app-service</docker.image.prefix>
+        <docker.image.prefix>app</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -53,7 +53,7 @@
                 <version>0.4.3</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/docker</dockerDirectory>
+                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
