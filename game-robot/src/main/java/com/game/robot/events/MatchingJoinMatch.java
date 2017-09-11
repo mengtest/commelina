@@ -40,7 +40,7 @@ public class MatchingJoinMatch implements MemberEvent {
     }
 
     @Override
-    public EventResult channelRead(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
+    public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
         return null;
     }
 

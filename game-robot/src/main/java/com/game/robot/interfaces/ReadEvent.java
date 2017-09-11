@@ -6,13 +6,13 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by @panyao on 2017/9/11.
  */
-public interface InputEvent extends Identify {
+public interface ReadEvent extends Identify {
 
-    EventResult channelRead(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg);
+    EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg);
 
     // 如果不再使用，则返回 remove 则会不会再在事件循环内了
     enum EventResult {
-        NONE, REMOVE
+        REMOVE, UN_REMOVE, ADD_HISTORY
     }
 
 }

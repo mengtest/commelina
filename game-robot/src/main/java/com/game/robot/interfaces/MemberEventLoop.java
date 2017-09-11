@@ -11,36 +11,50 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/9/11.
  */
-public class MemberEventLoop {
+public final class MemberEventLoop {
 
-    List<InputEvent> inputEvents;
+    List<ReadEvent> readEvents;
     ChannelHandlerContext context;
     final EventLoop eventLoop = new DefaultEventLoop();
 
-    public void addInputEvent(InputEvent event) {
-        inputEvents.add(event);
+    public void addInputEvent(ReadEvent event) {
+        readEvents.add(event);
     }
 
     public void executeMemberEvent(HandlerEvent event) {
         // 注册默认回调
-        if (event instanceof InputEvent) {
-            addInputEvent((InputEvent) event);
+        if (event instanceof ReadEvent) {
+            addInputEvent((ReadEvent) event);
         }
+        eventLoop.execute(() -> event.handle(this, context));
+    }
+
+    public void executeMemberEvent(MemberEvent event) {
+        // 注册默认回调
+        addInputEvent(event);
         eventLoop.execute(() -> event.handle(this, context));
     }
 
     void executeRequest(ChannelHandlerContext ctx, SocketMessage msg) {
         eventLoop.execute(() -> {
-            Iterator<InputEvent> inputEventIterator = inputEvents.iterator();
+            Iterator<ReadEvent> inputEventIterator = readEvents.iterator();
             while (inputEventIterator.hasNext()) {
-                InputEvent event = inputEventIterator.next();
+                ReadEvent event = inputEventIterator.next();
                 if (!event.isMe(() -> msg.getDomain(), () -> msg.getOpcode())) {
                     continue;
                 }
-                switch (event.channelRead(this, ctx, msg)) {
+                switch (event.read(this, ctx, msg)) {
+                    case UN_REMOVE:
+                        break;
+                    case ADD_HISTORY:
+                        // FIXME: 2017/9/11 还没有实现
+                        break;
                     case REMOVE:
+                    default:
                         inputEventIterator.remove();
                         break;
+
+
                 }
             }
         });
