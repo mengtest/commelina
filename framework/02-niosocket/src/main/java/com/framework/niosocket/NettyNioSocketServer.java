@@ -8,6 +8,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -47,7 +48,7 @@ public class NettyNioSocketServer {
         //server启动管理配置
         final ServerBootstrap boot = new ServerBootstrap();
         //  闲置事件
-        final ChannelInboundHandlerAcceptorIdleStateTrigger trigger = new ChannelInboundHandlerAcceptorIdleStateTrigger();
+//        final ChannelAcceptorIdleStateTrigger trigger = new ChannelAcceptorIdleStateTrigger();
         boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)//最大客户端连接数为 0x7fffffff
@@ -56,27 +57,20 @@ public class NettyNioSocketServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        // http://blog.csdn.net/z69183787/article/details/52625095
-                        // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
-                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(15, 0, 0, TimeUnit.SECONDS));
-                        // 闲置事件
-                        ch.pipeline().addLast("heartbeatTrigger", trigger);
-
-//                        字符串协议
-//                        pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
-//                        pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
-//                        pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
-//                        pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
-
                         // protocol 协议
-//                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                        ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
-//                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
-                        ch.pipeline().addLast(new ProtobufEncoder());
+                        ch.pipeline().addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
+                        ch.pipeline().addLast("decoder", new ProtobufDecoder(SocketASK.getDefaultInstance()));
+                        ch.pipeline().addLast("encoder", new ProtobufEncoder());
+
+                        // http://blog.csdn.net/z69183787/article/details/52625095
+//                        // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
+                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+                        // 闲置事件
+//                        ch.pipeline().addLast("heartbeatTrigger", trigger);
 
                         final ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
                         routerAdapter.setRouterContext(router);
-                        ch.pipeline().addLast(routerAdapter);
+                        ch.pipeline().addLast("routerAdapter", routerAdapter);
 //                        ch.pipeline().addLast(new ChannelInboundHandlerRouterContextAdapter());
                     }
                 });

@@ -11,6 +11,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,6 @@ public class NettyClient {
 
     public void connect(String host, int port) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
         try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
@@ -45,13 +45,12 @@ public class NettyClient {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
 
-                    ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(0, 2, 0, TimeUnit.SECONDS));
-                    ch.pipeline().addLast("heartbeatTrigger", new ConnectorIdleStateTrigger());
-
+                    ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                     ch.pipeline().addLast(new ProtobufDecoder(SocketMessage.getDefaultInstance()));
-//                    ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
 //                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast(new ProtobufEncoder());
+
+                    ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
 
                     ch.pipeline().addLast(new ProtoBufClientHandler());
                 }

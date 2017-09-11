@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
  * Created by @panyao on 2017/8/24.
  */
 @ChannelHandler.Sharable
-class ChannelInboundHandlerAcceptorIdleStateTrigger extends ChannelInboundHandlerAdapter {
+class ChannelAcceptorIdleStateTrigger extends ChannelInboundHandlerAdapter {
 
-    private final Logger logger = LoggerFactory.getLogger(ChannelInboundHandlerAcceptorIdleStateTrigger.class);
+    private final Logger logger = LoggerFactory.getLogger(ChannelAcceptorIdleStateTrigger.class);
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -22,7 +22,7 @@ class ChannelInboundHandlerAcceptorIdleStateTrigger extends ChannelInboundHandle
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.READER_IDLE) {
                 // 发现连接是闲置状态就关闭它
-                logger.info("关闭了客户端{}的连接", ctx.channel().id());
+                logger.info("IDLE,关闭了客户端{}的连接", ctx.channel().id());
 //                ctx.close();
 //                throw new Exception("idle exception");
             }
@@ -30,4 +30,5 @@ class ChannelInboundHandlerAcceptorIdleStateTrigger extends ChannelInboundHandle
             super.userEventTriggered(ctx, evt);
         }
     }
+
 }
