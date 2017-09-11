@@ -8,11 +8,6 @@ option java_multiple_files = true;
 
 // socket 请求体
 message SocketASK {
-    bool isHeartbeat = 1;
-    SocketRequest request = 2;
-}
-
-message SocketRequest {
     // 接口域
     uint32 apiPathCode = 1;
     // 接口操作码
@@ -27,18 +22,14 @@ message SocketRequest {
 message SocketMessage {
     // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
     SERVER_CODE code = 1;
-    SocketResponse response = 2;
-}
-
-message SocketResponse {
     // 服务端预定义 消息的域
-    uint32 domain = 1;
+    uint32 domain = 2;
     // 操作码  code = 0 , opCode 与 请求的 apiMethod 保持一致，code = 1 则会新定义操作码
-    uint32 opcode = 2;
+    uint32 opcode = 3;
     // 业务协议
-    BusinessProtocol bp = 3;
+    BusinessProtocol bp = 4;
     // 消息内容 字节
-    bytes msg = 4;
+    bytes msg = 5;
 }
 
 // 参数格式
@@ -55,14 +46,12 @@ enum SERVER_CODE {
     RESONSE_CODE = 0;
     // 通知
     NOTIFY_CODE = 1;
-    // 心态消息
-    HEARTBEAT_CODE = 2;
     // 协议解析错误
-    PROTOCOL_FORMAT_ERROR = 3;
+    PROTOCOL_FORMAT_ERROR = 2;
     // 要调用的 api 不存在
-    RPC_API_NOT_FOUND = 4;
+    RPC_API_NOT_FOUND = 3;
     // 服务端内部错误
-    SERVER_ERROR = 5;
+    SERVER_ERROR = 4;
 }
 
 // 基本数据类型

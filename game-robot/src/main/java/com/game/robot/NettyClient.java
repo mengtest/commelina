@@ -1,6 +1,6 @@
 package com.game.robot;
 
-import com.framework.niosocket.proto.SocketASK;
+import com.framework.niosocket.proto.SocketMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,8 +11,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Component;
 
@@ -50,9 +48,9 @@ public class NettyClient {
                     ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(0, 2, 0, TimeUnit.SECONDS));
                     ch.pipeline().addLast("heartbeatTrigger", new ConnectorIdleStateTrigger());
 
-                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                    ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
-                    ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                    ch.pipeline().addLast(new ProtobufDecoder(SocketMessage.getDefaultInstance()));
+//                    ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+//                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast(new ProtobufEncoder());
 
                     ch.pipeline().addLast(new ProtoBufClientHandler());

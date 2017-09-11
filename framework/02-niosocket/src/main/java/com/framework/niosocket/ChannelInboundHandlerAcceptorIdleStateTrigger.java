@@ -24,7 +24,7 @@ class ChannelInboundHandlerAcceptorIdleStateTrigger extends ChannelInboundHandle
                 // 发现连接是闲置状态就关闭它
                 logger.info("关闭了客户端{}的连接", ctx.channel().id());
 //                ctx.close();
-                throw new Exception("idle exception");
+//                throw new Exception("idle exception");
             }
         } else {
             super.userEventTriggered(ctx, evt);

@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.niosocket.proto.SocketRequest;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public interface RouterContext {
 
-    void doRequestHandler(ChannelHandlerContext ctx, SocketRequest request);
+    void doRequestHandler(ChannelHandlerContext ctx, SocketASK request);
 
     void onlineEvent(ChannelHandlerContext ctx);
 

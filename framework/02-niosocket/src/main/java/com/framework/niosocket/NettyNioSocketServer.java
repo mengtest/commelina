@@ -8,8 +8,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
-import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +26,7 @@ public class NettyNioSocketServer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
     private Channel serverChannel;
-    private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-    // 默认线程数是 cpu 核数的两倍
-    private EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-    private final ChannelInboundHandlerAcceptorIdleStateTrigger trigger = new ChannelInboundHandlerAcceptorIdleStateTrigger();
 
     public int getPort() {
         if (serverChannel == null) {
@@ -44,10 +40,19 @@ public class NettyNioSocketServer {
     }
 
     public void bind(String host, int port, final RouterContext router) throws IOException {
-        ServerBootstrap boot = new ServerBootstrap();  //server启动管理配置
+        // 管理线程
+        final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        // 默认线程数是 cpu 核数的两倍
+        final EventLoopGroup workerGroup = new NioEventLoopGroup();
+        //server启动管理配置
+        final ServerBootstrap boot = new ServerBootstrap();
+        //  闲置事件
+        final ChannelInboundHandlerAcceptorIdleStateTrigger trigger = new ChannelInboundHandlerAcceptorIdleStateTrigger();
         boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)//最大客户端连接数为 0x7fffffff
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
@@ -64,9 +69,9 @@ public class NettyNioSocketServer {
 //                        pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
 
                         // protocol 协议
-                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+//                        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                         ch.pipeline().addLast(new ProtobufDecoder(SocketASK.getDefaultInstance()));
-                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+//                        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                         ch.pipeline().addLast(new ProtobufEncoder());
 
                         final ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();

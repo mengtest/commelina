@@ -6,7 +6,7 @@ import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SERVER_CODE;
-import com.framework.niosocket.proto.SocketRequest;
+import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.Maps;
 import com.typesafe.config.ConfigFactory;
 import io.netty.channel.ChannelHandlerContext;
@@ -43,18 +43,18 @@ public class ActorContext implements RouterContext {
     }
 
     @Override
-    public void doRequestHandler(ChannelHandlerContext ctx, final SocketRequest request) {
+    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK ask) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(request.getApiPathCode());
+            ActorRef actorRef1 = actorRefMap.get(ask.getApiPathCode());
             // 远程复用 actor
             if (actorRef1 != null) {
-                final RequestArg[] args = new RequestArg[request.getArgsList().size()];
-                for (int i = 0; i < request.getArgsList().size(); i++) {
-                    Arg arg = request.getArgsList().get(i);
+                final RequestArg[] args = new RequestArg[ask.getArgsList().size()];
+                for (int i = 0; i < ask.getArgsList().size(); i++) {
+                    Arg arg = ask.getArgsList().get(i);
                     args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
                 }
-                actorRef1.tell(ApiRequest.newApiRequest(() -> request.getApiOpcode(), request.getVersion(), args), null);
+                actorRef1.tell(ApiRequest.newApiRequest(() -> ask.getApiOpcode(), ask.getVersion(), args), null);
                 return;
             }
         }

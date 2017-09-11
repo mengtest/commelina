@@ -2,6 +2,7 @@ package com.framework.niosocket;
 
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketASK;
+import com.framework.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -35,12 +36,13 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SocketASK ask = (SocketASK) msg;
-        if (ask.getIsHeartbeat()) {
-            ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE
-                    .createErrorMessage(SERVER_CODE.HEARTBEAT_CODE));
-        } else {
-//            routerContext.doRequestHandler(ctx, ask.getRequest());
+
+        if (ask.isInitialized()){
+            ctx.writeAndFlush(SocketMessage.newBuilder().setCodeValue(999).build());
+        }else{
+            routerContext.doRequestHandler(ctx, ask);
         }
+
     }
 
     // 调用异常的处理

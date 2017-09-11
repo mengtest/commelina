@@ -4,7 +4,6 @@ import com.framework.message.MessageBus;
 import com.framework.niosocket.proto.BusinessProtocol;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
-import com.framework.niosocket.proto.SocketResponse;
 import com.google.protobuf.ByteString;
 
 /**
@@ -37,12 +36,10 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
         }
         return SocketMessage.newBuilder()
                 .setCode(type)
-                .setResponse(SocketResponse.newBuilder().setDomain(domain)
-                        .setOpcode(opcode)
-                        .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
-                        .setMsg(ByteString.copyFrom(bytes))
-                        .build()
-                )
+                .setDomain(domain)
+                .setOpcode(opcode)
+                .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
+                .setMsg(ByteString.copyFrom(bytes))
                 .build();
     }
 
