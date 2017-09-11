@@ -2,22 +2,16 @@ package com.game.gateway.portal;
 
 
 import akka.actor.Props;
-import com.framework.niosocket.ActorRequestController;
-import com.framework.niosocket.ActorRequest;
-import com.framework.niosocket.ActorRequestHandler;
-import com.game.gateway.MessageProvider;
-import com.game.gateway.proto.DOMAIN;
-import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.GATEWAY_APIS;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.*;
-import com.google.common.base.Splitter;
-import com.google.common.io.BaseEncoding;
-
-import java.util.List;
+import com.game.gateway.MessageProvider;
+import com.game.gateway.proto.DOMAIN;
+import com.game.gateway.proto.ERROR_CODE;
+import com.game.gateway.proto.GATEWAY_APIS;
+import com.game.gateway.proto.GATEWAY_METHODS;
 
 /**
  * Created by @panyao on 2017/8/25.
@@ -38,7 +32,7 @@ public class GatewayRequest implements ActorRequest {
         @Override
         public void onRequest(ApiRequest request) {
             switch (request.getApiOpcode().getNumber()) {
-                case 0:
+                case GATEWAY_METHODS.PASPPORT_CONNECT_VALUE:
                     RequestArg tokenArg = request.getArg(0);
                     if (tokenArg == null) {
                         // token 转换错误
@@ -47,10 +41,11 @@ public class GatewayRequest implements ActorRequest {
                         ), getSelf());
                         return;
                     }
-                    String token = tokenArg.getAsString();
-                    String parseToken = new String(BaseEncoding.base64Url().decode(token));
-                    List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
-                    ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
+//                    String token = tokenArg.getAsString();
+//                    String parseToken = new String(BaseEncoding.base64Url().decode(token));
+//                    List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
+//                    ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
+                    ContextAdapter.userLogin(context.getRawContext().channel().id(), tokenArg.getAsLong());
 
                     // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
                     // 回复自己完成了操作

@@ -43,18 +43,18 @@ public class ActorContext implements RouterContext {
     }
 
     @Override
-    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK ask) {
+    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK request) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(ask.getApiPathCode());
+            ActorRef actorRef1 = actorRefMap.get(request.getApiCode());
             // 远程复用 actor
             if (actorRef1 != null) {
-                final RequestArg[] args = new RequestArg[ask.getArgsList().size()];
-                for (int i = 0; i < ask.getArgsList().size(); i++) {
-                    Arg arg = ask.getArgsList().get(i);
+                final RequestArg[] args = new RequestArg[request.getArgsList().size()];
+                for (int i = 0; i < request.getArgsList().size(); i++) {
+                    Arg arg = request.getArgsList().get(i);
                     args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
                 }
-                actorRef1.tell(ApiRequest.newApiRequest(() -> ask.getApiOpcode(), ask.getVersion(), args), null);
+                actorRef1.tell(ApiRequest.newApiRequest(() -> request.getApiMethod(), request.getVersion(), args), null);
                 return;
             }
         }

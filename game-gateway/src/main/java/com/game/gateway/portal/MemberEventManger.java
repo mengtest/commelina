@@ -31,15 +31,15 @@ public class MemberEventManger extends AbstractMemberEventActorManger {
     @Override
     protected void onlineEvent(MemberOnlineEvent event) {
         // 分表发送给 远程
-//        matching.tell(event, null);
-//        room.tell(event, null);
+//        matching.tell(gateway, null);
+//        room.tell(gateway, null);
     }
 
     @Override
     protected void offlineEvent(MemberOfflineEvent event) {
         // 分表发送给 远程
-//        matching.tell(event, null);
-//        room.tell(event, null);
+//        matching.tell(gateway, null);
+//        room.tell(gateway, null);
     }
 
 }

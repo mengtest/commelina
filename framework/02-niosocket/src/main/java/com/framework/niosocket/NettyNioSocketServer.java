@@ -28,7 +28,6 @@ public class NettyNioSocketServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
     private Channel serverChannel;
 
-
     public int getPort() {
         if (serverChannel == null) {
             return -1;
@@ -68,10 +67,10 @@ public class NettyNioSocketServer {
                         // 闲置事件
 //                        ch.pipeline().addLast("heartbeatTrigger", trigger);
 
-                        final ChannelInboundHandlerRouterContextAdapter routerAdapter = new ChannelInboundHandlerRouterContextAdapter();
+                        final ChannelInboundHandlerRouterAdapter routerAdapter = new ChannelInboundHandlerRouterAdapter();
                         routerAdapter.setRouterContext(router);
                         ch.pipeline().addLast("routerAdapter", routerAdapter);
-//                        ch.pipeline().addLast(new ChannelInboundHandlerRouterContextAdapter());
+//                        ch.pipeline().addLast(new ChannelInboundHandlerRouterAdapter());
                     }
                 });
 

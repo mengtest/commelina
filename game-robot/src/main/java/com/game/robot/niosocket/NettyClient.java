@@ -1,6 +1,7 @@
-package com.game.robot;
+package com.game.robot.niosocket;
 
 import com.framework.niosocket.proto.SocketMessage;
+import com.game.robot.interfaces.SocketHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,28 +14,24 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/9/7.
  */
-@Component
 public class NettyClient {
 
-    @PostConstruct
-    public void init() {
+    public static void getNettyClient(SocketHandler socketHandler) {
         NettyClient client = new NettyClient();
         try {
-            client.connect("127.0.0.1", 9005);
+            client.connect("127.0.0.1", 9005, socketHandler);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void connect(String host, int port) throws Exception {
+    void connect(String host, int port, final SocketHandler socketHandler) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -49,16 +46,13 @@ public class NettyClient {
                     ch.pipeline().addLast(new ProtobufDecoder(SocketMessage.getDefaultInstance()));
 //                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast(new ProtobufEncoder());
-
                     ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
-
-                    ch.pipeline().addLast(new ProtoBufClientHandler());
+                    ch.pipeline().addLast(new ProtoBufClientHandler(socketHandler));
                 }
             });
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync();
-
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();
         } finally {

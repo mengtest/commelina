@@ -6,19 +6,19 @@ option java_package = "com.framework.niosocket.proto";
 option java_outer_classname = "SocketNettyProtocol";
 option java_multiple_files = true;
 
-// socket 请求体
+// niosocket 请求体
 message SocketASK {
-    // 接口域 apiPathCode > 0 等于 0 会被认为是 心跳请求
-    uint32 apiPathCode = 1;
-    // 接口操作码
-    uint32 apiOpcode = 2;
+    // 接口域 apiCode > 0 等于 0 会被认为是 心跳请求
+    uint32 apiCode = 1;
+    // 接口方法
+    uint32 apiMethod = 2;
     // 接口版本
     string version = 3;
     // 参数列表
     repeated Arg args = 4;
 }
 
-// socket 消息
+// niosocket 消息
 message SocketMessage {
     // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
     SERVER_CODE code = 1;

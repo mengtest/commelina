@@ -1,7 +1,12 @@
 package com.game.robot;
 
+import com.game.robot.events.GatewayLogin;
+import com.game.robot.interfaces.MainGameEvent;
+import com.game.robot.interfaces.MainHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by @panyao on 2017/9/8.
@@ -13,6 +18,12 @@ public class RobotSpringBoot {
         SpringApplication app = new SpringApplication(RobotSpringBoot.class);
         app.setWebEnvironment(false);
         app.run(args);
+    }
+
+    @PostConstruct
+    public void init() {
+        MainGameEvent event = new MainHandler();
+        event.start(new GatewayLogin("", ""));
     }
 
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Created by @panyao on 2017/8/24.
  */
-class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAdapter {
+class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
 
@@ -41,7 +41,7 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SocketASK ask = (SocketASK) msg;
         // 心跳
-        if (ask.getApiPathCode() == 0) {
+        if (ask.getApiCode() == 0) {
             LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
             ctx.writeAndFlush(SocketMessage.getDefaultInstance());
         } else {
@@ -67,7 +67,7 @@ class ChannelInboundHandlerRouterContextAdapter extends ChannelInboundHandlerAda
             if (state == IdleState.READER_IDLE) {
                 // 发现连接是闲置状态就关闭它
                 LOGGER.info("IDLE,关闭了客户端{}的连接", ctx.channel().id());
-//                ctx.close();
+                ctx.close();
 //                throw new Exception("idle exception");
             }
         } else {

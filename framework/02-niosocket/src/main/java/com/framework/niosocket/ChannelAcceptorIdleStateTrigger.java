@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
  * Created by @panyao on 2017/8/24.
  */
 @ChannelHandler.Sharable
+@Deprecated
 class ChannelAcceptorIdleStateTrigger extends ChannelInboundHandlerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(ChannelAcceptorIdleStateTrigger.class);
