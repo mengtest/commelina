@@ -14,7 +14,7 @@ import io.netty.channel.ChannelHandlerContext;
 public class MatchingWaitForJoinRoom implements InputEvent {
 
     @Override
-    public boolean isReadMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
+    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
         return domain.getNumber() == DOMAIN.GATE_WAY_VALUE && apiOpcode.getNumber() == MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE;
     }
 

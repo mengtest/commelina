@@ -7,8 +7,8 @@ import java.util.List;
  */
 public interface MainGameEvent extends SocketHandler {
 
-    void start(OutputEvent event, OutputEvent... events);
+    void start(HandlerEvent event, HandlerEvent... events);
 
-    void start(List<OutputEvent> events);
+    void start(List<HandlerEvent> events);
 
 }

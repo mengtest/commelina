@@ -27,7 +27,7 @@ public class GatewayLogin implements MemberEvent {
     }
 
     @Override
-    public void member(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
+    public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
         // FIXME: 2017/9/11 获取 token
         SocketASK ask = SocketASK.newBuilder()
                 .setApiCode(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
@@ -42,7 +42,7 @@ public class GatewayLogin implements MemberEvent {
     }
 
     @Override
-    public boolean isReadMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
+    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
         return domain.getNumber() == DOMAIN.GATE_WAY_VALUE &&
                 apiOpcode.getNumber() == GATEWAY_METHODS.PASPPORT_CONNECT_VALUE;
     }

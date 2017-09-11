@@ -21,12 +21,12 @@ public class MemberEventLoop {
         inputEvents.add(event);
     }
 
-    public void executeMemberEvent(OutputEvent event) {
+    public void executeMemberEvent(HandlerEvent event) {
         // 注册默认回调
         if (event instanceof InputEvent) {
             addInputEvent((InputEvent) event);
         }
-        eventLoop.execute(() -> event.member(this, context));
+        eventLoop.execute(() -> event.handle(this, context));
     }
 
     void executeRequest(ChannelHandlerContext ctx, SocketMessage msg) {
@@ -34,7 +34,7 @@ public class MemberEventLoop {
             Iterator<InputEvent> inputEventIterator = inputEvents.iterator();
             while (inputEventIterator.hasNext()) {
                 InputEvent event = inputEventIterator.next();
-                if (!event.isReadMe(() -> msg.getDomain(), () -> msg.getOpcode())) {
+                if (!event.isMe(() -> msg.getDomain(), () -> msg.getOpcode())) {
                     continue;
                 }
                 switch (event.channelRead(this, ctx, msg)) {

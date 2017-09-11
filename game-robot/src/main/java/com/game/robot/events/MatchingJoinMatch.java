@@ -24,7 +24,7 @@ public class MatchingJoinMatch implements MemberEvent {
     }
 
     @Override
-    public void member(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
+    public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
         SocketASK ask = SocketASK.newBuilder()
                 .setApiCode(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
                 .setApiMethod(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
@@ -35,7 +35,7 @@ public class MatchingJoinMatch implements MemberEvent {
     }
 
     @Override
-    public boolean isReadMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
+    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
         return domain.getNumber() == DOMAIN.GATE_WAY_VALUE && apiOpcode.getNumber() == MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE;
     }
 

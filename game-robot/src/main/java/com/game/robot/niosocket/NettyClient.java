@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyClient {
 
-    public static void getNettyClient(SocketHandler socketHandler) {
+    public static void getNettyClientByConfig(SocketHandler socketHandler) {
         NettyClient client = new NettyClient();
         try {
             client.connect("127.0.0.1", 9005, socketHandler);

@@ -1,15 +1,12 @@
 package com.game.robot.interfaces;
 
 import com.framework.niosocket.proto.SocketMessage;
-import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by @panyao on 2017/9/11.
  */
-public interface InputEvent {
-
-    boolean isReadMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode);
+public interface InputEvent extends Identify {
 
     EventResult channelRead(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg);
 
