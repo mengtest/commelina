@@ -51,7 +51,7 @@ public class GatewayLogin implements MemberEvent {
     @Override
     public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
         // 登录成功，注册匹配事件
-        eventLoop.executeMemberEvent(new MatchingJoinMatch(userId));
+        eventLoop.addEvent(new MatchingJoinMatch(userId));
         return EventResult.REMOVE;
     }
 }

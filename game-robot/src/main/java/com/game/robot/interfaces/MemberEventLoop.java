@@ -17,21 +17,17 @@ public final class MemberEventLoop {
     ChannelHandlerContext context;
     final EventLoop eventLoop = new DefaultEventLoop();
 
-    public void addReadEvent(ReadEvent event) {
+    public void addEvent(ReadEvent event) {
         readEvents.add(event);
     }
 
-    public void executeMemberEvent(HandlerEvent event) {
-        // 注册默认回调
-        if (event instanceof ReadEvent) {
-            addReadEvent((ReadEvent) event);
-        }
+    public void addEvent(HandlerEvent event) {
         eventLoop.execute(() -> event.handle(this, context));
     }
 
-    public void executeMemberEvent(MemberEvent event) {
+    public void addEvent(MemberEvent event) {
         // 注册默认回调
-        addReadEvent(event);
+        addEvent((ReadEvent)event);
         eventLoop.execute(() -> event.handle(this, context));
     }
 

@@ -27,7 +27,7 @@ public final class MainHandler implements MainGameEvent {
         memberEventLoop.context = ctx;
         // 执行启动事件
         for (HandlerEvent initHandler : initOutputEvents) {
-            memberEventLoop.executeMemberEvent(initHandler);
+            memberEventLoop.addEvent(initHandler);
         }
     }
 

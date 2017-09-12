@@ -43,9 +43,9 @@ public class MatchingJoinMatch implements MemberEvent {
     public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
         // 加入匹配成功
         // 注册监听匹配状态的事件
-        eventLoop.addReadEvent(new MatchingWaitForMatchStatus());
+        eventLoop.addEvent(new MatchingWaitForMatchStatus());
         // 注册加入匹配的事件
-        eventLoop.addReadEvent(new MatchingWaitForJoinRoom());
+        eventLoop.addEvent(new MatchingWaitForJoinRoom());
 
         return null;
     }
