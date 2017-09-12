@@ -20,6 +20,7 @@ public class GatewayLogin implements MemberEvent {
 
     private final String account;
     private final String pwd;
+    private long userId = 1;
 
     public GatewayLogin(String account, String pwd) {
         this.account = account;
@@ -35,7 +36,7 @@ public class GatewayLogin implements MemberEvent {
                 .setVersion("1.0.0")
                 .setArgs(0, Arg.newBuilder()
                         .setDataType(DATA_TYPE.LONG)
-                        .setValue(ByteString.copyFrom(new byte[]{Long.valueOf(1).byteValue()}))
+                        .setValue(ByteString.copyFrom(new byte[]{Long.valueOf(userId).byteValue()}))
                 )
                 .build();
         ctx.writeAndFlush(ask);
@@ -49,8 +50,8 @@ public class GatewayLogin implements MemberEvent {
 
     @Override
     public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
-        // 用户登录 app 就自己去匹配
-        eventLoop.executeMemberEvent(new MatchingJoinMatch(1L));
+        // 登录成功，注册匹配事件
+        eventLoop.executeMemberEvent(new MatchingJoinMatch(userId));
         return EventResult.REMOVE;
     }
 }

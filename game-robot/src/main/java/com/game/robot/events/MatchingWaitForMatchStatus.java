@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class MatchingWaitForMatchStatus implements ReadEvent {
 
-    private Logger logger = LoggerFactory.getLogger(MatchingWaitForMatchStatus.class);
+    private final Logger logger = LoggerFactory.getLogger(MatchingWaitForMatchStatus.class);
 
     @Override
     public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
