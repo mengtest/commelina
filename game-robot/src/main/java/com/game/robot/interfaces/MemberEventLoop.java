@@ -17,29 +17,42 @@ public final class MemberEventLoop {
     ChannelHandlerContext context;
     final EventLoop eventLoop = new DefaultEventLoop();
 
-    public void addInputEvent(ReadEvent event) {
+    public void addReadEvent(ReadEvent event) {
         readEvents.add(event);
     }
 
     public void executeMemberEvent(HandlerEvent event) {
         // 注册默认回调
         if (event instanceof ReadEvent) {
-            addInputEvent((ReadEvent) event);
+            addReadEvent((ReadEvent) event);
         }
         eventLoop.execute(() -> event.handle(this, context));
     }
 
     public void executeMemberEvent(MemberEvent event) {
         // 注册默认回调
-        addInputEvent(event);
+        addReadEvent(event);
         eventLoop.execute(() -> event.handle(this, context));
+    }
+
+    public void removeReadEvent(Class<? extends ReadEvent> readEvent) {
+        eventLoop.execute(() -> {
+            Iterator<ReadEvent> readEventIterator = readEvents.iterator();
+            while (readEventIterator.hasNext()) {
+                ReadEvent event = readEventIterator.next();
+                if (event.getClass().equals(readEvent)) {
+                    readEventIterator.remove();
+                    break;
+                }
+            }
+        });
     }
 
     void executeRequest(ChannelHandlerContext ctx, SocketMessage msg) {
         eventLoop.execute(() -> {
-            Iterator<ReadEvent> inputEventIterator = readEvents.iterator();
-            while (inputEventIterator.hasNext()) {
-                ReadEvent event = inputEventIterator.next();
+            Iterator<ReadEvent> readEventIterator = readEvents.iterator();
+            while (readEventIterator.hasNext()) {
+                ReadEvent event = readEventIterator.next();
                 if (!event.isMe(() -> msg.getDomain(), () -> msg.getOpcode())) {
                     continue;
                 }
@@ -51,10 +64,8 @@ public final class MemberEventLoop {
                         break;
                     case REMOVE:
                     default:
-                        inputEventIterator.remove();
+                        readEventIterator.remove();
                         break;
-
-
                 }
             }
         });

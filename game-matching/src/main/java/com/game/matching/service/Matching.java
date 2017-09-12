@@ -45,16 +45,20 @@ public class Matching extends AbstractActor {
             log.info("userId exists in queue " + userId + ", ignored.");
             if (joinMatch.apiOpcode != null) {
                 // 回复 MatchingReceiveRequestActor 的 调用者成功
-                getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+                PortalActorContainer.INSTANCE.getMatchingRequestActor()
+                        .tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
             }
             return;
         }
-        log.info("add queue userId " + userId);
+        if (log.isDebugEnabled()) {
+            log.info("add queue userId " + userId);
+        }
         matchList.add(userId);
 
         if (joinMatch.apiOpcode != null) {
             // 回复 MatchingReceiveRequestActor 的 调用者成功
-            getSender().tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+            PortalActorContainer.INSTANCE.getMatchingRequestActor()
+                    .tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
         }
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
@@ -65,7 +69,7 @@ public class Matching extends AbstractActor {
                     matchList.iterator().remove();
                 }
                 final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
-                matchingRedirect.forward(new MatchingRedirect.CREATE_ROOM(userIds), getContext());
+                matchingRedirect.tell(new MatchingRedirect.CREATE_ROOM(userIds), getSelf());
             } while (matchList.size() >= MATCH_SUCCESS_PEOPLE);
         } else {
             long[] userIds = new long[matchList.size()];
@@ -73,7 +77,7 @@ public class Matching extends AbstractActor {
                 userIds[i] = matchList.get(i);
             }
             final ActorRef notifyMatchStatus = getContext().actorOf(MatchingStatus.props());
-            notifyMatchStatus.forward(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getContext());
+            notifyMatchStatus.tell(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getSelf());
         }
     }
 

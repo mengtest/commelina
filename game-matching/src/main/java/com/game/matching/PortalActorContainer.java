@@ -5,13 +5,9 @@ import akka.actor.ActorRef;
 /**
  * Created by @panyao on 2017/9/7.
  */
-public class PortalActorContainer {
+public final class PortalActorContainer {
 
-    private static PortalActorContainer ourInstance = new PortalActorContainer();
-
-    public static PortalActorContainer getInstance() {
-        return ourInstance;
-    }
+    public static final PortalActorContainer INSTANCE = new PortalActorContainer();
 
     ActorRef matchingRequestActor;
     ActorRef matchingNotifyActor;
@@ -26,4 +22,15 @@ public class PortalActorContainer {
     public ActorRef getMatchingNotifyActor() {
         return matchingNotifyActor;
     }
+
+    public PortalActorContainer updateRequestActor(ActorRef matchingRequestActor) {
+        this.matchingRequestActor = matchingRequestActor;
+        return this;
+    }
+
+    public PortalActorContainer updateNotifyActor(ActorRef matchingNotifyActor) {
+        this.matchingNotifyActor = matchingNotifyActor;
+        return this;
+    }
+
 }

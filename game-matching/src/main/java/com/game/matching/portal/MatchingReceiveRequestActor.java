@@ -17,7 +17,8 @@ public class MatchingReceiveRequestActor extends AbstractReceiveRequestActor {
 
     // FIXME: 2017/9/6 这里留着 room 这边处理了再改
     public MatchingReceiveRequestActor(MatchingConfigEntity configEntity) {
-        matching = getContext().actorOf(Matching.props(configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
+        matching = getContext().actorOf(Matching.props(
+                configEntity.getQueueSuccessPeople(), configEntity.getQueueSizeRate()), "matching");
     }
 
     @Override

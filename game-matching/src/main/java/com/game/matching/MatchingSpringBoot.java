@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Created by @panyao on 2017/8/29.
  */
 @SpringBootApplication
-public class MatchingSpringBoot {
+public final class MatchingSpringBoot {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(MatchingSpringBoot.class);

@@ -20,6 +20,9 @@ public class MatchingWaitForJoinRoom implements ReadEvent {
 
     @Override
     public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
+        // 移除 接受匹配状态的 event
+        eventLoop.removeReadEvent(MatchingWaitForMatchStatus.class);
+
         return null;
     }
 

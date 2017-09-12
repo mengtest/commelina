@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * Created by @panyao on 2017/9/1.
  */
 @Component
-public class MatchingActorApp {
+public final class MatchingActorApp {
 
     @Resource
     private MatchingConfigEntity configEntity;
@@ -23,13 +23,15 @@ public class MatchingActorApp {
     public void init() {
         ActorSystem system = ActorSystem.create("MatchingWorkerSystem",
                 ConfigFactory.load(("matching")));
+
         ActorRef matchingRequestRouter =
                 system.actorOf(MatchingReceiveRequestActor.props(configEntity), "matchingRequestActor");
+
         ActorRef matchingNotifyRouter =
                 system.actorOf(MatchingReceiveNotifyActor.props(), "matchingNotifyActor");
 
-        PortalActorContainer.getInstance().matchingRequestActor = matchingRequestRouter;
-        PortalActorContainer.getInstance().matchingNotifyActor = matchingNotifyRouter;
+        PortalActorContainer.INSTANCE.matchingRequestActor = matchingRequestRouter;
+        PortalActorContainer.INSTANCE.matchingNotifyActor = matchingNotifyRouter;
     }
 
 }

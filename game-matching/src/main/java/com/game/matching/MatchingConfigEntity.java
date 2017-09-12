@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "matching")
-public class MatchingConfigEntity {
+public final class MatchingConfigEntity {
 
     private int queueSuccessPeople;
     private int queueSizeRate;
