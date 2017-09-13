@@ -44,7 +44,7 @@ public final class MemberEventLoop {
         });
     }
 
-    void executeRequest(ChannelHandlerContext ctx, SocketMessage msg) {
+    void acceptor(ChannelHandlerContext ctx, SocketMessage msg) {
         eventLoop.execute(() -> {
             Iterator<ReadEvent> readEventIterator = readEvents.iterator();
             while (readEventIterator.hasNext()) {

@@ -19,7 +19,7 @@ public final class MainHandler implements MainGameEvent {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, SocketMessage msg) {
-        memberEventLoop.executeRequest(ctx, msg);
+        memberEventLoop.acceptor(ctx, msg);
     }
 
     @Override

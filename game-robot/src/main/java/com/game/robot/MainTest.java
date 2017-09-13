@@ -13,7 +13,7 @@ public class MainTest {
         for (int i = 0; i < list.size(); i++) {
             System.out.printf("i" + i);
         }
-        iii
-                ／／ 明天改一下循环这里的问题
+//        iii
+//                ／／ 明天改一下循环这里的问题
     }
 }
