@@ -67,7 +67,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             if (state == IdleState.READER_IDLE) {
                 // 发现连接是闲置状态就关闭它
                 LOGGER.info("IDLE,关闭了客户端{}的连接", ctx.channel().id());
-                ctx.close();
+//                ctx.close();
 //                throw new Exception("idle exception");
             }
         } else {

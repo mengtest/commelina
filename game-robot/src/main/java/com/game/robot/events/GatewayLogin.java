@@ -34,10 +34,9 @@ public class GatewayLogin implements MemberEvent {
                 .setApiCode(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
                 .setApiMethod(GATEWAY_METHODS.PASPPORT_CONNECT_VALUE)
                 .setVersion("1.0.0")
-                .setArgs(0, Arg.newBuilder()
+                .addArgs(0, Arg.newBuilder()
                         .setDataType(DATA_TYPE.LONG)
-                        .setValue(ByteString.copyFrom(new byte[]{Long.valueOf(userId).byteValue()}))
-                )
+                        .setValue(ByteString.copyFrom(new byte[]{Long.valueOf(userId).byteValue()})))
                 .build();
         ctx.writeAndFlush(ask);
     }

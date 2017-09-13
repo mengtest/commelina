@@ -15,7 +15,7 @@ public final class MainHandler implements MainGameEvent {
 
     private final MemberEventLoop memberEventLoop = new MemberEventLoop();
 
-    private List<HandlerEvent> initOutputEvents;
+    private final List<HandlerEvent> initHandlers = Lists.newArrayList();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, SocketMessage msg) {
@@ -25,10 +25,11 @@ public final class MainHandler implements MainGameEvent {
     @Override
     public void connectSuccess(ChannelHandlerContext ctx) {
         memberEventLoop.context = ctx;
-        // 执行启动事件
-        for (HandlerEvent initHandler : initOutputEvents) {
+//        // 执行启动事件
+        for (HandlerEvent initHandler : initHandlers) {
             memberEventLoop.addEvent(initHandler);
         }
+
     }
 
     @Override
@@ -44,15 +45,9 @@ public final class MainHandler implements MainGameEvent {
 
     @Override
     public void start(HandlerEvent event, HandlerEvent... events) {
-        List<HandlerEvent> outputEvents = Lists.newArrayList();
-        outputEvents.add(event);
-        Collections.addAll(outputEvents, events);
-        start(outputEvents);
-    }
+        initHandlers.add(event);
+        Collections.addAll(initHandlers, events);
 
-    @Override
-    public void start(List<HandlerEvent> events) {
-        initOutputEvents = events;
         // 根据账号获取 token
         NettyClient.getNettyClientByConfig(this);
     }
