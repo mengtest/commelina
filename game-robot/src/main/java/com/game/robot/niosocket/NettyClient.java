@@ -46,6 +46,7 @@ public class NettyClient {
                     ch.pipeline().addLast(new ProtobufDecoder(SocketMessage.getDefaultInstance()));
 //                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast(new ProtobufEncoder());
+
                     ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                     ch.pipeline().addLast(new ProtoBufClientHandler(socketHandler));
                 }

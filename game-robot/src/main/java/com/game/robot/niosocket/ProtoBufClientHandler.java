@@ -60,11 +60,11 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
-            if (state == IdleState.WRITER_IDLE) {
-                // write heartbeat to server
+//            if (state == IdleState.WRITER_IDLE) {
+            // write heartbeat to server
 //            System.out.println("write heartbeat to server. time: " + System.currentTimeMillis());
-                ctx.writeAndFlush(SocketASK.getDefaultInstance());
-            }
+            ctx.writeAndFlush(SocketASK.getDefaultInstance());
+//            }
         } else {
             super.userEventTriggered(ctx, evt);
         }
