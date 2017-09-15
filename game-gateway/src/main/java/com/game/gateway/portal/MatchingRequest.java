@@ -1,7 +1,7 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
-import com.framework.message.ApiLoginRequest;
+import com.framework.message.ApiRequestLogin;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.ResponseMessage;
@@ -26,7 +26,7 @@ public class MatchingRequest implements ActorRequest {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorRequestRemoteProxyHandler.props(
+        return ActorRequestRemoteProxyWatching.props(
                 MatchingRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.MATCHING_VALUE,
                 akkaRemoteActorEntity.getMatchingRequestPath(),
@@ -34,7 +34,7 @@ public class MatchingRequest implements ActorRequest {
         );
     }
 
-    private static class MatchingRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyHandler {
+    private static class MatchingRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyWatching {
 
         public MatchingRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
@@ -53,7 +53,7 @@ public class MatchingRequest implements ActorRequest {
                 getSelf().tell(messageDomain, getSelf());
                 return;
             }
-            getSelf().tell(ApiLoginRequest.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

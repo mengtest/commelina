@@ -6,7 +6,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public final class ApiLoginRequest implements AppVersion {
+public final class ApiRequestLogin implements AppVersion {
 
     private final long userId;
 
@@ -14,19 +14,19 @@ public final class ApiLoginRequest implements AppVersion {
     private final String version;
     private final RequestArg[] args;
 
-    private ApiLoginRequest(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+    private ApiRequestLogin(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
         this.userId = userId;
         this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
     }
 
-    public static ApiLoginRequest newClientApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiLoginRequest(userId, apiOpcode, version, args);
+    public static ApiRequestLogin newClientApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        return new ApiRequestLogin(userId, apiOpcode, version, args);
     }
 
-    public static ApiLoginRequest newServerApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiLoginRequest(userId, apiOpcode, version, args);
+    public static ApiRequestLogin newServerApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        return new ApiRequestLogin(userId, apiOpcode, version, args);
     }
 
     public long getUserId() {

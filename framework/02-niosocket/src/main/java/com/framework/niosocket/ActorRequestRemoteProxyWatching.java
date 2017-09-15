@@ -3,10 +3,11 @@ package com.framework.niosocket;
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka.ActorRequestWatching;
-import com.framework.message.ApiLoginRequest;
+import com.framework.akka.ActorRemoteProxyClientHander;
 import com.framework.message.ApiRequest;
-import com.framework.message.*;
+import com.framework.message.ApiRequestLogin;
+import com.framework.message.ResponseMessage;
+import com.framework.message.ResponseMessageDomain;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -14,7 +15,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/8/29.
  */
-public abstract class ActorRequestRemoteProxyHandler extends AbstractActor implements ActorRequestWatching {
+public abstract class ActorRequestRemoteProxyWatching extends AbstractActor implements ActorRemoteProxyClientHander {
 
     protected final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -24,7 +25,7 @@ public abstract class ActorRequestRemoteProxyHandler extends AbstractActor imple
     ActorRef remoteRouterActor = null;
     private AbstractActor.Receive active;
 
-    public ActorRequestRemoteProxyHandler(final int domain, final String remotePath, final ChannelOutputHandler context) {
+    public ActorRequestRemoteProxyWatching(final int domain, final String remotePath, final ChannelOutputHandler context) {
         this.domain = domain;
         this.remotePath = remotePath;
         this.context = context;
@@ -36,11 +37,11 @@ public abstract class ActorRequestRemoteProxyHandler extends AbstractActor imple
                 // 请求事件
                 .match(ApiRequest.class, this::onRequest)
                 // 转发远程 router
-                .match(ApiLoginRequest.class, r -> remoteRouterActor.forward(r, getContext()))
+                .match(ApiRequestLogin.class, this::onRequest)
                 // 回复消息
-                .match(ResponseMessage.class, r -> context.writeAndFlush(domain, r))
+                .match(ResponseMessage.class, this::reply)
                 // 回复消息到自定义 domain 下
-                .match(ResponseMessageDomain.class, r -> context.writeAndFlush(r.getDomain(), r.getMessage()))
+                .match(ResponseMessageDomain.class, this::reply)
                 .match(Terminated.class, t -> {
                     log.info("Matching terminated");
                     sendIdentifyRequest();
@@ -52,6 +53,21 @@ public abstract class ActorRequestRemoteProxyHandler extends AbstractActor imple
                 .build();
 
         sendIdentifyRequest();
+    }
+
+    @Override
+    public final void onRequest(ApiRequestLogin request) {
+        remoteRouterActor.forward(request, getContext());
+    }
+
+    @Override
+    public final void reply(ResponseMessage message) {
+        context.writeAndFlush(domain, message);
+    }
+
+    @Override
+    public final void reply(ResponseMessageDomain r) {
+        context.writeAndFlush(r.getDomain(), r.getMessage());
     }
 
     private void sendIdentifyRequest() {
@@ -79,7 +95,7 @@ public abstract class ActorRequestRemoteProxyHandler extends AbstractActor imple
                 .build();
     }
 
-    public static Props props(Class<? extends ActorRequestRemoteProxyHandler> clazz, int domain, String remotePath, ChannelOutputHandler context) {
+    public static Props props(Class<? extends ActorRequestRemoteProxyWatching> clazz, int domain, String remotePath, ChannelOutputHandler context) {
         return Props.create(clazz, domain, remotePath, context);
     }
 

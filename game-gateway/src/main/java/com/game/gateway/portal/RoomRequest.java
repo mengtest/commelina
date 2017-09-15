@@ -1,7 +1,7 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
-import com.framework.message.ApiLoginRequest;
+import com.framework.message.ApiRequestLogin;
 import com.framework.message.ApiRequest;
 import com.framework.message.*;
 import com.framework.niosocket.*;
@@ -23,7 +23,7 @@ public class RoomRequest implements ActorRequest {
 
     @Override
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return ActorRequestRemoteProxyHandler.props(
+        return ActorRequestRemoteProxyWatching.props(
                 RoomRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.GAME_ROOM_VALUE,
                 akkaRemoteActorEntity.getRoomRequestPath(),
@@ -31,7 +31,7 @@ public class RoomRequest implements ActorRequest {
         );
     }
 
-    private static class RoomRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyHandler {
+    private static class RoomRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyWatching {
 
         public RoomRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelOutputHandler context) {
             super(domain, remotePath, context);
@@ -66,7 +66,7 @@ public class RoomRequest implements ActorRequest {
                 return;
             }
 
-            getSelf().tell(ApiLoginRequest.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

@@ -5,8 +5,10 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
+import com.framework.akka.ActorRemoteForwardClientHandler;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
+import com.framework.message.ResponseForward;
 import com.framework.message.WorldMessage;
 import scala.concurrent.duration.Duration;
 
@@ -15,13 +17,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/9/7.
  */
-public class ActorNotifyRemoteHandler extends AbstractActor {
+public abstract class ActorNotifyRemoteHandler extends AbstractActor implements ActorRemoteForwardClientHandler {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
-
-    final int domain;
-    final String remotePath;
-    ActorRef remoteRouterActor = null;
+    private final int domain;
+    private final String remotePath;
+    private ActorRef remoteRouterActor = null;
     private final AbstractActor.Receive active;
 
     public ActorNotifyRemoteHandler(final int domain, final String remotePath) {
@@ -30,15 +31,11 @@ public class ActorNotifyRemoteHandler extends AbstractActor {
 
         this.active = receiveBuilder()
                 // 用户离线事件 直接发送到远程
-                .match(MemberOfflineEvent.class, off -> remoteRouterActor.tell(off, getSelf()))
+                .match(MemberOfflineEvent.class, this::onEvent)
                 // 用户上线事件，直接发送到远程
-                .match(MemberOnlineEvent.class, on -> remoteRouterActor.tell(on, getSelf()))
-                // 通知
-                .match(NotifyMessage.class, n -> MessageAdapter.addNotify(domain, n))
-                // 广播
-                .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(domain, b))
-                // 世界消息
-                .match(WorldMessage.class, w -> MessageAdapter.addWorld(domain, w))
+                .match(MemberOnlineEvent.class, this::onEvent)
+                // 重定向逻辑
+                .match(ResponseForward.class, this::onForwardEvent)
                 .match(Terminated.class, t -> {
                     log.info("Matching terminated");
                     sendIdentifyRequest();
@@ -51,6 +48,31 @@ public class ActorNotifyRemoteHandler extends AbstractActor {
                 .build();
 
         sendIdentifyRequest();
+    }
+
+    @Override
+    public final void onEvent(MemberOfflineEvent offlineEvent) {
+        remoteRouterActor.tell(offlineEvent, getSelf());
+    }
+
+    @Override
+    public final void onEvent(MemberOnlineEvent onlineEvent) {
+        remoteRouterActor.tell(onlineEvent, getSelf());
+    }
+
+    @Override
+    public final void reply(NotifyMessage message) {
+        MessageAdapter.addNotify(domain, message);
+    }
+
+    @Override
+    public final void reply(BroadcastMessage message) {
+        MessageAdapter.addBroadcast(domain, message);
+    }
+
+    @Override
+    public final void reply(WorldMessage message) {
+        MessageAdapter.addWorld(domain, message);
     }
 
     private void sendIdentifyRequest() {

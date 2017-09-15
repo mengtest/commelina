@@ -3,7 +3,7 @@ package com.game.room.portal;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.framework.akka.AbstractReceiveRequestActor;
-import com.framework.message.ApiLoginRequest;
+import com.framework.message.ApiRequestLogin;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
@@ -24,7 +24,7 @@ public class RoomReceiveRequestActor extends AbstractReceiveRequestActor {
     }
 
     @Override
-    public void onRequest(ApiLoginRequest request) {
+    public void onRequest(ApiRequestLogin request) {
         // 客户端请求
         RequestArg roomIdArg = request.getArg(0);
         if (roomIdArg != null) {
@@ -32,13 +32,13 @@ public class RoomReceiveRequestActor extends AbstractReceiveRequestActor {
             if (roomId > 0) {
                 RoomClientRouterEntity roomClientRouterEntity = new RoomClientRouterEntity();
                 roomClientRouterEntity.setRoomId(roomId);
-                ApiLoginRequest apiLoginRequest = ApiLoginRequest.newClientApiRequestWithActor(
+                ApiRequestLogin apiRequestLogin = ApiRequestLogin.newClientApiRequestWithActor(
                         request.getUserId(),
                         request.getApiOpcode(),
                         request.getVersion(),
                         request.subArg(1)
                 );
-                roomClientRouterEntity.setApiLoginRequest(apiLoginRequest);
+                roomClientRouterEntity.setApiRequestLogin(apiRequestLogin);
                 // 重定向到
                 roomManger.forward(roomClientRouterEntity, getContext());
                 return;

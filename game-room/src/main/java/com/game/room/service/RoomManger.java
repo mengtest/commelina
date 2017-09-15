@@ -3,8 +3,8 @@ package com.game.room.service;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import com.game.room.portal.RoomReceiveNotifyActor;
 import com.game.room.portal.RoomReceiveRequestActor;
-import com.game.room.portal.RoomReceiveServerRequestActor;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -21,20 +21,20 @@ public class RoomManger extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RoomClientRouterEntity.class, this::onClientRequest)
-                .match(RoomReceiveServerRequestActor.CreateRoomEntity.class, this::createRoom)
+                .match(RoomReceiveNotifyActor.CreateRoomEntity.class, this::createRoom)
                 .build();
     }
 
     private void onClientRequest(RoomClientRouterEntity roomClientRouterEntity) {
         ActorRef roomContext = roomIdToRoomContextActor.get(roomClientRouterEntity.getRoomId());
         if (roomContext == null) {
-            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiLoginRequest().getApiOpcode()), getSelf());
+            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiRequestLogin().getApiOpcode()), getSelf());
             return;
         }
         roomContext.forward(roomClientRouterEntity, getContext());
     }
 
-    private void createRoom(RoomReceiveServerRequestActor.CreateRoomEntity createRoomEntity) {
+    private void createRoom(RoomReceiveNotifyActor.CreateRoomEntity createRoomEntity) {
         final long newRoomId = ++roomId;
         ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, createRoomEntity.getPlayers()), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);

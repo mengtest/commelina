@@ -6,7 +6,7 @@ import com.framework.akka.AbstractReceiveRequestActor;
 import com.game.matching.service.Matching;
 import com.game.matching.MatchingConfigEntity;
 import com.game.matching.proto.MATCHING_METHODS;
-import com.framework.message.ApiLoginRequest;
+import com.framework.message.ApiRequestLogin;
 
 /**
  * Created by @panyao on 2017/8/29.
@@ -22,7 +22,7 @@ public class MatchingReceiveRequestActor extends AbstractReceiveRequestActor {
     }
 
     @Override
-    public void onRequest(ApiLoginRequest request) {
+    public void onRequest(ApiRequestLogin request) {
         switch (request.getApiOpcode().getNumber()) {
             case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
                 matching.tell(new Matching.JOIN_MATCH(request.getUserId(), request.getApiOpcode()), getSelf());

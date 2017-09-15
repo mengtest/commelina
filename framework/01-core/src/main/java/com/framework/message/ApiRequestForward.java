@@ -1,29 +1,34 @@
 package com.framework.message;
 
-import com.framework.core.AppVersion;
 import com.google.protobuf.Internal;
 
 /**
- * Created by @panyao on 2017/8/25.
+ * Created by @panyao on 2017/9/15.
  */
-public class ApiRequest implements AppVersion {
+public class ApiRequestForward {
 
+    private final Internal.EnumLite fromDomain;
     private final Internal.EnumLite apiOpcode;
     private final String version;
     private final RequestArg[] args;
 
-    private ApiRequest(Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+    private ApiRequestForward(Internal.EnumLite fromDomain, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+        this.fromDomain = fromDomain;
         this.apiOpcode = apiOpcode;
         this.version = version;
         this.args = args;
     }
 
-    public static ApiRequest newApiRequest(Internal.EnumLite apiMethod, String version, RequestArg[] args) {
-        return new ApiRequest(apiMethod, version, args);
+    public static ApiRequestForward newApiRequestForward(Internal.EnumLite domain, Internal.EnumLite apiMethod, String version, RequestArg[] args) {
+        return new ApiRequestForward(domain, apiMethod, version, args);
     }
 
     public Internal.EnumLite getApiOpcode() {
         return apiOpcode;
+    }
+
+    public Internal.EnumLite getFromDomain() {
+        return fromDomain;
     }
 
     public String getVersion() {
@@ -56,5 +61,4 @@ public class ApiRequest implements AppVersion {
         }
         return args;
     }
-
 }

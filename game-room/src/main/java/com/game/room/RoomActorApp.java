@@ -4,7 +4,6 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.game.room.portal.RoomReceiveNotifyActor;
 import com.game.room.portal.RoomReceiveRequestActor;
-import com.game.room.portal.RoomReceiveServerRequestActor;
 import com.game.room.service.RoomManger;
 import com.typesafe.config.ConfigFactory;
 import org.springframework.stereotype.Component;
@@ -27,11 +26,8 @@ public class RoomActorApp {
         ActorRef roomRequestActor
                 = system.actorOf(RoomReceiveRequestActor.props(roomManger), "roomRequestActor");
 
-        ActorRef roomServerRequestActor
-                = system.actorOf(RoomReceiveServerRequestActor.props(roomManger), "roomServerRequestActor");
-
         ActorRef roomNotifyActor
-                = system.actorOf(RoomReceiveNotifyActor.props(), "roomNotifyActor");
+                = system.actorOf(RoomReceiveNotifyActor.props(roomManger), "roomNotifyActor");
     }
 
 }

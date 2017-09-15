@@ -5,19 +5,19 @@ package com.framework.message;
  */
 public class ServerRouterMessage {
 
-    private final ApiLoginRequest apiLoginRequest;
+    private final ApiRequestLogin apiRequestLogin;
 
-    private ServerRouterMessage(ApiLoginRequest apiLoginRequest) {
-        this.apiLoginRequest = apiLoginRequest;
+    private ServerRouterMessage(ApiRequestLogin apiRequestLogin) {
+        this.apiRequestLogin = apiRequestLogin;
     }
 
-    public static ServerRouterMessage newServerRouterMessage(ApiLoginRequest apiLoginRequest) {
-        return new ServerRouterMessage(apiLoginRequest);
+    public static ServerRouterMessage newServerRouterMessage(ApiRequestLogin apiRequestLogin) {
+        return new ServerRouterMessage(apiRequestLogin);
     }
 
 
-    public ApiLoginRequest getApiLoginRequest() {
-        return apiLoginRequest;
+    public ApiRequestLogin getApiRequestLogin() {
+        return apiRequestLogin;
     }
 
 

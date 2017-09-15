@@ -8,14 +8,18 @@ import com.framework.message.*;
  * <p>
  * 接受 客户端请求
  */
-public abstract class AbstractReceiveRequestActor extends AbstractActor implements ActorClientRouterWatching {
+public abstract class AbstractReceiveRequestActor extends AbstractActor implements ActorRemoteProxyWatching {
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiLoginRequest.class, this::onRequest)
-                .match(ResponseMessage.class, r -> getSender().tell(r, getSelf()))
+                .match(ApiRequestLogin.class, this::onRequest)
                 .build();
+    }
+
+    @Override
+    public final void reply(ResponseMessageDomain message) {
+        getSender().tell(message, getSelf());
     }
 
 }
