@@ -6,7 +6,7 @@ import com.framework.niosocket.proto.SERVER_CODE;
 /**
  * Created by @panyao on 2017/8/24.
  */
-interface MessageResponseBuilder {
+public interface MessageResponseBuilder {
 
     Object createPushMessage(int domain, int opcode, MessageBus messageBus);
 

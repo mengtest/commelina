@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public @interface ActorRequestController {
+public @interface RequestController {
 
     int apiPathCode();
 

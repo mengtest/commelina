@@ -1,6 +1,6 @@
 package com.game.gateway;
 
-import com.framework.niosocket.NettyNioSocketServerForSpringBoot;
+import com.framework.niosocket.akka.NioSocketBootWithActor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +18,8 @@ public class GatewaySpringBoot {
     }
 
     @Bean
-    public NettyNioSocketServerForSpringBoot createServer() {
-        return new NettyNioSocketServerForSpringBoot();
+    public NioSocketBootWithActor createServer() {
+        return new NioSocketBootWithActor();
     }
 
     @Bean

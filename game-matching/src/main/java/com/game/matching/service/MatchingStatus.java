@@ -4,10 +4,9 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.game.matching.MessageProvider;
-import com.game.matching.PortalActorContainer;
-import com.game.matching.proto.OPCODE;
 import com.framework.message.BroadcastMessage;
+import com.game.matching.MessageProvider;
+import com.game.matching.proto.OPCODE;
 
 /**
  * Created by @panyao on 2017/8/14.
@@ -33,7 +32,7 @@ public class MatchingStatus extends AbstractActor {
                 MessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.length));
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-        PortalActorContainer.INSTANCE.getMatchingNotifyActor().tell(broadcast, getSelf());
+//        PortalActorContainer.INSTANCE.getMatchingNotifyActor().reply(broadcast);
 
         getContext().stop(getSelf());
     }

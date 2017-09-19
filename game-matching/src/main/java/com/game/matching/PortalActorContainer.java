@@ -10,6 +10,7 @@ public final class PortalActorContainer {
     public static final PortalActorContainer INSTANCE = new PortalActorContainer();
 
     ActorRef matchingRequestActor;
+
     ActorRef matchingNotifyActor;
 
     private PortalActorContainer() {

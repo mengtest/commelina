@@ -1,4 +1,4 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
 import io.netty.channel.ChannelId;
 

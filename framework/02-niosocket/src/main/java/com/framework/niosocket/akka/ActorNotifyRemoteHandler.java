@@ -1,15 +1,16 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
 import akka.actor.*;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka.ActorRemoteForwardClientHandler;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
-import com.framework.akka.ActorRemoteForwardClientHandler;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
 import com.framework.message.ResponseForward;
 import com.framework.message.WorldMessage;
+import com.framework.niosocket.MessageAdapter;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -37,7 +38,7 @@ public abstract class ActorNotifyRemoteHandler extends AbstractActor implements 
                 // 重定向逻辑
                 .match(ResponseForward.class, this::onForwardEvent)
                 .match(Terminated.class, t -> {
-                    log.info("Matching terminated");
+                    log.info("Remote server {} terminated waiting for restart.", remotePath);
                     sendIdentifyRequest();
                     getContext().unbecome();
                 })
@@ -90,7 +91,7 @@ public abstract class ActorNotifyRemoteHandler extends AbstractActor implements 
                 .match(ActorIdentity.class, identity -> {
                     remoteRouterActor = identity.ref().get();
                     if (remoteRouterActor == null) {
-                        log.info("Remote matching actor not available: " + remotePath);
+                        log.info("Waiting remote server {} start.", remotePath);
                     } else {
                         getContext().watch(remoteRouterActor);
                         getContext().become(active, true);

@@ -1,5 +1,7 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
+import com.framework.niosocket.NettyNioSocketServer;
+import com.framework.niosocket.RequestController;
 import com.google.common.collect.Maps;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,7 @@ import java.util.Map;
  * Created by @panyao on 2017/8/4.
  */
 // 实现ApplicationContextAware以获得ApplicationContext中的所有bean
-public final class NettyNioSocketServerForSpringBoot implements ApplicationContextAware {
+public final class NioSocketBootWithActor implements ApplicationContextAware {
 
     @Value("${nioSocketServer.host:127.0.0.1}")
     private String host;
@@ -31,20 +33,20 @@ public final class NettyNioSocketServerForSpringBoot implements ApplicationConte
     public void initServer() throws IOException {
         server = new NettyNioSocketServer();
 
-        Map<String, Object> apis = context.getBeansWithAnnotation(ActorRequestController.class);
-        Map<Integer, ActorRequest> actorWithApiHandlers = Maps.newHashMap();
+        Map<String, Object> apis = context.getBeansWithAnnotation(RequestController.class);
+        Map<Integer, ActorRequestWatching> actorWithApiHandlers = Maps.newHashMap();
 
         for (Object o : apis.values()) {
-            ActorRequestController controller = o.getClass().getAnnotation(ActorRequestController.class);
+            RequestController controller = o.getClass().getAnnotation(RequestController.class);
             int apiName = controller.apiPathCode();
-            if (o instanceof ActorRequest) {
-                actorWithApiHandlers.put(apiName, (ActorRequest) o);
+            if (o instanceof ActorRequestWatching) {
+                actorWithApiHandlers.put(apiName, (ActorRequestWatching) o);
             } else {
                 throw new RuntimeException("undefined type " + o);
             }
         }
 
-        ActorContext router = new ActorContext();
+        ActorHandler router = new ActorHandler();
         router.initRouters(actorWithApiHandlers);
         router.setMemberEvent(context.getBean(ActorSocketMemberEvent.class));
 

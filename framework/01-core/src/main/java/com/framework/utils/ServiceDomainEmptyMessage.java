@@ -27,7 +27,7 @@ public final class ServiceDomainEmptyMessage {
         return errorCode;
     }
 
-    public boolean isSucess() {
+    public boolean isSuccess() {
         return this.errorCode.getNumber() == 0;
     }
 

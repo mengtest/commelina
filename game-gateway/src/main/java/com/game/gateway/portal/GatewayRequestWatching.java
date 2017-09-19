@@ -7,6 +7,9 @@ import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.*;
+import com.framework.niosocket.akka.ActorRequestWatching;
+import com.framework.niosocket.RequestController;
+import com.framework.niosocket.akka.RequestHandler;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
@@ -16,16 +19,16 @@ import com.game.gateway.proto.GATEWAY_METHODS;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@ActorRequestController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
-public class GatewayRequest implements ActorRequest {
+@RequestController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+public class GatewayRequestWatching implements ActorRequestWatching {
 
     public Props getProps(ChannelOutputHandler outputHandler) {
-        return GatewayActorRequest.props(GatewayActorRequest.class, DOMAIN.GATE_WAY_VALUE, outputHandler);
+        return GatewayRequestV1.props(GatewayRequestV1.class, DOMAIN.GATE_WAY_VALUE, outputHandler);
     }
 
-    private static class GatewayActorRequest extends ActorRequestHandler {
+    private static class GatewayRequestV1 extends RequestHandler {
 
-        public GatewayActorRequest(int domain, ChannelOutputHandler context) {
+        public GatewayRequestV1(int domain, ChannelOutputHandler context) {
             super(domain, context);
         }
 

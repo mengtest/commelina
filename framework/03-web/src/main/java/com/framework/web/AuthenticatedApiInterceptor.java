@@ -50,7 +50,6 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
                                 SessionHandler.SessionTokenEntity sessionTokenEntity) {
         request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);
         anonymous(request, response, sessionTokenEntity.newTokenEntity);
-
     }
 
     private static void anonymous(HttpServletRequest request, HttpServletResponse response,

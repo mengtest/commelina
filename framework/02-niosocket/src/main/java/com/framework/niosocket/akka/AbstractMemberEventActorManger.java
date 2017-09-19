@@ -1,8 +1,9 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
 import akka.actor.ActorSystem;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
+import com.framework.niosocket.ContextAdapter;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public abstract class AbstractMemberEventActorManger implements ActorSocketMembe
 
     @Override
     public final void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {
-        final long userId = NettyServerContext.getInstance().getLoginUserId(onlineEvent.getChannelId());
+        final long userId =  ContextAdapter.getLoginUserId(onlineEvent.getChannelId());
         if (userId <= 0) {
             logger.info("channelId {}, ignore.", onlineEvent.getChannelId());
             return;

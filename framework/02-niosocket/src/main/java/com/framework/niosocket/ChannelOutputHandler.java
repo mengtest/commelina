@@ -13,9 +13,9 @@ public class ChannelOutputHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChannelOutputHandler.class);
 
-    ChannelHandlerContext channelHandlerContext;
+    private ChannelHandlerContext channelHandlerContext;
 
-    void writeAndFlush(int domain, ResponseMessage message) {
+    public void writeAndFlush(int domain, ResponseMessage message) {
         ChannelFuture future = channelHandlerContext.writeAndFlush(
                 MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, message.getOpcode().getNumber(), message.getMessage()));
 
@@ -37,4 +37,7 @@ public class ChannelOutputHandler {
         return this.channelHandlerContext;
     }
 
+    public void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
+        this.channelHandlerContext = channelHandlerContext;
+    }
 }

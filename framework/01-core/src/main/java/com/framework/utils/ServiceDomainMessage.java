@@ -35,7 +35,7 @@ public final class ServiceDomainMessage<T> {
         return data;
     }
 
-    public boolean isSucess() {
+    public boolean isSuccess() {
         return this.errorCode.getNumber() == 0;
     }
 

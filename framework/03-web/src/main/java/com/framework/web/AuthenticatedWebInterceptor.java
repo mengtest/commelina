@@ -94,8 +94,6 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
     private static void anonymous(HttpServletRequest request, HttpServletResponse response, SessionHandler.NewTokenEntity newTokenEntity) {
         request.setAttribute(SessionHandler.ATTRIBUTE_SID, newTokenEntity.sid);
         addSessionCookie(newTokenEntity.newToken, response);
-
     }
-
 
 }

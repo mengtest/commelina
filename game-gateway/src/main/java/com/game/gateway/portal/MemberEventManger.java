@@ -3,8 +3,8 @@ package com.game.gateway.portal;
 import akka.actor.ActorRef;
 import com.framework.akka.MemberOfflineEvent;
 import com.framework.akka.MemberOnlineEvent;
-import com.framework.niosocket.AbstractMemberEventActorManger;
-import com.framework.niosocket.ActorNotifyRemoteHandler;
+import com.framework.niosocket.akka.AbstractMemberEventActorManger;
+import com.framework.niosocket.akka.ActorNotifyRemoteHandler;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.proto.DOMAIN;
 import org.springframework.stereotype.Component;
@@ -35,6 +35,7 @@ public class MemberEventManger extends AbstractMemberEventActorManger {
         // 分表发送给 远程
 //        matching.tell(gateway, null);
 //        room.tell(gateway, null);
+//        room.tell("", ActorRef.noSender());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
 import akka.actor.*;
 import akka.event.Logging;
@@ -8,6 +8,7 @@ import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestLogin;
 import com.framework.message.ResponseMessage;
 import com.framework.message.ResponseMessageDomain;
+import com.framework.niosocket.ChannelOutputHandler;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;

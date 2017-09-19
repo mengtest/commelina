@@ -3,9 +3,9 @@ package com.framework.niosocket;
 /**
  * Created by @panyao on 2017/8/24.
  */
-class MessageResponseProvider {
+public class MessageResponseProvider {
 
-    static final MessageResponseBuilder DEFAULT_MESSAGE_RESPONSE = MessageResponseProvider.produce();
+   public static final MessageResponseBuilder DEFAULT_MESSAGE_RESPONSE = MessageResponseProvider.produce();
 
     static MessageResponseBuilder produce() {
         return new MessageResponseBuilderWithProtoBuff();

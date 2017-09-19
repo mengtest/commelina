@@ -1,9 +1,12 @@
-package com.framework.niosocket;
+package com.framework.niosocket.akka;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
+import com.framework.niosocket.ChannelOutputHandler;
+import com.framework.niosocket.MessageResponseProvider;
+import com.framework.niosocket.RouterHandler;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketASK;
@@ -17,13 +20,13 @@ import java.util.Map;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ActorContext implements RouterContext {
+public class ActorHandler implements RouterHandler {
 
     private final ActorSystem system = ActorSystem.create("akkaRouterContext", ConfigFactory.load(("akkarequest")));
     /**
-     * apiPathCode -> ActorRequest
+     * apiPathCode -> ActorRequestWatching
      */
-    private final Map<Integer, ActorRequest> ROUTERS = Maps.newLinkedHashMap();
+    private final Map<Integer, ActorRequestWatching> ROUTERS = Maps.newLinkedHashMap();
 
     // 请求 actors
     private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_REQUEST_ACTORS = Maps.newLinkedHashMap();
@@ -32,8 +35,8 @@ public class ActorContext implements RouterContext {
     private ActorSocketMemberEvent memberEvent;
 
     // 初始化 router
-    final void initRouters(final Map<Integer, ActorRequest> handlers) {
-        for (Map.Entry<Integer, ActorRequest> entry : handlers.entrySet()) {
+    final void initRouters(final Map<Integer, ActorRequestWatching> handlers) {
+        for (Map.Entry<Integer, ActorRequestWatching> entry : handlers.entrySet()) {
             ROUTERS.put(entry.getKey(), entry.getValue());
         }
     }
@@ -67,9 +70,9 @@ public class ActorContext implements RouterContext {
     @Override
     public void onlineEvent(ChannelHandlerContext ctx) {
         // 给用户生成单独的 request 事件
-        for (Map.Entry<Integer, ActorRequest> entry : ROUTERS.entrySet()) {
+        for (Map.Entry<Integer, ActorRequestWatching> entry : ROUTERS.entrySet()) {
             ChannelOutputHandler responseContext = new ChannelOutputHandler();
-            responseContext.channelHandlerContext = ctx;
+            responseContext.setChannelHandlerContext(ctx);
 
             ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(responseContext));
 
