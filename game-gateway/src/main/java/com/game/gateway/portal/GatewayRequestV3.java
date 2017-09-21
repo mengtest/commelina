@@ -14,6 +14,7 @@ import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
+import io.netty.buffer.PoolArenaMetric;
 
 /**
  * Created by @panyao on 2017/8/25.
@@ -23,7 +24,6 @@ public class GatewayRequestV3 implements RequestWatching {
 
     @Override
     public void onRequest(ApiRequest request) {
-
     }
 
     private static class GatewayRequest extends RequestHandler {

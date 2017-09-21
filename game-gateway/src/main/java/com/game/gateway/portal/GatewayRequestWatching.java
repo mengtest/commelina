@@ -16,6 +16,8 @@ import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
 
+import java.util.ArrayList;
+
 /**
  * Created by @panyao on 2017/8/25.
  */
