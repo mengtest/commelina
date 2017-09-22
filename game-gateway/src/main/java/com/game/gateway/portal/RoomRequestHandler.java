@@ -1,12 +1,10 @@
 package com.game.gateway.portal;
 
 import akka.actor.Props;
-import com.framework.message.ApiRequestLogin;
-import com.framework.message.ApiRequest;
 import com.framework.message.*;
-import com.framework.niosocket.*;
-import com.framework.niosocket.akka.ActorRequestWatching;
-import com.framework.niosocket.RequestController;
+import com.framework.niosocket.ChannelContextOutputHandler;
+import com.framework.niosocket.ContextAdapter;
+import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.akka.ActorRequestRemoteProxyWatching;
 import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.MessageProvider;
@@ -18,14 +16,14 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@RequestController(apiPathCode = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
-public class RoomRequestWatching implements ActorRequestWatching {
+@NioSocketRouter(apiPathCode = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
+@Deprecated
+public class RoomRequestHandler {
 
     @Resource
     private AkkaRemoteActorEntity akkaRemoteActorEntity;
 
-    @Override
-    public Props getProps(ChannelOutputHandler outputHandler) {
+    public Props getProps(ChannelContextOutputHandler outputHandler) {
         return ActorRequestRemoteProxyWatching.props(
                 RoomRemoteProxyRouterActorRequestRequestRemoteProxy.class,
                 DOMAIN.GAME_ROOM_VALUE,
@@ -36,7 +34,7 @@ public class RoomRequestWatching implements ActorRequestWatching {
 
     private static class RoomRemoteProxyRouterActorRequestRequestRemoteProxy extends ActorRequestRemoteProxyWatching {
 
-        public RoomRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelOutputHandler context) {
+        public RoomRemoteProxyRouterActorRequestRequestRemoteProxy(int domain, String remotePath, ChannelContextOutputHandler context) {
             super(domain, remotePath, context);
         }
 
@@ -48,7 +46,7 @@ public class RoomRequestWatching implements ActorRequestWatching {
                 ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED)));
 
-                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN.MATCHING_VALUE, message);
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newMessage(DOMAIN.MATCHING_VALUE, message);
 
                 // 回复消息到 gateway domain
                 getSelf().tell(messageDomain, getSelf());
@@ -62,7 +60,7 @@ public class RoomRequestWatching implements ActorRequestWatching {
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_IMPORT_ROOM_ID))
                 );
 
-                ResponseMessageDomain messageDomain = ResponseMessageDomain.newResponseMessageDomain(DOMAIN.MATCHING_VALUE, message);
+                ResponseMessageDomain messageDomain = ResponseMessageDomain.newMessage(DOMAIN.MATCHING_VALUE, message);
 
                 // 回复消息到 gateway domain
                 getSelf().tell(messageDomain, getSelf());

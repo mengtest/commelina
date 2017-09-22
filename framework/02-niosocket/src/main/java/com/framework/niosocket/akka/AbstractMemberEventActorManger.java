@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by @panyao on 2017/9/7.
  */
+@Deprecated
 public abstract class AbstractMemberEventActorManger implements ActorSocketMemberEvent {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

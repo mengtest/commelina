@@ -18,6 +18,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/9/7.
  */
+@Deprecated
 public abstract class ActorNotifyRemoteHandler extends AbstractActor implements ActorRemoteForwardClientHandler {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);

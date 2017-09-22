@@ -73,6 +73,7 @@ public class Matching extends AbstractActor {
             } while (matchList.size() >= MATCH_SUCCESS_PEOPLE);
         } else {
             long[] userIds = new long[matchList.size()];
+
             for (int i = 0; i < matchList.size(); i++) {
                 userIds[i] = matchList.get(i);
             }
@@ -102,6 +103,7 @@ public class Matching extends AbstractActor {
 
     private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
         // 把用户重新加入失败队列
+
         for (long userId : failed.getUserIds()) {
             getSelf().tell(new JOIN_MATCH(userId, null), getSelf());
         }

@@ -1,6 +1,7 @@
 package com.framework.web;
 
 import com.google.common.base.Strings;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by @panyao on 2016/6/7.
  */
+@RequestMapping
 public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter {
 
     @Resource

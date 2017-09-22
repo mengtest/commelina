@@ -16,6 +16,7 @@ import javax.annotation.Resource;
  * Created by @panyao on 2017/9/7.
  */
 @Component
+@Deprecated
 public class MemberEventManger extends AbstractMemberEventActorManger {
 
     @Resource

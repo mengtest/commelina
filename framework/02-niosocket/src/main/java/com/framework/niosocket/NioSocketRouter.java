@@ -4,12 +4,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by @panyao on 2017/8/25.
- *
- * 代理请求的 actor
- *
  */
 @Component
-public @interface RequestController {
+public @interface NioSocketRouter {
 
     int apiPathCode();
 

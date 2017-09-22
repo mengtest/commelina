@@ -4,9 +4,8 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
-import com.framework.niosocket.ChannelOutputHandler;
+import com.framework.niosocket.ChannelContextOutputHandler;
 import com.framework.niosocket.MessageResponseProvider;
-import com.framework.niosocket.RouterHandler;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketASK;
@@ -20,13 +19,14 @@ import java.util.Map;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ActorHandler implements RouterHandler {
+@Deprecated
+public class ActorHandlerRouter  {
 
     private final ActorSystem system = ActorSystem.create("akkaRouterContext", ConfigFactory.load(("akkarequest")));
     /**
-     * apiPathCode -> ActorRequestWatching
+     * apiPathCode -> ActorRequestHandler
      */
-    private final Map<Integer, ActorRequestWatching> ROUTERS = Maps.newLinkedHashMap();
+    private final Map<Integer, ActorRequestHandler> ROUTERS = Maps.newLinkedHashMap();
 
     // 请求 actors
     private final Map<ChannelId, Map<Integer, ActorRef>> CHANNEL_REQUEST_ACTORS = Maps.newLinkedHashMap();
@@ -35,8 +35,8 @@ public class ActorHandler implements RouterHandler {
     private ActorSocketMemberEvent memberEvent;
 
     // 初始化 router
-    final void initRouters(final Map<Integer, ActorRequestWatching> handlers) {
-        for (Map.Entry<Integer, ActorRequestWatching> entry : handlers.entrySet()) {
+    final void initRouters(final Map<Integer, ActorRequestHandler> handlers) {
+        for (Map.Entry<Integer, ActorRequestHandler> entry : handlers.entrySet()) {
             ROUTERS.put(entry.getKey(), entry.getValue());
         }
     }
@@ -45,8 +45,7 @@ public class ActorHandler implements RouterHandler {
         this.memberEvent = memberEvent;
     }
 
-    @Override
-    public void doRequestHandler(ChannelHandlerContext ctx, final SocketASK request) {
+    public void onRequest(ChannelHandlerContext ctx, final SocketASK request) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
             ActorRef actorRef1 = actorRefMap.get(request.getApiCode());
@@ -67,12 +66,11 @@ public class ActorHandler implements RouterHandler {
         // FIXME: 2017/8/29 返回值未处理
     }
 
-    @Override
-    public void onlineEvent(ChannelHandlerContext ctx) {
+    public void onOnline(ChannelHandlerContext ctx) {
         // 给用户生成单独的 request 事件
-        for (Map.Entry<Integer, ActorRequestWatching> entry : ROUTERS.entrySet()) {
-            ChannelOutputHandler responseContext = new ChannelOutputHandler();
-            responseContext.setChannelHandlerContext(ctx);
+        for (Map.Entry<Integer, ActorRequestHandler> entry : ROUTERS.entrySet()) {
+            ChannelContextOutputHandler responseContext = new ChannelContextOutputHandler();
+//            responseContext.setChannelHandlerContext(ctx);
 
             ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(responseContext));
 
@@ -89,8 +87,7 @@ public class ActorHandler implements RouterHandler {
         memberEvent.onOnlineEvent(event);
     }
 
-    @Override
-    public void offlineEvent(long userId, ChannelHandlerContext ctx) {
+    public void onOffline(long userId, ChannelHandlerContext ctx) {
         // 没有登录的下线通知，对于业务层来说没有意义，忽略
         if (userId <= 0) {
             return;
@@ -101,8 +98,7 @@ public class ActorHandler implements RouterHandler {
         memberEvent.onOfflineEvent(event);
     }
 
-    @Override
-    public void exceptionEvent(ChannelHandlerContext ctx, Throwable cause) {
+    public void onException(ChannelHandlerContext ctx, Throwable cause) {
         // FIXME: 2017/8/29 还没有处理的
         throw new RuntimeException(cause);
     }

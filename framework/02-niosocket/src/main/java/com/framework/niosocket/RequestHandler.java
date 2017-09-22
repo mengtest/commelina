@@ -5,8 +5,8 @@ import com.framework.message.ApiRequest;
 /**
  * Created by @panyao on 2017/9/6.
  */
-public interface RequestWatching {
+public interface RequestHandler {
 
-    void onRequest(ApiRequest request);
+    void onRequest(ApiRequest request, ChannelContextOutputHandler ctx);
 
 }

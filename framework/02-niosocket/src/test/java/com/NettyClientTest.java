@@ -82,7 +82,7 @@ class SimpleClientChannelHandler extends ChannelInboundHandlerAdapter {
         System.out.println(String.format("client(%s) receive message [%s]", channel.localAddress().toString().substring(1),
                 String.valueOf(msg)));
         System.out.println();
-//        ctx.writeAndFlush(String.valueOf("welcome"));
+//        ctx.reply(String.valueOf("welcome"));
     }
 
     @Override

@@ -5,30 +5,27 @@ import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
-import com.framework.niosocket.ChannelOutputHandler;
+import com.framework.niosocket.ChannelContextOutputHandler;
 import com.framework.niosocket.ContextAdapter;
-import com.framework.niosocket.RequestController;
-import com.framework.niosocket.RequestWatching;
-import com.framework.niosocket.akka.RequestHandler;
+import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
-import io.netty.buffer.PoolArenaMetric;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
-@RequestController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
-public class GatewayRequestV3 implements RequestWatching {
+@NioSocketRouter(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+@Deprecated
+public class GatewayRequestV3  {
 
-    @Override
     public void onRequest(ApiRequest request) {
     }
 
-    private static class GatewayRequest extends RequestHandler {
+    private static class GatewayRequest extends com.framework.niosocket.akka.RequestHandler {
 
-        public GatewayRequest(int domain, ChannelOutputHandler context) {
+        public GatewayRequest(int domain, ChannelContextOutputHandler context) {
             super(domain, context);
         }
 

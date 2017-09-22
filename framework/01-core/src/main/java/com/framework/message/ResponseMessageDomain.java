@@ -13,7 +13,7 @@ public class ResponseMessageDomain {
         this.message = message;
     }
 
-    public static ResponseMessageDomain newResponseMessageDomain(int domain, ResponseMessage message) {
+    public static ResponseMessageDomain newMessage(int domain, ResponseMessage message) {
         return new ResponseMessageDomain(domain, message);
     }
 

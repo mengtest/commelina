@@ -5,6 +5,7 @@ import io.netty.channel.ChannelId;
 /**
  * Created by @panyao on 2017/9/7.
  */
+@Deprecated
 public interface ActorSocketMemberEvent {
 
     default void onOnlineEvent(SocketMemberOnlineEvent onlineEvent) {

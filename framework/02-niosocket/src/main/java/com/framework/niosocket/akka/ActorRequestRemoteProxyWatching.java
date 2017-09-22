@@ -8,7 +8,7 @@ import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestLogin;
 import com.framework.message.ResponseMessage;
 import com.framework.message.ResponseMessageDomain;
-import com.framework.niosocket.ChannelOutputHandler;
+import com.framework.niosocket.ChannelContextOutputHandler;
 import scala.concurrent.duration.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -16,17 +16,18 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by @panyao on 2017/8/29.
  */
+@Deprecated
 public abstract class ActorRequestRemoteProxyWatching extends AbstractActor implements ActorRemoteProxyClientHander {
 
     protected final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
     final int domain;
     final String remotePath;
-    protected final ChannelOutputHandler context;
+    protected final ChannelContextOutputHandler context;
     ActorRef remoteRouterActor = null;
     private AbstractActor.Receive active;
 
-    public ActorRequestRemoteProxyWatching(final int domain, final String remotePath, final ChannelOutputHandler context) {
+    public ActorRequestRemoteProxyWatching(final int domain, final String remotePath, final ChannelContextOutputHandler context) {
         this.domain = domain;
         this.remotePath = remotePath;
         this.context = context;
@@ -63,12 +64,12 @@ public abstract class ActorRequestRemoteProxyWatching extends AbstractActor impl
 
     @Override
     public final void reply(ResponseMessage message) {
-        context.writeAndFlush(domain, message);
+        context.reply(domain, message);
     }
 
     @Override
     public final void reply(ResponseMessageDomain r) {
-        context.writeAndFlush(r.getDomain(), r.getMessage());
+        context.reply(r.getDomain(), r.getMessage());
     }
 
     private void sendIdentifyRequest() {
@@ -96,7 +97,7 @@ public abstract class ActorRequestRemoteProxyWatching extends AbstractActor impl
                 .build();
     }
 
-    public static Props props(Class<? extends ActorRequestRemoteProxyWatching> clazz, int domain, String remotePath, ChannelOutputHandler context) {
+    public static Props props(Class<? extends ActorRequestRemoteProxyWatching> clazz, int domain, String remotePath, ChannelContextOutputHandler context) {
         return Props.create(clazz, domain, remotePath, context);
     }
 

@@ -6,9 +6,9 @@ import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
-import com.framework.niosocket.*;
-import com.framework.niosocket.akka.ActorRequestWatching;
-import com.framework.niosocket.RequestController;
+import com.framework.niosocket.ChannelContextOutputHandler;
+import com.framework.niosocket.ContextAdapter;
+import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.akka.RequestHandler;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
@@ -16,25 +16,23 @@ import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
 
-import java.util.ArrayList;
-
 /**
  * Created by @panyao on 2017/8/25.
  */
-@RequestController(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
-public class GatewayRequestWatching implements ActorRequestWatching {
+@NioSocketRouter(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+@Deprecated
+public class GatewayRequestHandler {
 
-    public Props getProps(ChannelOutputHandler outputHandler) {
+    public Props getProps(ChannelContextOutputHandler outputHandler) {
         return GatewayRequestV1.props(GatewayRequestV1.class, DOMAIN.GATE_WAY_VALUE, outputHandler);
     }
 
     private static class GatewayRequestV1 extends RequestHandler {
 
-        public GatewayRequestV1(int domain, ChannelOutputHandler context) {
+        public GatewayRequestV1(int domain, ChannelContextOutputHandler context) {
             super(domain, context);
         }
 
-        @Override
         public void onRequest(ApiRequest request) {
             switch (request.getApiOpcode().getNumber()) {
                 case GATEWAY_METHODS.PASPPORT_CONNECT_VALUE:

@@ -21,20 +21,30 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private final NettyServerContext nettyServerContext = NettyServerContext.getInstance();
 
-    private RouterHandler routerHandler;
+    private RouterContextHandler routerContextHandlerImpl;
+
+    private RouterEventHandler routerEventHandler = new RouterEventHandler() {
+    };
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
-        routerHandler.onlineEvent(ctx);
+
+        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
+        outputHandler.channelHandlerContext = ctx;
+        routerEventHandler.onOnline(outputHandler);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        routerHandler.offlineEvent(logoutUserId, ctx);
+
+        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
+        outputHandler.channelHandlerContext = ctx;
+
+        routerEventHandler.onOffline(logoutUserId, outputHandler);
     }
 
     //当客户端发送数据到服务器会触发此函数
@@ -45,7 +55,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
             ctx.writeAndFlush(SocketMessage.getDefaultInstance());
         } else {
-            routerHandler.doRequestHandler(ctx, ask);
+            routerContextHandlerImpl.onRequest(ctx, ask);
         }
     }
 
@@ -57,7 +67,10 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
         }
         ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.SERVER_ERROR));
-        routerHandler.exceptionEvent(ctx, cause);
+
+        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
+        outputHandler.channelHandlerContext = ctx;
+        routerEventHandler.onException(outputHandler, cause);
     }
 
     @Override
@@ -75,8 +88,11 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         }
     }
 
-    void setRouterHandler(RouterHandler routerHandler) {
-        this.routerHandler = routerHandler;
+    void setHandlers(RouterContextHandler routerContextHandlerImpl, RouterEventHandler routerEventHandler) {
+        this.routerContextHandlerImpl = routerContextHandlerImpl;
+        if (routerEventHandler != null) {
+            this.routerEventHandler = routerEventHandler;
+        }
     }
 
 }

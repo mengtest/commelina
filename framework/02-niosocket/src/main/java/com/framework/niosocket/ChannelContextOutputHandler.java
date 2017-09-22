@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ChannelOutputHandler {
+public class ChannelContextOutputHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelOutputHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelContextOutputHandler.class);
 
     ChannelHandlerContext channelHandlerContext;
 
-    public void writeAndFlush(int domain, ResponseMessage message) {
+    public void reply(int domain, ResponseMessage message) {
         ChannelFuture future = channelHandlerContext.writeAndFlush(
                 MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, message.getOpcode().getNumber(), message.getMessage()));
 
