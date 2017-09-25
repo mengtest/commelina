@@ -29,13 +29,14 @@ public final class ReplyUtils {
         } else {
             // 取消
             //  throw new Exception("客户端取消执行");
-            LOGGER.error("client cancel receive message.");
+            LOGGER.error("Client cancel receive message.");
         }
     }
 
     public static void reply(ChannelHandlerContext channelHandlerContext, Internal.EnumLite domain, ResponseMessage responseMessage) {
 
         Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, responseMessage.getOpcode(), responseMessage.getMessage());
+
         ChannelFuture future = channelHandlerContext.writeAndFlush(msg);
 
         if (future.isSuccess()) {

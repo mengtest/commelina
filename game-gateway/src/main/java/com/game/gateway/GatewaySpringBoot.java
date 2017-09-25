@@ -1,6 +1,5 @@
 package com.game.gateway;
 
-import com.framework.akka_router.AkkaWorkerSystem;
 import com.framework.niosocket.BootstrapNioSocket;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

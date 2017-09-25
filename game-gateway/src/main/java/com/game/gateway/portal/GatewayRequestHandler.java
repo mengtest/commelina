@@ -35,7 +35,7 @@ public class GatewayRequestHandler {
 
         public void onRequest(ApiRequest request) {
             switch (request.getApiOpcode().getNumber()) {
-                case GATEWAY_METHODS.PASPPORT_CONNECT_VALUE:
+                case GATEWAY_METHODS.PASSPPORT_CONNECT_VALUE:
                     RequestArg tokenArg = request.getArg(0);
                     if (tokenArg == null) {
                         // token 转换错误

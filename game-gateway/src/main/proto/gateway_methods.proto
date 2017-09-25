@@ -9,5 +9,5 @@ option java_multiple_files = true;
 // 接口列表
 enum GATEWAY_METHODS {
     // 登录
-    PASPPORT_CONNECT = 0;
+    PASSPPORT_CONNECT = 0;
 }
