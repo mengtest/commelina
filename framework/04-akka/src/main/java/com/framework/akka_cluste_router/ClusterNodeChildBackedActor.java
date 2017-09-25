@@ -1,6 +1,7 @@
-package com.framework.akka_router;
+package com.framework.akka_cluste_router;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorSelection;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
@@ -13,6 +14,8 @@ import com.framework.message.ApiRequest;
 public abstract class ClusterNodeChildBackedActor extends AbstractActor implements RouterId, RequestHandlerWatching {
 
     private Cluster cluster = Cluster.get(getContext().system());
+
+    private ActorSelection clusterFronted;
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -37,21 +40,20 @@ public abstract class ClusterNodeChildBackedActor extends AbstractActor implemen
                         }
                     }
                 })
-                .match(ClusterEvent.MemberUp.class, mUp -> {
-                    register(mUp.member());
-                })
+                .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
                 .build();
     }
 
     void register(Member member) {
-        if (member.hasRole("frontend"))
-            getContext().actorSelection(member.address() + "/user/routerFronted").tell(
-                    new ClusterRouterRegistrationEntity(this.getDomain(), (byte) 0), self());
+        if (member.hasRole("frontend")) {
+            clusterFronted = getContext().actorSelection(member.address() + "/user/routerFronted");
+            clusterFronted.tell(new ClusterRouterRegistrationEntity(this.getDomain(), (byte) 0), self());
+        }
     }
-
-    /**
-     * @return
-     */
-    protected abstract String getFronted();
+//
+//    /**
+//     * @return
+//     */
+//    protected abstract String getFronted();
 
 }

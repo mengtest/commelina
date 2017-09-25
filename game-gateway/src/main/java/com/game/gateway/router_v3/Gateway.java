@@ -1,8 +1,8 @@
 package com.game.gateway.router_v3;
 
 import akka.actor.Props;
-import com.framework.akka_router.AbstractServiceActor;
-import com.framework.akka_router.NioLocalWorkerActor;
+import com.framework.akka_cluste_router.AbstractServiceActor;
+import com.framework.akka_cluste_router.NioLocalWorkerActor;
 import com.framework.message.ApiRequest;
 import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.proto.DOMAIN;
@@ -22,12 +22,12 @@ public class Gateway extends NioLocalWorkerActor {
     private SessionInterface sessionInterface;
 
     @Override
-    protected Internal.EnumLite getDomain() {
+    public Internal.EnumLite getDomain() {
         return DOMAIN.GATE_WAY;
     }
 
     @Override
-    protected Props getProps() {
+    public Props getProps() {
         return GateWayActor.props();
     }
 
@@ -35,6 +35,7 @@ public class Gateway extends NioLocalWorkerActor {
 
         @Override
         public void onRequest(ApiRequest request) {
+
             //        switch (request.getApiOpcode().getNumber()) {
 //            case GATEWAY_METHODS.PASSPPORT_CONNECT_VALUE:
 //                RequestArg tokenArg = request.getArg(0);

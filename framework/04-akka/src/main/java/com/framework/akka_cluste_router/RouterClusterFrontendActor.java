@@ -1,8 +1,12 @@
-package com.framework.akka_router;
+package com.framework.akka_cluste_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Terminated;
+import com.framework.message.BroadcastMessage;
+import com.framework.message.NotifyMessage;
+import com.framework.message.WorldMessage;
+import com.framework.niosocket.MessageAdapter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
@@ -10,10 +14,9 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterFrontendActor extends AbstractActor {
+public class RouterClusterFrontendActor extends AbstractActor {
 
     private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
-    private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
 
     @Override
     public Receive createReceive() {
@@ -26,27 +29,25 @@ public class RouterFrontendActor extends AbstractActor {
                         target.forward(j, getContext());
                     }
                 })
-                .match(LocalRouterJoinEntity.class, j -> {
-                    ActorRef target = localRouters.get(j.getRouterId());
-                    if (target == null) {
-                        sender().tell(new RouterNotFoundEntity(j.getRouterId()), getSelf());
-                    } else {
-                        target.forward(j, getContext());
-                    }
+                // from cluster seed node.
+                .match(BroadcastMessage.class, b -> {
+                    // 获取 router id
+                    MessageAdapter.addBroadcast(clusterRouters.inverse().get(getSender()), b);
+                })
+                .match(NotifyMessage.class, n -> {
+                    // 获取 router id
+                    MessageAdapter.addNotify(clusterRouters.inverse().get(getSender()), n);
+                })
+                .match(WorldMessage.class, w -> {
+                    // 获取 router id
+                    MessageAdapter.addWorld(clusterRouters.inverse().get(getSender()), w);
                 })
                 .match(ClusterRouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
                     clusterRouters.put(r.getRouterId(), sender());
                 })
-                .match(LocalRouterRegistrationEntity.class, r -> {
-                    getContext().watch(sender());
-                    localRouters.put(r.getRouterId(), sender());
-                })
                 .match(Terminated.class, terminated -> {
-                    Internal.EnumLite routerId = clusterRouters.inverse().remove(terminated.getActor());
-                    if (routerId == null) {
-                        localRouters.inverse().remove(terminated.getActor());
-                    }
+                    clusterRouters.inverse().remove(terminated.getActor());
                 })
                 .build();
     }

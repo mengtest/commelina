@@ -39,8 +39,7 @@ public class GatewayRequestHandler {
                     RequestArg tokenArg = request.getArg(0);
                     if (tokenArg == null) {
                         // token 转换错误
-                        reply(ResponseMessage.newMessage(request.getApiOpcode(),
-                                MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR))));
+                        reply(ResponseMessage.newMessage(MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR))));
                         return;
                     }
 //                    String token = tokenArg.getAsString();
@@ -51,7 +50,7 @@ public class GatewayRequestHandler {
 
                     // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
                     // 回复自己完成了操作
-                    reply(ResponseMessage.newMessage(request.getApiOpcode(), MessageProvider.produceMessage()));
+                    reply(ResponseMessage.newMessage(MessageProvider.produceMessage()));
                     return;
             }
             this.unhandled(request);

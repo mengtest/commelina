@@ -65,12 +65,12 @@ public abstract class ActorRequestRemoteProxyWatching extends AbstractActor impl
 
     @Override
     public final void reply(ResponseMessage message) {
-        ReplyUtils.reply(context, () -> domain, message);
+        ReplyUtils.reply(context, () -> domain, () -> 0, message);
     }
 
     @Override
     public final void reply(ResponseMessageDomain r) {
-        ReplyUtils.reply(context, r.getDomain(), r.getMessage());
+        ReplyUtils.reply(context, r.getDomain(), () -> 0, r.getMessage());
     }
 
     private void sendIdentifyRequest() {

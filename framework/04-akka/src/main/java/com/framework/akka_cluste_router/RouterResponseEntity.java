@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_cluste_router;
 
 import com.framework.message.MessageBus;
 

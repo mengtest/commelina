@@ -31,7 +31,7 @@ public abstract class RequestHandler extends AbstractActor {
     public abstract void onRequest(ApiRequest request);
 
     public final void reply(ResponseMessage message) {
-        ReplyUtils.reply(context, () -> domain, message);
+        ReplyUtils.reply(context, () -> domain, () -> 0, message);
     }
 
     public static Props props(Class<? extends RequestHandler> clazz, int domain, ChannelHandlerContext context) {

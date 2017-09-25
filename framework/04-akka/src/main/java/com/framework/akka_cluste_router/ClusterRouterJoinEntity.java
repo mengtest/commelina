@@ -1,6 +1,6 @@
-package com.framework.akka_router;
+package com.framework.akka_cluste_router;
 
-import com.framework.message.ApiRequest;
+import com.framework.message.ApiRequestLogin;
 import com.google.protobuf.Internal;
 
 /**
@@ -11,9 +11,9 @@ public class ClusterRouterJoinEntity {
     private final Internal.EnumLite routerId;
     private final byte seedNode;
 
-    private final ApiRequest apiRequest;
+    private final ApiRequestLogin apiRequest;
 
-    public ClusterRouterJoinEntity(Internal.EnumLite routerId, byte seedNode, ApiRequest apiRequest) {
+    public ClusterRouterJoinEntity(Internal.EnumLite routerId, byte seedNode, ApiRequestLogin apiRequest) {
         this.routerId = routerId;
         this.seedNode = seedNode;
         this.apiRequest = apiRequest;
@@ -23,7 +23,7 @@ public class ClusterRouterJoinEntity {
         return routerId;
     }
 
-    public ApiRequest getApiRequest() {
+    public ApiRequestLogin getApiRequest() {
         return apiRequest;
     }
 

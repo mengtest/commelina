@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_cluste_router;
 
 import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
@@ -28,13 +28,13 @@ public abstract class NioLocalWorkerActor implements ActorRequestHandler {
     @Override
     public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         // 转发到业务 actor 上去
-        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.routerAsk(new LocalRouterJoinEntity(this.getDomain(), request));
+        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.routerLocalNodeAsk(new LocalRouterJoinEntity(this.getDomain(), request));
 
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getDomain(), ResponseMessage.newMessage(request.getApiOpcode(), ((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getDomain(), request.getApiOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
 

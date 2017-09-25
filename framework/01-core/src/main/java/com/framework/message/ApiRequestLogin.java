@@ -21,11 +21,7 @@ public final class ApiRequestLogin implements AppVersion {
         this.args = args;
     }
 
-    public static ApiRequestLogin newClientApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        return new ApiRequestLogin(userId, apiOpcode, version, args);
-    }
-
-    public static ApiRequestLogin newServerApiRequestWithActor(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
+    public static ApiRequestLogin newRequest(long userId, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
         return new ApiRequestLogin(userId, apiOpcode, version, args);
     }
 

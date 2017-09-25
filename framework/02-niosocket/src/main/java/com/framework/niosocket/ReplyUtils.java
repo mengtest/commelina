@@ -33,9 +33,9 @@ public final class ReplyUtils {
         }
     }
 
-    public static void reply(ChannelHandlerContext channelHandlerContext, Internal.EnumLite domain, ResponseMessage responseMessage) {
+    public static void reply(ChannelHandlerContext channelHandlerContext, Internal.EnumLite domain, Internal.EnumLite opcode, ResponseMessage responseMessage) {
 
-        Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, responseMessage.getOpcode(), responseMessage.getMessage());
+        Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createResponseMessage(domain, opcode, responseMessage.getMessage());
 
         ChannelFuture future = channelHandlerContext.writeAndFlush(msg);
 

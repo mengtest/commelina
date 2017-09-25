@@ -43,7 +43,7 @@ public class RoomRequestHandler {
             long userId = ContextAdapter.getLoginUserId(context.channel().id());
             if (userId <= 0) {
                 // 不登录,直接告诉客户端错误
-                ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
+                ResponseMessage message = ResponseMessage.newMessage(
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED)));
 
                 ResponseMessageDomain messageDomain = ResponseMessageDomain.newMessage(DOMAIN.MATCHING, message);
@@ -56,7 +56,7 @@ public class RoomRequestHandler {
             RequestArg roomId = request.getArg(0);
             if (roomId == null || roomId.getAsLong() <= 0) {
                 // 第一个参数必须是 room Id
-                ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
+                ResponseMessage message = ResponseMessage.newMessage(
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_IMPORT_ROOM_ID))
                 );
 
@@ -67,7 +67,7 @@ public class RoomRequestHandler {
                 return;
             }
 
-            getSelf().tell(ApiRequestLogin.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

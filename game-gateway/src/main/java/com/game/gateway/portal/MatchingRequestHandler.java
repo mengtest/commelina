@@ -43,7 +43,7 @@ public class MatchingRequestHandler  {
         public void onRequest(ApiRequest request) {
             long userId = ContextAdapter.getLoginUserId(context.channel().id());
             if (userId <= 0) {
-                ResponseMessage message = ResponseMessage.newMessage(request.getApiOpcode(),
+                ResponseMessage message = ResponseMessage.newMessage(
                         MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
 
                 ResponseMessageDomain messageDomain = ResponseMessageDomain.newMessage(DOMAIN.MATCHING, message);
@@ -52,7 +52,7 @@ public class MatchingRequestHandler  {
                 getSelf().tell(messageDomain, getSelf());
                 return;
             }
-            getSelf().tell(ApiRequestLogin.newClientApiRequestWithActor(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }
