@@ -166,17 +166,17 @@
                 <version>${akka.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-cluster_2.11 -->
-            <dependency>
-                <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-cluster_2.11</artifactId>
-                <version>${akka.version}</version>
-            </dependency>
-
             <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-remote_2.11 -->
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
                 <artifactId>akka-remote_2.11</artifactId>
+                <version>${akka.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-cluster_2.11 -->
+            <dependency>
+                <groupId>com.typesafe.akka</groupId>
+                <artifactId>akka-cluster_2.11</artifactId>
                 <version>${akka.version}</version>
             </dependency>
 

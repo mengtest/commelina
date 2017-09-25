@@ -8,13 +8,18 @@ import com.google.protobuf.Internal;
 public final class ClusterRouterRegistrationEntity {
 
     private final Internal.EnumLite routerId;
+    private final byte seedNode;
 
-    public ClusterRouterRegistrationEntity(Internal.EnumLite routerId) {
+    public ClusterRouterRegistrationEntity(Internal.EnumLite routerId, byte seedNode) {
         this.routerId = routerId;
+        this.seedNode = seedNode;
     }
 
     public Internal.EnumLite getRouterId() {
         return routerId;
     }
 
+    public byte getSeedNode() {
+        return seedNode;
+    }
 }

@@ -10,10 +10,10 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterFrontend extends AbstractActor {
+public class RouterFrontendActor extends AbstractActor {
 
-    private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(12);
-    private final BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(1);
+    private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
+    private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
 
     @Override
     public Receive createReceive() {

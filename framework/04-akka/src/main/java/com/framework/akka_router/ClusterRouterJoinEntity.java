@@ -9,11 +9,13 @@ import com.google.protobuf.Internal;
 public class ClusterRouterJoinEntity {
 
     private final Internal.EnumLite routerId;
+    private final byte seedNode;
 
     private final ApiRequest apiRequest;
 
-    public ClusterRouterJoinEntity(Internal.EnumLite routerId, ApiRequest apiRequest) {
+    public ClusterRouterJoinEntity(Internal.EnumLite routerId, byte seedNode, ApiRequest apiRequest) {
         this.routerId = routerId;
+        this.seedNode = seedNode;
         this.apiRequest = apiRequest;
     }
 
@@ -23,5 +25,9 @@ public class ClusterRouterJoinEntity {
 
     public ApiRequest getApiRequest() {
         return apiRequest;
+    }
+
+    public byte getSeedNode() {
+        return seedNode;
     }
 }

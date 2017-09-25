@@ -50,7 +50,7 @@ public class AkkaWorkerSystem {
 
     private AkkaWorkerSystem() {
         system = ActorSystem.create("ClusterSystem", (Config) null);
-        routerFronted = system.actorOf(Props.create(RouterFrontend.class), "routerFronted");
+        routerFronted = system.actorOf(Props.create(RouterFrontendActor.class), "routerFronted");
     }
 
     @Override

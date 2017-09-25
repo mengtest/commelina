@@ -1,14 +1,11 @@
 package com.framework.akka_router;
 
-import akka.actor.Props;
 import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import com.framework.message.ApiRequest;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ReplyUtils;
-import com.framework.niosocket.RequestHandler;
 import com.framework.niosocket.proto.SERVER_CODE;
-import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +16,7 @@ import javax.annotation.PostConstruct;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class NioWokerActor implements RequestHandler {
+public abstract class NioLocalWorkerActor implements ActorRequestHandler {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -50,7 +47,4 @@ public abstract class NioWokerActor implements RequestHandler {
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
     }
 
-    protected abstract Internal.EnumLite getDomain();
-
-    protected abstract Props getProps();
 }

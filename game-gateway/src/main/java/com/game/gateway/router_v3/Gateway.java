@@ -2,7 +2,7 @@ package com.game.gateway.router_v3;
 
 import akka.actor.Props;
 import com.framework.akka_router.AbstractServiceActor;
-import com.framework.akka_router.NioWokerActor;
+import com.framework.akka_router.NioLocalWorkerActor;
 import com.framework.message.ApiRequest;
 import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.proto.DOMAIN;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * Created by @panyao on 2017/9/22.
  */
 @NioSocketRouter(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
-public class Gateway extends NioWokerActor {
+public class Gateway extends NioLocalWorkerActor {
 
     @Resource
     private SessionInterface sessionInterface;
