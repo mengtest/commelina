@@ -1,4 +1,4 @@
-package com.framework.akka_cluste_router;
+package com.framework.akka_cluster_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -26,6 +26,7 @@ public class RouterFrontendClusterActor extends AbstractActor {
                     if (target == null) {
                         sender().tell(new RouterNotFoundEntity(j.getRouterId()), getSelf());
                     } else {
+                        // 重定向到远程的 seed node 上，它自己再做 router
                         target.forward(j, getContext());
                     }
                 })

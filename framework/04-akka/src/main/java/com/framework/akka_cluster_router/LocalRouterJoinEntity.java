@@ -1,4 +1,4 @@
-package com.framework.akka_cluste_router;
+package com.framework.akka_cluster_router;
 
 import com.framework.message.ApiRequest;
 import com.google.protobuf.Internal;

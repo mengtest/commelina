@@ -1,4 +1,4 @@
-package com.framework.akka_cluste_router;
+package com.framework.akka_cluster_router;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;

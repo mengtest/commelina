@@ -1,8 +1,8 @@
 package com.game.gateway.proxy_router_v3;
 
 import akka.actor.Props;
-import com.framework.akka_cluste_router.AbstractServiceActor;
-import com.framework.akka_cluste_router.NioLocalWorkerActor;
+import com.framework.akka_cluster_router.AbstractServiceActor;
+import com.framework.akka_cluster_router.NioLocalWorkerActor;
 import com.framework.message.ApiRequest;
 import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.proto.DOMAIN;

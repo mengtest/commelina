@@ -1,7 +1,7 @@
 package com.game.gateway.service;
 
-import com.framework.akka_cluste_router.AbstractServiceActor;
-import com.framework.akka_cluste_router.AkkaServiceRouter;
+import com.framework.akka_cluster_router.AbstractServiceActor;
+import com.framework.akka_cluster_router.AkkaServiceRouter;
 import com.framework.message.ApiRequest;
 import com.framework.message.ResponseMessage;
 import com.game.gateway.MessageProvider;

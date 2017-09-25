@@ -1,15 +1,15 @@
-package com.framework.akka_cluste_router;
+package com.framework.akka_cluster_router;
 
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public final class RouterNotFoundEntity {
+public final class LocalRouterRegistrationEntity {
 
     private final Internal.EnumLite routerId;
 
-    public RouterNotFoundEntity(Internal.EnumLite routerId) {
+    public LocalRouterRegistrationEntity(Internal.EnumLite routerId) {
         this.routerId = routerId;
     }
 

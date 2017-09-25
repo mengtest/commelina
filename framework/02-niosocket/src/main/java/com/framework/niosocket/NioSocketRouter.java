@@ -10,4 +10,8 @@ public @interface NioSocketRouter {
 
     int apiPathCode();
 
+//    int forward();
+//
+//    int opcode();
+
 }

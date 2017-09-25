@@ -1,4 +1,4 @@
-package com.framework.akka_cluste_router;
+package com.framework.akka_cluster_router;
 
 import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
@@ -42,7 +42,7 @@ public abstract class NioClusterWorkerActor implements ActorRequestHandler {
             @Override
             public void onFailure(Throwable failure) throws Throwable {
                 ReplyUtils.reply(ctx, SERVER_CODE.SERVER_ERROR);
-                logger.error("actor return error.{}", failure);
+                logger.error("Actor return error.{}", failure);
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
     }

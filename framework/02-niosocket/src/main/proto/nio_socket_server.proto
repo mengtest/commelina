@@ -8,10 +8,10 @@ option java_multiple_files = true;
 
 // niosocket 请求体
 message SocketASK {
-    // 接口域 apiCode > 0 等于 0 会被认为是 心跳请求
-    uint32 apiCode = 1;
-    // 接口方法
-    uint32 apiMethod = 2;
+    // 接口域 apiOpcode > 0, 等于 0 会被认为是 心跳请求
+    uint32 apiOpcode = 1;
+    // 重定向的域
+    uint32 apiForward = 2;
     // 接口版本
     string version = 3;
     // 参数列表
