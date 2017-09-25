@@ -11,7 +11,7 @@ import com.framework.message.ApiRequest;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class ClusterNodeChildBackedActor extends AbstractActor implements RouterId, RequestHandlerWatching {
+public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, RequestHandlerWatching {
 
     private Cluster cluster = Cluster.get(getContext().system());
 
@@ -47,7 +47,7 @@ public abstract class ClusterNodeChildBackedActor extends AbstractActor implemen
     void register(Member member) {
         if (member.hasRole("frontend")) {
             clusterFronted = getContext().actorSelection(member.address() + "/user/routerFronted");
-            clusterFronted.tell(new ClusterRouterRegistrationEntity(this.getDomain(), (byte) 0), self());
+            clusterFronted.tell(new ClusterRouterRegistrationEntity(this.getRouterId(), (byte) 0), self());
         }
     }
 //

@@ -1,4 +1,4 @@
-package com.game.gateway.router_v3;
+package com.game.gateway.proxy_router_v3;
 
 import akka.actor.Props;
 import com.framework.akka_cluste_router.AbstractServiceActor;
@@ -7,10 +7,9 @@ import com.framework.message.ApiRequest;
 import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.GATEWAY_APIS;
-import com.game.gateway.service.SessionInterface;
+import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
 
-import javax.annotation.Resource;
 
 /**
  * Created by @panyao on 2017/9/22.
@@ -18,11 +17,8 @@ import javax.annotation.Resource;
 @NioSocketRouter(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
 public class Gateway extends NioLocalWorkerActor {
 
-    @Resource
-    private SessionInterface sessionInterface;
-
     @Override
-    public Internal.EnumLite getDomain() {
+    public Internal.EnumLite getRouterId() {
         return DOMAIN.GATE_WAY;
     }
 
@@ -35,9 +31,10 @@ public class Gateway extends NioLocalWorkerActor {
 
         @Override
         public void onRequest(ApiRequest request) {
-
-            //        switch (request.getApiOpcode().getNumber()) {
-//            case GATEWAY_METHODS.PASSPPORT_CONNECT_VALUE:
+            switch (request.getApiOpcode().getNumber()) {
+                // 改成注解的形式
+                case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
+                    break;
 //                RequestArg tokenArg = request.getArg(0);
 //                if (tokenArg == null) {
 //                    // token 转换错误
@@ -55,7 +52,7 @@ public class Gateway extends NioLocalWorkerActor {
 //                // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
 //                // 回复自己完成了操作
 //                ReplyUtils.reply(context, DOMAIN.GATE_WAY, ResponseMessage.newMessage(request.getApiOpcode(), MessageProvider.produceMessage()));
-//        }
+            }
         }
 
         public static Props props() {

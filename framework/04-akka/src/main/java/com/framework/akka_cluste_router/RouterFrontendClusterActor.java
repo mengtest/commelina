@@ -14,7 +14,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterClusterFrontendActor extends AbstractActor {
+public class RouterFrontendClusterActor extends AbstractActor {
 
     private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
 

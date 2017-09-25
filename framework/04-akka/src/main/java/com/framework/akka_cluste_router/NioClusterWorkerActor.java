@@ -34,7 +34,7 @@ public abstract class NioClusterWorkerActor implements ActorRequestHandler {
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getDomain(), request.getApiOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getRouterId(), request.getApiOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
 
@@ -48,7 +48,7 @@ public abstract class NioClusterWorkerActor implements ActorRequestHandler {
     }
 
     protected ClusterRouterJoinEntity sessionHook(ApiRequest request, ChannelHandlerContext ctx) {
-        return new ClusterRouterJoinEntity(this.getDomain(), (byte) 0,
+        return new ClusterRouterJoinEntity(this.getRouterId(), (byte) 0,
                 ApiRequestLogin.newRequest(0, request.getApiOpcode(), request.getVersion(), request.getArgs()));
     }
 

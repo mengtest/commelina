@@ -6,7 +6,7 @@ import com.framework.niosocket.RequestHandler;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public interface ActorRequestHandler extends RequestHandler, RouterId {
+public interface ActorRequestHandler extends RequestHandler, Router {
 
     Props getProps();
 

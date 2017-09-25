@@ -5,6 +5,9 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.util.Timeout;
 import com.typesafe.config.Config;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
@@ -17,7 +20,14 @@ import static akka.pattern.Patterns.ask;
  * <p>
  * 工作的线程， 一个独立的 akka system
  */
-public class AkkaWorkerSystem {
+public class AkkaWorkerSystem implements ApplicationContextAware {
+
+    private ApplicationContext context;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 
     public static final class Holder {
         public static AkkaWorkerSystem AKKA_WORKER_SYSTEM = new AkkaWorkerSystem();
@@ -26,6 +36,7 @@ public class AkkaWorkerSystem {
     public final ActorSystem system;
     private final ActorRef localRouterFronted;
     private final ActorRef clusterRouterFronted;
+
 
     public final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
@@ -52,13 +63,14 @@ public class AkkaWorkerSystem {
     private AkkaWorkerSystem() {
         system = ActorSystem.create("AkkaWorkSystem", (Config) null);
 
-        localRouterFronted = system.actorOf(Props.create(RouterLocalFrontendActor.class), "localRouterFronted");
+        localRouterFronted = system.actorOf(Props.create(RouterFrontendLocalActor.class), "localRouterFronted");
 
-        clusterRouterFronted = system.actorOf(Props.create(RouterClusterFrontendActor.class), "clusterRouterFronted");
+        clusterRouterFronted = system.actorOf(Props.create(RouterFrontendClusterActor.class), "clusterRouterFronted");
     }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
+
 }

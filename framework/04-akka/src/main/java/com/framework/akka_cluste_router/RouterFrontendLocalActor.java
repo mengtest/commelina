@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterLocalFrontendActor extends AbstractActor {
+public class RouterFrontendLocalActor extends AbstractActor {
 
     private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
 
