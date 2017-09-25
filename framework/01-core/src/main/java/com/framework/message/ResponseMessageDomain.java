@@ -1,23 +1,26 @@
 package com.framework.message;
 
+import com.google.protobuf.Internal;
+
 /**
  * Created by @panyao on 2017/8/25.
  */
+@Deprecated
 public class ResponseMessageDomain {
 
-    private final int domain;
+    private final Internal.EnumLite domain;
     private final ResponseMessage message;
 
-    private ResponseMessageDomain(int domain, ResponseMessage message) {
+    private ResponseMessageDomain(Internal.EnumLite domain, ResponseMessage message) {
         this.domain = domain;
         this.message = message;
     }
 
-    public static ResponseMessageDomain newMessage(int domain, ResponseMessage message) {
+    public static ResponseMessageDomain newMessage(Internal.EnumLite domain, ResponseMessage message) {
         return new ResponseMessageDomain(domain, message);
     }
 
-    public int getDomain() {
+    public Internal.EnumLite getDomain() {
         return domain;
     }
 

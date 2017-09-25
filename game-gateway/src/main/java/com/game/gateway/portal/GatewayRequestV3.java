@@ -5,13 +5,13 @@ import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
-import com.framework.niosocket.ChannelContextOutputHandler;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by @panyao on 2017/8/25.
@@ -23,10 +23,10 @@ public class GatewayRequestV3  {
     public void onRequest(ApiRequest request) {
     }
 
-    private static class GatewayRequest extends com.framework.niosocket.akka.RequestHandler {
+    private static class GatewayRequest extends com.framework.nio_akka.ActorRequestRemoteProxyWatching {
 
-        public GatewayRequest(int domain, ChannelContextOutputHandler context) {
-            super(domain, context);
+        public GatewayRequest(int domain, String remotePath, ChannelHandlerContext context) {
+            super(domain, remotePath, context);
         }
 
         @Override
@@ -44,7 +44,7 @@ public class GatewayRequestV3  {
 //                    String parseToken = new String(BaseEncoding.base64Url().decode(token));
 //                    List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
 //                    ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
-                    ContextAdapter.userLogin(context.getRawContext().channel().id(), tokenArg.getAsLong());
+                    ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
 
                     // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
                     // 回复自己完成了操作

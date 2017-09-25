@@ -5,6 +5,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/15.
  */
+@Deprecated
 public class ResponseForward {
 
     private final Internal.EnumLite toDomain;

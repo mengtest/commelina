@@ -1,10 +1,9 @@
-package com.framework.niosocket.akka;
+package com.framework.nio_akka;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
-import com.framework.niosocket.ChannelContextOutputHandler;
 import com.framework.niosocket.MessageResponseProvider;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SERVER_CODE;
@@ -69,10 +68,9 @@ public class ActorHandlerRouter  {
     public void onOnline(ChannelHandlerContext ctx) {
         // 给用户生成单独的 request 事件
         for (Map.Entry<Integer, ActorRequestHandler> entry : ROUTERS.entrySet()) {
-            ChannelContextOutputHandler responseContext = new ChannelContextOutputHandler();
 //            responseContext.setChannelHandlerContext(ctx);
 
-            ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(responseContext));
+            ActorRef actorRef2 = system.actorOf(entry.getValue().getProps(ctx));
 
             Map<Integer, ActorRef> actorRefMap1 = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
             if (actorRefMap1 == null) {

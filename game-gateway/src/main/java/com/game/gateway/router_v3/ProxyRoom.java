@@ -1,9 +1,9 @@
 package com.game.gateway.router_v3;
 
 import com.framework.message.ApiRequest;
-import com.framework.niosocket.ChannelContextOutputHandler;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.RequestHandler;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by @panyao on 2017/9/22.
@@ -12,7 +12,7 @@ import com.framework.niosocket.RequestHandler;
 public class ProxyRoom implements RequestHandler {
 
     @Override
-    public void onRequest(ApiRequest request, ChannelContextOutputHandler outputHandler) {
+    public void onRequest(ApiRequest request, ChannelHandlerContext outputHandler) {
 
     }
 

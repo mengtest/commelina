@@ -2,15 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.nexus.maven</groupId>
-        <artifactId>framework-root</artifactId>
+        <groupId>com.game</groupId>
+        <artifactId>game-root</artifactId>
         <version>1.0.0</version>
-        <relativePath>../framework</relativePath>
     </parent>
 
     <groupId>com.app</groupId>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>api</artifactId>
+    <artifactId>http-api</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
     <name>app-api</name>

@@ -1,6 +1,5 @@
 package com.framework.niosocket;
 
-import com.framework.niosocket.akka.ActorRequestHandler;
 import com.google.common.collect.Maps;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +13,9 @@ import java.util.Map;
 
 /**
  * Created by @panyao on 2017/8/4.
+ *
+ *  实现ApplicationContextAware以获得ApplicationContext中的所有bean
  */
-// 实现ApplicationContextAware以获得ApplicationContext中的所有bean
 public final class BootstrapNioSocket implements ApplicationContextAware {
 
     @Value("${nioSocketServer.host:127.0.0.1}")
@@ -38,7 +38,7 @@ public final class BootstrapNioSocket implements ApplicationContextAware {
         for (Object o : apis.values()) {
             NioSocketRouter controller = o.getClass().getAnnotation(NioSocketRouter.class);
             int apiName = controller.apiPathCode();
-            if (o instanceof ActorRequestHandler) {
+            if (o instanceof RequestHandler) {
                 handlerMap.put(apiName, (RequestHandler) o);
             } else {
                 throw new RuntimeException("undefined type " + o);

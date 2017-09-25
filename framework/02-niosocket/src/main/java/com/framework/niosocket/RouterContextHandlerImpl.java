@@ -23,14 +23,9 @@ class RouterContextHandlerImpl implements RouterContextHandler {
     public void onRequest(ChannelHandlerContext ctx, SocketASK request) {
         RequestHandler handler = handlers.get(request.getApiCode());
         if (handler == null) {
-            Object msg = MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.RPC_API_NOT_FOUND);
-            ctx.writeAndFlush(msg);
-            // FIXME: 2017/8/29 返回值未处理
+            ReplyUtils.reply(ctx, SERVER_CODE.RPC_API_NOT_FOUND);
             return;
         }
-
-        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
-        outputHandler.channelHandlerContext = ctx;
 
         final RequestArg[] args = new RequestArg[request.getArgsList().size()];
         for (int i = 0; i < request.getArgsList().size(); i++) {
@@ -38,10 +33,11 @@ class RouterContextHandlerImpl implements RouterContextHandler {
             args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
         }
 
-        handler.onRequest(ApiRequest.newApiRequest(() -> request.getApiMethod(), request.getVersion(), args), outputHandler);
+        // 依然是在 accept 线程内
+        handler.onRequest(ApiRequest.newApiRequest(() -> request.getApiMethod(), request.getVersion(), args), ctx);
     }
 
-    public void addRequestHandlers(Map<Integer, RequestHandler> handlers) {
+    void addRequestHandlers(Map<Integer, RequestHandler> handlers) {
         this.handlers.putAll(handlers);
     }
 

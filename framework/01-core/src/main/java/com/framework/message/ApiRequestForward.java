@@ -5,6 +5,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/15.
  */
+@Deprecated
 public class ApiRequestForward {
 
     private final Internal.EnumLite fromDomain;

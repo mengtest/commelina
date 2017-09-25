@@ -1,4 +1,4 @@
-package com.framework.niosocket.akka;
+package com.framework.nio_akka;
 
 import akka.actor.*;
 import akka.event.Logging;
@@ -64,17 +64,17 @@ public abstract class ActorNotifyRemoteHandler extends AbstractActor implements 
 
     @Override
     public final void reply(NotifyMessage message) {
-        MessageAdapter.addNotify(domain, message);
+        MessageAdapter.addNotify(()->domain, message);
     }
 
     @Override
     public final void reply(BroadcastMessage message) {
-        MessageAdapter.addBroadcast(domain, message);
+        MessageAdapter.addBroadcast(()->domain, message);
     }
 
     @Override
     public final void reply(WorldMessage message) {
-        MessageAdapter.addWorld(domain, message);
+        MessageAdapter.addWorld(()->domain, message);
     }
 
     private void sendIdentifyRequest() {

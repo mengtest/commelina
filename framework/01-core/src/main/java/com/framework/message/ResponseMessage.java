@@ -26,4 +26,5 @@ public class ResponseMessage {
     public Internal.EnumLite getOpcode() {
         return opcode;
     }
+
 }

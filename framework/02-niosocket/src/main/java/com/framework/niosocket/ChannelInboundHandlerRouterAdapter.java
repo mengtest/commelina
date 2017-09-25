@@ -10,8 +10,6 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Created by @panyao on 2017/8/24.
  */
@@ -28,28 +26,21 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        boolean result = nettyServerContext.channelActive(ctx.channel());
+        final boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
-
-        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
-        outputHandler.channelHandlerContext = ctx;
-        routerEventHandler.onOnline(outputHandler);
+        routerEventHandler.onOnline(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
+        final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-
-        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
-        outputHandler.channelHandlerContext = ctx;
-
-        routerEventHandler.onOffline(logoutUserId, outputHandler);
+        routerEventHandler.onOffline(logoutUserId, ctx);
     }
 
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        SocketASK ask = (SocketASK) msg;
+        final SocketASK ask = (SocketASK) msg;
         // 心跳
         if (ask.getApiCode() == 0) {
             LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
@@ -62,15 +53,12 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        if (cause instanceof IOException) {
-            long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
-            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        }
+//        if (cause instanceof IOException) {
+//            final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
+//            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+//        }
         ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.SERVER_ERROR));
-
-        final ChannelContextOutputHandler outputHandler = new ChannelContextOutputHandler();
-        outputHandler.channelHandlerContext = ctx;
-        routerEventHandler.onException(outputHandler, cause);
+        routerEventHandler.onException(ctx, cause);
     }
 
     @Override

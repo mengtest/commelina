@@ -21,6 +21,10 @@
             <groupId>com.nexus.maven</groupId>
             <artifactId>core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.nexus.maven</groupId>
+            <artifactId>akka</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
