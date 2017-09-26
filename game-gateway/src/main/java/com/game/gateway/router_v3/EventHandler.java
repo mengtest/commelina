@@ -1,4 +1,4 @@
-package com.game.gateway.proxy_router_v3;
+package com.game.gateway.router_v3;
 
 import com.framework.niosocket.MemberEventHandler;
 import io.netty.channel.ChannelHandlerContext;

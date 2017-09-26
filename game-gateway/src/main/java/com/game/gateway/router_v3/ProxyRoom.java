@@ -1,4 +1,4 @@
-package com.game.gateway.proxy_router_v3;
+package com.game.gateway.router_v3;
 
 import com.framework.akka_cluster_router.ClusterRouterJoinEntity;
 import com.framework.akka_cluster_router.DefaultClusterActorRequestHandler;

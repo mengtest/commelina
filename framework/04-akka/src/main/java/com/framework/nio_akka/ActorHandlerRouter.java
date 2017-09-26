@@ -47,7 +47,7 @@ public class ActorHandlerRouter  {
     public void onRequest(ChannelHandlerContext ctx, final SocketASK request) {
         Map<Integer, ActorRef> actorRefMap = CHANNEL_REQUEST_ACTORS.get(ctx.channel().id());
         if (actorRefMap != null) {
-            ActorRef actorRef1 = actorRefMap.get(request.getApiCode());
+            ActorRef actorRef1 = actorRefMap.get(request.getForward());
             // 远程复用 actor
             if (actorRef1 != null) {
                 final RequestArg[] args = new RequestArg[request.getArgsList().size()];
@@ -55,7 +55,7 @@ public class ActorHandlerRouter  {
                     Arg arg = request.getArgsList().get(i);
                     args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
                 }
-                actorRef1.tell(ApiRequest.newApiRequest(() -> request.getApiMethod(), request.getVersion(), args), null);
+                actorRef1.tell(ApiRequest.newApiRequest(() -> request.getOpcode(), request.getVersion(), args), null);
                 return;
             }
         }

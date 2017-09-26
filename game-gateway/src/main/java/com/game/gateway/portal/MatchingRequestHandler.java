@@ -9,7 +9,6 @@ import com.game.gateway.AkkaRemoteActorEntity;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.GATEWAY_APIS;
 import io.netty.channel.ChannelHandlerContext;
 
 import javax.annotation.Resource;
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(forward = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
+@NioSocketRouter(forward = 1)
 @Deprecated
 public class MatchingRequestHandler  {
 

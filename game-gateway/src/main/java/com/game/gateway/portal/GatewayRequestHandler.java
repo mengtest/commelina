@@ -12,14 +12,13 @@ import com.framework.nio_akka.RequestHandler;
 import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(forward = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+@NioSocketRouter(forward = 0)
 @Deprecated
 public class GatewayRequestHandler {
 

@@ -1,4 +1,4 @@
-package com.game.gateway.proxy_router_v3;
+package com.game.gateway.router_v3;
 
 import com.framework.akka_cluster_router.DefaultLocalActorRequestHandler;
 import com.framework.akka_cluster_router.LocalRouterJoinEntity;
@@ -56,8 +56,8 @@ public class Gateway extends DefaultLocalActorRequestHandler {
 ////                RequestArg tokenArg = request.getArg(0);
 ////                if (tokenArg == null) {
 ////                    // token 转换错误
-////                    ReplyUtils.reply(context, DOMAIN.GATE_WAY, ResponseMessage.newMessage(request.getOpcode(),
-////                            MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR))));
+////                    ReplyUtils.response(context, DOMAIN.GATE_WAY, ResponseMessage.newMessage(request.getOpcode(),
+////                            DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR))));
 ////                    return;
 ////                }
 ////
@@ -69,7 +69,7 @@ public class Gateway extends DefaultLocalActorRequestHandler {
 ////
 ////                // FIXME: 2017/8/30 登陆成功，返回用户状态，如果是 in game 就走重连机制
 ////                // 回复自己完成了操作
-////                ReplyUtils.reply(context, DOMAIN.GATE_WAY, ResponseMessage.newMessage(request.getOpcode(), MessageProvider.produceMessage()));
+////                ReplyUtils.response(context, DOMAIN.GATE_WAY, ResponseMessage.newMessage(request.getOpcode(), DefaultMessageProvider.produceMessage()));
 //            }
 //        }
 //

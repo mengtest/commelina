@@ -16,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import scala.concurrent.Future;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 
 /**
@@ -26,19 +25,12 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ApplicationContext context;
-
-    @PostConstruct
-    public final void registerActor() {
-        Map<String, ServiceHandler> routers = context.getBeansOfType(ServiceHandler.class);
+    @Override
+    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Map<String, ServiceHandler> routers = applicationContext.getBeansOfType(ServiceHandler.class);
         for (ServiceHandler handler : routers.values()) {
             AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.localRouterRegister(new LocalRouterRegistrationEntity(handler.getRouterId()), handler.getProps());
         }
-    }
-
-    @Override
-    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
     }
 
     @Override
@@ -58,7 +50,8 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ResponseMessage
+                        .newMessage(((RouterResponseEntity) result).getMessage()));
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
 
@@ -76,8 +69,8 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     }
 
     protected final LocalRouterJoinEntity createNewJoinEntity(ApiRequest request, long userId) {
-        return new LocalRouterJoinEntity(getRouterId(), ApiRequestLogin.newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()));
+        return new LocalRouterJoinEntity(getRouterId(), ApiRequestLogin
+                .newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()));
     }
-
 
 }

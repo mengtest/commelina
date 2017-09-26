@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(forward = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
+@NioSocketRouter(forward = 2)
 @Deprecated
 public class RoomRequestHandler {
 

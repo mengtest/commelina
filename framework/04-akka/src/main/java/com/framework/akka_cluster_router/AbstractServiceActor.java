@@ -3,6 +3,7 @@ package com.framework.akka_cluster_router;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import com.framework.message.ApiRequestLogin;
+import com.framework.message.MessageBus;
 import com.framework.message.ResponseMessage;
 
 /**
@@ -17,8 +18,8 @@ public abstract class AbstractServiceActor extends AbstractActor implements Serv
                 .build();
     }
 
-    public final void reply(ResponseMessage message) {
-        getSender().tell(message, getSelf());
+    public final void response(MessageBus message) {
+        getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 
     @Override

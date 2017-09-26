@@ -27,8 +27,7 @@ public class AkkaWorkerSystem {
     private final ActorRef localRouterFronted;
     private final ActorRef clusterRouterFronted;
 
-
-    public final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     public void localRouterRegister(LocalRouterRegistrationEntity routerRegistration, Props senderProps) {
         system.actorSelection("/user/localRouterFronted").tell(routerRegistration, system.actorOf(senderProps));

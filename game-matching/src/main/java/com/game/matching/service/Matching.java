@@ -46,7 +46,7 @@ public class Matching extends AbstractActor {
             if (joinMatch.apiOpcode != null) {
                 // 回复 MatchingReceiveRequestActor 的 调用者成功
                 PortalActorContainer.INSTANCE.getMatchingRequestActor()
-                        .tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+                        .tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
             }
             return;
         }
@@ -58,7 +58,7 @@ public class Matching extends AbstractActor {
         if (joinMatch.apiOpcode != null) {
             // 回复 MatchingReceiveRequestActor 的 调用者成功
             PortalActorContainer.INSTANCE.getMatchingRequestActor()
-                    .tell(ResponseMessage.newMessage(joinMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+                    .tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
         }
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
@@ -90,7 +90,7 @@ public class Matching extends AbstractActor {
         log.info("cancel queue userId " + userId + ", result " + rs);
 
         // 回复 MatchingReceiveRequestActor 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(cancelMatch.apiOpcode, MessageProvider.produceMessage()), getSelf());
+        getSender().tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
     }
 
     private void removeMatch(REMOVE_MATCH removeMatch) {
