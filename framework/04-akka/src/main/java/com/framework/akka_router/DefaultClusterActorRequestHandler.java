@@ -26,14 +26,14 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, ClusterRouterJoinEntity message) {
         // 转发到业务 actor 上去
-        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM
-                .routerClusterNodeAsk(message);
+        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.routerClusterNodeAsk(message);
 
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(),
+                        ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
 

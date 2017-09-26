@@ -7,8 +7,6 @@ import io.netty.channel.ChannelId;
  */
 public class ContextAdapter {
 
-//    private static final Logger LOGGER = Logger.getLogger(ContextAdapter.class.getName());
-
     public static long userLogin(ChannelId channelId, long userId) {
         return NettyServerContext.getInstance().userJoin(channelId, userId);
     }

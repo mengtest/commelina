@@ -19,10 +19,10 @@ public class RouterFrontendLocalActor extends AbstractActor {
         return receiveBuilder()
                 .match(LocalRouterJoinEntity.class, j -> {
                     ActorRef target = localRouters.get(j.getRouterId());
-                    if (target == null) {
-                        sender().tell(new RouterNotFoundEntity(j.getRouterId()), getSelf());
-                    } else {
+                    if (target != null) {
                         target.forward(j.getApiRequest(), getContext());
+                    } else {
+                        this.unhandled(j);
                     }
                 })
                 .match(LocalRouterRegistrationEntity.class, r -> {

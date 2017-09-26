@@ -1,12 +1,17 @@
 package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
+import akka.actor.Terminated;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
 import com.framework.message.ApiRequest;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
@@ -16,6 +21,8 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     private final Cluster cluster = Cluster.get(getContext().system());
 
     private ActorSelection clusterFronted;
+
+    private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -41,6 +48,13 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                     }
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
+                .match(LocalRouterRegistrationEntity.class, r -> {
+                    getContext().watch(sender());
+                    localRouters.put(r.getRouterId(), sender());
+                })
+                .match(Terminated.class, terminated -> {
+                    localRouters.inverse().remove(terminated.getActor());
+                })
                 .build();
     }
 

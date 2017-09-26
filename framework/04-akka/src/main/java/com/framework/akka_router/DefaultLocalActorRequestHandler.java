@@ -45,8 +45,8 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ResponseMessage
-                        .newMessage(((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(),
+                        ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
         }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
 
