@@ -21,28 +21,28 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private RouterContextHandler routerContextHandlerImpl;
 
-    private RouterEventHandler routerEventHandler = new RouterEventHandler() {
+    private MemberEventHandler memberEventHandler = new MemberEventHandler() {
     };
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         final boolean result = nettyServerContext.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
-        routerEventHandler.onOnline(ctx);
+        memberEventHandler.onOnline(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        routerEventHandler.onOffline(logoutUserId, ctx);
+        memberEventHandler.onOffline(logoutUserId, ctx);
     }
 
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final SocketASK ask = (SocketASK) msg;
         // 心跳
-        if (ask.getApiCode() == 0) {
+        if (ask.getOpcode() == 0) {
             LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
             ctx.writeAndFlush(SocketMessage.getDefaultInstance());
         } else {
@@ -58,7 +58,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 //            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
 //        }
         ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.SERVER_ERROR));
-        routerEventHandler.onException(ctx, cause);
+        memberEventHandler.onException(ctx, cause);
     }
 
     @Override
@@ -76,10 +76,10 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         }
     }
 
-    void setHandlers(RouterContextHandler routerContextHandlerImpl, RouterEventHandler routerEventHandler) {
+    void setHandlers(RouterContextHandler routerContextHandlerImpl, MemberEventHandler memberEventHandler) {
         this.routerContextHandlerImpl = routerContextHandlerImpl;
-        if (routerEventHandler != null) {
-            this.routerEventHandler = routerEventHandler;
+        if (memberEventHandler != null) {
+            this.memberEventHandler = memberEventHandler;
         }
     }
 

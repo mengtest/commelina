@@ -23,7 +23,7 @@ public class ActorHandlerRouter  {
 
     private final ActorSystem system = ActorSystem.create("akkaRouterContext", ConfigFactory.load(("akkarequest")));
     /**
-     * apiPathCode -> ActorRequestHandler
+     * apiPathCode -> DefaultLocalActorRequestHandler
      */
     private final Map<Integer, ActorRequestHandler> ROUTERS = Maps.newLinkedHashMap();
 

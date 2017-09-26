@@ -8,10 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface NioSocketRouter {
 
-    int apiPathCode();
-
-//    int forward();
-//
-//    int opcode();
+    int forward();
 
 }

@@ -19,7 +19,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(apiPathCode = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+@NioSocketRouter(forward = GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
 @Deprecated
 public class GatewayRequestHandler {
 
@@ -34,8 +34,8 @@ public class GatewayRequestHandler {
         }
 
         public void onRequest(ApiRequest request) {
-            switch (request.getApiOpcode().getNumber()) {
-                case GATEWAY_METHODS.PASSPPORT_CONNECT_VALUE:
+            switch (request.getOpcode().getNumber()) {
+                case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
                     RequestArg tokenArg = request.getArg(0);
                     if (tokenArg == null) {
                         // token 转换错误

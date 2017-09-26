@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(apiPathCode = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
+@NioSocketRouter(forward = GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
 @Deprecated
 public class MatchingRequestHandler  {
 
@@ -52,7 +52,7 @@ public class MatchingRequestHandler  {
                 getSelf().tell(messageDomain, getSelf());
                 return;
             }
-            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

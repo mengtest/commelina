@@ -6,6 +6,7 @@ import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestLogin;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ReplyUtils;
+import com.framework.niosocket.RequestHandler;
 import com.framework.niosocket.proto.SERVER_CODE;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -15,17 +16,20 @@ import scala.concurrent.Future;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class NioClusterWorkerActor implements ActorRequestHandler {
+public abstract class DefaultClusterActorRequestHandler implements RequestHandler, Router {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
-        ClusterRouterJoinEntity message = sessionHook(request, ctx);
+    public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
+        ClusterRouterJoinEntity message = beforeHook(request, ctx);
         if (message == null) {
             return;
         }
+        afterHook(request, ctx, message);
+    }
 
+    protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, ClusterRouterJoinEntity message) {
         // 转发到业务 actor 上去
         Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM
                 .routerClusterNodeAsk(message);
@@ -34,9 +38,9 @@ public abstract class NioClusterWorkerActor implements ActorRequestHandler {
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getRouterId(), request.getApiOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
+                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
+        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
 
         future.onFailure(new OnFailure() {
             @Override
@@ -44,12 +48,16 @@ public abstract class NioClusterWorkerActor implements ActorRequestHandler {
                 ReplyUtils.reply(ctx, SERVER_CODE.SERVER_ERROR);
                 logger.error("Actor return error.{}", failure);
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.system.dispatcher());
+        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
     }
 
-    protected ClusterRouterJoinEntity sessionHook(ApiRequest request, ChannelHandlerContext ctx) {
+    protected ClusterRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+        return createNewJoinEntity(request, 0);
+    }
+
+    protected final ClusterRouterJoinEntity createNewJoinEntity(ApiRequest request, long userId) {
         return new ClusterRouterJoinEntity(this.getRouterId(), (byte) 0,
-                ApiRequestLogin.newRequest(0, request.getApiOpcode(), request.getVersion(), request.getArgs()));
+                ApiRequestLogin.newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()));
     }
 
 }

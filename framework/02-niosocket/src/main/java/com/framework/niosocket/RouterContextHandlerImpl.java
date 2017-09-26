@@ -21,7 +21,7 @@ class RouterContextHandlerImpl implements RouterContextHandler {
     private final Map<Integer, RequestHandler> handlers = Maps.newLinkedHashMap();
 
     public void onRequest(ChannelHandlerContext ctx, SocketASK request) {
-        RequestHandler handler = handlers.get(request.getApiCode());
+        RequestHandler handler = handlers.get(request.getForward());
         if (handler == null) {
             ReplyUtils.reply(ctx, SERVER_CODE.RPC_API_NOT_FOUND);
             return;
@@ -34,7 +34,7 @@ class RouterContextHandlerImpl implements RouterContextHandler {
         }
 
         // 依然是在 accept 线程内
-        handler.onRequest(ApiRequest.newApiRequest(() -> request.getApiMethod(), request.getVersion(), args), ctx);
+        handler.onRequest(ApiRequest.newApiRequest(() -> request.getOpcode(), request.getVersion(), args), ctx);
     }
 
     void addRequestHandlers(Map<Integer, RequestHandler> handlers) {

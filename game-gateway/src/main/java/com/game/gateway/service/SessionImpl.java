@@ -1,21 +1,25 @@
 package com.game.gateway.service;
 
 import com.framework.akka_cluster_router.AbstractServiceActor;
-import com.framework.akka_cluster_router.AkkaServiceRouter;
-import com.framework.message.ApiRequest;
+import com.framework.message.ApiRequestLogin;
 import com.framework.message.ResponseMessage;
 import com.game.gateway.MessageProvider;
+import com.game.gateway.proto.GATEWAY_METHODS;
+import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-@AkkaServiceRouter(routerId = 1)
 public class SessionImpl extends AbstractServiceActor {
 
     @Override
-    public void onRequest(ApiRequest request) {
-
-        this.reply(ResponseMessage.newMessage(MessageProvider.produceMessage()));
+    public Internal.EnumLite getRouterId() {
+        return GATEWAY_METHODS.PASSPORT_CONNECT;
     }
 
+    @Override
+    public void onRequest(ApiRequestLogin request) {
+
+        reply(ResponseMessage.newMessage(MessageProvider.produceMessage()));
+    }
 }

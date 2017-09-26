@@ -5,9 +5,6 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.util.Timeout;
 import com.typesafe.config.Config;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
@@ -20,20 +17,13 @@ import static akka.pattern.Patterns.ask;
  * <p>
  * 工作的线程， 一个独立的 akka system
  */
-public class AkkaWorkerSystem implements ApplicationContextAware {
-
-    private ApplicationContext context;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
+public class AkkaWorkerSystem {
 
     public static final class Holder {
         public static AkkaWorkerSystem AKKA_WORKER_SYSTEM = new AkkaWorkerSystem();
     }
 
-    public final ActorSystem system;
+    private final ActorSystem system;
     private final ActorRef localRouterFronted;
     private final ActorRef clusterRouterFronted;
 
@@ -73,4 +63,7 @@ public class AkkaWorkerSystem implements ApplicationContextAware {
         throw new CloneNotSupportedException();
     }
 
+    public ActorSystem getSystem() {
+        return system;
+    }
 }

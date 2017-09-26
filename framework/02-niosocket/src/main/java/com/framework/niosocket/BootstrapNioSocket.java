@@ -32,24 +32,24 @@ public final class BootstrapNioSocket implements ApplicationContextAware {
     public void initServer() throws IOException {
         server = new NettyNioSocketServer();
 
-        Map<String, Object> apis = context.getBeansWithAnnotation(NioSocketRouter.class);
+        Map<String, Object> routers = context.getBeansWithAnnotation(NioSocketRouter.class);
         Map<Integer, RequestHandler> handlerMap = Maps.newHashMap();
 
-        for (Object o : apis.values()) {
+        for (Object o : routers.values()) {
             NioSocketRouter controller = o.getClass().getAnnotation(NioSocketRouter.class);
-            int apiName = controller.apiPathCode();
+            int forward = controller.forward();
             if (o instanceof RequestHandler) {
-                handlerMap.put(apiName, (RequestHandler) o);
+                handlerMap.put(forward, (RequestHandler) o);
             } else {
-                throw new RuntimeException("undefined type " + o);
+                throw new RuntimeException("Undefined type " + o);
             }
         }
 
-        RouterEventHandler routerEventHandler = context.getBean(RouterEventHandler.class);
+        MemberEventHandler memberEventHandler = context.getBean(MemberEventHandler.class);
 
         RouterContextHandlerImpl routerContextHandler = new RouterContextHandlerImpl();
         routerContextHandler.addRequestHandlers(handlerMap);
-        server.bind(host, port, routerContextHandler, routerEventHandler);
+        server.bind(host, port, routerContextHandler, memberEventHandler);
     }
 
     @PreDestroy

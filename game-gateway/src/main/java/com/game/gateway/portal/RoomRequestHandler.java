@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 /**
  * Created by @panyao on 2017/8/25.
  */
-@NioSocketRouter(apiPathCode = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
+@NioSocketRouter(forward = com.game.gateway.proto.GATEWAY_APIS.GAME_ROOM_V1_0_0_VALUE)
 @Deprecated
 public class RoomRequestHandler {
 
@@ -67,7 +67,7 @@ public class RoomRequestHandler {
                 return;
             }
 
-            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getApiOpcode(), request.getVersion(), request.getArgs()), getSelf());
+            getSelf().tell(ApiRequestLogin.newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()), getSelf());
         }
 
     }

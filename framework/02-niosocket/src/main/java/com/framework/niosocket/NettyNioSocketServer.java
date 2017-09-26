@@ -39,7 +39,7 @@ public class NettyNioSocketServer {
         return ((InetSocketAddress) socketAddress).getPort();
     }
 
-    public void bind(String host, int port, final RouterContextHandler router, final RouterEventHandler routerEventHandler) throws IOException {
+    public void bind(String host, int port, final RouterContextHandler router, final MemberEventHandler memberEventHandler) throws IOException {
         // 管理线程
         final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         // 默认线程数是 cpu 核数的两倍
@@ -68,7 +68,7 @@ public class NettyNioSocketServer {
 //                        ch.pipeline().addLast("heartbeatTrigger", trigger);
 
                         final ChannelInboundHandlerRouterAdapter routerAdapter = new ChannelInboundHandlerRouterAdapter();
-                        routerAdapter.setHandlers(router, routerEventHandler);
+                        routerAdapter.setHandlers(router, memberEventHandler);
                         ch.pipeline().addLast("routerAdapter", routerAdapter);
 //                        ch.pipeline().addLast(new ChannelInboundHandlerRouterAdapter());
                     }

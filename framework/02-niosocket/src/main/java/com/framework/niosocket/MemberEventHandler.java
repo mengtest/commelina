@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by @panyao on 2017/8/28.
  */
-public interface RouterEventHandler {
+public interface MemberEventHandler {
 
     /**
      * 用户上线

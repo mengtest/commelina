@@ -8,12 +8,12 @@ import com.google.protobuf.Internal;
  */
 public class ApiRequest implements AppVersion {
 
-    private final Internal.EnumLite apiOpcode;
+    private final Internal.EnumLite opcode;
     private final String version;
     private final RequestArg[] args;
 
-    private ApiRequest(Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        this.apiOpcode = apiOpcode;
+    private ApiRequest(Internal.EnumLite opcode, String version, RequestArg[] args) {
+        this.opcode = opcode;
         this.version = version;
         this.args = args;
     }
@@ -22,8 +22,8 @@ public class ApiRequest implements AppVersion {
         return new ApiRequest(apiMethod, version, args);
     }
 
-    public Internal.EnumLite getApiOpcode() {
-        return apiOpcode;
+    public Internal.EnumLite getOpcode() {
+        return opcode;
     }
 
     public String getVersion() {

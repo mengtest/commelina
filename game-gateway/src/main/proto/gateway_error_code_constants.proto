@@ -10,12 +10,15 @@ option java_multiple_files = true;
 enum ERROR_CODE {
     // 成功
     SUCESS = 0;
-    // token 转换错误
-    TOKEN_PARSE_ERROR = 1;
+    // 网关该接口必须登录才能访问
+    GATEWAY_API_UNAUTHORIZED = 1;
     // 匹配接口必须登录才能访问
     MATCHING_API_UNAUTHORIZED = 2;
     // 房间必须登录才能访问
     ROOM_API_UNAUTHORIZED = 3;
     // 第一个参数必须是 room id
     ROOM_API_IMPORT_ROOM_ID = 4;
+
+    // token 转换错误
+    TOKEN_PARSE_ERROR = 10;
 }

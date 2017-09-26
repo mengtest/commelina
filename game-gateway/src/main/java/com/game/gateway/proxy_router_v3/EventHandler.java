@@ -1,6 +1,6 @@
 package com.game.gateway.proxy_router_v3;
 
-import com.framework.niosocket.RouterEventHandler;
+import com.framework.niosocket.MemberEventHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Created by @panyao on 2017/9/22.
  */
 @Component
-public class RouterEventHandlerImpl implements RouterEventHandler {
+public class EventHandler implements MemberEventHandler {
 
     @Override
     public void onOnline(ChannelHandlerContext ctx) {
@@ -22,7 +22,7 @@ public class RouterEventHandlerImpl implements RouterEventHandler {
 
     @Override
     public void onException(ChannelHandlerContext ctx, Throwable cause) {
-
+        throw new RuntimeException(cause);
     }
 
 }
