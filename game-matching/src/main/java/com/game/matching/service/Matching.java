@@ -5,8 +5,8 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.message.DefaultMessageProvider;
 import com.framework.message.ResponseMessage;
-import com.game.matching.MessageProvider;
 import com.game.matching.PortalActorContainer;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
@@ -46,7 +46,7 @@ public class Matching extends AbstractActor {
             if (joinMatch.apiOpcode != null) {
                 // 回复 MatchingReceiveRequestActor 的 调用者成功
                 PortalActorContainer.INSTANCE.getMatchingRequestActor()
-                        .tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
+                        .tell(ResponseMessage.newMessage(DefaultMessageProvider.produceMessage()), getSelf());
             }
             return;
         }
@@ -58,7 +58,7 @@ public class Matching extends AbstractActor {
         if (joinMatch.apiOpcode != null) {
             // 回复 MatchingReceiveRequestActor 的 调用者成功
             PortalActorContainer.INSTANCE.getMatchingRequestActor()
-                    .tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
+                    .tell(ResponseMessage.newMessage(DefaultMessageProvider.produceMessage()), getSelf());
         }
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
@@ -90,7 +90,7 @@ public class Matching extends AbstractActor {
         log.info("cancel queue userId " + userId + ", result " + rs);
 
         // 回复 MatchingReceiveRequestActor 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(MessageProvider.produceMessage()), getSelf());
+        getSender().tell(ResponseMessage.newMessage(DefaultMessageProvider.produceMessage()), getSelf());
     }
 
     private void removeMatch(REMOVE_MATCH removeMatch) {

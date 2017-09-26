@@ -1,13 +1,13 @@
 package com.game.room.service;
 
-import com.framework.message.ApiRequestLogin;
+import com.framework.message.ApiRequest;
 
 /**
  * Created by @panyao on 2017/9/6.
  */
 public class RoomClientRouterEntity {
     private long roomId;
-    private ApiRequestLogin apiRequestLogin;
+    private ApiRequest apiRequest;
 
     public long getRoomId() {
         return roomId;
@@ -17,11 +17,11 @@ public class RoomClientRouterEntity {
         this.roomId = roomId;
     }
 
-    public ApiRequestLogin getApiRequestLogin() {
-        return apiRequestLogin;
+    public ApiRequest getApiRequest() {
+        return apiRequest;
     }
 
-    public void setApiRequestLogin(ApiRequestLogin apiRequestLogin) {
-        this.apiRequestLogin = apiRequestLogin;
+    public void setApiRequest(ApiRequest apiRequest) {
+        this.apiRequest = apiRequest;
     }
 }

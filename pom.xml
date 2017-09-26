@@ -21,7 +21,7 @@
         <module>game-http-api</module>
         <module>game-gateway</module>
         <module>game-matching</module>
-        <module>game-room</module>
+        <!--<module>game-room</module>-->
         <!--<module>game-robot</module>-->
     </modules>
 

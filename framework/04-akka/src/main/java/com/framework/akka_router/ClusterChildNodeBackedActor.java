@@ -1,4 +1,4 @@
-package com.framework.akka_cluster_router;
+package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorSelection;
@@ -6,7 +6,7 @@ import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
-import com.framework.message.ApiRequestLogin;
+import com.framework.message.ApiRequest;
 
 /**
  * Created by @panyao on 2017/9/25.
@@ -32,7 +32,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequestLogin.class, this::onRequest)
+                .match(ApiRequest.class, this::onRequest)
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -52,7 +52,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     }
 
     @Override
-    public final void onRequest(ApiRequestLogin request) {
+    public final void onRequest(ApiRequest request) {
 
     }
 

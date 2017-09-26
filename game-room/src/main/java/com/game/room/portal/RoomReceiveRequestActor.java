@@ -3,7 +3,7 @@ package com.game.room.portal;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import com.framework.akka.AbstractReceiveRequestActor;
-import com.framework.message.ApiRequestLogin;
+import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.RequestArg;
 import com.framework.message.ResponseMessage;
@@ -24,7 +24,7 @@ public class RoomReceiveRequestActor extends AbstractReceiveRequestActor {
     }
 
     @Override
-    public void onRequest(ApiRequestLogin request) {
+    public void onRequest(ApiRequest request) {
         // 客户端请求
         RequestArg roomIdArg = request.getArg(0);
         if (roomIdArg != null) {
@@ -32,19 +32,19 @@ public class RoomReceiveRequestActor extends AbstractReceiveRequestActor {
             if (roomId > 0) {
                 RoomClientRouterEntity roomClientRouterEntity = new RoomClientRouterEntity();
                 roomClientRouterEntity.setRoomId(roomId);
-                ApiRequestLogin apiRequestLogin = ApiRequestLogin.newClientApiRequestWithActor(
+                ApiRequest apiRequest = ApiRequest.newClientApiRequestWithActor(
                         request.getUserId(),
-                        request.getApiOpcode(),
+                        request.getOpcode(),
                         request.getVersion(),
                         request.subArg(1)
                 );
-                roomClientRouterEntity.setApiRequestLogin(apiRequestLogin);
+                roomClientRouterEntity.setApiRequest(apiRequest);
                 // 重定向到
                 roomManger.forward(roomClientRouterEntity, getContext());
                 return;
             }
         }
-        getSelf().tell(NotFoundMessage(request.getApiOpcode()), getSelf());
+        getSelf().tell(NotFoundMessage(request.getOpcode()), getSelf());
     }
 
     public static ResponseMessage NotFoundMessage(Internal.EnumLite apiOpcode) {

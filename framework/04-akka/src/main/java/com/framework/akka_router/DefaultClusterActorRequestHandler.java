@@ -1,9 +1,8 @@
-package com.framework.akka_cluster_router;
+package com.framework.akka_router;
 
 import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import com.framework.message.ApiRequest;
-import com.framework.message.ApiRequestLogin;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
@@ -21,12 +20,8 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
-        ClusterRouterJoinEntity message = beforeHook(request, ctx);
-        if (message == null) {
-            return;
-        }
-        afterHook(request, ctx, message);
+    public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
+        afterHook(request, ctx, beforeHook(request, ctx));
     }
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, ClusterRouterJoinEntity message) {
@@ -52,12 +47,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
     }
 
     protected ClusterRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
-        return createNewJoinEntity(request, 0);
-    }
-
-    protected final ClusterRouterJoinEntity createNewJoinEntity(ApiRequest request, long userId) {
-        return new ClusterRouterJoinEntity(this.getRouterId(), (byte) 0,
-                ApiRequestLogin.newRequest(userId, request.getOpcode(), request.getVersion(), request.getArgs()));
+        return new ClusterRouterJoinEntity(this.getRouterId(), (byte) 0, request);
     }
 
 }

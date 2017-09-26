@@ -1,4 +1,4 @@
-package com.framework.akka_cluster_router;
+package com.framework.akka_router;
 
 /**
  * Created by @panyao on 2017/9/25.

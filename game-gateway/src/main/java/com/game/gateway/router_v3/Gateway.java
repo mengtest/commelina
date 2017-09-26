@@ -1,14 +1,15 @@
 package com.game.gateway.router_v3;
 
-import com.framework.akka_cluster_router.DefaultLocalActorRequestHandler;
-import com.framework.akka_cluster_router.LocalRouterJoinEntity;
+import com.framework.akka_router.DefaultLocalActorRequestHandler;
+import com.framework.akka_router.LocalRouterJoinEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
+import com.framework.message.DefaultMessageProvider;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
+import com.framework.niosocket.MessageProvider;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
-import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
@@ -28,6 +29,28 @@ public class Gateway extends DefaultLocalActorRequestHandler {
     }
 
     @Override
+    public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
+        switch (request.getOpcode().getNumber()) {
+            // 登录接口允许匿名
+            case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
+                super.onRequest(request, ctx);
+                return;
+        }
+
+        final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
+        if (userId <= 0) {
+            ResponseMessage message = ResponseMessage.newMessage(
+                    DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
+
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), message);
+            return;
+        }
+
+        request.setUserId(userId);
+        super.onRequest(request, ctx);
+    }
+
+    @Override
     protected LocalRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
         switch (request.getOpcode().getNumber()) {
             case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
@@ -43,7 +66,9 @@ public class Gateway extends DefaultLocalActorRequestHandler {
             return null;
         }
 
-        return createNewJoinEntity(request, userId);
+        request.setUserId(userId);
+
+        return super.beforeHook(request, ctx);
     }
 //    private static class GateWayActor extends AbstractServiceActor {
 //

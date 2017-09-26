@@ -1,6 +1,6 @@
 package com.game.matching.router_v3;
 
-import com.framework.akka_cluster_router.ClusterChildNodeBackedActor;
+import com.framework.akka_router.ClusterChildNodeBackedActor;
 import com.google.protobuf.Internal;
 
 /**

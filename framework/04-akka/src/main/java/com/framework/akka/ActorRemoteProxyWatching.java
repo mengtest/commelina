@@ -1,6 +1,6 @@
 package com.framework.akka;
 
-import com.framework.message.ApiRequestLogin;
+import com.framework.message.ApiRequest;
 import com.framework.message.ResponseMessageDomain;
 
 /**
@@ -8,7 +8,7 @@ import com.framework.message.ResponseMessageDomain;
  */
  interface ActorRemoteProxyWatching {
 
-    void onRequest(ApiRequestLogin request);
+    void onRequest(ApiRequest request);
 
     void reply(ResponseMessageDomain message);
 

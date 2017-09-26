@@ -28,7 +28,7 @@ public class RoomManger extends AbstractActor {
     private void onClientRequest(RoomClientRouterEntity roomClientRouterEntity) {
         ActorRef roomContext = roomIdToRoomContextActor.get(roomClientRouterEntity.getRoomId());
         if (roomContext == null) {
-            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiRequestLogin().getApiOpcode()), getSelf());
+            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiRequest().getOpcode()), getSelf());
             return;
         }
         roomContext.forward(roomClientRouterEntity, getContext());

@@ -1,14 +1,13 @@
 package com.game.gateway.router_v3;
 
-import com.framework.akka_cluster_router.ClusterRouterJoinEntity;
-import com.framework.akka_cluster_router.DefaultClusterActorRequestHandler;
+import com.framework.akka_router.DefaultClusterActorRequestHandler;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
+import com.framework.message.DefaultMessageProvider;
 import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
-import com.game.gateway.MessageProvider;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.google.protobuf.Internal;
@@ -26,18 +25,18 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
     }
 
     @Override
-    protected ClusterRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+    public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
             ResponseMessage message = ResponseMessage.newMessage(
-                    MessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
+                    DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
 
             ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), message);
-            return null;
+            return;
         }
 
-        // matching server 必须登录才能访问
-        return createNewJoinEntity(request, userId);
+        request.setUserId(userId);
+        super.onRequest(request, ctx);
     }
 
 }

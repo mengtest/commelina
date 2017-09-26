@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.message.BroadcastMessage;
-import com.game.matching.MessageProvider;
+import com.framework.message.DefaultMessageProvider;
 import com.game.matching.proto.OPCODE;
 
 /**
@@ -29,7 +29,7 @@ public class MatchingStatus extends AbstractActor {
         BroadcastMessage broadcast = BroadcastMessage.newBroadcast(
                 OPCODE.NOTIFY_MATCH_SUCCESS,
                 notifyMatchStatus.userIds,
-                MessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.length));
+                DefaultMessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.length));
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
 //        PortalActorContainer.INSTANCE.getMatchingNotifyActor().reply(broadcast);

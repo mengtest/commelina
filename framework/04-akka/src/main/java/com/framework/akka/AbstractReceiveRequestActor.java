@@ -13,7 +13,7 @@ public abstract class AbstractReceiveRequestActor extends AbstractActor implemen
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequestLogin.class, this::onRequest)
+                .match(ApiRequest.class, this::onRequest)
                 .build();
     }
 
