@@ -1,8 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketASK;
-import com.framework.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -17,8 +15,6 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
 
-    private final NettyServerContext nettyServerContext = NettyServerContext.getInstance();
-
     private RouterContextHandler routerContextHandlerImpl;
 
     private MemberEventHandler memberEventHandler = new MemberEventHandler() {
@@ -26,14 +22,14 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        final boolean result = nettyServerContext.channelActive(ctx.channel());
+        final boolean result = NettyServerContext.Holder.INSTANCE.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
         memberEventHandler.onOnline(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
+        final long logoutUserId =  NettyServerContext.Holder.INSTANCE.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
         memberEventHandler.onOffline(logoutUserId, ctx);
     }
@@ -44,7 +40,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         // 心跳
         if (ask.getOpcode() == 0) {
             LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
-            ctx.writeAndFlush(SocketMessage.getDefaultInstance());
+            ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
             routerContextHandlerImpl.onRequest(ctx, ask);
         }
@@ -57,7 +53,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 //            final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
 //            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
 //        }
-        ctx.writeAndFlush(MessageResponseProvider.DEFAULT_MESSAGE_RESPONSE.createErrorMessage(SERVER_CODE.SERVER_ERROR));
+        ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
         memberEventHandler.onException(ctx, cause);
     }
 

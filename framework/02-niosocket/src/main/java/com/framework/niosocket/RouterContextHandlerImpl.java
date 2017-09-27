@@ -3,7 +3,6 @@ package com.framework.niosocket;
 import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.niosocket.proto.Arg;
-import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,7 +22,7 @@ class RouterContextHandlerImpl implements RouterContextHandler {
     public void onRequest(ChannelHandlerContext ctx, SocketASK request) {
         RequestHandler handler = handlers.get(request.getForward());
         if (handler == null) {
-            ReplyUtils.reply(ctx, SERVER_CODE.RPC_API_NOT_FOUND);
+            ReplyUtils.reply(ctx, ProtoBuffMap.RPC_API_NOT_FOUND);
             return;
         }
 

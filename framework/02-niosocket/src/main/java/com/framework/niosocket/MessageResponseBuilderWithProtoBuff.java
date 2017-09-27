@@ -6,33 +6,34 @@ import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Created by @panyao on 2017/8/24.
  */
 class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
 
+    private final Logger logger = LoggerFactory.getLogger(MessageResponseBuilderWithProtoBuff.class);
+
     @Override
-    public Object createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
+    public SocketMessage createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
         return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.NOTIFY_CODE);
     }
 
     @Override
-    public Object createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
+    public SocketMessage createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
         return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.RESONSE_CODE);
     }
 
-    @Override
-    public Object createErrorMessage(SERVER_CODE serverCode) {
-        return SocketMessage
-                .newBuilder()
-                .setCode(serverCode)
-                .build();
-    }
-
-    private Object createMessageWithType(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus, SERVER_CODE type) {
-        byte[] bytes = messageBus.getBytes();
-        if (bytes == null) {
+    private SocketMessage createMessageWithType(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus, SERVER_CODE type) {
+        byte[] bytes;
+        try {
+            bytes = messageBus.getBytes();
+        } catch (IOException e) {
+            logger.error("{}", e);
             return null;
         }
         return SocketMessage.newBuilder()

@@ -2,6 +2,7 @@ package com.framework.niosocket;
 
 import com.framework.message.MessageBus;
 import com.framework.niosocket.proto.SERVER_CODE;
+import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 
 /**
@@ -9,10 +10,8 @@ import com.google.protobuf.Internal;
  */
 public interface MessageResponseBuilder {
 
-    Object createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
+    SocketMessage createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
 
-    Object createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
-
-    Object createErrorMessage(SERVER_CODE serverCode);
+    SocketMessage createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
 
 }

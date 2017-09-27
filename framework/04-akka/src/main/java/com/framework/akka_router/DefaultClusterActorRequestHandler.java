@@ -4,9 +4,9 @@ import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import com.framework.message.ApiRequest;
 import com.framework.message.ResponseMessage;
+import com.framework.niosocket.ProtoBuffMap;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
-import com.framework.niosocket.proto.SERVER_CODE;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
         future.onFailure(new OnFailure() {
             @Override
             public void onFailure(Throwable failure) throws Throwable {
-                ReplyUtils.reply(ctx, SERVER_CODE.SERVER_ERROR);
+                ReplyUtils.reply(ctx, ProtoBuffMap.SERVER_ERROR);
                 logger.error("Actor return error.{}", failure);
             }
         }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());

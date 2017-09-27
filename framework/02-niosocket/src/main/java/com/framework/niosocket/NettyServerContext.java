@@ -20,6 +20,10 @@ class NettyServerContext {
 
     private final Lock removeLock = new ReentrantLock();
 
+    static final class Holder {
+        static final NettyServerContext INSTANCE = new NettyServerContext();
+    }
+
     private NettyServerContext() {
 
     }
@@ -131,12 +135,6 @@ class NettyServerContext {
             throw new UserChannelUnActiveException();
         }
         return channel;
-    }
-
-    private static final NettyServerContext nettyServerContext = new NettyServerContext();
-
-    static NettyServerContext getInstance() {
-        return nettyServerContext;
     }
 
 }
