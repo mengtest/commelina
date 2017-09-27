@@ -39,4 +39,8 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
         super.onRequest(request, ctx);
     }
 
+    @Override
+    public byte newSeed() {
+        return 0;
+    }
 }

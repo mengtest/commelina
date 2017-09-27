@@ -15,7 +15,7 @@ import scala.concurrent.Future;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class DefaultClusterActorRequestHandler implements RequestHandler, Router {
+public abstract class DefaultClusterActorRequestHandler implements RequestHandler, Router, Rewrite {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -26,7 +26,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, ClusterRouterJoinEntity message) {
         // 转发到业务 actor 上去
-        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.routerClusterNodeAsk(message);
+        Future<Object> future = AkkaWorkerSystem.Holder.WORKER.routerClusterNodeAsk(message);
 
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
@@ -35,7 +35,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
                 ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(),
                         ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
 
         future.onFailure(new OnFailure() {
             @Override
@@ -43,7 +43,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
                 ReplyUtils.reply(ctx, SERVER_CODE.SERVER_ERROR);
                 logger.error("Actor return error.{}", failure);
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
     }
 
     protected ClusterRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {

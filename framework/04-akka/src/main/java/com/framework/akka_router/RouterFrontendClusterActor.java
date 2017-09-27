@@ -21,6 +21,7 @@ public class RouterFrontendClusterActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
+                // 客户端请求
                 .match(ClusterRouterJoinEntity.class, j -> {
                     ActorRef target = clusterRouters.get(j.getRouterId());
                     if (target != null) {
@@ -42,6 +43,10 @@ public class RouterFrontendClusterActor extends AbstractActor {
                 .match(WorldMessage.class, w -> {
                     // 获取 router id
                     MessageAdapter.addWorld(clusterRouters.inverse().get(getSender()), w);
+                })
+                // server 请求 重定向， 如 matching -> room
+                .match(ServerRequestForwardEntity.class, f -> {
+
                 })
                 .match(ClusterRouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());

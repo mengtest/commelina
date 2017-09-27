@@ -10,10 +10,12 @@ import com.framework.message.RequestArg;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
+@Component
 public class SessionImpl implements ServiceHandler {
 
     @Override

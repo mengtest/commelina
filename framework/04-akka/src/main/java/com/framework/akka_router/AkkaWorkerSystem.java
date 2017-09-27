@@ -20,7 +20,7 @@ import static akka.pattern.Patterns.ask;
 public class AkkaWorkerSystem {
 
     public static final class Holder {
-        public static AkkaWorkerSystem AKKA_WORKER_SYSTEM = new AkkaWorkerSystem();
+        public static final AkkaWorkerSystem WORKER = new AkkaWorkerSystem();
     }
 
     private final ActorSystem system;

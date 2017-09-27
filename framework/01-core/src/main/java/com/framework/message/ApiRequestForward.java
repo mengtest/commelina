@@ -5,31 +5,32 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/15.
  */
-@Deprecated
+
 public class ApiRequestForward {
 
-    private final Internal.EnumLite fromDomain;
-    private final Internal.EnumLite apiOpcode;
+    private final Internal.EnumLite forwardId;
+
+    private final Internal.EnumLite opcode;
     private final String version;
     private final RequestArg[] args;
 
-    private ApiRequestForward(Internal.EnumLite fromDomain, Internal.EnumLite apiOpcode, String version, RequestArg[] args) {
-        this.fromDomain = fromDomain;
-        this.apiOpcode = apiOpcode;
+    private ApiRequestForward(Internal.EnumLite forwardId, Internal.EnumLite opcode, String version, RequestArg[] args) {
+        this.forwardId = forwardId;
+        this.opcode = opcode;
         this.version = version;
         this.args = args;
     }
 
-    public static ApiRequestForward newApiRequestForward(Internal.EnumLite domain, Internal.EnumLite apiMethod, String version, RequestArg[] args) {
+    public static ApiRequestForward newRequest(Internal.EnumLite domain, Internal.EnumLite apiMethod, String version, RequestArg[] args) {
         return new ApiRequestForward(domain, apiMethod, version, args);
     }
 
-    public Internal.EnumLite getApiOpcode() {
-        return apiOpcode;
+    public Internal.EnumLite getOpcode() {
+        return opcode;
     }
 
-    public Internal.EnumLite getFromDomain() {
-        return fromDomain;
+    public Internal.EnumLite getForwardId() {
+        return forwardId;
     }
 
     public String getVersion() {
@@ -41,25 +42,11 @@ public class ApiRequestForward {
     }
 
     public RequestArg getArg(int argName) {
-        if (args == null || args.length == 0) {
-            return null;
-        }
-
         try {
             return args[argName];
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException | NullPointerException e) {
             return null;
         }
     }
 
-    public RequestArg[] subArg(int subSize) {
-        if (args == null || args.length < 2) {
-            return null;
-        }
-        RequestArg[] args = new RequestArg[this.getArgs().length - subSize];
-        for (int i = subSize; i < this.getArgs().length; i++) {
-            args[i - subSize] = this.getArgs()[i];
-        }
-        return args;
-    }
 }

@@ -28,7 +28,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, ServiceHandler> routers = applicationContext.getBeansOfType(ServiceHandler.class);
         for (ServiceHandler handler : routers.values()) {
-            AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.localRouterRegister(new LocalRouterRegistrationEntity(handler.getRouterId()), handler.getProps());
+            AkkaWorkerSystem.Holder.WORKER.localRouterRegister(new LocalRouterRegistrationEntity(handler.getRouterId()), handler.getProps());
         }
     }
 
@@ -39,7 +39,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, LocalRouterJoinEntity entity) {
         // 转发到业务 actor 上去
-        Future<Object> future = AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.routerLocalNodeAsk(entity);
+        Future<Object> future = AkkaWorkerSystem.Holder.WORKER.routerLocalNodeAsk(entity);
 
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
@@ -48,7 +48,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
                 ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(),
                         ResponseMessage.newMessage(((RouterResponseEntity) result).getMessage()));
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
 
         future.onFailure(new OnFailure() {
             @Override
@@ -56,7 +56,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
                 ReplyUtils.reply(ctx, SERVER_CODE.SERVER_ERROR);
                 logger.error("actor return error.{}", failure);
             }
-        }, AkkaWorkerSystem.Holder.AKKA_WORKER_SYSTEM.getSystem().dispatcher());
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
     }
 
     protected LocalRouterJoinEntity beforeHook(ApiRequest request, ChannelHandlerContext ctx) {

@@ -42,41 +42,16 @@ public final class ApiRequest implements AppVersion {
         return args;
     }
 
-    public RequestArg getArg(int argName) {
-        if (args == null || args.length == 0) {
-            return null;
-        }
-
-        try {
-            return args[argName];
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    /**
-     * 要截取的数组数量 [1,2,3]
-     * subArg(1) -> [2,3]
-     * subArg(2) -> [3]
-     * subArg(3) -> []
-     * subArg(4) -> error
-     *
-     * @param subSize
-     * @return
-     */
-    public RequestArg[] subArg(int subSize) {
-        if (args == null || args.length < 1) {
-            return null;
-        }
-        RequestArg[] args = new RequestArg[this.getArgs().length - subSize];
-        for (int i = subSize; i < this.getArgs().length; i++) {
-            args[i - subSize] = this.getArgs()[i];
-        }
-        return args;
-    }
-
     public Internal.EnumLite getOpcode() {
         return opcode;
+    }
+
+    public RequestArg getArg(int argName) {
+        try {
+            return args[argName];
+        } catch (IndexOutOfBoundsException | NullPointerException e) {
+            return null;
+        }
     }
 
 }
