@@ -26,7 +26,7 @@ public final class MessageAdapter {
 
         Channel channel = NettyServerContext.Holder.INSTANCE.getUserChannel(message.getUserId());
 
-        channel.writeAndFlush(msg);
+        ReplyUtils.reply(channel, msg);
 
         return true;
     }
@@ -41,7 +41,7 @@ public final class MessageAdapter {
 
         for (Long userId : message.getUserIds()) {
             Channel channel = NettyServerContext.Holder.INSTANCE.getUserChannel(userId);
-            channel.writeAndFlush(msg);
+            ReplyUtils.reply(channel, msg);
         }
         return true;
     }
@@ -51,10 +51,13 @@ public final class MessageAdapter {
         if (msg == null) {
             return false;
         }
+
         for (Long userId : NettyServerContext.Holder.INSTANCE.LOGIN_USERS.values()) {
             Channel channel = NettyServerContext.Holder.INSTANCE.getUserChannel(userId);
-            channel.writeAndFlush(msg);
+
+            ReplyUtils.reply(channel, msg);
         }
+        
         return true;
     }
 
