@@ -2,6 +2,7 @@ package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import akka.actor.Props;
 import akka.actor.Terminated;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -33,6 +34,10 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     localRouters.inverse().remove(terminated.getActor());
                 })
                 .build();
+    }
+
+    public static Props props() {
+        return Props.create(RouterFrontendLocalActor.class);
     }
 
 }

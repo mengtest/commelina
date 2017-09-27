@@ -16,7 +16,7 @@ public final class ServiceDomainMessage<T> {
     }
 
     public static <T> ServiceDomainMessage<T> newMessage(T t) {
-        return new ServiceDomainMessage<>(() -> 0, t);
+        return newMessage(() -> 0, t);
     }
 
     public static <T> ServiceDomainMessage<T> newMessage(Internal.EnumLite errorCode, T t) {

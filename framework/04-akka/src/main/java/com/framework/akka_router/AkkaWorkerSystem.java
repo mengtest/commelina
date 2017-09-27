@@ -52,14 +52,9 @@ public class AkkaWorkerSystem {
     private AkkaWorkerSystem() {
         system = ActorSystem.create("AkkaWorkSystem", (Config) null);
 
-        localRouterFronted = system.actorOf(Props.create(RouterFrontendLocalActor.class), "localRouterFronted");
+        localRouterFronted = system.actorOf(RouterFrontendLocalActor.props(), "localRouterFronted");
 
-        clusterRouterFronted = system.actorOf(Props.create(RouterFrontendClusterActor.class), "clusterRouterFronted");
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
+        clusterRouterFronted = system.actorOf(RouterFrontendClusterActor.props(null), "clusterRouterFronted");
     }
 
     public ActorSystem getSystem() {

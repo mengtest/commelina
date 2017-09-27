@@ -2,6 +2,7 @@ package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import akka.actor.Props;
 import akka.actor.Terminated;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
@@ -17,6 +18,12 @@ import com.google.protobuf.Internal;
 public class RouterFrontendClusterActor extends AbstractActor {
 
     private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
+
+    private final ServerRequestForwardHandler forwardHandler;
+
+    public RouterFrontendClusterActor(ServerRequestForwardHandler forwardHandler) {
+        this.forwardHandler = forwardHandler;
+    }
 
     @Override
     public Receive createReceive() {
@@ -46,7 +53,7 @@ public class RouterFrontendClusterActor extends AbstractActor {
                 })
                 // server 请求 重定向， 如 matching -> room
                 .match(ServerRequestForwardEntity.class, f -> {
-
+                    forwardHandler.onRequest(f.getForwardId(), f.getRequestForward(), getSender());
                 })
                 .match(ClusterRouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
@@ -56,6 +63,10 @@ public class RouterFrontendClusterActor extends AbstractActor {
                     clusterRouters.inverse().remove(terminated.getActor());
                 })
                 .build();
+    }
+
+    public static Props props(ServerRequestForwardHandler forwardHandler) {
+        return Props.create(RouterFrontendClusterActor.class, forwardHandler);
     }
 
 }
