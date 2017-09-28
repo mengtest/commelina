@@ -57,7 +57,7 @@ public final class MessageAdapter {
 
             ReplyUtils.reply(channel, msg);
         }
-        
+
         return true;
     }
 

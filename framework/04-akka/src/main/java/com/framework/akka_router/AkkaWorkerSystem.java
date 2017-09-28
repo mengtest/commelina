@@ -54,7 +54,7 @@ public class AkkaWorkerSystem {
 
         localRouterFronted = system.actorOf(RouterFrontendLocalActor.props(), "localRouterFronted");
 
-        clusterRouterFronted = system.actorOf(RouterFrontendClusterActor.props(null), "clusterRouterFronted");
+        clusterRouterFronted = system.actorOf(RouterFrontendClusterActor.props(), "clusterRouterFronted");
     }
 
     public ActorSystem getSystem() {

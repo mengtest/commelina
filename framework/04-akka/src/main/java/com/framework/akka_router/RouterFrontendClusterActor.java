@@ -4,6 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.Terminated;
+import com.framework.message.ApiRequestForward;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
 import com.framework.message.WorldMessage;
@@ -15,7 +16,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterFrontendClusterActor extends AbstractActor {
+public class RouterFrontendClusterActor extends AbstractActor implements ServerRequestForwardHandler {
 
     private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
 
@@ -53,7 +54,13 @@ public class RouterFrontendClusterActor extends AbstractActor {
                 })
                 // server 请求 重定向， 如 matching -> room
                 .match(ServerRequestForwardEntity.class, f -> {
-                    forwardHandler.onRequest(f.getForwardId(), f.getRequestForward(), getSender());
+                    ActorRef target = clusterRouters.get(f.getForwardId());
+                    if (target != null) {
+                        // 重定向到远程的 seed node 上，它自己再做 router
+                        onRequest(f.getForwardId(), f.getRequestForward(), getSender());
+                    } else {
+                        unhandled(f);
+                    }
                 })
                 .match(ClusterRouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
@@ -65,8 +72,11 @@ public class RouterFrontendClusterActor extends AbstractActor {
                 .build();
     }
 
-    public static Props props(ServerRequestForwardHandler forwardHandler) {
-        return Props.create(RouterFrontendClusterActor.class, forwardHandler);
+    public static Props props() {
+        return Props.create(RouterFrontendClusterActor.class);
     }
 
+    public void onRequest(Internal.EnumLite forwardId, ApiRequestForward request, ActorRef sender) {
+        
+    }
 }
