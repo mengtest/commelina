@@ -9,6 +9,6 @@ import com.google.protobuf.Internal;
  */
 public interface ServerRequestForwardHandler {
 
-    void onRequest(Internal.EnumLite forwardId, ApiRequestForward request, ActorRef sender);
+    void onRequest(Internal.EnumLite forwardId, ActorRef forwardActor, ApiRequestForward request, ActorRef sender);
 
 }

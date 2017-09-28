@@ -3,9 +3,9 @@ nioSocketServer:
   port : 9005
 
 akkaRemoteActor:
-  matchingRequestPath: nio_akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRequestActor
-  matchingNotifyPath: nio_akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingNotifyActor
+  matchingRequestPath: akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingRequestActor
+  matchingNotifyPath: akka.tcp://MatchingWorkerSystem@127.0.0.1:2551/user/matchingNotifyActor
 
-  roomRequestPath: nio_akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomRequestActor
-  roomServerRequestPath: nio_akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomServerRequestActor
-  roomNotifyPath: nio_akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomNotifyActor
+  roomRequestPath: akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomRequestActor
+  roomServerRequestPath: akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomServerRequestActor
+  roomNotifyPath: akka.tcp://RoomWorkerSystem@127.0.0.1:2552/user/roomNotifyActor

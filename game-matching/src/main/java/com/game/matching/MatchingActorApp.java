@@ -1,8 +1,6 @@
 package com.game.matching;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.game.matching.portal.MatchingReceiveRequestActor;
 import com.typesafe.config.ConfigFactory;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +21,13 @@ public final class MatchingActorApp {
         ActorSystem system = ActorSystem.create("MatchingWorkerSystem",
                 ConfigFactory.load(("matching")));
 
-        ActorRef matchingRequestRouter =
-                system.actorOf(MatchingReceiveRequestActor.props(configEntity), "matchingRequestActor");
+//        ActorRef matchingRequestRouter =
+//                system.actorOf(MatchingReceiveRequestActor.props(configEntity), "matchingRequestActor");
 
 //        ActorRef matchingNotifyRouter =
 //                system.actorOf(MatchingReceiveNotifyActor.props(), "matchingNotifyActor");
 
-        PortalActorContainer.INSTANCE.matchingRequestActor = matchingRequestRouter;
+//        PortalActorContainer.INSTANCE.matchingRequestActor = matchingRequestRouter;
 //        PortalActorContainer.INSTANCE.matchingNotifyActor = matchingNotifyRouter;
     }
 

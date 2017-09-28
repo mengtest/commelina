@@ -57,7 +57,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
                     ActorRef target = clusterRouters.get(f.getForwardId());
                     if (target != null) {
                         // 重定向到远程的 seed node 上，它自己再做 router
-                        onRequest(f.getForwardId(), f.getRequestForward(), getSender());
+                        onRequest(f.getForwardId(), target, f.getRequestForward(), getSender());
                     } else {
                         unhandled(f);
                     }
@@ -76,7 +76,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
         return Props.create(RouterFrontendClusterActor.class);
     }
 
-    public void onRequest(Internal.EnumLite forwardId, ApiRequestForward request, ActorRef sender) {
-        
+    public void onRequest(Internal.EnumLite forwardId, ActorRef forwardActor, ApiRequestForward request, ActorRef sender) {
+        forwardActor.forward(request, getContext());
     }
 }

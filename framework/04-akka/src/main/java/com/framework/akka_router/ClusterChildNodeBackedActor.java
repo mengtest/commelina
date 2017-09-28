@@ -9,6 +9,7 @@ import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
 import com.framework.message.ApiRequest;
+import com.framework.message.ApiRequestForward;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
@@ -40,6 +41,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     public Receive createReceive() {
         return receiveBuilder()
                 .match(ApiRequest.class, this::onRequest)
+                .match(ApiRequestForward.class, this::onForward)
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -63,11 +65,6 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
             clusterFronted = getContext().actorSelection(member.address() + "/user/routerFronted");
             clusterFronted.tell(new ClusterRouterRegistrationEntity(getRouterId(), (byte) 0), self());
         }
-    }
-
-    @Override
-    public final void onRequest(ApiRequest request) {
-
     }
 
     //

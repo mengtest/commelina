@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
 public class DefaultClusterActorRequestForwardHandler implements ServerRequestForwardHandler {
 
     @Override
-    public void onRequest(Internal.EnumLite forwardId, ApiRequestForward request, ActorRef sender) {
+    public void onRequest(Internal.EnumLite forwardId, ActorRef forwardActor, ApiRequestForward request, ActorRef sender) {
 
     }
 
