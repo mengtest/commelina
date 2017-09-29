@@ -43,4 +43,5 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
     public byte newSeed() {
         return 0;
     }
+
 }
