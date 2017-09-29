@@ -25,8 +25,31 @@
         <file.encoding>UTF-8</file.encoding>
         <java.version>1.8</java.version>
 
-        <akka.version>2.5.4</akka.version>
+        <guava.version>23.0</guava.version>
+        <jackson-core.version>2.8.9</jackson-core.version>
+        <jackson-annotations.version>${jackson-core.version}</jackson-annotations.version>
+        <jackson-databind.version>${jackson-core.version}</jackson-databind.version>
+        <jackson-dataformat-xml.version>${jackson-core.version}</jackson-dataformat-xml.version>
 
+        <protobuf-java.version>3.2.0</protobuf-java.version>
+        <netty-all.version>4.1.16.Final</netty-all.version>
+        <jctools-core.version>2.1.0</jctools-core.version>
+
+        <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
+        <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
+        <spring-data-redis.version>1.8.6.RELEASE</spring-data-redis.version>
+
+        <hibernate-core.version>4.3.11.Final</hibernate-core.version>
+        <hibernate-entitymanage.version>${hibernate-core.version}</hibernate-entitymanage.version>
+        <!--<hibernate-commons-annotations.version>4.0.5.Final</hibernate-commons-annotations.version>-->
+
+        <!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
+
+        <redis-lettuce.version>4.3.3.Fina</redis-lettuce.version>
+        <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
+        <db-pool.druid.version>1.0.31</db-pool.druid.version>
+
+        <akka.version>2.5.4</akka.version>
         <spring.version>4.3.10.RELEASE</spring.version>
     </properties>
 
@@ -76,54 +99,54 @@
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>core</artifactId>
-                <version>1.0.0</version>
+                <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>nioscoket</artifactId>
-                <version>1.0.0</version>
+                <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>web</artifactId>
-                <version>1.0.0</version>
+                <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.nexus.maven</groupId>
                 <artifactId>akka</artifactId>
-                <version>1.0.0</version>
+                <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>23.0</version>
+                <version>${guava.version}</version>
             </dependency>
 
             <!-- jackson-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>2.8.9</version>
+                <version>${jackson-core.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.8.9</version>
+                <version>${jackson-annotations.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.8.9</version>
+                <version>${jackson-databind.version}</version>
                 <!--<scope>compile</scope>-->
                 <!--<optional>true</optional>-->
             </dependency>
@@ -131,28 +154,28 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-xml</artifactId>
-                <version>2.8.9</version>
+                <version>${jackson-dataformat-xml.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
-                <version>3.2.0</version>
+                <version>${protobuf-java.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.16.Final</version>
+                <version>${netty-all.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.jctools/jctools-core -->
             <dependency>
                 <groupId>org.jctools</groupId>
                 <artifactId>jctools-core</artifactId>
-                <version>2.1.0</version>
+                <version>${jctools-core.version}</version>
             </dependency>
 
             <dependency>
@@ -234,46 +257,46 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
+                <version>${javax.servlet-api.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-jpa -->
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>1.11.6.RELEASE</version>
+                <version>${spring-data-jpa.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>4.3.11.Final</version>
+                <version>${hibernate-core.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <version>4.3.11.Final</version>
+                <version>${hibernate-entitymanage.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
             <!--<dependency>-->
             <!--<groupId>org.hibernate.common</groupId>-->
             <!--<artifactId>hibernate-commons-annotations</artifactId>-->
-            <!--<version>4.0.5.Final</version>-->
+            <!--<version>${hibernate-commons-annotations.version}</version>-->
             <!--</dependency>-->
 
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-redis -->
             <dependency>
                 <groupId>org.springframework.d</groupId>
                 <artifactId>spring-data-redis</artifactId>
-                <version>1.8.6.RELEASE</version>
+                <version>${spring-data-redis.version}</version>
             </dependency>
 
             <!--<dependency>-->
             <!--<groupId>commons-beanutils</groupId>-->
             <!--<artifactId>commons-beanutils</artifactId>-->
-            <!--<version>1.9.2</version>-->
+            <!--<version>${commons-beanutils.version}</version>-->
             <!--</dependency>-->
 
             <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -281,14 +304,14 @@
             <dependency>
                 <groupId>biz.paluch.redis</groupId>
                 <artifactId>lettuce</artifactId>
-                <version>4.3.3.Final</version>
+                <version>${redis-lettuce.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>6.0.6</version>
+                <version>${mysql-connector-java.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -296,7 +319,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
-                <version>1.0.31</version>
+                <version>${db-pool.druid.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
