@@ -45,7 +45,7 @@
 
         <!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
 
-        <redis-lettuce.version>4.3.3.Fina</redis-lettuce.version>
+        <redis-lettuce.version>4.3.3.Final</redis-lettuce.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
         <db-pool.druid.version>1.0.31</db-pool.druid.version>
 
