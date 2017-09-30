@@ -2,7 +2,6 @@ package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.Props;
 import akka.actor.Terminated;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -18,7 +17,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(LocalRouterJoinEntity.class, j -> {
+                .match(RouterJoinEntity.class, j -> {
                     ActorRef target = localRouters.get(j.getRouterId());
                     if (target != null) {
                         target.forward(j.getApiRequest(), getContext());
@@ -26,7 +25,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                         this.unhandled(j);
                     }
                 })
-                .match(LocalRouterRegistrationEntity.class, r -> {
+                .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
                     localRouters.put(r.getRouterId(), sender());
                 })
@@ -34,10 +33,6 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     localRouters.inverse().remove(terminated.getActor());
                 })
                 .build();
-    }
-
-    public static Props props() {
-        return Props.create(RouterFrontendLocalActor.class);
     }
 
 }

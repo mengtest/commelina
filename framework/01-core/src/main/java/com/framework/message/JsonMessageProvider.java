@@ -3,7 +3,6 @@ package com.framework.message;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,27 +26,13 @@ public class JsonMessageProvider {
     public static MessageBus produceMessageForKV(final String k, final Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
-        Map<String, Object> kv = new HashMap<>();
+        final Map<String, Object> kv = new HashMap<>();
         kv.put(k, v);
 
 //        KVEntity entity = new KVEntity();
 //        entity.k = k;
 //        entity.v = v;
         return new JsonMessage(BusinessMessage.success(kv));
-    }
-
-    public static final class KVEntity implements Serializable {
-        String k;
-        Object v;
-
-        public String getK() {
-            return k;
-        }
-
-        public Object getV() {
-            return v;
-        }
-
     }
 
 }

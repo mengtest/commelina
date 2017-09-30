@@ -6,13 +6,13 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class LocalRouterJoinEntity {
+public class RouterJoinEntity {
 
     private final Internal.EnumLite routerId;
 
     private final ApiRequest apiRequest;
 
-    public LocalRouterJoinEntity(Internal.EnumLite routerId, ApiRequest apiRequest) {
+    public RouterJoinEntity(Internal.EnumLite routerId, ApiRequest apiRequest) {
         this.routerId = routerId;
         this.apiRequest = apiRequest;
     }

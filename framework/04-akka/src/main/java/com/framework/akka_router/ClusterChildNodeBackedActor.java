@@ -50,7 +50,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                     }
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
-                .match(LocalRouterRegistrationEntity.class, r -> {
+                .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
                     localRouters.put(r.getRouterId(), sender());
                 })
@@ -63,7 +63,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     void register(Member member) {
         if (member.hasRole("frontend")) {
             clusterFronted = getContext().actorSelection(member.address() + "/user/routerFronted");
-            clusterFronted.tell(new ClusterRouterRegistrationEntity(getRouterId(), (byte) 0), self());
+            clusterFronted.tell(new RouterRegistrationEntity(getRouterId()), self());
         }
     }
 

@@ -4,7 +4,7 @@ import com.framework.akka_router.DefaultClusterActorRequestHandler;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.DefaultMessageProvider;
-import com.framework.message.ResponseMessage;
+import com.framework.message.MessageBus;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
@@ -19,29 +19,24 @@ import io.netty.channel.ChannelHandlerContext;
 @NioSocketRouter(forward = DOMAIN.MATCHING_VALUE)
 public class ProxyMatching extends DefaultClusterActorRequestHandler {
 
+    private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED));
+
     @Override
     public Internal.EnumLite getRouterId() {
         return DOMAIN.MATCHING;
     }
 
     @Override
-    public void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
+    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
-            ResponseMessage message = ResponseMessage.newMessage(
-                    DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED)));
-
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), message);
-            return;
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), messageBus);
+            return false;
         }
 
         request.setUserId(userId);
-        super.onRequest(request, ctx);
-    }
 
-    @Override
-    public byte newSeed() {
-        return 0;
+        return true;
     }
 
 }

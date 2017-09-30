@@ -2,81 +2,103 @@ package com.framework.akka_router;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.Props;
 import akka.actor.Terminated;
-import com.framework.message.ApiRequestForward;
-import com.framework.message.BroadcastMessage;
-import com.framework.message.NotifyMessage;
-import com.framework.message.WorldMessage;
+import akka.dispatch.OnFailure;
+import akka.dispatch.OnSuccess;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
+import com.framework.message.*;
 import com.framework.niosocket.MessageAdapter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
+import scala.concurrent.Future;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterFrontendClusterActor extends AbstractActor implements ServerRequestForwardHandler {
+public class RouterFrontendClusterActor extends AbstractActor implements ServerRequestHandler, Rewrite {
+
+    private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
     private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
 
-    private final ServerRequestForwardHandler forwardHandler;
+    private final Internal.EnumLite myRouterId;
 
-    public RouterFrontendClusterActor(ServerRequestForwardHandler forwardHandler) {
-        this.forwardHandler = forwardHandler;
+    public RouterFrontendClusterActor(Internal.EnumLite myRouterId) {
+        this.myRouterId = myRouterId;
     }
 
     @Override
-    public Receive createReceive() {
+    public final Receive createReceive() {
         return receiveBuilder()
                 // 客户端请求
-                .match(ClusterRouterJoinEntity.class, j -> {
-                    ActorRef target = clusterRouters.get(j.getRouterId());
+                .match(ApiRequest.class, r -> {
+                    ActorRef target = clusterRouters.get(selectActorSeed(r));
                     if (target != null) {
-                        // 重定向到远程的 seed node 上，它自己再做 router
-                        target.forward(j, getContext());
+                        //重定向到远程的 seed node 上，它自己再做 router
+                        target.forward(r, getContext());
                     } else {
-                        unhandled(j);
+                        unhandled(r);
                     }
                 })
                 // from cluster seed node.
                 .match(BroadcastMessage.class, b -> {
                     // 获取 router id
-                    MessageAdapter.addBroadcast(clusterRouters.inverse().get(getSender()), b);
+                    MessageAdapter.addBroadcast(myRouterId, b);
                 })
                 .match(NotifyMessage.class, n -> {
                     // 获取 router id
-                    MessageAdapter.addNotify(clusterRouters.inverse().get(getSender()), n);
+                    MessageAdapter.addNotify(myRouterId, n);
                 })
                 .match(WorldMessage.class, w -> {
                     // 获取 router id
-                    MessageAdapter.addWorld(clusterRouters.inverse().get(getSender()), w);
+                    MessageAdapter.addWorld(myRouterId, w);
                 })
                 // server 请求 重定向， 如 matching -> room
-                .match(ServerRequestForwardEntity.class, f -> {
+                .match(ApiRequestForward.class, f -> {
                     ActorRef target = clusterRouters.get(f.getForwardId());
                     if (target != null) {
                         // 重定向到远程的 seed node 上，它自己再做 router
-                        onRequest(f.getForwardId(), target, f.getRequestForward(), getSender());
+                        onForward(f, target);
                     } else {
                         unhandled(f);
                     }
                 })
-                .match(ClusterRouterRegistrationEntity.class, r -> {
+                .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
                     clusterRouters.put(r.getRouterId(), sender());
                 })
-                .match(Terminated.class, terminated -> {
-                    clusterRouters.inverse().remove(terminated.getActor());
-                })
+                .match(Terminated.class, terminated -> clusterRouters.inverse().remove(terminated.getActor()))
                 .build();
     }
 
-    public static Props props() {
-        return Props.create(RouterFrontendClusterActor.class);
+    @Override
+    public Internal.EnumLite selectActorSeed(ApiRequest apiRequest) {
+        return DEFAULT;
     }
 
-    public void onRequest(Internal.EnumLite forwardId, ActorRef forwardActor, ApiRequestForward request, ActorRef sender) {
-        forwardActor.forward(request, getContext());
+    private static final Internal.EnumLite DEFAULT = () -> 0;
+
+    @Override
+    public void onForward(ApiRequestForward request, ActorRef target) {
+        Future<Object> future = AkkaWorkerSystem.INSTANCE.askRouterClusterNode(request);
+        // TODO: 2017/9/30 待确定
+        // actor 处理成功
+        future.onSuccess(new OnSuccess<Object>() {
+            @Override
+            public void onSuccess(Object result) throws Throwable {
+
+            }
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
+
+        future.onFailure(new OnFailure() {
+            @Override
+            public void onFailure(Throwable failure) throws Throwable {
+
+                logger.error("actor return error.{}", failure);
+            }
+        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
     }
+
 }

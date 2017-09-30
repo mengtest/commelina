@@ -43,6 +43,7 @@ public final class MessageAdapter {
             Channel channel = NettyServerContext.Holder.INSTANCE.getUserChannel(userId);
             ReplyUtils.reply(channel, msg);
         }
+
         return true;
     }
 
