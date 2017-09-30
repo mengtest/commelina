@@ -30,18 +30,12 @@ public class GatewaySpringBoot implements ApplicationContextAware {
         return new BootstrapNioSocket();
     }
 
-    @Bean
-    public AkkaRemoteActorEntity akkaRemoteAcotrEntity() {
-        return new AkkaRemoteActorEntity();
-    }
-
     @PostConstruct
     public void init() {
 
         // 本地 handler
-        AkkaLocalWorkerSystemCreator.create("")
+        AkkaLocalWorkerSystemCreator.create()
                 .registerRouter(RouterFrontendLocalActor.class, applicationContext.getBeansOfType(ServiceHandler.class));
-
 
         // matching 集群 handler
 //        AkkaLocalWorkerSystemCreator.registerCluster(DOMAIN.MATCHING, RouterFrontendClusterActor.class);

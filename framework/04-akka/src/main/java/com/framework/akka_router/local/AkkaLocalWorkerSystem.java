@@ -42,6 +42,10 @@ public class AkkaLocalWorkerSystem {
         return system;
     }
 
+    void create() {
+        system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load());
+    }
+
     void create(String config) {
         system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load(config));
     }
