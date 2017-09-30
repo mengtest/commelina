@@ -12,7 +12,7 @@ public class MatchingRouter extends ClusterChildNodeBackedActor {
 
     @Override
     public Internal.EnumLite getRouterId() {
-        return null;
+        return () -> 0;
     }
 
     @Override

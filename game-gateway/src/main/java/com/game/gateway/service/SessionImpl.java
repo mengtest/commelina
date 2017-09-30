@@ -27,7 +27,7 @@ public class SessionImpl implements ServiceHandler {
         return SessionActor.class;
     }
 
-    private static class SessionActor extends AbstractServiceActor {
+    private static final class SessionActor extends AbstractServiceActor {
 
         public SessionActor(Internal.EnumLite routerId) {
             super(routerId);

@@ -13,10 +13,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class ClusterChildNodeSystem {
 
-    public static final class Holder {
-        public static final ClusterChildNodeSystem NODE = new ClusterChildNodeSystem();
-    }
-
     public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     public Future<Object> askForward(Internal.EnumLite forwardId, ApiRequestForward requestForward) {

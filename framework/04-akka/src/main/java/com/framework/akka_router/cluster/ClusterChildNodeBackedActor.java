@@ -57,9 +57,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                     getContext().watch(sender());
                     localRouters.put(r.getRouterId(), sender());
                 })
-                .match(Terminated.class, terminated -> {
-                    localRouters.inverse().remove(terminated.getActor());
-                })
+                .match(Terminated.class, terminated -> localRouters.inverse().remove(terminated.getActor()))
                 .build();
     }
 
@@ -69,11 +67,5 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
             clusterFronted.tell(new RouterRegistrationEntity(getRouterId()), self());
         }
     }
-
-    //
-//    /**
-//     * @return
-//     */
-//    protected abstract String getFronted();
 
 }
