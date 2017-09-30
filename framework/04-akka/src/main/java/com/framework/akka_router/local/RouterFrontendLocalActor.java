@@ -1,8 +1,10 @@
-package com.framework.akka_router;
+package com.framework.akka_router.local;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Terminated;
+import com.framework.akka_router.RouterJoinEntity;
+import com.framework.akka_router.RouterRegistrationEntity;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;

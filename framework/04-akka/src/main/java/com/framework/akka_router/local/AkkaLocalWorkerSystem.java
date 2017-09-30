@@ -1,9 +1,12 @@
-package com.framework.akka_router;
+package com.framework.akka_router.local;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.pattern.Patterns;
 import akka.util.Timeout;
+import com.framework.akka_router.RouterJoinEntity;
+import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
 import com.google.common.collect.BiMap;
@@ -23,17 +26,13 @@ import static akka.pattern.Patterns.ask;
  * <p>
  * 工作的线程， 一个独立的 akka system
  */
-public class AkkaWorkerSystem {
+public class AkkaLocalWorkerSystem {
 
-    public static final AkkaWorkerSystem INSTANCE = new AkkaWorkerSystem();
+    public static final AkkaLocalWorkerSystem INSTANCE = new AkkaLocalWorkerSystem();
 
     private ActorSystem system;
     private ActorRef localRouterFronted;
     private final BiMap<Internal.EnumLite, ActorRef> clusterActors = HashBiMap.create(4);
-
-    public static final class Holder {
-        public static final AkkaWorkerSystem WORKER = new AkkaWorkerSystem();
-    }
 
     public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
@@ -58,7 +57,7 @@ public class AkkaWorkerSystem {
     }
 
     public Future<Object> askRouterLocalNode(Internal.EnumLite routerId, ApiRequest apiRequest, Timeout timeout) {
-        return ask(localRouterFronted, new RouterJoinEntity(routerId, apiRequest), timeout);
+        return Patterns.ask(localRouterFronted, new RouterJoinEntity(routerId, apiRequest), timeout);
     }
 
     public ActorSystem getSystem() {
@@ -83,5 +82,8 @@ public class AkkaWorkerSystem {
     void localRouterRegister(RouterRegistrationEntity routerRegistration, Props senderProps) {
         system.actorSelection("/user/localRouterFronted").tell(routerRegistration, system.actorOf(senderProps));
     }
+
+
+
 
 }

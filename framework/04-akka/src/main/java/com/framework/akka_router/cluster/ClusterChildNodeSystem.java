@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_router.cluster;
 
 import akka.util.Timeout;
 import com.framework.message.ApiRequestForward;

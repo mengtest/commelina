@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_router.cluster;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -7,6 +7,10 @@ import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka_router.local.AkkaLocalWorkerSystem;
+import com.framework.akka_router.Rewrite;
+import com.framework.akka_router.RouterRegistrationEntity;
+import com.framework.akka_router.ServerRequestHandler;
 import com.framework.message.*;
 import com.framework.niosocket.MessageAdapter;
 import com.google.common.collect.BiMap;
@@ -82,7 +86,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
     @Override
     public void onForward(ApiRequestForward request, ActorRef target) {
-        Future<Object> future = AkkaWorkerSystem.INSTANCE.askRouterClusterNode(request);
+        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(request);
         // TODO: 2017/9/30 待确定
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
@@ -90,7 +94,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
             public void onSuccess(Object result) throws Throwable {
 
             }
-        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
+        }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
 
         future.onFailure(new OnFailure() {
             @Override
@@ -98,7 +102,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
                 logger.error("actor return error.{}", failure);
             }
-        }, AkkaWorkerSystem.Holder.WORKER.getSystem().dispatcher());
+        }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
     }
 
 }

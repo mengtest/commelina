@@ -1,7 +1,7 @@
 package com.game.gateway.service;
 
 import akka.actor.Props;
-import com.framework.akka_router.AbstractServiceActor;
+import com.framework.akka_router.local.AbstractServiceActor;
 import com.framework.akka_router.ServiceHandler;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;

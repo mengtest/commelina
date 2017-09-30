@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_router.cluster;
 
 import akka.actor.AbstractActor;
 import akka.cluster.Cluster;

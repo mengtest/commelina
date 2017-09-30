@@ -1,4 +1,4 @@
-package com.framework.akka_router;
+package com.framework.akka_router.cluster;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -8,6 +8,9 @@ import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
+import com.framework.DispatchForward;
+import com.framework.akka_router.Router;
+import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
 import com.google.common.collect.BiMap;
@@ -17,7 +20,7 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, Dispatch {
+public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, DispatchForward {
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
