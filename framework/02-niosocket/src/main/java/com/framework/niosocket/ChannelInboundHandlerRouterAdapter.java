@@ -22,14 +22,14 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        final boolean result = NettyServerContext.Holder.INSTANCE.channelActive(ctx.channel());
+        final boolean result = NettyServerContext.INSTANCE.channelActive(ctx.channel());
         LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
         memberEventHandler.onOnline(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        final long logoutUserId =  NettyServerContext.Holder.INSTANCE.channelInactive(ctx.channel());
+        final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
         LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
         memberEventHandler.onOffline(logoutUserId, ctx);
     }
@@ -63,7 +63,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.READER_IDLE) {
                 // 发现连接是闲置状态就关闭它
-                LOGGER.info("IDLE,关闭了客户端{}的连接", ctx.channel().id());
+                final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
+                LOGGER.info("Idle client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+                memberEventHandler.onOffline(logoutUserId, ctx);
                 ctx.close();
 //                throw new Exception("idle exception");
             }

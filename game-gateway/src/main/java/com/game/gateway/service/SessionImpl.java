@@ -42,10 +42,10 @@ public class SessionImpl implements ServiceHandler {
                 return;
             }
 
-//                    String token = tokenArg.getAsString();
-//                    String parseToken = new String(BaseEncoding.base64Url().decode(token));
-//                    List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
-//                    ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
+//        String token = tokenArg.getAsString();
+//        String parseToken = new String(BaseEncoding.base64Url().decode(token));
+//        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
+//        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
 
             response(DefaultMessageProvider.produceMessage());

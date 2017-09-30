@@ -4,7 +4,8 @@ import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 import com.framework.message.ApiRequest;
-import com.framework.message.ResponseMessage;
+import com.framework.message.MessageBus;
+import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ProtoBuffMap;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
@@ -23,7 +24,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         if (beforeHook(request, ctx)) {
-            afterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(getRouterId(), request));
+            loginAfterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(getRouterId(), request));
         }
     }
 
@@ -31,12 +32,16 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
         return true;
     }
 
-    protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, Future<Object> future) {
+    protected void loginAfterHook(ApiRequest request, ChannelHandlerContext ctx, Future<Object> future) {
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-                ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
+                if (result instanceof MessageBus) {
+                    ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), (MessageBus) result);
+                } else if (result instanceof LoginUserEntity) {
+                    ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
+                }
             }
         }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
 

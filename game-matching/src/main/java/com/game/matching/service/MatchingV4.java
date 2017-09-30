@@ -1,7 +1,7 @@
 package com.game.matching.service;
 
-import akka.actor.Props;
 import com.framework.akka_router.ServiceHandler;
+import com.framework.akka_router.local.AbstractServiceActor;
 import com.google.protobuf.Internal;
 
 /**
@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
 public class MatchingV4 implements ServiceHandler {
 
     @Override
-    public Props getPropsClass() {
+    public Class<AbstractServiceActor> getPropsClass() {
         return null;
     }
 

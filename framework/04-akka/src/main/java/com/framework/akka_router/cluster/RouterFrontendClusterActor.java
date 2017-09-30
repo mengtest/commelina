@@ -86,7 +86,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
     @Override
     public void onForward(ApiRequestForward request, ActorRef target) {
-        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(request);
+        Future<Object> future = null;//AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(request);
         // TODO: 2017/9/30 待确定
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {

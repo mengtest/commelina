@@ -23,7 +23,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         if (beforeHook(request, ctx)) {
-            afterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(getRouterId(), request));
+//            loginAfterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(getRouterId(), request));
         }
     }
 

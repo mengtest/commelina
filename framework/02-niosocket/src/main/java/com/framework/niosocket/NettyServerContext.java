@@ -20,9 +20,7 @@ class NettyServerContext {
 
     private final Lock removeLock = new ReentrantLock();
 
-    static final class Holder {
-        static final NettyServerContext INSTANCE = new NettyServerContext();
-    }
+    static final NettyServerContext INSTANCE = new NettyServerContext();
 
     private NettyServerContext() {
 
@@ -39,11 +37,6 @@ class NettyServerContext {
         Long userId = LOGIN_USERS.remove(channel.id());
         CHANNEL_GROUP.remove(channel);
         return userId == null ? 0 : userId;
-    }
-
-    // 根据 id 获取 channel
-    Channel getChannel(ChannelId channelId) {
-        return CHANNEL_GROUP.find(channelId);
     }
 
     // 把用户加入到登录会话中去
@@ -67,30 +60,12 @@ class NettyServerContext {
         return channelId;
     }
 
-    long userRemove(ChannelId channelId) {
-        Long userId = LOGIN_USERS.remove(channelId);
-        // FIXME: 2017/8/29 bian yi jian cha
-        CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
-        return userId == null ? 0 : userId;
-    }
-
     long getLoginUserId(ChannelId channelId) {
         if (CHANNEL_GROUP.find(channelId) == null) {
             return 0;
         }
         Long userId = LOGIN_USERS.get(channelId);
         return userId == null ? 0 : userId;
-    }
-
-    ChannelId getLoginChannelId(long userId) {
-        ChannelId channelId = LOGIN_USERS.inverse().get(userId);
-        if (channelId == null) {
-            return null;
-        }
-        if (CHANNEL_GROUP.find(channelId) != null) {
-            return channelId;
-        }
-        return null;
     }
 
     // 用户是否在线
