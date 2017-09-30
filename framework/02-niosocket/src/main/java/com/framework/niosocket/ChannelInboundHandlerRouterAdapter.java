@@ -39,7 +39,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         final SocketASK ask = (SocketASK) msg;
         // 心跳
         if (ask.getOpcode() == 0) {
-            LOGGER.info("client id:{}, heartbeat", ctx.channel().id());
+            LOGGER.info("client id:{}, heartbeat ", ctx.channel().id());
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
             routerContextHandlerImpl.onRequest(ctx, ask);
@@ -49,10 +49,6 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//        if (cause instanceof IOException) {
-//            final long logoutUserId = nettyServerContext.channelInactive(ctx.channel());
-//            LOGGER.info("client exception:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-//        }
         ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
         memberEventHandler.onException(ctx, cause);
     }
@@ -67,7 +63,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
                 LOGGER.info("Idle client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
                 memberEventHandler.onOffline(logoutUserId, ctx);
                 ctx.close();
-//                throw new Exception("idle exception");
+                // throw new Exception("idle exception");
             }
         } else {
             super.userEventTriggered(ctx, evt);

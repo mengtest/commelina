@@ -62,7 +62,7 @@ public class NettyNioSocketServer {
                         ch.pipeline().addLast("encoder", new ProtobufEncoder());
 
                         // http://blog.csdn.net/z69183787/article/details/52625095
-//                        // 心跳检查 5s 检查一次，意思就是 10s 服务端就会断开连接
+//                        // 心跳检查 5s 检查一次，意思就是 客户端 5s 不发送数据，服务器就会断开
                         ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
 //                        ch.pipeline().addLast("heartbeatTrigger", trigger);
