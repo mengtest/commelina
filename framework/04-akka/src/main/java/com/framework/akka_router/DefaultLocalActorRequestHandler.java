@@ -23,7 +23,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         if (beforeHook(request, ctx)) {
-            afterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askRouterLocalNode(getRouterId(), request));
+            afterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(getRouterId(), request));
         }
     }
 

@@ -1,8 +1,7 @@
 package com.game.gateway.service;
 
-import akka.actor.Props;
-import com.framework.akka_router.local.AbstractServiceActor;
 import com.framework.akka_router.ServiceHandler;
+import com.framework.akka_router.local.AbstractServiceActor;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.DefaultMessageProvider;
@@ -24,11 +23,16 @@ public class SessionImpl implements ServiceHandler {
     }
 
     @Override
-    public Props getProps() {
-        return Props.create(SessionActor.class);
+    public Class<SessionActor> getPropsClass() {
+        return SessionActor.class;
     }
 
     private static class SessionActor extends AbstractServiceActor {
+
+        public SessionActor(Internal.EnumLite routerId) {
+            super(routerId);
+        }
+
         @Override
         public void onRequest(ApiRequest request) {
             RequestArg tokenArg = request.getArg(0);

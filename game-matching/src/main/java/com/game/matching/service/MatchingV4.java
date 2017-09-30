@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
 public class MatchingV4 implements ServiceHandler {
 
     @Override
-    public Props getProps() {
+    public Props getPropsClass() {
         return null;
     }
 

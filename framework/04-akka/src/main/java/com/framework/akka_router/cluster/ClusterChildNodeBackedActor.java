@@ -8,7 +8,7 @@ import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
-import com.framework.DispatchForward;
+import com.framework.akka_router.DispatchForward;
 import com.framework.akka_router.Router;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;

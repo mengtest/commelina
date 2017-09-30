@@ -1,6 +1,5 @@
-package com.framework;
+package com.framework.akka_router;
 
-import com.framework.akka_router.Dispatch;
 import com.framework.message.ApiRequestForward;
 
 /**
