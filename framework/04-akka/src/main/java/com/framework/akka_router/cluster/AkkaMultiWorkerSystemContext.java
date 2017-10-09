@@ -1,12 +1,8 @@
 package com.framework.akka_router.cluster;
 
-import akka.util.Timeout;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
-import scala.concurrent.duration.Duration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/9/25.

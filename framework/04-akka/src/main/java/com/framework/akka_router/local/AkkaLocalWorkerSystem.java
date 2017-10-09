@@ -5,10 +5,8 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import com.framework.akka_router.RouterJoinEntity;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
-import com.google.protobuf.Internal;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -30,12 +28,12 @@ public class AkkaLocalWorkerSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
-    public Future<Object> askLocalRouterNode(Internal.EnumLite routerId, ApiRequest apiRequest) {
-        return askLocalRouterNode(routerId, apiRequest, DEFAULT_TIMEOUT);
+    public Future<Object> askLocalRouterNode(ApiRequest apiRequest) {
+        return askLocalRouterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askLocalRouterNode(Internal.EnumLite routerId, ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(localRouterFronted, new RouterJoinEntity(routerId, apiRequest), timeout);
+    public Future<Object> askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
+        return Patterns.ask(localRouterFronted, apiRequest, timeout);
     }
 
     public ActorSystem getSystem() {

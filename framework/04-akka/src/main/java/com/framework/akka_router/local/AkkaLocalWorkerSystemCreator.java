@@ -1,7 +1,6 @@
 package com.framework.akka_router.local;
 
 import akka.actor.Props;
-import com.framework.akka_router.ServiceHandler;
 
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public final class AkkaLocalWorkerSystemCreator {
         return new AkkaLocalWorkerSystemCreator();
     }
 
-    private AkkaLocalWorkerSystemCreator() {
+    AkkaLocalWorkerSystemCreator() {
 
     }
 

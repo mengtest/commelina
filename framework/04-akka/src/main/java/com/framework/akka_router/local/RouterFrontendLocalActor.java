@@ -6,8 +6,8 @@ import akka.actor.DeadLetter;
 import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.RouterJoinEntity;
 import com.framework.akka_router.RouterRegistrationEntity;
+import com.framework.message.ApiRequest;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
@@ -33,18 +33,18 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     if (d.message() instanceof RouterRegistrationEntity) {
                         getContext().watch(d.sender());
                         localRouters.put(((RouterRegistrationEntity) d.message()).getRouterId(), d.sender());
-                    } else if (d.message() instanceof RouterJoinEntity) {
+                    } else if (d.message() instanceof ApiRequest) {
                         logger.info("ignore. {}", d.message());
                     } else {
                         unhandled(d);
                     }
                 })
-                .match(RouterJoinEntity.class, j -> {
-                    ActorRef target = localRouters.get(j.getRouterId());
+                .match(ApiRequest.class, r -> {
+                    ActorRef target = localRouters.get(r.getOpcode());
                     if (target != null) {
-                        target.forward(j.getApiRequest(), getContext());
+                        target.forward(r, getContext());
                     } else {
-                        this.unhandled(j);
+                        this.unhandled(r);
                     }
                 })
                 .match(RouterRegistrationEntity.class, r -> {

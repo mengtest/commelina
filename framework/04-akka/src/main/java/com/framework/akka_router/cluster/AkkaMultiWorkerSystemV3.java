@@ -65,4 +65,5 @@ public class AkkaMultiWorkerSystemV3 {
         }
         clusterRouterFronted = system.actorOf(props, "clusterRouterFronted");
     }
+
 }

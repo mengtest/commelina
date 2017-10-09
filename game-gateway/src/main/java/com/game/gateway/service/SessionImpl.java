@@ -1,6 +1,6 @@
 package com.game.gateway.service;
 
-import com.framework.akka_router.ServiceHandler;
+import com.framework.akka_router.local.ServiceHandler;
 import com.framework.akka_router.local.AbstractServiceActor;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;

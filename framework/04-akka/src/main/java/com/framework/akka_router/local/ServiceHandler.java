@@ -1,6 +1,6 @@
-package com.framework.akka_router;
+package com.framework.akka_router.local;
 
-import com.framework.akka_router.local.AbstractServiceActor;
+import com.framework.akka_router.Router;
 
 /**
  * Created by @panyao on 2017/9/26.

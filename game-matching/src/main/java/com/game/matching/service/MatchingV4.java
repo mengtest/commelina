@@ -1,6 +1,6 @@
 package com.game.matching.service;
 
-import com.framework.akka_router.ServiceHandler;
+import com.framework.akka_router.local.ServiceHandler;
 import com.framework.akka_router.local.AbstractServiceActor;
 import com.google.protobuf.Internal;
 

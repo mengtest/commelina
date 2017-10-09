@@ -2,7 +2,7 @@ package com.game.matching.router_v3;
 
 import com.framework.akka_router.cluster.ClusterChildNodeBackedActor;
 import com.framework.message.ApiRequest;
-import com.framework.akka_router.ApiRequestForwardEntity;
+import com.framework.message.ApiRequestForward;
 import com.google.protobuf.Internal;
 
 /**
@@ -21,8 +21,7 @@ public class MatchingRouter extends ClusterChildNodeBackedActor {
     }
 
     @Override
-    public void onForward(ApiRequestForwardEntity forward) {
+    public void onForward(ApiRequestForward forward) {
 
     }
-
 }

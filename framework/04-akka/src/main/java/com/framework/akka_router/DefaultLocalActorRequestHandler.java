@@ -35,7 +35,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     }
 
     protected void loginAfterHook(ApiRequest request, ChannelHandlerContext ctx) {
-        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request.getOpcode(), request);
+        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request);
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
