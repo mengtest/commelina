@@ -9,7 +9,6 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ProtoBuffMap;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
-import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,30 +19,29 @@ import java.security.InvalidParameterException;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class DefaultLocalActorRequestHandler implements RequestHandler {
+public abstract class DefaultLocalActorRequestHandler implements RequestHandler, Router {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
-        Internal.EnumLite routerId = beforeHook(request, ctx);
-        if (routerId != null) {
-            loginAfterHook(routerId, request, ctx);
+        if (beforeHook(request, ctx)) {
+            loginAfterHook(request, ctx);
         }
     }
 
-    protected Internal.EnumLite beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
-        return null;
+    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+        return true;
     }
 
-    protected void loginAfterHook(Internal.EnumLite routerId, ApiRequest request, ChannelHandlerContext ctx) {
-        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(routerId, request);
+    protected void loginAfterHook(ApiRequest request, ChannelHandlerContext ctx) {
+        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request.getOpcode(), request);
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
                 if (result instanceof MessageBus) {
-                    ReplyUtils.reply(ctx, routerId, request.getOpcode(), (MessageBus) result);
+                    ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), (MessageBus) result);
                 } else if (result instanceof LoginUserEntity) {
                     ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
                 } else {

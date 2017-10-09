@@ -26,7 +26,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
-    private final BiMap<Internal.EnumLite, ActorRef> clusterRouters = HashBiMap.create(4);
+    private final BiMap<Internal.EnumLite, ActorRef> clusterNodeFrontedRouters = HashBiMap.create(4);
 
     private final Internal.EnumLite myRouterId;
 
@@ -39,7 +39,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
         return receiveBuilder()
                 // 客户端请求
                 .match(RouterJoinEntity.class, r -> {
-                    ActorRef target = clusterRouters.get(selectActorSeed(r.getApiRequest()));
+                    ActorRef target = clusterNodeFrontedRouters.get(selectActorSeed(r.getApiRequest()));
                     if (target != null) {
                         //重定向到远程的 seed node 上，它自己再做 router
                         target.forward(r, getContext());
@@ -62,7 +62,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
                 })
                 // server 请求 重定向， 如 matching -> room
                 .match(ApiRequestForward.class, f -> {
-                    ActorRef target = clusterRouters.get(f.getForwardId());
+                    ActorRef target = clusterNodeFrontedRouters.get(f.getForwardId());
                     if (target != null) {
                         // 重定向到远程的 seed node 上，它自己再做 router
                         onForward(f, target);
@@ -72,9 +72,9 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
                 })
                 .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
-                    clusterRouters.put(r.getRouterId(), sender());
+                    clusterNodeFrontedRouters.put(r.getRouterId(), sender());
                 })
-                .match(Terminated.class, terminated -> clusterRouters.inverse().remove(terminated.getActor()))
+                .match(Terminated.class, terminated -> clusterNodeFrontedRouters.inverse().remove(terminated.getActor()))
                 .build();
     }
 
