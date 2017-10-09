@@ -1,6 +1,6 @@
 package com.game.gateway.service;
 
-import com.framework.akka_router.local.ServiceHandler;
+import com.framework.akka_router.local.LocalServiceHandler;
 import com.framework.akka_router.local.AbstractServiceActor;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * Created by @panyao on 2017/9/25.
  */
 @Component
-public class SessionImpl implements ServiceHandler {
+public class SessionImpl implements LocalServiceHandler {
 
     @Override
     public Internal.EnumLite getRouterId() {

@@ -10,16 +10,18 @@ import java.util.Map;
  */
 public class ClusterChildNodeSystemCreator {
 
-    public void registerServiceRouter(Map<String, ServiceHandler> routers) {
+    public ClusterChildNodeSystemCreator registerServiceRouter(Map<String, ServiceHandler> routers) {
         for (ServiceHandler handler : routers.values()) {
             AkkaLocalWorkerSystem.INSTANCE.getSystem().actorOf(Props.create(handler.getPropsClass(), handler.getRouterId()));
         }
+        return this;
     }
 
-    public void registerForwardRouter(Map<String, ForwardHandler> routers) {
+    public ClusterChildNodeSystemCreator registerForwardRouter(Map<String, ForwardHandler> routers) {
         for (ServiceHandler handler : routers.values()) {
             AkkaLocalWorkerSystem.INSTANCE.getSystem().actorOf(Props.create(handler.getPropsClass(), handler.getRouterId()));
         }
+        return this;
     }
 
     public static ClusterChildNodeSystemCreator create(Class<? extends ClusterChildNodeBackedActor> backedClass, String akkaActorConfig) {

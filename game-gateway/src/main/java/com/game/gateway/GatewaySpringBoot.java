@@ -1,6 +1,6 @@
 package com.game.gateway;
 
-import com.framework.akka_router.local.ServiceHandler;
+import com.framework.akka_router.local.LocalServiceHandler;
 import com.framework.akka_router.cluster.AkkaMultiWorkerSystemCreator;
 import com.framework.akka_router.local.AkkaLocalWorkerSystemCreator;
 import com.framework.niosocket.BootstrapNioSocket;
@@ -36,7 +36,7 @@ public class GatewaySpringBoot implements ApplicationContextAware {
 
         // 本地 handler
         AkkaLocalWorkerSystemCreator.create()
-                .registerRouter(applicationContext.getBeansOfType(ServiceHandler.class));
+                .registerRouter(applicationContext.getBeansOfType(LocalServiceHandler.class));
 
         // matching 集群 handler
         AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "cluster-matching")

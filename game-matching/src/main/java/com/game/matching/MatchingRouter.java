@@ -1,8 +1,6 @@
-package com.game.matching.router_v3;
+package com.game.matching;
 
 import com.framework.akka_router.cluster.ClusterChildNodeBackedActor;
-import com.framework.message.ApiRequest;
-import com.framework.message.ApiRequestForward;
 import com.google.protobuf.Internal;
 
 /**
@@ -12,16 +10,8 @@ public class MatchingRouter extends ClusterChildNodeBackedActor {
 
     @Override
     public Internal.EnumLite getRouterId() {
+        // 这里就是配置节点，节点 1 节点 2 节点 3，不会因为集群的启动顺序而改变
         return () -> 0;
     }
 
-    @Override
-    public void onRequest(ApiRequest request) {
-
-    }
-
-    @Override
-    public void onForward(ApiRequestForward forward) {
-
-    }
 }

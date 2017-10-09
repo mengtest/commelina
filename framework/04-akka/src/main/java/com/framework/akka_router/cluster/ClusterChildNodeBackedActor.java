@@ -43,22 +43,8 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequest.class, r -> {
-                    ActorRef target = localRouters.get(r.getOpcode());
-                    if (target != null) {
-                        target.forward(r, getContext());
-                    } else {
-                        this.unhandled(r);
-                    }
-                })
-                .match(ApiRequestForward.class, f -> {
-                    ActorRef target = forwardRouters.get(f.getOpcode());
-                    if (target != null) {
-                        target.forward(f, getContext());
-                    } else {
-                        this.unhandled(f);
-                    }
-                })
+                .match(ApiRequest.class, this::onRequest)
+                .match(ApiRequestForward.class, this::onForward)
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -84,6 +70,26 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                     }
                 })
                 .build();
+    }
+
+    @Override
+    public void onRequest(ApiRequest request) {
+        ActorRef target = localRouters.get(request.getOpcode());
+        if (target != null) {
+            target.forward(request, getContext());
+        } else {
+            this.unhandled(request);
+        }
+    }
+
+    @Override
+    public void onForward(ApiRequestForward forward) {
+        ActorRef target = forwardRouters.get(forward.getOpcode());
+        if (target != null) {
+            target.forward(forward, getContext());
+        } else {
+            this.unhandled(forward);
+        }
     }
 
 
