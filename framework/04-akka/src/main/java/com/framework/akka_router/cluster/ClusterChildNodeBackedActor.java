@@ -24,14 +24,12 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
-    private ActorSelection clusterFronted;
-
     private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
 
     //subscribe to cluster changes, MemberUp
     @Override
     public void preStart() {
-        cluster.subscribe(self(), ClusterEvent.MemberUp.class);
+        cluster.subscribe(self(), ClusterEvent.MemberUp.class, ClusterEvent.MemberRemoved.class);
     }
 
     //re-subscribe when restart
@@ -49,10 +47,13 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
                             register(member);
+                        } else if (member.status().equals(MemberStatus.removed())) {
+                            remove(member);
                         }
                     }
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
+                .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
                 .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
                     localRouters.put(r.getRouterId(), sender());
@@ -63,8 +64,15 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     void register(Member member) {
         if (member.hasRole("frontend")) {
-            clusterFronted = getContext().actorSelection(member.address() + "/user/routerFronted");
+            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/clusterRouterFronted");
             clusterFronted.tell(new RouterRegistrationEntity(getRouterId()), self());
+            ClusterChildNodeSystem.INSTANCE.registerRouterFronted(clusterFronted);
+        }
+    }
+
+    void remove(Member member) {
+        if (member.hasRole("frontend")) {
+            ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
         }
     }
 

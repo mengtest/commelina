@@ -28,10 +28,10 @@ public class AkkaLocalWorkerSystem {
     private ActorSystem system;
     private ActorRef localRouterFronted;
 
-    public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     public Future<Object> askLocalRouterNode(Internal.EnumLite routerId, ApiRequest apiRequest) {
-        return askLocalRouterNode(routerId, apiRequest, defaultTimeout);
+        return askLocalRouterNode(routerId, apiRequest, DEFAULT_TIMEOUT);
     }
 
     public Future<Object> askLocalRouterNode(Internal.EnumLite routerId, ApiRequest apiRequest, Timeout timeout) {

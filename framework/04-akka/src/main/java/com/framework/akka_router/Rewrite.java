@@ -10,4 +10,6 @@ public interface Rewrite {
 
     Internal.EnumLite selectActorSeed(ApiRequest apiRequest);
 
+    Internal.EnumLite selectActorSeed(ApiRequestForwardEntity requestForward);
+
 }

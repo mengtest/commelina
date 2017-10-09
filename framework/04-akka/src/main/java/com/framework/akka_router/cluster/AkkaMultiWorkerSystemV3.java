@@ -5,9 +5,8 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import com.framework.akka_router.RouterJoinEntity;
 import com.framework.message.ApiRequest;
-import com.google.protobuf.Internal;
+import com.framework.message.ApiRequestForward;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -26,18 +25,26 @@ public class AkkaMultiWorkerSystemV3 {
 
     private ActorRef clusterRouterFronted;
 
-    public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     public ActorSystem getSystem() {
         return system;
     }
 
-    public Future<Object> askRouterClusterNode(Internal.EnumLite routerId, ApiRequest apiRequest) {
-        return askRouterClusterNode(routerId, apiRequest, defaultTimeout);
+    public Future<Object> askRouterClusterNode(final ApiRequest apiRequest) {
+        return askRouterClusterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askRouterClusterNode(Internal.EnumLite routerId, ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, new RouterJoinEntity(routerId, apiRequest), timeout);
+    public Future<Object> askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, apiRequest, timeout);
+    }
+
+    public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward) {
+        return askRouterClusterNode(requestForward, DEFAULT_TIMEOUT);
+    }
+
+    public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, requestForward, timeout);
     }
 
     AkkaMultiWorkerSystemV3() {

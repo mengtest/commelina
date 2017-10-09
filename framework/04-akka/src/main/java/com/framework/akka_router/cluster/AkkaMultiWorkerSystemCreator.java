@@ -18,6 +18,10 @@ public class AkkaMultiWorkerSystemCreator {
         return this;
     }
 
+    public AkkaMultiWorkerSystemCreator registerRouter() {
+        return registerRouter(RouterFrontendClusterActor.class);
+    }
+
     public void building() {
         AkkaMultiWorkerSystemContext.INSTANCE.registerWorkerSystem(routerId, systemV3);
     }

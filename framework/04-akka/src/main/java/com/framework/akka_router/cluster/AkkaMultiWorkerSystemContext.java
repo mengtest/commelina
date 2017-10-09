@@ -19,8 +19,6 @@ public class AkkaMultiWorkerSystemContext {
 
     private final BiMap<Internal.EnumLite, AkkaMultiWorkerSystemV3> clusterSystems = HashBiMap.create(4);
 
-    public static final Timeout defaultTimeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
-
     public AkkaMultiWorkerSystemV3 getContext(Internal.EnumLite routerId) {
         return clusterSystems.get(routerId);
     }
@@ -28,13 +26,5 @@ public class AkkaMultiWorkerSystemContext {
     void registerWorkerSystem(Internal.EnumLite routerId, AkkaMultiWorkerSystemV3 systemV3) {
         clusterSystems.put(routerId, systemV3);
     }
-
-//    public Future<Object> askRouterClusterNode(Internal.EnumLite routerId, ApiRequest apiRequest) {
-//        return askRouterClusterNode(routerId, apiRequest, defaultTimeout);
-//    }
-//
-//    public Future<Object> askRouterClusterNode(Internal.EnumLite routerId, ApiRequest apiRequest, Timeout timeout) {
-//        return Patterns.ask(clusterRouterFronted, new RouterJoinEntity(routerId, apiRequest), timeout);
-//    }
 
 }

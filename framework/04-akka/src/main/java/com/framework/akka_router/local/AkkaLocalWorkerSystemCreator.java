@@ -17,6 +17,10 @@ public final class AkkaLocalWorkerSystemCreator {
         }
     }
 
+    public void registerRouter(Map<String, ServiceHandler> routers) {
+        registerRouter(RouterFrontendLocalActor.class, routers);
+    }
+
     public static AkkaLocalWorkerSystemCreator create(String akkaActorConfig) {
         AkkaLocalWorkerSystem.INSTANCE.create(akkaActorConfig);
         return new AkkaLocalWorkerSystemCreator();

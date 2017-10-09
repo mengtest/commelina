@@ -7,11 +7,11 @@ import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.RouterJoinEntity;
-import com.framework.akka_router.local.AkkaLocalWorkerSystem;
+import com.framework.akka_router.ApiRequestForwardEntity;
 import com.framework.akka_router.Rewrite;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.akka_router.ServerRequestHandler;
+import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 import com.framework.message.*;
 import com.framework.niosocket.MessageAdapter;
 import com.google.common.collect.BiMap;
@@ -26,7 +26,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
-    private final BiMap<Internal.EnumLite, ActorRef> clusterNodeFrontedRouters = HashBiMap.create(4);
+    private final BiMap<Internal.EnumLite, ActorRef> clusterNodeRouters = HashBiMap.create(8);
 
     private final Internal.EnumLite myRouterId;
 
@@ -38,10 +38,10 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
     public final Receive createReceive() {
         return receiveBuilder()
                 // 客户端请求
-                .match(RouterJoinEntity.class, r -> {
-                    ActorRef target = clusterNodeFrontedRouters.get(selectActorSeed(r.getApiRequest()));
+                .match(ApiRequest.class, r -> {
+                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r));
                     if (target != null) {
-                        //重定向到远程的 seed node 上，它自己再做 router
+                        // 重定向到远程的 seed node 上，它自己再做 router
                         target.forward(r, getContext());
                     } else {
                         unhandled(r);
@@ -61,8 +61,8 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
                     MessageAdapter.addWorld(myRouterId, w);
                 })
                 // server 请求 重定向， 如 matching -> room
-                .match(ApiRequestForward.class, f -> {
-                    ActorRef target = clusterNodeFrontedRouters.get(f.getForwardId());
+                .match(ApiRequestForwardEntity.class, f -> {
+                    ActorRef target = clusterNodeRouters.get(selectActorSeed(f));
                     if (target != null) {
                         // 重定向到远程的 seed node 上，它自己再做 router
                         onForward(f, target);
@@ -72,9 +72,9 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
                 })
                 .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
-                    clusterNodeFrontedRouters.put(r.getRouterId(), sender());
+                    clusterNodeRouters.put(r.getRouterId(), sender());
                 })
-                .match(Terminated.class, terminated -> clusterNodeFrontedRouters.inverse().remove(terminated.getActor()))
+                .match(Terminated.class, terminated -> clusterNodeRouters.inverse().remove(terminated.getActor()))
                 .build();
     }
 
@@ -83,11 +83,16 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
         return DEFAULT;
     }
 
+    @Override
+    public Internal.EnumLite selectActorSeed(ApiRequestForwardEntity requestForward) {
+        return DEFAULT;
+    }
+
     private static final Internal.EnumLite DEFAULT = () -> 0;
 
     @Override
-    public void onForward(ApiRequestForward request, ActorRef target) {
-        Future<Object> future = null;//AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(request);
+    public void onForward(ApiRequestForwardEntity request, ActorRef target) {
+        Future<Object> future = ClusterAskUtils.askRouterClusterNodeForward(request.getForwardId(), request.getRequestForward());
         // TODO: 2017/9/30 待确定
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
