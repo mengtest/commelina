@@ -9,38 +9,45 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ProtoBuffMap;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
+import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.Future;
 
+import java.security.InvalidParameterException;
+
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class DefaultLocalActorRequestHandler implements RequestHandler, Router {
+public abstract class DefaultLocalActorRequestHandler implements RequestHandler {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
-        if (beforeHook(request, ctx)) {
-            loginAfterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(getRouterId(), request));
+        Internal.EnumLite routerId = beforeHook(request, ctx);
+        if (routerId != null) {
+            loginAfterHook(routerId, request, ctx);
         }
     }
 
-    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
-        return true;
+    protected Internal.EnumLite beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+        return null;
     }
 
-    protected void loginAfterHook(ApiRequest request, ChannelHandlerContext ctx, Future<Object> future) {
+    protected void loginAfterHook(Internal.EnumLite routerId, ApiRequest request, ChannelHandlerContext ctx) {
+        Future<Object> future = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(routerId, request);
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
                 if (result instanceof MessageBus) {
-                    ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), (MessageBus) result);
+                    ReplyUtils.reply(ctx, routerId, request.getOpcode(), (MessageBus) result);
                 } else if (result instanceof LoginUserEntity) {
                     ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
+                } else {
+                    throw new InvalidParameterException("Undefined type: " + result.getClass().getName());
                 }
             }
         }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
@@ -52,6 +59,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
                 logger.error("actor return error.{}", failure);
             }
         }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
+
     }
 
 }

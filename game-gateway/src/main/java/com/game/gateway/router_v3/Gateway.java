@@ -24,25 +24,22 @@ public final class Gateway extends DefaultLocalActorRequestHandler {
     private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.GATEWAY_API_UNAUTHORIZED));
 
     @Override
-    public Internal.EnumLite getRouterId() {
-        return DOMAIN.GATE_WAY;
-    }
-
-    @Override
-    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+    protected Internal.EnumLite beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
         switch (request.getOpcode().getNumber()) {
             // 登录接口允许匿名
             case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
-                return true;
+                return request.getOpcode();
         }
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
             ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), messageBus);
-            return false;
+            return null;
         }
 
-        return true;
+        request.setUserId(userId);
+
+        return request.getOpcode();
     }
 
 }

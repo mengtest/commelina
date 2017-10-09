@@ -50,7 +50,7 @@ public class AkkaLocalWorkerSystem {
         system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load(config));
     }
 
-    void registerLocal(Props props) {
+    void registerRouterFronted(Props props) {
         if (localRouterFronted != null) {
             throw new InvalidParameterException();
         }

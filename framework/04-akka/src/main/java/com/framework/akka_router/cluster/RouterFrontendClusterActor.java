@@ -7,6 +7,7 @@ import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka_router.RouterJoinEntity;
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 import com.framework.akka_router.Rewrite;
 import com.framework.akka_router.RouterRegistrationEntity;
@@ -37,8 +38,8 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
     public final Receive createReceive() {
         return receiveBuilder()
                 // 客户端请求
-                .match(ApiRequest.class, r -> {
-                    ActorRef target = clusterRouters.get(selectActorSeed(r));
+                .match(RouterJoinEntity.class, r -> {
+                    ActorRef target = clusterRouters.get(selectActorSeed(r.getApiRequest()));
                     if (target != null) {
                         //重定向到远程的 seed node 上，它自己再做 router
                         target.forward(r, getContext());

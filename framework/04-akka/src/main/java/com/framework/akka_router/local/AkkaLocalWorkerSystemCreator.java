@@ -11,7 +11,7 @@ import java.util.Map;
 public final class AkkaLocalWorkerSystemCreator {
 
     public void registerRouter(Class<? extends RouterFrontendLocalActor> localActorClass, Map<String, ServiceHandler> routers) {
-        AkkaLocalWorkerSystem.INSTANCE.registerLocal(Props.create(localActorClass));
+        AkkaLocalWorkerSystem.INSTANCE.registerRouterFronted(Props.create(localActorClass));
         for (ServiceHandler handler : routers.values()) {
             AkkaLocalWorkerSystem.INSTANCE.getSystem().actorOf(Props.create(handler.getPropsClass(), handler.getRouterId()));
         }

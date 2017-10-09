@@ -83,7 +83,4 @@ public class AkkaMultiWorkerSystem {
         system.actorSelection("/user/localRouterFronted").tell(routerRegistration, system.actorOf(senderProps));
     }
 
-
-
-
 }
