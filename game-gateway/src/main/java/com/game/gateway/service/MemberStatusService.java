@@ -3,7 +3,10 @@ package com.game.gateway.service;
 import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.message.ApiRequest;
+import com.google.common.collect.Maps;
 import com.google.protobuf.Internal;
+
+import java.util.Map;
 
 /**
  * Created by panyao on 2017/8/30.
@@ -20,10 +23,12 @@ public class MemberStatusService implements LocalServiceHandler {
 
     @Override
     public Class<? extends AbstractLocalServiceActor> getPropsClass() {
-        return null;
+        return MemberStatusActor.class;
     }
 
     private static class MemberStatusActor extends AbstractLocalServiceActor {
+
+        private final Map<Long, Internal.EnumLite> userLastAccessServer = Maps.newHashMap();
 
         public MemberStatusActor(Internal.EnumLite routerId) {
             super(routerId);
@@ -31,8 +36,9 @@ public class MemberStatusService implements LocalServiceHandler {
 
         @Override
         public void onRequest(ApiRequest request) {
-
+            // in game 逻辑
         }
 
     }
+
 }

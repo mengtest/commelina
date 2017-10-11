@@ -5,7 +5,7 @@ package com.framework.akka_router;
  */
 public interface MemberEvent {
 
-    void onOnline();
+    void onOnline(long logoutUserId);
 
     void onOffline(long logoutUserId);
 

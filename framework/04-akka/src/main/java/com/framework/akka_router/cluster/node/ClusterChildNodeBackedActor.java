@@ -37,7 +37,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                 .match(ApiRequest.class, this::onRequest)
                 .match(ApiRequestForward.class, this::onForward)
                 .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
-                .match(MemberOnlineEvent.class, on -> onOnline())
+                .match(MemberOnlineEvent.class, on -> onOnline(on.getLogoutUserId()))
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -54,7 +54,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     }
 
     @Override
-    public void onOnline() {
+    public void onOnline(long logoutUserId) {
 
     }
 

@@ -4,6 +4,8 @@ import akka.actor.ActorRef;
 import com.framework.akka_router.cluster.node.ClusterChildNodeBackedActor;
 import com.framework.message.*;
 import com.game.room.entity.PlayerEntity;
+import com.game.room.entity.PlayerStatus;
+import com.game.room.event.PlayerStatusEvent;
 import com.game.room.proto.ERROR_CODE;
 import com.game.room.service.RoomManger;
 import com.google.common.collect.Lists;
@@ -29,8 +31,14 @@ public class RoomRouter extends ClusterChildNodeBackedActor {
 
     @Override
     public void onOffline(long logoutUserId) {
-        // 用户下线，取消匹配
+        // 用户下线，标记为下线
+        roomManger.tell(new PlayerStatusEvent(logoutUserId, PlayerStatus.Offline), getSelf());
+    }
 
+    @Override
+    public void onOnline(long logoutUserId) {
+        // 用户上线,标记为重新上线
+        roomManger.tell(new PlayerStatusEvent(logoutUserId, PlayerStatus.Online), getSelf());
     }
 
     @Override
@@ -50,10 +58,7 @@ public class RoomRouter extends ClusterChildNodeBackedActor {
 
         // 检查房间是否存在
 
-
-
-
-       // 重定向
+        // 重定向
     }
 
     @Override

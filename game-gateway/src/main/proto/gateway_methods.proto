@@ -10,4 +10,5 @@ option java_multiple_files = true;
 enum GATEWAY_METHODS {
     // 登录
     PASSPORT_CONNECT = 0;
+    // 用户状态查询
 }

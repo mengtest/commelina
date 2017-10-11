@@ -6,6 +6,8 @@ package com.game.room.entity;
 public class PlayerEntity {
     private long userId;
 
+    private PlayerStatus playerStatus;
+
     public long getUserId() {
         return userId;
     }
@@ -13,4 +15,9 @@ public class PlayerEntity {
     public void setUserId(long userId) {
         this.userId = userId;
     }
+
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
 }

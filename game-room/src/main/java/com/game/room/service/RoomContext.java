@@ -3,8 +3,14 @@ package com.game.room.service;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import com.game.room.entity.PlayerEntity;
+import com.game.room.event.PlayerStatusEvent;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import scala.concurrent.duration.Duration;
+import scala.concurrent.duration.FiniteDuration;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/8/17.
@@ -12,16 +18,36 @@ import java.util.List;
 class RoomContext extends AbstractActor {
 
     private final long roomId;
-    private final List<PlayerEntity> playerEntities;
+
+
+    private final BiMap<Long, PlayerEntity> players = HashBiMap.create(128);
+
+    // 10 分钟之后结束游戏
+    private final FiniteDuration lazyCheckOver = Duration.create(10, TimeUnit.MINUTES);
 
     public RoomContext(long roomId, List<PlayerEntity> playerEntities) {
         this.roomId = roomId;
-        this.playerEntities = playerEntities;
+        playerEntities.forEach(v -> players.put(v.getUserId(), v));
+    }
+
+    @Override
+    public void preStart() throws Exception {
+        super.preStart();
+        getContext().getSystem().scheduler().scheduleOnce(lazyCheckOver, () -> {
+            // TODO: 2017/10/11 检查游戏结束
+        }, getContext().getSystem().dispatcher());
     }
 
     @Override
     public Receive createReceive() {
-        return null;
+        return receiveBuilder()
+                .match(PlayerStatusEvent.class, statusEvent -> {
+                    PlayerEntity playerEntity = players.get(statusEvent.getUserId());
+                    if (playerEntity != null) {
+                        playerEntity.setPlayerStatus(statusEvent.getStatus());
+                    }
+                })
+                .build();
     }
 
     static Props props(long roomId, List<PlayerEntity> playerEntities) {
