@@ -1,6 +1,8 @@
 package com.framework.akka_router.cluster;
 
 import akka.actor.Props;
+import com.framework.akka_router.ForwardHandler;
+import com.framework.akka_router.ServiceHandler;
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 
 import java.util.Map;

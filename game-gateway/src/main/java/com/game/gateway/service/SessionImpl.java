@@ -1,7 +1,8 @@
 package com.game.gateway.service;
 
-import com.framework.akka_router.local.LocalServiceHandler;
-import com.framework.akka_router.local.AbstractServiceActor;
+import com.framework.akka_router.LocalServiceHandler;
+import com.framework.akka_router.ActorServiceHandler;
+import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
 import com.framework.message.DefaultMessageProvider;
@@ -9,12 +10,11 @@ import com.framework.message.RequestArg;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-@Component
+@ActorServiceHandler
 public class SessionImpl implements LocalServiceHandler {
 
     @Override
@@ -23,13 +23,13 @@ public class SessionImpl implements LocalServiceHandler {
     }
 
     @Override
-    public Class<SessionActor> getPropsClass() {
-        return SessionActor.class;
+    public Class<SessionActorLocal> getPropsClass() {
+        return SessionActorLocal.class;
     }
 
-    private static final class SessionActor extends AbstractServiceActor {
+    private static final class SessionActorLocal extends AbstractLocalServiceActor {
 
-        public SessionActor(Internal.EnumLite routerId) {
+        public SessionActorLocal(Internal.EnumLite routerId) {
             super(routerId);
         }
 

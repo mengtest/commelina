@@ -10,11 +10,11 @@ import com.google.protobuf.Internal;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class AbstractServiceActor extends AbstractActor implements Dispatch {
+public abstract class AbstractLocalServiceActor extends AbstractActor implements Dispatch {
 
     private Internal.EnumLite routerId;
 
-    public AbstractServiceActor(Internal.EnumLite routerId) {
+    public AbstractLocalServiceActor(Internal.EnumLite routerId) {
         this.routerId = routerId;
     }
 

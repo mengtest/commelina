@@ -7,7 +7,6 @@ import akka.actor.Props;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import com.framework.akka_router.ApiRequestForwardEntity;
-import com.framework.akka_router.RouterForwardRegistrationEntity;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequestForward;
 import com.google.protobuf.Internal;
@@ -58,10 +57,6 @@ public class ClusterChildNodeSystem {
     }
 
     void localRouterRegister(RouterRegistrationEntity routerRegistration, ActorRef actorRef) {
-        localRouterFronted.tell(routerRegistration, actorRef);
-    }
-
-    void localRouterRegister(RouterForwardRegistrationEntity routerRegistration, ActorRef actorRef) {
         localRouterFronted.tell(routerRegistration, actorRef);
     }
 

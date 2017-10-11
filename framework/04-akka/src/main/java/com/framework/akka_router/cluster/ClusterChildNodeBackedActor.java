@@ -10,7 +10,6 @@ import akka.cluster.Member;
 import akka.cluster.MemberStatus;
 import com.framework.akka_router.DispatchForward;
 import com.framework.akka_router.Router;
-import com.framework.akka_router.RouterForwardRegistrationEntity;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
@@ -25,8 +24,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
-    private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
-    private BiMap<Internal.EnumLite, ActorRef> forwardRouters = HashBiMap.create(16);
+    private BiMap<Internal.EnumLite, ActorRef> routers = HashBiMap.create(16);
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -58,23 +56,15 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                 .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
                 .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
-                    localRouters.put(r.getRouterId(), sender());
+                    routers.put(r.getRouterId(), sender());
                 })
-                .match(RouterForwardRegistrationEntity.class, r -> {
-                    getContext().watch(sender());
-                    forwardRouters.put(r.getRouterId(), sender());
-                })
-                .match(Terminated.class, terminated -> {
-                    if (localRouters.inverse().remove(terminated.getActor()) == null) {
-                        forwardRouters.inverse().remove(terminated.getActor());
-                    }
-                })
+                .match(Terminated.class, terminated -> routers.inverse().remove(terminated.getActor()))
                 .build();
     }
 
     @Override
     public void onRequest(ApiRequest request) {
-        ActorRef target = localRouters.get(request.getOpcode());
+        ActorRef target = routers.get(request.getOpcode());
         if (target != null) {
             target.forward(request, getContext());
         } else {
@@ -84,14 +74,13 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     @Override
     public void onForward(ApiRequestForward forward) {
-        ActorRef target = forwardRouters.get(forward.getOpcode());
+        ActorRef target = routers.get(forward.getOpcode());
         if (target != null) {
             target.forward(forward, getContext());
         } else {
             this.unhandled(forward);
         }
     }
-
 
     void register(Member member) {
         if (member.hasRole("frontend")) {

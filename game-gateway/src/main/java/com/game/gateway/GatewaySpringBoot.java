@@ -1,6 +1,6 @@
 package com.game.gateway;
 
-import com.framework.akka_router.local.LocalServiceHandler;
+import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.cluster.AkkaMultiWorkerSystemCreator;
 import com.framework.akka_router.local.AkkaLocalWorkerSystemCreator;
 import com.framework.niosocket.BootstrapNioSocket;

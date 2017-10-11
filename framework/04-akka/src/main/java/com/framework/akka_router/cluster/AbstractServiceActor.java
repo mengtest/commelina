@@ -1,16 +1,17 @@
 package com.framework.akka_router.cluster;
 
 import akka.actor.AbstractActor;
-import com.framework.akka_router.Dispatch;
+import com.framework.akka_router.DispatchForward;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
+import com.framework.message.ApiRequestForward;
 import com.framework.message.MessageBus;
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class AbstractServiceActor extends AbstractActor implements Dispatch {
+public abstract class AbstractServiceActor extends AbstractActor implements DispatchForward {
 
     protected Internal.EnumLite routerId;
 
@@ -27,6 +28,7 @@ public abstract class AbstractServiceActor extends AbstractActor implements Disp
     public Receive createReceive() {
         return receiveBuilder()
                 .match(ApiRequest.class, this::onRequest)
+                .match(ApiRequestForward.class, this::onForward)
                 .build();
     }
 

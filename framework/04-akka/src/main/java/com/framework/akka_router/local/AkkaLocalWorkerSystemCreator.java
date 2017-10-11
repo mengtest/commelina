@@ -1,6 +1,7 @@
 package com.framework.akka_router.local;
 
 import akka.actor.Props;
+import com.framework.akka_router.LocalServiceHandler;
 
 import java.util.Map;
 

@@ -1,8 +1,8 @@
 package com.game.matching;
 
 import com.framework.akka_router.cluster.ClusterChildNodeSystemCreator;
-import com.framework.akka_router.cluster.ForwardHandler;
-import com.framework.akka_router.cluster.ServiceHandler;
+import com.framework.akka_router.ForwardHandler;
+import com.framework.akka_router.ServiceHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,7 +25,7 @@ public final class MatchingSpringBoot implements ApplicationContextAware {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(MatchingRouter.class, "")
+        ClusterChildNodeSystemCreator.create(MatchingRouter.class)
                 .registerServiceRouter(applicationContext.getBeansOfType(ServiceHandler.class))
                 .registerForwardRouter(applicationContext.getBeansOfType(ForwardHandler.class));
     }
@@ -36,4 +36,5 @@ public final class MatchingSpringBoot implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
 }

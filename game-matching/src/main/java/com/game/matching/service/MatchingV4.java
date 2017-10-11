@@ -1,7 +1,7 @@
 package com.game.matching.service;
 
-import com.framework.akka_router.local.LocalServiceHandler;
-import com.framework.akka_router.local.AbstractServiceActor;
+import com.framework.akka_router.LocalServiceHandler;
+import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.google.protobuf.Internal;
 
 /**
@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
 public class MatchingV4 implements LocalServiceHandler {
 
     @Override
-    public Class<AbstractServiceActor> getPropsClass() {
+    public Class<AbstractLocalServiceActor> getPropsClass() {
         return null;
     }
 
