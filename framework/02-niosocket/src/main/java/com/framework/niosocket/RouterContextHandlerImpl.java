@@ -33,7 +33,7 @@ class RouterContextHandlerImpl implements RouterContextHandler {
         }
 
         // 依然是在 accept 线程内
-        handler.onRequest(ApiRequest.newRequest(() -> request.getOpcode(), request.getVersion(), args), ctx);
+        handler.onRequest(new ApiRequest(() -> request.getOpcode(), request.getVersion(), args), ctx);
     }
 
     void addRequestHandlers(Map<Integer, RequestHandler> handlers) {

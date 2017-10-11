@@ -13,13 +13,13 @@ public class AkkaMultiWorkerSystemCreator {
     private AkkaMultiWorkerSystem systemV3;
     private Internal.EnumLite routerId;
 
-    public AkkaMultiWorkerSystemCreator registerRouter(Class<? extends RouterFrontendClusterActor> routerClass) {
+    public AkkaMultiWorkerSystemCreator registerRouter(Class<? extends RouterFrontedClusterActor> routerClass) {
         systemV3.registerRouterFronted(Props.create(routerClass, routerId));
         return this;
     }
 
     public AkkaMultiWorkerSystemCreator registerRouter() {
-        return registerRouter(RouterFrontendClusterActor.class);
+        return registerRouter(RouterFrontedClusterActor.class);
     }
 
     public void building() {

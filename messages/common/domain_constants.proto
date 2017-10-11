@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package def.gateway.constants;
+package def.common.constants;
 
-option java_package = "com.game.gateway.proto";
+option java_package = "com.game.common.proto";
 option java_outer_classname = "DomainDef";
 option java_multiple_files = true;
 

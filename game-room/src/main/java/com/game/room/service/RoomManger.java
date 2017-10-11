@@ -3,10 +3,12 @@ package com.game.room.service;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.game.room.portal.RoomReceiveNotifyActor;
-import com.game.room.portal.RoomReceiveRequestActor;
+import com.game.room.entity.PlayerEntity;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,27 +16,21 @@ import java.util.Map;
  */
 public class RoomManger extends AbstractActor {
 
+    // roomId -> roomContextActorRef
     private final Map<Long, ActorRef> roomIdToRoomContextActor = Maps.newLinkedHashMap();
+
+    // userId -> roomId
+    private final BiMap<Long, Long> userRoomIds = HashBiMap.create(6);
     private long roomId = 0;
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(RoomClientRouterEntity.class, this::onClientRequest)
-                .match(RoomReceiveNotifyActor.CreateRoomEntity.class, this::createRoom)
+                .match(CreateRoomEntity.class, this::createRoom)
                 .build();
     }
 
-    private void onClientRequest(RoomClientRouterEntity roomClientRouterEntity) {
-        ActorRef roomContext = roomIdToRoomContextActor.get(roomClientRouterEntity.getRoomId());
-        if (roomContext == null) {
-            getSender().tell(RoomReceiveRequestActor.NotFoundMessage(roomClientRouterEntity.getApiRequest().getOpcode()), getSelf());
-            return;
-        }
-        roomContext.forward(roomClientRouterEntity, getContext());
-    }
-
-    private void createRoom(RoomReceiveNotifyActor.CreateRoomEntity createRoomEntity) {
+    private void createRoom(CreateRoomEntity createRoomEntity) {
         final long newRoomId = ++roomId;
         ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, createRoomEntity.getPlayers()), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);
@@ -44,4 +40,15 @@ public class RoomManger extends AbstractActor {
         return Props.create(RoomManger.class);
     }
 
+    public static class CreateRoomEntity {
+        private List<PlayerEntity> players;
+
+        public List<PlayerEntity> getPlayers() {
+            return players;
+        }
+
+        public void setPlayers(List<PlayerEntity> players) {
+            this.players = players;
+        }
+    }
 }

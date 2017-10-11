@@ -1,8 +1,8 @@
 package com.game.robot.interfaces;
 
 import com.framework.niosocket.proto.SocketMessage;
-import io.netty.channel.ChannelHandlerContext;
 
+import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by @panyao on 2017/9/11.
  */

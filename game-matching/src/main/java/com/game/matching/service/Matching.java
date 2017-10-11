@@ -1,10 +1,10 @@
 package com.game.matching.service;
 
-import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka_router.cluster.node.AbstractServiceActor;
 import com.framework.message.DefaultMessageProvider;
 import com.framework.message.ResponseMessage;
 import com.google.common.collect.Lists;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/10.
  */
-public class Matching extends AbstractActor {
+public class Matching extends AbstractServiceActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -56,8 +56,7 @@ public class Matching extends AbstractActor {
 
         if (joinMatch.apiOpcode != null) {
             // 回复 MatchingReceiveRequestActor 的 调用者成功
-//            PortalActorContainer.INSTANCE.getMatchingRequestActor()
-//                    .tell(ResponseMessage.newMessage(DefaultMessageProvider.produceMessage()), getSelf());
+            response(DefaultMessageProvider.produceMessage());
         }
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {

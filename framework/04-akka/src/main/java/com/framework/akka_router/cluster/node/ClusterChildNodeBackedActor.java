@@ -1,30 +1,23 @@
 package com.framework.akka_router.cluster.node;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
-import akka.actor.Terminated;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
-import com.framework.akka_router.DispatchForward;
-import com.framework.akka_router.Router;
-import com.framework.akka_router.RouterRegistrationEntity;
+import com.framework.akka_router.*;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.protobuf.Internal;
+import com.framework.message.MessageBus;
+import com.framework.message.ResponseMessage;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, DispatchForward {
+public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
 
     private final Cluster cluster = Cluster.get(getContext().system());
-
-    private BiMap<Internal.EnumLite, ActorRef> routers = HashBiMap.create(16);
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -43,6 +36,8 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
         return receiveBuilder()
                 .match(ApiRequest.class, this::onRequest)
                 .match(ApiRequestForward.class, this::onForward)
+                .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
+                .match(MemberOnlineEvent.class, on -> onOnline())
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -54,32 +49,27 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
                 .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
-                .match(RouterRegistrationEntity.class, r -> {
-                    getContext().watch(sender());
-                    routers.put(r.getRouterId(), sender());
-                })
-                .match(Terminated.class, terminated -> routers.inverse().remove(terminated.getActor()))
+//                .match(Terminated.class, terminated -> {})
                 .build();
     }
 
     @Override
-    public void onRequest(ApiRequest request) {
-        ActorRef target = routers.get(request.getOpcode());
-        if (target != null) {
-            target.forward(request, getContext());
-        } else {
-            this.unhandled(request);
-        }
+    public void onOnline() {
+
+    }
+
+    @Override
+    public void onOffline(long logoutUserId) {
+
     }
 
     @Override
     public void onForward(ApiRequestForward forward) {
-        ActorRef target = routers.get(forward.getOpcode());
-        if (target != null) {
-            target.forward(forward, getContext());
-        } else {
-            this.unhandled(forward);
-        }
+
+    }
+
+    protected void response(MessageBus message) {
+        getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 
     void register(Member member) {

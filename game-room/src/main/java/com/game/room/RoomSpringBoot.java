@@ -1,8 +1,9 @@
 package com.game.room;
 
+import com.framework.akka_router.cluster.node.ClusterChildNodeSystemCreator;
+import com.game.room.router_v3.RoomRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 import javax.annotation.PostConstruct;
 
@@ -16,6 +17,11 @@ public class RoomSpringBoot {
         SpringApplication app = new SpringApplication(RoomSpringBoot.class);
         app.setWebEnvironment(false);
         app.run(args);
+    }
+
+    @PostConstruct
+    public void init() {
+        ClusterChildNodeSystemCreator.create(RoomRouter.class);
     }
 
 }

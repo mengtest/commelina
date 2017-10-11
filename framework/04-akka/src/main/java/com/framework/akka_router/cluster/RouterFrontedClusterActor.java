@@ -11,8 +11,10 @@ import com.framework.akka_router.ApiRequestForwardEntity;
 import com.framework.akka_router.Rewrite;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.akka_router.ServerRequestHandler;
-import com.framework.akka_router.local.AkkaLocalWorkerSystem;
-import com.framework.message.*;
+import com.framework.message.ApiRequest;
+import com.framework.message.BroadcastMessage;
+import com.framework.message.NotifyMessage;
+import com.framework.message.WorldMessage;
 import com.framework.niosocket.MessageAdapter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -22,7 +24,7 @@ import scala.concurrent.Future;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public class RouterFrontendClusterActor extends AbstractActor implements ServerRequestHandler, Rewrite {
+public class RouterFrontedClusterActor extends AbstractActor implements ServerRequestHandler, Rewrite {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
@@ -30,7 +32,7 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
 
     private final Internal.EnumLite myRouterId;
 
-    public RouterFrontendClusterActor(Internal.EnumLite myRouterId) {
+    public RouterFrontedClusterActor(Internal.EnumLite myRouterId) {
         this.myRouterId = myRouterId;
     }
 
@@ -39,13 +41,8 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
         return receiveBuilder()
                 // 客户端请求
                 .match(ApiRequest.class, r -> {
-                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r));
-                    if (target != null) {
-                        // 重定向到远程的 seed node 上，它自己再做 router
-                        target.forward(r, getContext());
-                    } else {
-                        unhandled(r);
-                    }
+                    // 重定向到远程的 seed node 上，它自己再做 router
+                    actorForward(selectActorSeed(r), r);
                 })
                 // from cluster seed node.
                 .match(BroadcastMessage.class, b -> {
@@ -98,17 +95,26 @@ public class RouterFrontendClusterActor extends AbstractActor implements ServerR
         future.onSuccess(new OnSuccess<Object>() {
             @Override
             public void onSuccess(Object result) throws Throwable {
-
+                // TODO: 2017/10/11 这里不好实现啊
             }
-        }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
+        }, AkkaMultiWorkerSystemContext.INSTANCE.getContext(request.getForwardId()).getSystem().dispatcher());
 
         future.onFailure(new OnFailure() {
             @Override
             public void onFailure(Throwable failure) throws Throwable {
-
                 logger.error("actor return error.{}", failure);
             }
-        }, AkkaLocalWorkerSystem.INSTANCE.getSystem().dispatcher());
+        },  AkkaMultiWorkerSystemContext.INSTANCE.getContext(request.getForwardId()).getSystem().dispatcher());
+    }
+
+    private void actorForward(Internal.EnumLite seed, Object msg) {
+        ActorRef target = clusterNodeRouters.get(seed);
+        if (target != null) {
+            // 重定向到远程的 seed node 上，它自己再做 router
+            target.forward(msg, getContext());
+        } else {
+            unhandled(msg);
+        }
     }
 
 }

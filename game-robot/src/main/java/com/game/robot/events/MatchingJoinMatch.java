@@ -3,7 +3,7 @@ package com.game.robot.events;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.gateway.proto.DOMAIN;
+import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.matching.proto.MATCHING_METHODS;
 import com.game.robot.interfaces.MemberEvent;
@@ -26,8 +26,8 @@ public class MatchingJoinMatch implements MemberEvent {
     @Override
     public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
         SocketASK ask = SocketASK.newBuilder()
-                .setApiCode(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
-                .setApiMethod(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
+                .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
+                .setOpcode(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
                 .setArgs(0, Arg.newBuilder().setValue(ByteString.copyFrom(new byte[]{userId.byteValue()})))
                 .build();

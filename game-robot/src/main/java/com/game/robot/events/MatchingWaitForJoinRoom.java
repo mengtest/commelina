@@ -1,10 +1,10 @@
 package com.game.robot.events;
 
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.gateway.proto.DOMAIN;
+import com.game.common.proto.DOMAIN;
 import com.game.matching.proto.MATCHING_METHODS;
-import com.game.robot.interfaces.ReadEvent;
 import com.game.robot.interfaces.MemberEventLoop;
+import com.game.robot.interfaces.ReadEvent;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 

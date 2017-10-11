@@ -21,8 +21,8 @@
         <module>game-http-api</module>
         <module>game-gateway</module>
         <module>game-matching</module>
-        <!--<module>game-room</module>-->
-        <!--<module>game-robot</module>-->
+        <module>game-room</module>
+        <module>game-robot</module>
     </modules>
 
     <properties>
@@ -37,7 +37,43 @@
                 <version>3.0.2</version>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
+                        <id>copy-gateway-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-gateway/src/main/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-matching-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-matching/src/main/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/messages/server-matching-room/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-robot-resources</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -59,6 +95,30 @@
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/framework/02-niosocket/src/main/proto/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-room-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-room/src/main/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/messages/server-matching-room/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

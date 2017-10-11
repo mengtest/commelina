@@ -4,7 +4,7 @@ import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.DATA_TYPE;
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.gateway.proto.DOMAIN;
+import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.GATEWAY_APIS;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.game.robot.interfaces.MemberEvent;
@@ -31,8 +31,8 @@ public class GatewayLogin implements MemberEvent {
     public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
         // FIXME: 2017/9/11 获取 token
         SocketASK ask = SocketASK.newBuilder()
-                .setApiCode(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
-                .setApiMethod(GATEWAY_METHODS.PASPPORT_CONNECT_VALUE)
+                .setForward(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+                .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
                 .setVersion("1.0.0")
                 .addArgs(0, Arg.newBuilder()
                         .setDataType(DATA_TYPE.LONG)
@@ -44,7 +44,7 @@ public class GatewayLogin implements MemberEvent {
     @Override
     public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
         return domain.getNumber() == DOMAIN.GATE_WAY_VALUE &&
-                apiOpcode.getNumber() == GATEWAY_METHODS.PASPPORT_CONNECT_VALUE;
+                apiOpcode.getNumber() == GATEWAY_METHODS.PASSPORT_CONNECT_VALUE;
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.cluster.AkkaMultiWorkerSystemCreator;
 import com.framework.akka_router.local.AkkaLocalWorkerSystemCreator;
 import com.framework.niosocket.BootstrapNioSocket;
-import com.game.gateway.proto.DOMAIN;
+import com.game.common.proto.DOMAIN;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,7 +45,7 @@ public class GatewaySpringBoot implements ApplicationContextAware {
 
         // room 集群 handler
 //        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "cluster-room")
-//                .registerRouter(RoomRouterFrontendClusterActor.class)
+//                .registerRouter(RoomRouterFrontedClusterActor.class)
 //                .building();
     }
 

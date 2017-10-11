@@ -8,12 +8,11 @@ import com.framework.message.MessageBus;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
-import com.game.gateway.proto.DOMAIN;
+import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
-
 
 /**
  * Created by @panyao on 2017/9/22.

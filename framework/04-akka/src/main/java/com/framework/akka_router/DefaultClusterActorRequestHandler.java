@@ -2,6 +2,7 @@ package com.framework.akka_router;
 
 import akka.dispatch.OnFailure;
 import akka.dispatch.OnSuccess;
+import com.framework.akka_router.cluster.ClusterAskUtils;
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.ResponseMessage;
@@ -23,7 +24,7 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
     @Override
     public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
         if (beforeHook(request, ctx)) {
-//            loginAfterHook(request, ctx, AkkaLocalWorkerSystem.INSTANCE.askRouterClusterNode(getRouterId(), request));
+            afterHook(request, ctx);
         }
     }
 
@@ -31,7 +32,8 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
         return true;
     }
 
-    protected void afterHook(ApiRequest request, ChannelHandlerContext ctx, Future<Object> future) {
+    protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
+        Future<Object> future = ClusterAskUtils.askRouterClusterNode(getRouterId(), request);
         // actor 处理成功
         future.onSuccess(new OnSuccess<Object>() {
             @Override
