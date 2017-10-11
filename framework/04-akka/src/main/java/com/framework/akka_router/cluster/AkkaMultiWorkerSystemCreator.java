@@ -10,7 +10,7 @@ import com.google.protobuf.Internal;
  */
 public class AkkaMultiWorkerSystemCreator {
 
-    private AkkaMultiWorkerSystemV3 systemV3;
+    private AkkaMultiWorkerSystem systemV3;
     private Internal.EnumLite routerId;
 
     public AkkaMultiWorkerSystemCreator registerRouter(Class<? extends RouterFrontendClusterActor> routerClass) {
@@ -28,7 +28,7 @@ public class AkkaMultiWorkerSystemCreator {
 
     public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId, String akkaActorConfig) {
         AkkaMultiWorkerSystemCreator creator = new AkkaMultiWorkerSystemCreator();
-        creator.systemV3 = new AkkaMultiWorkerSystemV3();
+        creator.systemV3 = new AkkaMultiWorkerSystem();
         creator.systemV3.create(akkaActorConfig);
         creator.routerId = routerId;
         return creator;
@@ -36,7 +36,7 @@ public class AkkaMultiWorkerSystemCreator {
 
     public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId) {
         AkkaMultiWorkerSystemCreator creator = new AkkaMultiWorkerSystemCreator();
-        creator.systemV3 = new AkkaMultiWorkerSystemV3();
+        creator.systemV3 = new AkkaMultiWorkerSystem();
         creator.systemV3.create();
         creator.routerId = routerId;
         return creator;

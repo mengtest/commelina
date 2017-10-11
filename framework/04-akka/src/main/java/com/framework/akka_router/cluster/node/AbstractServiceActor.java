@@ -1,11 +1,9 @@
-package com.framework.akka_router.cluster;
+package com.framework.akka_router.cluster.node;
 
 import akka.actor.AbstractActor;
 import com.framework.akka_router.DispatchForward;
 import com.framework.akka_router.RouterRegistrationEntity;
-import com.framework.message.ApiRequest;
-import com.framework.message.ApiRequestForward;
-import com.framework.message.MessageBus;
+import com.framework.message.*;
 import com.google.protobuf.Internal;
 
 /**
@@ -33,7 +31,8 @@ public abstract class AbstractServiceActor extends AbstractActor implements Disp
     }
 
     public final void response(MessageBus message) {
-        getSender().tell(message, getSelf());
+        // 回复到 on request / on forward 的发送者那里
+        getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 
 }

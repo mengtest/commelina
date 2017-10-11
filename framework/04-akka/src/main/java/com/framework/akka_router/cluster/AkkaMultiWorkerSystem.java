@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 工作的线程， 一个独立的 akka system
  */
-public class AkkaMultiWorkerSystemV3 {
+public class AkkaMultiWorkerSystem {
 
     private ActorSystem system;
 
@@ -47,7 +47,15 @@ public class AkkaMultiWorkerSystemV3 {
         return Patterns.ask(clusterRouterFronted, requestForward, timeout);
     }
 
-    AkkaMultiWorkerSystemV3() {
+    public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward) {
+        return askRouterClusterNode(requestForward, DEFAULT_TIMEOUT);
+    }
+
+    public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, requestForward, timeout);
+    }
+
+    AkkaMultiWorkerSystem() {
 
     }
 

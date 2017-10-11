@@ -5,6 +5,7 @@ import akka.dispatch.OnSuccess;
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
 import com.framework.message.ApiRequest;
 import com.framework.message.MessageBus;
+import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ProtoBuffMap;
 import com.framework.niosocket.ReplyUtils;
@@ -41,7 +42,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
             @Override
             public void onSuccess(Object result) throws Throwable {
                 if (result instanceof MessageBus) {
-                    ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), (MessageBus) result);
+                    ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
                 } else if (result instanceof LoginUserEntity) {
                     ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
                 } else {

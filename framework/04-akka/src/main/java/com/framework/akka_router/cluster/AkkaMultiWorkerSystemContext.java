@@ -13,13 +13,13 @@ public class AkkaMultiWorkerSystemContext {
 
     public static final AkkaMultiWorkerSystemContext INSTANCE = new AkkaMultiWorkerSystemContext();
 
-    private final BiMap<Internal.EnumLite, AkkaMultiWorkerSystemV3> clusterSystems = HashBiMap.create(4);
+    private final BiMap<Internal.EnumLite, AkkaMultiWorkerSystem> clusterSystems = HashBiMap.create(4);
 
-    public AkkaMultiWorkerSystemV3 getContext(Internal.EnumLite routerId) {
+    public AkkaMultiWorkerSystem getContext(Internal.EnumLite routerId) {
         return clusterSystems.get(routerId);
     }
 
-    void registerWorkerSystem(Internal.EnumLite routerId, AkkaMultiWorkerSystemV3 systemV3) {
+    void registerWorkerSystem(Internal.EnumLite routerId, AkkaMultiWorkerSystem systemV3) {
         clusterSystems.put(routerId, systemV3);
     }
 

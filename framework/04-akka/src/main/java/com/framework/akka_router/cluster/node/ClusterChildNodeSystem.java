@@ -1,4 +1,4 @@
-package com.framework.akka_router.cluster;
+package com.framework.akka_router.cluster.node;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
@@ -9,6 +9,9 @@ import akka.util.Timeout;
 import com.framework.akka_router.ApiRequestForwardEntity;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequestForward;
+import com.framework.message.BroadcastMessage;
+import com.framework.message.NotifyMessage;
+import com.framework.message.WorldMessage;
 import com.google.protobuf.Internal;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.Future;
@@ -40,6 +43,30 @@ public class ClusterChildNodeSystem {
         return Patterns.ask(clusterRouterFronted, ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout);
     }
 
+    public Future<Object> notify(BroadcastMessage message) {
+        return notify(message, DEFAULT_TIMEOUT);
+    }
+
+    public Future<Object> notify(BroadcastMessage message, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, message, timeout);
+    }
+
+    public Future<Object> notify(NotifyMessage message) {
+        return notify(message, DEFAULT_TIMEOUT);
+    }
+
+    public Future<Object> notify(NotifyMessage message, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, message, timeout);
+    }
+
+    public Future<Object> notify(WorldMessage message) {
+        return notify(message, DEFAULT_TIMEOUT);
+    }
+
+    public Future<Object> notify(WorldMessage message, Timeout timeout) {
+        return Patterns.ask(clusterRouterFronted, message, timeout);
+    }
+
     void registerRouterFronted(ActorSelection routerFronted) {
         clusterRouterFronted = routerFronted;
     }
@@ -48,11 +75,11 @@ public class ClusterChildNodeSystem {
         clusterRouterFronted = null;
     }
 
-    public void create() {
+    void create() {
         system = ActorSystem.create("AkkaClusterWorkSystem", ConfigFactory.load());
     }
 
-    public void create(String config) {
+    void create(String config) {
         system = ActorSystem.create("AkkaClusterWorkSystem", ConfigFactory.load(config));
     }
 

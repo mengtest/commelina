@@ -5,6 +5,7 @@ import com.framework.akka_router.Dispatch;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.MessageBus;
+import com.framework.message.ResponseMessage;
 import com.google.protobuf.Internal;
 
 /**
@@ -31,7 +32,7 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
     }
 
     public final void response(MessageBus message) {
-        getSender().tell(message, getSelf());
+        getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 
 }

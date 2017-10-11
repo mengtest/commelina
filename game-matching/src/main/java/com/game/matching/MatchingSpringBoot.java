@@ -1,6 +1,6 @@
 package com.game.matching;
 
-import com.framework.akka_router.cluster.ClusterChildNodeSystemCreator;
+import com.framework.akka_router.cluster.node.ClusterChildNodeSystemCreator;
 import com.framework.akka_router.ForwardHandler;
 import com.framework.akka_router.ServiceHandler;
 import org.springframework.beans.BeansException;
