@@ -43,11 +43,10 @@ public class GatewaySpringBoot implements ApplicationContextAware {
                 .registerRouter()
                 .building();
 
-        // matching 集群 handler
-//        AkkaLocalWorkerSystemCreator.registerCluster(DOMAIN.MATCHING, RouterFrontendClusterActor.class);
-
         // room 集群 handler
-//        AkkaLocalWorkerSystemCreator.registerCluster(DOMAIN.GAME_ROOM, RouterFrontendClusterActor.class);
+//        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "cluster-room")
+//                .registerRouter(RoomRouterFrontendClusterActor.class)
+//                .building();
     }
 
     private ApplicationContext applicationContext;
