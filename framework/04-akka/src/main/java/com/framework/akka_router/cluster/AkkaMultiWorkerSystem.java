@@ -23,7 +23,7 @@ public class AkkaMultiWorkerSystem {
 
     private ActorSystem system;
 
-    private ActorRef clusterRouterFronted;
+    private ActorRef clusterRouterFrontend;
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
@@ -36,7 +36,7 @@ public class AkkaMultiWorkerSystem {
     }
 
     public Future<Object> askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, apiRequest, timeout);
+        return Patterns.ask(clusterRouterFrontend, apiRequest, timeout);
     }
 
     public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward) {
@@ -44,7 +44,7 @@ public class AkkaMultiWorkerSystem {
     }
 
     public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, requestForward, timeout);
+        return Patterns.ask(clusterRouterFrontend, requestForward, timeout);
     }
 
     public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward) {
@@ -52,7 +52,7 @@ public class AkkaMultiWorkerSystem {
     }
 
     public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, requestForward, timeout);
+        return Patterns.ask(clusterRouterFrontend, requestForward, timeout);
     }
 
     AkkaMultiWorkerSystem() {
@@ -68,10 +68,10 @@ public class AkkaMultiWorkerSystem {
     }
 
     void registerRouterFronted(Props props) {
-        if (clusterRouterFronted != null) {
+        if (clusterRouterFrontend != null) {
             throw new InvalidParameterException();
         }
-        clusterRouterFronted = system.actorOf(props, "clusterRouterFronted");
+        clusterRouterFrontend = system.actorOf(props, "clusterRouterFrontend");
     }
 
 }

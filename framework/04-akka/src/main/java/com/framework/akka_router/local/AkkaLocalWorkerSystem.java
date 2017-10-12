@@ -24,7 +24,7 @@ public class AkkaLocalWorkerSystem {
     public static final AkkaLocalWorkerSystem INSTANCE = new AkkaLocalWorkerSystem();
 
     private ActorSystem system;
-    private ActorRef localRouterFronted;
+    private ActorRef localRouterFrontend;
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
@@ -33,7 +33,7 @@ public class AkkaLocalWorkerSystem {
     }
 
     public Future<Object> askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(localRouterFronted, apiRequest, timeout);
+        return Patterns.ask(localRouterFrontend, apiRequest, timeout);
     }
 
     public ActorSystem getSystem() {
@@ -49,14 +49,14 @@ public class AkkaLocalWorkerSystem {
     }
 
     void registerRouterFronted(Props props) {
-        if (localRouterFronted != null) {
+        if (localRouterFrontend != null) {
             throw new InvalidParameterException();
         }
-        localRouterFronted = system.actorOf(props, "localRouterFronted");
+        localRouterFrontend = system.actorOf(props, "localRouterFrontend");
     }
 
     void localRouterRegister(RouterRegistrationEntity routerRegistration, ActorRef actorRef) {
-        system.actorSelection("/user/localRouterFronted").tell(routerRegistration, actorRef);
+        system.actorSelection("/user/localRouterFrontend").tell(routerRegistration, actorRef);
     }
 
 }

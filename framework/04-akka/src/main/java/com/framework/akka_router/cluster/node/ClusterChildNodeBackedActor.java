@@ -74,7 +74,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     void register(Member member) {
         if (member.hasRole("frontend")) {
-            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/clusterRouterFronted");
+            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/clusterRouterFrontend");
             clusterFronted.tell(new RouterRegistrationEntity(getRouterId()), self());
             ClusterChildNodeSystem.INSTANCE.registerRouterFronted(clusterFronted);
         }

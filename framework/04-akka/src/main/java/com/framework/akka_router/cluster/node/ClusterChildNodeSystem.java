@@ -7,7 +7,6 @@ import akka.actor.Props;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import com.framework.akka_router.ApiRequestForwardEntity;
-import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequestForward;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
@@ -27,9 +26,9 @@ public class ClusterChildNodeSystem {
 
     public static final ClusterChildNodeSystem INSTANCE = new ClusterChildNodeSystem();
 
-    private ActorSelection clusterRouterFronted;
+    private ActorSelection clusterRouterFrontend;
 
-    private ActorRef localRouterFronted;
+    private ActorRef localRouterFrontend;
 
     private ActorSystem system;
 
@@ -40,7 +39,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Future<Object> askForward(Internal.EnumLite forwardId, ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout);
+        return Patterns.ask(clusterRouterFrontend, ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout);
     }
 
     public Future<Object> notify(BroadcastMessage message) {
@@ -48,7 +47,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Future<Object> notify(BroadcastMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, message, timeout);
+        return Patterns.ask(clusterRouterFrontend, message, timeout);
     }
 
     public Future<Object> notify(NotifyMessage message) {
@@ -56,7 +55,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Future<Object> notify(NotifyMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, message, timeout);
+        return Patterns.ask(clusterRouterFrontend, message, timeout);
     }
 
     public Future<Object> notify(WorldMessage message) {
@@ -64,15 +63,15 @@ public class ClusterChildNodeSystem {
     }
 
     public Future<Object> notify(WorldMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFronted, message, timeout);
+        return Patterns.ask(clusterRouterFrontend, message, timeout);
     }
 
     void registerRouterFronted(ActorSelection routerFronted) {
-        clusterRouterFronted = routerFronted;
+        clusterRouterFrontend = routerFronted;
     }
 
     void removeRouterFronted() {
-        clusterRouterFronted = null;
+        clusterRouterFrontend = null;
     }
 
     void create() {
@@ -83,15 +82,11 @@ public class ClusterChildNodeSystem {
         system = ActorSystem.create("AkkaClusterWorkSystem", ConfigFactory.load(config));
     }
 
-    void localRouterRegister(RouterRegistrationEntity routerRegistration, ActorRef actorRef) {
-        localRouterFronted.tell(routerRegistration, actorRef);
-    }
-
     void registerRouterFronted(Props props) {
-        if (localRouterFronted != null) {
+        if (localRouterFrontend != null) {
             throw new InvalidParameterException();
         }
-        localRouterFronted = system.actorOf(props, "localRouterFronted");
+        localRouterFrontend = system.actorOf(props, "localRouterFrontend");
     }
 
 }
