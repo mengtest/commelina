@@ -26,18 +26,10 @@ public class AkkaMultiWorkerSystemCreator {
         AkkaMultiWorkerSystemContext.INSTANCE.registerWorkerSystem(routerId, systemV3);
     }
 
-    public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId, String akkaActorConfig) {
+    public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId, String clusterName, String akkaActorConfig) {
         AkkaMultiWorkerSystemCreator creator = new AkkaMultiWorkerSystemCreator();
         creator.systemV3 = new AkkaMultiWorkerSystem();
-        creator.systemV3.create(akkaActorConfig);
-        creator.routerId = routerId;
-        return creator;
-    }
-
-    public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId) {
-        AkkaMultiWorkerSystemCreator creator = new AkkaMultiWorkerSystemCreator();
-        creator.systemV3 = new AkkaMultiWorkerSystem();
-        creator.systemV3.create();
+        creator.systemV3.create(clusterName, akkaActorConfig);
         creator.routerId = routerId;
         return creator;
     }

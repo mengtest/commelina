@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
  * Created by @panyao on 2017/8/29.
  */
 @SpringBootApplication
-public class MatchingSpringBoot{
+public class MatchingSpringBoot {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(MatchingSpringBoot.class);
@@ -21,7 +21,7 @@ public class MatchingSpringBoot{
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(MatchingRouter.class, "cluster-matching");
+        ClusterChildNodeSystemCreator.create(MatchingRouter.class, "ClusterMatchingSystem", "cluster-matching");
     }
 
 }

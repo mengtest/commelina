@@ -21,7 +21,7 @@ public class RoomSpringBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(RoomRouter.class, "cluster-room");
+        ClusterChildNodeSystemCreator.create(RoomRouter.class, "ClusterRoomSystem","cluster-room");
     }
 
 }

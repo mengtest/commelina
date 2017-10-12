@@ -74,12 +74,8 @@ public class ClusterChildNodeSystem {
         clusterRouterFrontend = null;
     }
 
-    void create() {
-        system = ActorSystem.create("AkkaClusterWorkSystem", ConfigFactory.load());
-    }
-
-    void create(String config) {
-        system = ActorSystem.create("AkkaClusterWorkSystem", ConfigFactory.load(config));
+    void create(String clusterName, String config) {
+        system = ActorSystem.create(clusterName, ConfigFactory.load(config));
     }
 
     void registerRouterFronted(Props props) {

@@ -7,14 +7,11 @@ import akka.actor.Props;
  */
 public class ClusterChildNodeSystemCreator {
 
-    public static ClusterChildNodeSystemCreator create(Class<? extends ClusterChildNodeBackedActor> backedClass, String akkaActorConfig) {
-        ClusterChildNodeSystem.INSTANCE.create(akkaActorConfig);
-        ClusterChildNodeSystem.INSTANCE.registerRouterFronted(Props.create(backedClass));
-        return new ClusterChildNodeSystemCreator();
-    }
-
-    public static ClusterChildNodeSystemCreator create(Class<? extends ClusterChildNodeBackedActor> backedClass) {
-        ClusterChildNodeSystem.INSTANCE.create();
+    public static ClusterChildNodeSystemCreator create(
+            Class<? extends ClusterChildNodeBackedActor> backedClass,
+            String clusterName,
+            String akkaActorConfig) {
+        ClusterChildNodeSystem.INSTANCE.create(clusterName, akkaActorConfig);
         ClusterChildNodeSystem.INSTANCE.registerRouterFronted(Props.create(backedClass));
         return new ClusterChildNodeSystemCreator();
     }
