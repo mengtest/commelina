@@ -38,7 +38,7 @@
                 <executions>
                     <execution>
                         <id>copy-actor-gateway-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -59,7 +59,7 @@
                     </execution>
                     <execution>
                         <id>copy-actor-matching-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -81,7 +81,7 @@
                     </execution>
                     <execution>
                         <id>copy-actor-room-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -104,7 +104,7 @@
 
                     <execution>
                         <id>copy-actor-gateway-config-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -121,7 +121,7 @@
 
                     <execution>
                         <id>copy-actor-matching-config-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -137,7 +137,7 @@
                     </execution>
                     <execution>
                         <id>copy-actor-room-config-resources</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>

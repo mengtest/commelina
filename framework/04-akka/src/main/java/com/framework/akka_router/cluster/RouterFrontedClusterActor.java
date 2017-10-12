@@ -68,6 +68,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements ServerRe
                     }
                 })
                 .match(RouterRegistrationEntity.class, r -> {
+                    logger.info("Router Id:{} , node register.", r.getRouterId());
                     getContext().watch(sender());
                     clusterNodeRouters.put(r.getRouterId(), sender());
                 })
