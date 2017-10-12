@@ -3,7 +3,7 @@ package com.framework.akka_router.local;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
+import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
@@ -26,14 +26,17 @@ public class AkkaLocalWorkerSystem {
     private ActorSystem system;
     private ActorRef localRouterFrontend;
 
-    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(15, TimeUnit.SECONDS));
 
     public Future<Object> askLocalRouterNode(ApiRequest apiRequest) {
+
         return askLocalRouterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
     public Future<Object> askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(localRouterFrontend, apiRequest, timeout);
+        Object object = PatternsCS.ask(localRouterFrontend, apiRequest, timeout).toCompletableFuture().join();
+        System.out.println(object);
+        return null;
     }
 
     public ActorSystem getSystem() {

@@ -21,14 +21,18 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     //当客户端连上服务器的时候会触发此函数
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         final boolean result = NettyServerContext.INSTANCE.channelActive(ctx.channel());
-        LOGGER.info("client:{}, login server: {}", ctx.channel().id(), result);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("client:{}, login server: {}", ctx.channel().id(), result);
+        }
         memberEventHandler.onOnline(ctx);
     }
 
     //当客户端断开连接的时候触发函数
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
-        LOGGER.info("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+        }
         memberEventHandler.onOffline(logoutUserId, ctx);
     }
 
@@ -37,7 +41,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         final SocketASK ask = (SocketASK) msg;
         // forward = 0 表示心跳
         if (ask.getForward() == 0) {
-            LOGGER.info("client id:{}, heartbeat ", ctx.channel().id());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
+            }
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
             try {

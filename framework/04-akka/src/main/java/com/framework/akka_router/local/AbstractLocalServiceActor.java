@@ -1,6 +1,8 @@
 package com.framework.akka_router.local;
 
 import akka.actor.AbstractActor;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
 import com.framework.akka_router.Dispatch;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
@@ -12,6 +14,8 @@ import com.google.protobuf.Internal;
  * Created by @panyao on 2017/9/25.
  */
 public abstract class AbstractLocalServiceActor extends AbstractActor implements Dispatch {
+
+    private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
     private Internal.EnumLite routerId;
 
@@ -35,4 +39,7 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
         getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 
+    protected LoggingAdapter getLogger() {
+        return logger;
+    }
 }

@@ -18,6 +18,11 @@ public class RequestArg {
         this.type = type;
     }
 
+    public RequestArg(String arg, DATA_TYPE type) {
+        this.arg = arg;
+        this.type = type;
+    }
+
     public Integer getAsInt() {
         Preconditions.checkArgument(type == DATA_TYPE.INT);
         if (this.arg == null) {

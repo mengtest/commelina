@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="error">
+    <Properties>
+        <Property name="log_home">/Users/luokun/Documents/company/容联/projects/svn/itsys/logs/gateway</Property>
+        <Property name="rediscmd_log_home">/Users/luokun/Documents/company/容联/projects/svn/itsys/logs/gateway</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss,SSS} [%p] %c{2}%x - %m%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="gateway" immediateFlush="true" fileName="${log_home}/gateway.log"
+                                 filePattern="${log_home}/gateway.log.%-d{yyyy-MM-dd-HH}">
+            <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss,SSS} [%p] %c{2}%x - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <Async name="async">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="gateway" />
+        </Async>
+
+        <RollingFile name="redisCmdFile" immediateFlush="false"
+                     fileName="${rediscmd_log_home}/redisCmd.log"
+                     filePattern="${rediscmd_log_home}/redisCmd.log.%-d{yyyy-MM-dd-HH}">
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+
+        <Async name="redisCmd">
+            <AppenderRef ref="redisCmdFile" />
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="gateway"/>
+        </Root>
+
+        <Logger name="redisCmdLog" level="info" additivity="false">
+            <AppenderRef ref="redisCmd"/>
+        </Logger>
+
+        <Logger name="com.yuntongxun" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="gateway"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

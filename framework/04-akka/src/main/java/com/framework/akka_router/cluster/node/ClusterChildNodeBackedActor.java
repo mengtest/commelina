@@ -6,6 +6,8 @@ import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
 import com.framework.akka_router.*;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
@@ -16,6 +18,8 @@ import com.framework.message.ResponseMessage;
  * Created by @panyao on 2017/9/25.
  */
 public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
+
+    private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
@@ -55,17 +59,17 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
 
     @Override
     public void onOnline(long logoutUserId) {
-
+        // nothing to do
     }
 
     @Override
     public void onOffline(long logoutUserId) {
-
+        // nothing to do
     }
 
     @Override
     public void onForward(ApiRequestForward forward) {
-
+        // nothing to do
     }
 
     protected void response(MessageBus message) {
@@ -84,6 +88,10 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
         if (member.hasRole("frontend")) {
             ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
         }
+    }
+
+    protected LoggingAdapter getLogger() {
+        return logger;
     }
 
 }

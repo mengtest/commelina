@@ -10,7 +10,6 @@ import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
@@ -19,11 +18,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
 
-    private BiMap<Internal.EnumLite, ActorRef> localRouters = HashBiMap.create(16);
-
-    @Override
-    public void preStart() throws Exception {
-    }
+    private BiMap<Integer, ActorRef> localRouters = HashBiMap.create(16);
 
     @Override
     public Receive createReceive() {
@@ -32,7 +27,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     // 死信，防止一个 front node 崩溃之后 service actor 成为游离状态
                     if (d.message() instanceof RouterRegistrationEntity) {
                         getContext().watch(d.sender());
-                        localRouters.put(((RouterRegistrationEntity) d.message()).getRouterId(), d.sender());
+                        localRouters.put(((RouterRegistrationEntity) d.message()).getRouterId().getNumber(), d.sender());
                     } else if (d.message() instanceof ApiRequest) {
                         logger.info("ignore. {}", d.message());
                     } else {
@@ -40,7 +35,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     }
                 })
                 .match(ApiRequest.class, r -> {
-                    ActorRef target = localRouters.get(r.getOpcode());
+                    ActorRef target = localRouters.get(r.getOpcode().getNumber());
                     if (target != null) {
                         target.forward(r, getContext());
                     } else {
@@ -49,7 +44,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                 })
                 .match(RouterRegistrationEntity.class, r -> {
                     getContext().watch(sender());
-                    localRouters.put(r.getRouterId(), sender());
+                    localRouters.put(r.getRouterId().getNumber(), sender());
                 })
                 .match(Terminated.class, terminated -> localRouters.inverse().remove(terminated.getActor()))
                 .build();
