@@ -48,12 +48,10 @@ enum SERVER_CODE {
     RESONSE_CODE = 1;
     // 通知
     NOTIFY_CODE = 2;
-    // 协议解析错误
-    PROTOCOL_FORMAT_ERROR = 3;
     // 要调用的 api 不存在
-    RPC_API_NOT_FOUND = 4;
+    RPC_API_NOT_FOUND = 3;
     // 服务端内部错误
-    SERVER_ERROR = 5;
+    SERVER_ERROR = 4;
 }
 
 // 基本数据类型

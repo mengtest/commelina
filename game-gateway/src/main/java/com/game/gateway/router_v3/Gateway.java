@@ -18,7 +18,7 @@ import io.netty.channel.ChannelHandlerContext;
  * Created by @panyao on 2017/9/22.
  */
 @NioSocketRouter(forward = DOMAIN.GATE_WAY_VALUE)
-public final class Gateway extends DefaultLocalActorRequestHandler {
+public class Gateway extends DefaultLocalActorRequestHandler {
 
     private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.GATEWAY_API_UNAUTHORIZED));
 
@@ -45,4 +45,5 @@ public final class Gateway extends DefaultLocalActorRequestHandler {
     public final Internal.EnumLite getRouterId() {
         return DOMAIN.GATE_WAY;
     }
+
 }

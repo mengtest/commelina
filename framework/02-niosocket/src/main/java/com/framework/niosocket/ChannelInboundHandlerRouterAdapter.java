@@ -37,8 +37,8 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     //当客户端发送数据到服务器会触发此函数
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final SocketASK ask = (SocketASK) msg;
-        // 心跳
-        if (ask.getOpcode() == 0) {
+        // forward = 0 表示心跳
+        if (ask.getForward() == 0) {
             LOGGER.info("client id:{}, heartbeat ", ctx.channel().id());
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
