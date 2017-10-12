@@ -4,9 +4,11 @@ import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SocketASK;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,10 +28,10 @@ class RouterContextHandlerImpl implements RouterContextHandler {
             return;
         }
 
-        final RequestArg[] args = new RequestArg[request.getArgsList().size()];
+        List<RequestArg> args = Lists.newArrayList();
         for (int i = 0; i < request.getArgsList().size(); i++) {
             Arg arg = request.getArgsList().get(i);
-            args[i] = new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name()));
+            args.add(new RequestArg(arg.getValue(), RequestArg.DATA_TYPE.valueOf(arg.getDataType().name())));
         }
 
         // 依然是在 accept 线程内

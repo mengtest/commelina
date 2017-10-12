@@ -3,16 +3,12 @@ package com.game.room.router_v3;
 import akka.actor.ActorRef;
 import com.framework.akka_router.cluster.node.ClusterChildNodeBackedActor;
 import com.framework.message.*;
-import com.game.room.entity.PlayerEntity;
 import com.game.room.entity.PlayerStatus;
 import com.game.room.event.PlayerStatusEvent;
 import com.game.room.proto.ERROR_CODE;
 import com.game.room.service.RoomManger;
-import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
-
-import java.util.List;
 
 /**
  * Created by @panyao on 2017/9/26.
@@ -44,7 +40,7 @@ public class RoomRouter extends ClusterChildNodeBackedActor {
     @Override
     public void onRequest(ApiRequest request) {
 
-        RequestArg roomIdArg = request.getArg(0);
+        RequestArg roomIdArg = request.getArgs().get(0);
         if (roomIdArg == null) {
             response(ROOM_NOT_FOUND);
             return;
@@ -59,20 +55,19 @@ public class RoomRouter extends ClusterChildNodeBackedActor {
         // 检查房间是否存在
 
         // 重定向
+        requestRouter(request);
     }
 
     @Override
     public void onForward(ApiRequestForward forward) {
         switch (forward.getOpcode().getNumber()) {
             case MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE:
-                long[] userIds = forward.getLongArgs();
-
-                // 加载用户信息
-                final List<PlayerEntity> playerEntities = Lists.newArrayListWithExpectedSize(forward.getArgs().length);
-                final RoomManger.CreateRoomEntity createRoomEntity = new RoomManger.CreateRoomEntity();
-                createRoomEntity.setPlayers(playerEntities);
-                roomManger.forward(playerEntities, getContext());
+                roomManger.forward(new RoomManger.CreateRoomEntity(forward.getLongArgs()), getContext());
                 break;
         }
+    }
+
+    private void requestRouter(ApiRequest request) {
+
     }
 }

@@ -1,6 +1,9 @@
 package com.framework.message;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * Created by @panyao on 2017/8/25.
@@ -15,7 +18,7 @@ public class RequestArg {
         this.type = type;
     }
 
-    public int getAsInt() {
+    public Integer getAsInt() {
         Preconditions.checkArgument(type == DATA_TYPE.INT);
         if (this.arg == null) {
             return 0;
@@ -28,7 +31,7 @@ public class RequestArg {
         return this.arg != null ? this.arg.toString() : null;
     }
 
-    public boolean getAsBool() {
+    public Boolean getAsBool() {
         Preconditions.checkArgument(type == DATA_TYPE.BOOL);
         if (this.arg == null) {
             return false;
@@ -36,26 +39,26 @@ public class RequestArg {
         return Boolean.valueOf(this.arg.toString());
     }
 
-    public long getAsLong() {
+    public Long getAsLong() {
         Preconditions.checkArgument(type == DATA_TYPE.LONG);
         if (this.arg == null) {
-            return 0;
+            return 0L;
         }
         return Long.valueOf(this.arg.toString());
     }
 
-    public double getAsDouble() {
+    public Double getAsDouble() {
         Preconditions.checkArgument(type == DATA_TYPE.DOUBLE);
         if (this.arg == null) {
-            return 0.0;
+            return 0D;
         }
         return Double.valueOf(this.arg.toString());
     }
 
-    public float getAsFloat() {
+    public Float getAsFloat() {
         Preconditions.checkArgument(type == DATA_TYPE.FLOAT);
         if (this.arg == null) {
-            return 0;
+            return 0F;
         }
         return Float.valueOf(this.arg.toString());
     }
@@ -68,6 +71,14 @@ public class RequestArg {
         DOUBLE,
         FLOAT,
         ARRAY
+    }
+
+    public static List<RequestArg>  asList(long[] args) {
+        List<RequestArg> argList = Lists.newArrayList();
+        for (long userId : args) {
+            argList.add(new RequestArg(userId, RequestArg.DATA_TYPE.LONG));
+        }
+        return argList;
     }
 
 }

@@ -3,6 +3,8 @@ package com.framework.message;
 import com.framework.core.AppVersion;
 import com.google.protobuf.Internal;
 
+import java.util.List;
+
 /**
  * Created by @panyao on 2017/8/25.
  */
@@ -10,7 +12,7 @@ public final class ApiRequest extends ApiRequestForward implements AppVersion {
 
     private long userId = 0;
 
-    public ApiRequest(Internal.EnumLite opcode, String version, RequestArg[] args) {
+    public ApiRequest(Internal.EnumLite opcode, String version, List<RequestArg> args) {
         super(opcode, version, args);
     }
 

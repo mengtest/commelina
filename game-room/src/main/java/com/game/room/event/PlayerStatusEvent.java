@@ -21,4 +21,5 @@ public class PlayerStatusEvent {
     public long getUserId() {
         return userId;
     }
+
 }

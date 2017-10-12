@@ -5,7 +5,6 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.game.room.entity.PlayerEntity;
 import com.game.room.event.PlayerStatusEvent;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -45,10 +44,12 @@ public class RoomManger extends AbstractActor {
     }
 
     private void createRoom(CreateRoomEntity createRoomEntity) {
+
+        // 加载用户信息
         final long newRoomId = roomId++;
-        final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, createRoomEntity.getPlayers()), "roomContext");
+        final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);
-        createRoomEntity.getPlayers().forEach(v -> usersToRoomId.put(v.getUserId(), newRoomId));
+        createRoomEntity.players.forEach(v -> usersToRoomId.put(v, newRoomId));
     }
 
     public static Props props() {
@@ -56,14 +57,12 @@ public class RoomManger extends AbstractActor {
     }
 
     public static class CreateRoomEntity {
-        private List<PlayerEntity> players;
+        final List<Long> players;
 
-        public List<PlayerEntity> getPlayers() {
-            return players;
-        }
-
-        public void setPlayers(List<PlayerEntity> players) {
+        public CreateRoomEntity(List<Long> players) {
             this.players = players;
         }
+
+
     }
 }

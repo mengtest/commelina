@@ -9,4 +9,5 @@ option java_multiple_files = true;
 enum OPCODE {
     // 通知匹配成功
     EMPTY = 0;
+
 }

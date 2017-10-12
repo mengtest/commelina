@@ -2,8 +2,17 @@ package com.game.matching.service;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
+import akka.dispatch.OnFailure;
+import akka.dispatch.OnSuccess;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
+import com.framework.core.AppVersion;
+import com.framework.message.ApiRequestForward;
+import com.framework.message.RequestArg;
+import com.game.common.proto.DOMAIN;
+import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
+import scala.concurrent.Future;
 
 /**
  * Created by @panyao on 2017/8/14.
@@ -28,11 +37,30 @@ public class MatchingRedirect extends AbstractActor {
     }
 
     private void createRoom(CREATE_ROOM createRoom) {
-        // 成功了就关闭此次的重定向 actor
-        // FIXME: 2017/8/17 失败了就把元素投递回去 Matching 队列
-        getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
-        // 失败的重新投递回去，就关闭此次的 actor
-        getContext().stop(getSelf());
+
+        Future<Object> result = ClusterChildNodeSystem.INSTANCE.askForward(
+                DOMAIN.GAME_ROOM,
+                new ApiRequestForward(
+                        MATCHING_ROOM_METHODS.CREATE_ROOM,
+                        AppVersion.FIRST_VERSION,
+                        RequestArg.asList(createRoom.userIds)));
+
+        result.onSuccess(new OnSuccess<Object>() {
+            @Override
+            public void onSuccess(Object result) throws Throwable {
+                // 成功了就关闭此次的重定向 actor
+                getContext().stop(getSelf());
+            }
+        }, getContext().getSystem().dispatcher());
+
+        result.onFailure(new OnFailure() {
+            @Override
+            public void onFailure(Throwable failure) throws Throwable {
+                // 失败了就把元素投递回去 Matching 队列
+                getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
+            }
+        }, getContext().getSystem().dispatcher());
+
     }
 
     static final class CREATE_ROOM {

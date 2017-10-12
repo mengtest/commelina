@@ -35,7 +35,7 @@ public class SessionImpl implements LocalServiceHandler {
 
         @Override
         public void onRequest(ApiRequest request) {
-            RequestArg tokenArg = request.getArg(0);
+            RequestArg tokenArg = request.getArgs().get(0);
             if (tokenArg == null) {
                 // token 转换错误
                 response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));

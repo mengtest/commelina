@@ -8,6 +8,9 @@ import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.DefaultMessageProvider;
 import com.game.matching.proto.OPCODE;
+import scala.concurrent.duration.Duration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/8/14.
@@ -34,7 +37,14 @@ public class MatchingStatus extends AbstractActor {
         log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
         ClusterChildNodeSystem.INSTANCE.notify(broadcast);
-        getContext().stop(getSelf());
+
+        // 延迟 关闭此 actor
+        getContext().getSystem().scheduler()
+                .scheduleOnce(
+                        Duration.create(3, TimeUnit.SECONDS),
+                        () -> getContext().stop(getSelf()),
+                        getContext().getSystem().dispatcher()
+                );
     }
 
     static final class NOTIFY_MATCH_STATUS {
