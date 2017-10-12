@@ -37,6 +37,26 @@
                 <version>3.0.2</version>
                 <executions>
                     <execution>
+                        <id>copy-actor-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/actor_config/gateway/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/actor_config/gateway</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-gateway-resources</id>
                         <phase>validate</phase>
                         <goals>
@@ -47,6 +67,10 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/actor_config/gateway</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
