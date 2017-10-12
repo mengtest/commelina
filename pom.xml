@@ -101,6 +101,56 @@
                             </resources>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>copy-actor-gateway-config-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-gateway/src/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/actor_config/gateway</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-actor-matching-config-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-matching/src/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/actor_config/matching</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-actor-room-config-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-room/src/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/actor_config/room</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>copy-gateway-resources</id>
                         <phase>validate</phase>
@@ -112,10 +162,6 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/actor_config/gateway</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
