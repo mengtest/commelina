@@ -21,7 +21,7 @@ public final class MatchingSpringBoot{
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(MatchingRouter.class);
+        ClusterChildNodeSystemCreator.create(MatchingRouter.class, "cluster-matching");
     }
 
 }
