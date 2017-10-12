@@ -11,14 +11,12 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by @panyao on 2017/8/3.
@@ -62,8 +60,8 @@ public class NettyNioSocketServer {
                         ch.pipeline().addLast("encoder", new ProtobufEncoder());
 
                         // http://blog.csdn.net/z69183787/article/details/52625095
-//                        // 心跳检查 5s 检查一次，意思就是 客户端 5s 不发送数据，服务器就会断开
-                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
+//                        // 心跳检查 5s 检查一次
+//                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
 //                        ch.pipeline().addLast("heartbeatTrigger", trigger);
 

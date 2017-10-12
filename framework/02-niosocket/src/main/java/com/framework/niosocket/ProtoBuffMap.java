@@ -8,7 +8,7 @@ import com.framework.niosocket.proto.SocketMessage;
  */
 public class ProtoBuffMap {
 
-    public static final SocketMessage HEARTBEAT_CODE = createErrorMessage(SERVER_CODE.HEARTBEAT_CODE);
+    public static final SocketMessage HEARTBEAT_CODE = SocketMessage.getDefaultInstance();
     public static final SocketMessage RPC_API_NOT_FOUND = createErrorMessage(SERVER_CODE.RPC_API_NOT_FOUND);
     public static final SocketMessage SERVER_ERROR = createErrorMessage(SERVER_CODE.SERVER_ERROR);
 

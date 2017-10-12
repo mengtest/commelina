@@ -3,8 +3,6 @@ package com.framework.niosocket;
 import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,33 +40,37 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             LOGGER.info("client id:{}, heartbeat ", ctx.channel().id());
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
-            routerContextHandlerImpl.onRequest(ctx, ask);
+            try {
+                routerContextHandlerImpl.onRequest(ctx, ask);
+            } catch (Throwable throwable) {
+                ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
+                exceptionCaught(ctx, throwable);
+            }
         }
     }
 
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
         memberEventHandler.onException(ctx, cause);
     }
 
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleState state = ((IdleStateEvent) evt).state();
-            if (state == IdleState.READER_IDLE) {
-                // 发现连接是闲置状态就关闭它
-                final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
-                LOGGER.info("Idle client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-                memberEventHandler.onOffline(logoutUserId, ctx);
-                ctx.close();
-                // throw new Exception("idle exception");
-            }
-        } else {
-            super.userEventTriggered(ctx, evt);
-        }
-    }
+//    @Override
+//    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+//        if (evt instanceof IdleStateEvent) {
+//            IdleState state = ((IdleStateEvent) evt).state();
+//            if (state == IdleState.READER_IDLE) {
+//                // 发现连接是闲置状态就关闭它
+//                final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
+//                LOGGER.info("Idle client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+//                memberEventHandler.onOffline(logoutUserId, ctx);
+//                ctx.close();
+//                // throw new Exception("idle exception");
+//            }
+//        } else {
+//            super.userEventTriggered(ctx, evt);
+//        }
+//    }
 
     void setHandlers(RouterContextHandler routerContextHandlerImpl, MemberEventHandler memberEventHandler) {
         this.routerContextHandlerImpl = routerContextHandlerImpl;
