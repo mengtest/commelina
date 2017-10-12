@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
  * Created by @panyao on 2017/8/29.
  */
 @SpringBootApplication
-public final class MatchingSpringBoot{
+public class MatchingSpringBoot{
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(MatchingSpringBoot.class);

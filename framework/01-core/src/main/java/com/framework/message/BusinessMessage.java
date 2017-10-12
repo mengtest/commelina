@@ -20,7 +20,6 @@ public final class BusinessMessage<T> {
     }
 
     public static BusinessMessage<String> error(Internal.EnumLite code) {
-        Preconditions.checkArgument(code.getNumber() > 0);
         return success(code, DEFAULT_DATA);
     }
 
