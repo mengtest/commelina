@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public final class MemberEventLoop {
 
     private final Logger LOGGER = LoggerFactory.getLogger(MemberEventLoop.class);
 
-    private final List<ReadEvent> readEvents = Lists.newArrayList();
+    private final List<ReadEvent> readEvents = Lists.newCopyOnWriteArrayList();
 
     ChannelHandlerContext ctx;
     final EventLoop eventLoop = new DefaultEventLoop();
@@ -52,14 +51,21 @@ public final class MemberEventLoop {
 
     public void removeReadEvent(Class<? extends ReadEvent> readEvent) {
         eventLoop.execute(() -> {
-            Iterator<ReadEvent> readEventIterator = readEvents.iterator();
-            while (readEventIterator.hasNext()) {
-                ReadEvent event = readEventIterator.next();
-                if (event.getClass().equals(readEvent)) {
-                    readEventIterator.remove();
+            for (int i = 0; i < readEvents.size(); i++) {
+                if (readEvents.get(i).getClass().equals(readEvent)) {
+                    readEvents.remove(i);
                     break;
                 }
             }
+
+//            Iterator<ReadEvent> readEventIterator = readEvents.iterator();
+//            while (readEventIterator.hasNext()) {
+//                ReadEvent event = readEventIterator.next();
+//                if (event.getClass().equals(readEvent)) {
+//                    readEventIterator.remove();
+//                    break;
+//                }
+//            }
         });
     }
 
@@ -76,18 +82,24 @@ public final class MemberEventLoop {
 
     void acceptor(SocketMessage msg) {
         eventLoop.execute(() -> {
-            Iterator<ReadEvent> readEventIterator = readEvents.iterator();
-            while (readEventIterator.hasNext()) {
-                ReadEvent event = readEventIterator.next();
-                if (!(
-                        event.getDomain().getNumber() == msg.getDomain() &&
+
+            for (int i = 0; i < readEvents.size(); i++) {
+                ReadEvent event = readEvents.get(i);
+                if (!(event.getDomain().getNumber() == msg.getDomain() &&
                                 event.getApiOpcode().getNumber() == msg.getOpcode()
                 )) {
                     continue;
                 }
                 if (msg.getCode() == SERVER_CODE.RESONSE_CODE || msg.getCode() == SERVER_CODE.NOTIFY_CODE) {
-                    event.read(this, msg);
-                    readEventIterator.remove();
+                    switch (event.read(this, msg)) {
+                        case UN_REMOVE:
+                            break;
+                        case ADD_HISTORY:
+                            break;
+                        case REMOVE:
+                        default:
+                            readEvents.remove(i);
+                    }
                 } else {
                     switch (msg.getCode()) {
                         case RPC_API_NOT_FOUND:
@@ -103,6 +115,41 @@ public final class MemberEventLoop {
                 }
                 break;
             }
+
+//                Iterator < ReadEvent > readEventIterator = readEvents.iterator();
+//        while (readEventIterator.hasNext()) {
+//            ReadEvent event = readEventIterator.next();
+//            if (!(
+//                    event.getDomain().getNumber() == msg.getDomain() &&
+//                            event.getApiOpcode().getNumber() == msg.getOpcode()
+//            )) {
+//                continue;
+//            }
+//            if (msg.getCode() == SERVER_CODE.RESONSE_CODE || msg.getCode() == SERVER_CODE.NOTIFY_CODE) {
+//                switch (event.read(this, msg)) {
+//                    case UN_REMOVE:
+//                        break;
+//                    case ADD_HISTORY:
+//                        break;
+//                    case REMOVE:
+//                    default:
+//                        readEventIterator.remove();
+//                }
+//            } else {
+//                switch (msg.getCode()) {
+//                    case RPC_API_NOT_FOUND:
+//                        LOGGER.error("Api 没有找到.");
+//                        break;
+//                    case SERVER_ERROR:
+//                        LOGGER.error("服务器内部错误.");
+//                        break;
+//                    default:
+//                        LOGGER.error("未解析的SERVER_CODE.");
+//
+//                }
+//            }
+//            break;
+//        }
         });
     }
 
