@@ -12,15 +12,18 @@ import com.game.robot.interfaces.MemberEventLoop;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by @panyao on 2017/9/11.
  */
 public class GatewayLogin implements MemberEvent {
 
+    private Logger LOGGER = LoggerFactory.getLogger(GatewayLogin.class);
+
     private final String account;
     private final String pwd;
-    private long userId = 1;
 
     public GatewayLogin(String account, String pwd) {
         this.account = account;
@@ -39,6 +42,7 @@ public class GatewayLogin implements MemberEvent {
                         .setDataType(DATA_TYPE.LONG)
                         .setValue(ByteString.copyFromUtf8("1")))
                 .build();
+        LOGGER.debug("向服务器发送登录请求。");
         ctx.writeAndFlush(ask);
     }
 
@@ -50,8 +54,8 @@ public class GatewayLogin implements MemberEvent {
 
     @Override
     public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
-        // 登录成功，注册匹配事件
-        eventLoop.addEvent(new MatchingJoinMatch(userId));
+        eventLoop.addEvent(new MatchingJoinMatch(1L));
+        LOGGER.info("登录成功，注册匹配事件。");
         return EventResult.REMOVE;
     }
 }

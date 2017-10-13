@@ -9,6 +9,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
@@ -54,9 +55,13 @@ public class NettyNioSocketServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        // http://blog.csdn.net/linuu/article/details/51360609
                         // protocol 协议
+
                         ch.pipeline().addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
                         ch.pipeline().addLast("decoder", new ProtobufDecoder(SocketASK.getDefaultInstance()));
+
+                        ch.pipeline().addLast("fieldPrepender", new ProtobufVarint32LengthFieldPrepender());
                         ch.pipeline().addLast("encoder", new ProtobufEncoder());
 
                         // http://blog.csdn.net/z69183787/article/details/52625095

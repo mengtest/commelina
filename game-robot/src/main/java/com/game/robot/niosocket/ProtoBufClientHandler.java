@@ -25,7 +25,7 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        LOGGER.info("连接建立成功");
+        LOGGER.debug("Connection success.");
         socketHandler.connectSuccess(ctx);
         super.channelActive(ctx);
     }
@@ -38,10 +38,10 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        LOGGER.info("收到服务端的消息");
+        LOGGER.debug("Received message.");
         SocketMessage message = (SocketMessage) msg;
         if (message.getCode() == SERVER_CODE.HEARTBEAT_CODE) {
-            LOGGER.info("心跳正常");
+            LOGGER.debug("Heartbeat normal.");
             socketHandler.heartError(ctx);
             return;
         }
@@ -61,7 +61,7 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
 //            IdleState state = ((IdleStateEvent) evt).state();
 //            if (state == IdleState.WRITER_IDLE) {
             // write heartbeat to server
-            System.out.println("write heartbeat to server. time: " + System.currentTimeMillis());
+            LOGGER.debug("write heartbeat to server. time: " + System.currentTimeMillis());
             ctx.writeAndFlush(SocketASK.getDefaultInstance());
 //            }
         } else {
