@@ -7,6 +7,7 @@ import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
+import com.framework.message.MessageBus;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 

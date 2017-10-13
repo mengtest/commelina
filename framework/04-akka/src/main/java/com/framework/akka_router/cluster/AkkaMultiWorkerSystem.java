@@ -6,8 +6,10 @@ import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.pattern.PipeToSupport;
 import akka.util.Timeout;
+import com.framework.akka_router.ResponseEntity;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
+import com.framework.message.MessageBus;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -32,15 +34,15 @@ public class AkkaMultiWorkerSystem {
         return system;
     }
 
-    public Object askRouterClusterNode(final ApiRequest apiRequest) {
+    public MessageBus askRouterClusterNode(final ApiRequest apiRequest) {
         return askRouterClusterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
-    public Object askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
-        return PatternsCS.ask(clusterRouterFrontend, apiRequest, timeout);
+    public MessageBus askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
+        return (MessageBus) PatternsCS.ask(clusterRouterFrontend, apiRequest, timeout).toCompletableFuture().join();
     }
 
-    PipeToSupport.PipeableCompletionStage<Object> askRouterClusterNodeForward(final ApiRequestForward requestForward, ActorRef targetActor) {
+    PipeToSupport.PipeableCompletionStage<ResponseEntity> askRouterClusterNodeForward(final ApiRequestForward requestForward, ActorRef targetActor) {
         return askRouterClusterNodeFroward(requestForward, targetActor, DEFAULT_TIMEOUT);
     }
 
@@ -52,9 +54,10 @@ public class AkkaMultiWorkerSystem {
      * @param timeout
      * @return
      */
-    PipeToSupport.PipeableCompletionStage<Object> askRouterClusterNodeFroward(final ApiRequestForward requestForward, ActorRef targetActor, Timeout timeout) {
+    PipeToSupport.PipeableCompletionStage<ResponseEntity> askRouterClusterNodeFroward(final ApiRequestForward requestForward, ActorRef targetActor, Timeout timeout) {
         CompletableFuture<Object> askFuture = PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture();
-        CompletableFuture<Object> transformed = CompletableFuture.allOf(askFuture).thenApply(v -> askFuture.join());
+
+        CompletableFuture<ResponseEntity> transformed = CompletableFuture.allOf(askFuture).thenApply(v -> (ResponseEntity)askFuture.join());
 
         return PatternsCS.pipe(transformed, getSystem().dispatcher()).to(targetActor);
     }

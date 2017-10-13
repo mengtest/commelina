@@ -2,6 +2,7 @@ package com.framework.akka_router.cluster;
 
 import akka.util.Timeout;
 import com.framework.message.ApiRequest;
+import com.framework.message.MessageBus;
 import com.google.protobuf.Internal;
 
 /**
@@ -17,11 +18,11 @@ public final class ClusterAskUtils {
      * @param apiRequest
      * @return
      */
-    public static Object askRouterClusterNode(Internal.EnumLite domainRouterId, ApiRequest apiRequest) {
+    public static MessageBus askRouterClusterNode(Internal.EnumLite domainRouterId, ApiRequest apiRequest) {
         return askRouterClusterNode(domainRouterId, apiRequest, AkkaMultiWorkerSystem.DEFAULT_TIMEOUT);
     }
 
-    public static Object askRouterClusterNode(Internal.EnumLite domainRouterId, ApiRequest apiRequest, Timeout timeout) {
+    public static MessageBus askRouterClusterNode(Internal.EnumLite domainRouterId, ApiRequest apiRequest, Timeout timeout) {
         return AkkaMultiWorkerSystemContext.INSTANCE.getContext(domainRouterId).askRouterClusterNode(apiRequest, timeout);
     }
 
