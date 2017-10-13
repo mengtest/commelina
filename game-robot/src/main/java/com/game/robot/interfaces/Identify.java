@@ -7,6 +7,8 @@ import com.google.protobuf.Internal;
  */
 public interface Identify {
 
-    boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode);
+    Internal.EnumLite getDomain();
+
+    Internal.EnumLite getApiOpcode();
 
 }

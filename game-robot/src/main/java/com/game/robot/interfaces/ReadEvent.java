@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public interface ReadEvent extends Identify {
 
-    EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg);
+    EventResult read(MemberEventLoop eventLoop, SocketMessage msg);
 
     // 如果不再使用，则返回 remove 则会不会再在事件循环内了
     enum EventResult {

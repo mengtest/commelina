@@ -24,23 +24,27 @@ public class MatchingJoinMatch implements MemberEvent {
     }
 
     @Override
-    public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
-        SocketASK ask = SocketASK.newBuilder()
+    public SocketASK handler(MemberEventLoop eventLoop) {
+        return SocketASK.newBuilder()
                 .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
                 .setOpcode(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
-                .setArgs(0, Arg.newBuilder().setValue(ByteString.copyFrom(new byte[]{userId.byteValue()})))
+                .setArgs(0, Arg.newBuilder().setValue(ByteString.copyFromUtf8(userId.toString())))
                 .build();
-        ctx.writeAndFlush(ask);
     }
 
     @Override
-    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
-        return domain.getNumber() == DOMAIN.GATE_WAY_VALUE && apiOpcode.getNumber() == MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE;
+    public Internal.EnumLite getDomain() {
+        return DOMAIN.GATE_WAY;
     }
 
     @Override
-    public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
+    public Internal.EnumLite getApiOpcode() {
+        return MATCHING_METHODS.JOIN_MATCH_QUENE;
+    }
+
+    @Override
+    public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
         // 加入匹配成功
         // 注册监听匹配状态的事件
         eventLoop.addEvent(new MatchingWaitForMatchStatus());

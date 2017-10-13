@@ -45,14 +45,14 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
             socketHandler.heartError(ctx);
             return;
         }
+
         socketHandler.channelRead(ctx, message);
         super.channelRead(ctx, msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
+        socketHandler.exception(ctx, cause);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {
 //            IdleState state = ((IdleStateEvent) evt).state();
 //            if (state == IdleState.WRITER_IDLE) {
-            // write heartbeat to server
-            LOGGER.debug("write heartbeat to server. time: " + System.currentTimeMillis());
+            // Write heartbeat to server
+            LOGGER.debug("Write heartbeat to server. Time: " + System.currentTimeMillis());
             ctx.writeAndFlush(SocketASK.getDefaultInstance());
 //            }
         } else {

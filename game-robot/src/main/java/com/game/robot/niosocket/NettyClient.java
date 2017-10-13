@@ -23,13 +23,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyClient {
 
-    public static void getNettyClientByConfig(SocketHandler socketHandler) {
+    public static boolean getNettyClientByConfig(SocketHandler socketHandler) {
         NettyClient client = new NettyClient();
         try {
             client.connect("127.0.0.1", 9005, socketHandler);
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     void connect(String host, int port, final SocketHandler socketHandler) throws Exception {

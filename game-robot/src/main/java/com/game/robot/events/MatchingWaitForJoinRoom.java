@@ -14,12 +14,17 @@ import io.netty.channel.ChannelHandlerContext;
 public class MatchingWaitForJoinRoom implements ReadEvent {
 
     @Override
-    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
-        return domain.getNumber() == DOMAIN.MATCHING_VALUE && apiOpcode.getNumber() == MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE;
+    public Internal.EnumLite getDomain() {
+        return DOMAIN.MATCHING;
     }
 
     @Override
-    public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
+    public Internal.EnumLite getApiOpcode() {
+        return MATCHING_METHODS.JOIN_MATCH_QUENE;
+    }
+
+    @Override
+    public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
         // 移除 接受匹配状态的 event
         eventLoop.removeReadEvent(MatchingWaitForMatchStatus.class);
 

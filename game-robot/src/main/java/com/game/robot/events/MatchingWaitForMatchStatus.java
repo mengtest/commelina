@@ -2,6 +2,7 @@ package com.game.robot.events;
 
 import com.framework.niosocket.proto.SocketMessage;
 import com.game.common.proto.DOMAIN;
+import com.game.matching.proto.OPCODE;
 import com.game.robot.interfaces.MemberEventLoop;
 import com.game.robot.interfaces.ReadEvent;
 import com.game.robot.message.BusinessMessage;
@@ -22,13 +23,19 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
 
     private final Logger logger = LoggerFactory.getLogger(MatchingWaitForMatchStatus.class);
 
+
     @Override
-    public boolean isMe(Internal.EnumLite domain, Internal.EnumLite apiOpcode) {
-        return domain.getNumber() == DOMAIN.MATCHING_VALUE && apiOpcode.getNumber() == com.game.matching.proto.OPCODE.MATCH_STATUS_VALUE;
+    public Internal.EnumLite getDomain() {
+        return DOMAIN.MATCHING;
     }
 
     @Override
-    public EventResult read(MemberEventLoop eventLoop, ChannelHandlerContext context, SocketMessage msg) {
+    public Internal.EnumLite getApiOpcode() {
+        return OPCODE.MATCH_STATUS;
+    }
+
+    @Override
+    public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
         try {
             BusinessMessage<Map<String, Integer>> message = Generator.getJsonHolder().readValue(msg.getMsg().toString(), BusinessMessage.class);
             logger.info("当前匹配人数:" + message.getData().get("matchUserCount"));

@@ -20,4 +20,8 @@ public interface SocketHandler {
 
     }
 
+    default void exception(ChannelHandlerContext ctx, Throwable throwable) {
+        throw new RuntimeException(throwable);
+    }
+
 }

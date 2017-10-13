@@ -1,5 +1,6 @@
 package com.game.robot.interfaces;
 
+import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,8 +17,9 @@ import java.util.List;
 public final class MemberEventLoop {
 
     private final List<ReadEvent> readEvents = Lists.newArrayList();
-    ChannelHandlerContext context;
+    ChannelHandlerContext ctx;
     final EventLoop eventLoop = new DefaultEventLoop();
+    boolean isReady = false;
 
     public void addEvent(ReadEvent event, ReadEvent... events) {
         readEvents.add(event);
@@ -25,20 +27,20 @@ public final class MemberEventLoop {
     }
 
     public void addEvent(HandlerEvent event, HandlerEvent... events) {
-        eventLoop.execute(() -> event.handle(this, context));
+        eventLoop.execute(() -> socketAsk(event.handler(this)));
         for (final HandlerEvent handlerEvent : events) {
-            eventLoop.execute(() -> handlerEvent.handle(this, context));
+            eventLoop.execute(() -> socketAsk(handlerEvent.handler(this)));
         }
     }
 
     public void addEvent(MemberEvent event, MemberEvent... events) {
         // 注册默认回调
         addEvent((ReadEvent) event);
-        eventLoop.execute(() -> event.handle(this, context));
+        eventLoop.execute(() -> socketAsk(event.handler(this)));
 
         for (final MemberEvent memberEvent : events) {
             addEvent((ReadEvent) memberEvent);
-            eventLoop.execute(() -> memberEvent.handle(this, context));
+            eventLoop.execute(() -> socketAsk(memberEvent.handler(this)));
         }
     }
 
@@ -55,25 +57,30 @@ public final class MemberEventLoop {
         });
     }
 
+    public void socketAsk(SocketASK ask) {
+        if (!isReady) {
+            while (true) {
+                if (isReady) {
+                    break;
+                }
+            }
+        }
+        ctx.writeAndFlush(ask);
+    }
+
     void acceptor(ChannelHandlerContext ctx, SocketMessage msg) {
         eventLoop.execute(() -> {
             Iterator<ReadEvent> readEventIterator = readEvents.iterator();
             while (readEventIterator.hasNext()) {
                 ReadEvent event = readEventIterator.next();
-                if (!event.isMe(() -> msg.getDomain(), () -> msg.getOpcode())) {
+
+                if (!(event.getDomain().getNumber() == msg.getDomain() &&
+                        event.getApiOpcode().getNumber() == msg.getOpcode())
+                        ) {
                     continue;
                 }
-                switch (event.read(this, ctx, msg)) {
-                    case UN_REMOVE:
-                        break;
-                    case ADD_HISTORY:
-                        // FIXME: 2017/9/11 还没有实现
-                        break;
-                    case REMOVE:
-                    default:
-                        readEventIterator.remove();
-                        break;
-                }
+                event.read(this, msg);
+                readEventIterator.remove();
             }
         });
     }
