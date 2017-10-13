@@ -38,28 +38,20 @@ public class MatchingRedirect extends AbstractActor {
 
     private void createRoom(CREATE_ROOM createRoom) {
 
-        Future<Object> result = ClusterChildNodeSystem.INSTANCE.askForward(
+        Object result = ClusterChildNodeSystem.INSTANCE.askForward(
                 DOMAIN.GAME_ROOM,
                 new ApiRequestForward(
                         MATCHING_ROOM_METHODS.CREATE_ROOM,
                         AppVersion.FIRST_VERSION,
                         RequestArg.asList(createRoom.userIds)));
 
-        result.onSuccess(new OnSuccess<Object>() {
-            @Override
-            public void onSuccess(Object result) throws Throwable {
-                // 成功了就关闭此次的重定向 actor
-                getContext().stop(getSelf());
-            }
-        }, getContext().getSystem().dispatcher());
-
-        result.onFailure(new OnFailure() {
-            @Override
-            public void onFailure(Throwable failure) throws Throwable {
-                // 失败了就把元素投递回去 Matching 队列
-                getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
-            }
-        }, getContext().getSystem().dispatcher());
+        if(result == null){
+            // 失败了就把元素投递回去 Matching 队列
+            getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
+        }else{
+            // 成功了就关闭此次的重定向 actor
+            getContext().stop(getSelf());
+        }
 
     }
 

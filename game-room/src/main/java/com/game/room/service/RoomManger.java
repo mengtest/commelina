@@ -1,10 +1,10 @@
 package com.game.room.service;
 
-import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.framework.akka_router.cluster.node.AbstractServiceActor;
 import com.game.room.event.PlayerStatusEvent;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by @panyao on 2017/8/17.
  */
-public class RoomManger extends AbstractActor {
+public class RoomManger extends AbstractServiceActor {
 
     // roomId -> roomContextActorRef
     private final BiMap<Long, ActorRef> roomIdToRoomContextActor = HashBiMap.create(128);

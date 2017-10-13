@@ -1,7 +1,7 @@
 package com.game.room.service;
 
-import akka.actor.AbstractActor;
 import akka.actor.Props;
+import com.framework.akka_router.cluster.node.AbstractServiceActor;
 import com.game.room.entity.PlayerEntity;
 import com.game.room.event.PlayerStatusEvent;
 import com.google.common.collect.BiMap;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by @panyao on 2017/8/17.
  */
-class RoomContext extends AbstractActor {
+class RoomContext extends AbstractServiceActor {
 
     private final long roomId;
 

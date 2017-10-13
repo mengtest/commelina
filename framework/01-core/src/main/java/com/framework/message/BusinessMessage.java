@@ -1,6 +1,5 @@
 package com.framework.message;
 
-import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;
 
 /**
@@ -11,8 +10,7 @@ public final class BusinessMessage<T> {
     private final int businessCode;
     private final T data;
 
-    static final String DEFAULT_DATA = null;
-    static final int DEFAULT_SUCCESS = 0;
+    private static final BusinessMessage<String> EMPTY_SUCCESS = new BusinessMessage<>(0, null);
 
     private BusinessMessage(int businessCode, T data) {
         this.businessCode = businessCode;
@@ -20,15 +18,15 @@ public final class BusinessMessage<T> {
     }
 
     public static BusinessMessage<String> error(Internal.EnumLite code) {
-        return success(code, DEFAULT_DATA);
+        return success(code, null);
     }
 
     public static BusinessMessage<String> success() {
-        return new BusinessMessage<>(DEFAULT_SUCCESS, DEFAULT_DATA);
+        return EMPTY_SUCCESS;
     }
 
     public static <T> BusinessMessage<T> success(T data) {
-        return new BusinessMessage<>(DEFAULT_SUCCESS, data);
+        return new BusinessMessage<>(0, data);
     }
 
     public static <T> BusinessMessage<T> success(Internal.EnumLite code, T data) {
