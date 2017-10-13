@@ -4,7 +4,6 @@ import com.framework.message.ApiRequest;
 import com.framework.message.RequestArg;
 import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SocketASK;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;

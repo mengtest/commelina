@@ -13,6 +13,8 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.nio.charset.Charset;
+
 /**
  * Created by @panyao on 2017/9/11.
  */
@@ -30,13 +32,16 @@ public class GatewayLogin implements MemberEvent {
     @Override
     public void handle(MemberEventLoop eventLoop, ChannelHandlerContext ctx) {
         // FIXME: 2017/9/11 获取 token
+
+        System.out.println(Charset.defaultCharset());
+
         SocketASK ask = SocketASK.newBuilder()
                 .setForward(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
                 .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
                 .setVersion("1.0.0")
-                .addArgs(0, Arg.newBuilder()
+                .addArgs(Arg.newBuilder()
                         .setDataType(DATA_TYPE.LONG)
-                        .setValue(ByteString.copyFrom(new byte[]{Long.valueOf(userId).byteValue()})))
+                        .setValue(ByteString.copyFromUtf8("1")))
                 .build();
         ctx.writeAndFlush(ask);
     }
