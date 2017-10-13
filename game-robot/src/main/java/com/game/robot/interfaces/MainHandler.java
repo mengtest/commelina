@@ -30,6 +30,9 @@ public final class MainHandler implements MainGameEvent {
     }
 
     public void connectSuccess(ChannelHandlerContext ctx) {
+        LOGGER.info("成功连接服务器");
+        errorTimes = 0;
+
         memberEventLoop.ctx = ctx;
         // 执行启动事件
         for (HandlerEvent initHandler : initHandlers) {
@@ -51,22 +54,36 @@ public final class MainHandler implements MainGameEvent {
         Collections.addAll(initHandlers, events);
 
         // 根据账号获取 token
-        memberEventLoop.isReady = NettyClient.getNettyClientByConfig(this);
+        do {
+            memberEventLoop.isReady = NettyClient.getNettyClientByConfig(this);
+            if (!memberEventLoop.isReady) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    LOGGER.error("thread error, {}.", e);
+                }
+                LOGGER.info("尝试再次连接服务器,直到服务器启动");
+            }
+        } while (!memberEventLoop.isReady);
     }
 
     @Override
     public void exception(ChannelHandlerContext ctx, Throwable throwable) {
         if (throwable instanceof IOException) {
             memberEventLoop.isReady = false;
-            if (errorTimes++ < 10) {
+            do {
                 try {
                     Thread.sleep(2000);
                     LOGGER.info("第{}次尝试重连,{}", errorTimes, LocalTime.now().withNano(0));
-                    memberEventLoop.isReady = NettyClient.getNettyClientByConfig(this);
+                    // TODO: 2017/10/13 这里写得怪怪的，先偷懒了
+                    NettyClient.getNettyClientByConfig(this);
                 } catch (InterruptedException e) {
                     LOGGER.error("thread error, {}.", e);
-                    exception(ctx, throwable);
                 }
+            } while (!memberEventLoop.isReady && errorTimes++ < 20);
+
+            if (!memberEventLoop.isReady) {
+                LOGGER.info("暂时无法重新连接服务器,请重启,{}", LocalTime.now().withNano(0));
             }
         }
     }
