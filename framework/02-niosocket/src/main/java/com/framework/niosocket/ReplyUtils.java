@@ -20,6 +20,7 @@ public final class ReplyUtils {
         ChannelFuture future = channelHandlerContext.writeAndFlush(socketMessage);
 
         if (future.isSuccess()) {
+            LOGGER.debug("Send message success.");
             // 成功
         } else if (future.cause() != null) {
             // FIXME: 2017/8/8 全部转换为领域模型

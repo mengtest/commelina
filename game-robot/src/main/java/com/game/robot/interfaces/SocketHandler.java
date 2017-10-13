@@ -16,10 +16,6 @@ public interface SocketHandler {
 
     }
 
-    default void heartError(ChannelHandlerContext ctx) {
-
-    }
-
     default void exception(ChannelHandlerContext ctx, Throwable throwable) {
         throw new RuntimeException(throwable);
     }

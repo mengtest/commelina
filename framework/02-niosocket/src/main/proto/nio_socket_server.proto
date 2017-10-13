@@ -49,9 +49,9 @@ enum SERVER_CODE {
     // 通知
     NOTIFY_CODE = 2;
     // 要调用的 api 不存在
-    RPC_API_NOT_FOUND = 3;
+    RPC_API_NOT_FOUND = 4;
     // 服务端内部错误
-    SERVER_ERROR = 4;
+    SERVER_ERROR = 5;
 }
 
 // 基本数据类型

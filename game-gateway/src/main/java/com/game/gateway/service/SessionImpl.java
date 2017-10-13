@@ -49,9 +49,7 @@ public class SessionImpl implements LocalServiceHandler {
 //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
             getLogger().info("userId:{}, 登录成功", tokenArg.getAsLong());
-            getSender().tell(new LoginUserEntity(tokenArg.getAsLong()), getSelf());
-
-//            response(DefaultMessageProvider.produceMessage());
+            getSender().tell(new LoginUserEntity(tokenArg.getAsLong(), DefaultMessageProvider.produceMessage()), getSelf());
         }
     }
 }

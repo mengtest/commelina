@@ -37,6 +37,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
             ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
         } else if (result instanceof LoginUserEntity) {
             ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
+            ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((LoginUserEntity) result).getMessageBus());
         } else {
             throw new InvalidParameterException("Undefined type: " + result.getClass().getName());
         }

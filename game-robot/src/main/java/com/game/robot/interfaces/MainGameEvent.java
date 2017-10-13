@@ -5,6 +5,6 @@ package com.game.robot.interfaces;
  */
 public interface MainGameEvent extends SocketHandler {
 
-    void start(HandlerEvent event, HandlerEvent... events);
+    void start(MemberEvent event, MemberEvent... events);
 
 }

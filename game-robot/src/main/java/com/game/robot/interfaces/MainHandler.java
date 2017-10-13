@@ -23,19 +23,20 @@ public final class MainHandler implements MainGameEvent {
 
     private final MemberEventLoop memberEventLoop = new MemberEventLoop();
 
-    private final List<HandlerEvent> initHandlers = Lists.newArrayList();
+    private final List<MemberEvent> initHandlers = Lists.newArrayList();
 
     public void channelRead(ChannelHandlerContext ctx, SocketMessage msg) {
-        memberEventLoop.acceptor(ctx, msg);
+        memberEventLoop.acceptor(msg);
     }
 
     public void connectSuccess(ChannelHandlerContext ctx) {
         LOGGER.info("成功连接服务器");
         errorTimes = 0;
+        memberEventLoop.isReady = true;
 
         memberEventLoop.ctx = ctx;
         // 执行启动事件
-        for (HandlerEvent initHandler : initHandlers) {
+        for (MemberEvent initHandler : initHandlers) {
             memberEventLoop.addEvent(initHandler);
         }
     }
@@ -45,11 +46,7 @@ public final class MainHandler implements MainGameEvent {
         memberEventLoop.eventLoop.shutdownGracefully();
     }
 
-    public void heartError(ChannelHandlerContext ctx) {
-        disconnect(ctx);
-    }
-
-    public void start(HandlerEvent event, HandlerEvent... events) {
+    public void start(MemberEvent event, MemberEvent... events) {
         initHandlers.add(event);
         Collections.addAll(initHandlers, events);
 
@@ -82,6 +79,7 @@ public final class MainHandler implements MainGameEvent {
                 }
             } while (!memberEventLoop.isReady && errorTimes++ < 20);
 
+            // 这个判断似乎没啥用
             if (!memberEventLoop.isReady) {
                 LOGGER.info("暂时无法重新连接服务器,请重启,{}", LocalTime.now().withNano(0));
             }

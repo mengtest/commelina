@@ -10,7 +10,6 @@ import com.game.robot.interfaces.MemberEvent;
 import com.game.robot.interfaces.MemberEventLoop;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by @panyao on 2017/9/11.
@@ -29,7 +28,7 @@ public class MatchingJoinMatch implements MemberEvent {
                 .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
                 .setOpcode(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
-                .setArgs(0, Arg.newBuilder().setValue(ByteString.copyFromUtf8(userId.toString())))
+                .addArgs(Arg.newBuilder().setValue(ByteString.copyFromUtf8(userId.toString())))
                 .build();
     }
 

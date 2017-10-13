@@ -42,7 +42,7 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
         SocketMessage message = (SocketMessage) msg;
         if (message.getCode() == SERVER_CODE.HEARTBEAT_CODE) {
             LOGGER.debug("Heartbeat normal.");
-            socketHandler.heartError(ctx);
+            // nothing to do
             return;
         }
 
