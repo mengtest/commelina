@@ -1,6 +1,7 @@
 package com.framework.akka_router;
 
 import com.framework.message.ApiRequest;
+import com.framework.message.ApiRequestForward;
 import com.google.protobuf.Internal;
 
 /**
@@ -10,6 +11,6 @@ public interface Rewrite {
 
     Internal.EnumLite selectActorSeed(ApiRequest apiRequest);
 
-    Internal.EnumLite selectActorSeed(ApiRequestForwardEntity requestForward);
+    Internal.EnumLite selectActorSeed(ApiRequestForward requestForward);
 
 }

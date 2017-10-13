@@ -8,7 +8,6 @@ import akka.util.Timeout;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
 import com.typesafe.config.ConfigFactory;
-import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
 import java.security.InvalidParameterException;
@@ -28,15 +27,12 @@ public class AkkaLocalWorkerSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(15, TimeUnit.SECONDS));
 
-    public Future<Object> askLocalRouterNode(ApiRequest apiRequest) {
-
+    public Object askLocalRouterNode(ApiRequest apiRequest) {
         return askLocalRouterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
-        Object object = PatternsCS.ask(localRouterFrontend, apiRequest, timeout).toCompletableFuture().join();
-        System.out.println(object);
-        return null;
+    public Object askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
+        return PatternsCS.ask(localRouterFrontend, apiRequest, timeout).toCompletableFuture().join();
     }
 
     public ActorSystem getSystem() {

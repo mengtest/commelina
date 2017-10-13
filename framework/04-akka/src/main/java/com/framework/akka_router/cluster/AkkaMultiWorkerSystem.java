@@ -3,15 +3,16 @@ package com.framework.akka_router.cluster;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
+import akka.pattern.PatternsCS;
+import akka.pattern.PipeToSupport;
 import akka.util.Timeout;
 import com.framework.message.ApiRequest;
 import com.framework.message.ApiRequestForward;
 import com.typesafe.config.ConfigFactory;
-import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
 import java.security.InvalidParameterException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,28 +32,31 @@ public class AkkaMultiWorkerSystem {
         return system;
     }
 
-    public Future<Object> askRouterClusterNode(final ApiRequest apiRequest) {
+    public Object askRouterClusterNode(final ApiRequest apiRequest) {
         return askRouterClusterNode(apiRequest, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, apiRequest, timeout);
+    public Object askRouterClusterNode(final ApiRequest apiRequest, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, apiRequest, timeout);
     }
 
-    public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward) {
-        return askRouterClusterNode(requestForward, DEFAULT_TIMEOUT);
+    PipeToSupport.PipeableCompletionStage<Object> askRouterClusterNodeForward(final ApiRequestForward requestForward, ActorRef targetActor) {
+        return askRouterClusterNodeFroward(requestForward, targetActor, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, requestForward, timeout);
-    }
+    /**
+     * https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
+     *
+     * @param requestForward
+     * @param targetActor
+     * @param timeout
+     * @return
+     */
+    PipeToSupport.PipeableCompletionStage<Object> askRouterClusterNodeFroward(final ApiRequestForward requestForward, ActorRef targetActor, Timeout timeout) {
+        CompletableFuture<Object> askFuture = PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture();
+        CompletableFuture<Object> transformed = CompletableFuture.allOf(askFuture).thenApply(v -> askFuture.join());
 
-    public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward) {
-        return askRouterClusterNode(requestForward, DEFAULT_TIMEOUT);
-    }
-
-    public Future<Object> notifyRouterClusterNode(final ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, requestForward, timeout);
+        return PatternsCS.pipe(transformed, getSystem().dispatcher()).to(targetActor);
     }
 
     AkkaMultiWorkerSystem() {

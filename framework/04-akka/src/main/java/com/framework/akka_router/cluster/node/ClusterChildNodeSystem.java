@@ -4,16 +4,14 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
+import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka_router.ApiRequestForwardEntity;
-import com.framework.message.ApiRequestForward;
 import com.framework.message.BroadcastMessage;
 import com.framework.message.NotifyMessage;
 import com.framework.message.WorldMessage;
 import com.google.protobuf.Internal;
 import com.typesafe.config.ConfigFactory;
-import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
 import java.security.InvalidParameterException;
@@ -34,36 +32,40 @@ public class ClusterChildNodeSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
-    public Future<Object> askForward(Internal.EnumLite forwardId, ApiRequestForward requestForward) {
+    public Object askForward(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward) {
         return askForward(forwardId, requestForward, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> askForward(Internal.EnumLite forwardId, ApiRequestForward requestForward, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout);
+    public Object askForward(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward, Timeout timeout) {
+        return PatternsCS.ask(
+                clusterRouterFrontend,
+                ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout)
+                .toCompletableFuture()
+                .join();
     }
 
-    public Future<Object> notify(BroadcastMessage message) {
+    public Object notify(BroadcastMessage message) {
         return notify(message, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> notify(BroadcastMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, message, timeout);
+    public Object notify(BroadcastMessage message, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, message, timeout).toCompletableFuture().join();
     }
 
-    public Future<Object> notify(NotifyMessage message) {
+    public Object notify(NotifyMessage message) {
         return notify(message, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> notify(NotifyMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, message, timeout);
+    public Object notify(NotifyMessage message, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, message, timeout).toCompletableFuture().join();
     }
 
-    public Future<Object> notify(WorldMessage message) {
+    public Object notify(WorldMessage message) {
         return notify(message, DEFAULT_TIMEOUT);
     }
 
-    public Future<Object> notify(WorldMessage message, Timeout timeout) {
-        return Patterns.ask(clusterRouterFrontend, message, timeout);
+    public Object notify(WorldMessage message, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, message, timeout).toCompletableFuture().join();
     }
 
     void registerRouterFronted(ActorSelection routerFronted) {

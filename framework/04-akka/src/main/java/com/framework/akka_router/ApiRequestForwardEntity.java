@@ -1,6 +1,5 @@
 package com.framework.akka_router;
 
-import com.framework.message.ApiRequestForward;
 import com.google.protobuf.Internal;
 
 /**
@@ -10,14 +9,14 @@ public class ApiRequestForwardEntity {
 
     private final Internal.EnumLite forwardId;
 
-    private final ApiRequestForward requestForward;
+    private final com.framework.message.ApiRequestForward requestForward;
 
-    private ApiRequestForwardEntity(Internal.EnumLite forwardId, ApiRequestForward requestForward) {
+    private ApiRequestForwardEntity(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward) {
         this.forwardId = forwardId;
         this.requestForward = requestForward;
     }
 
-    public static ApiRequestForwardEntity newRequest(Internal.EnumLite forwardId, ApiRequestForward requestForward) {
+    public static ApiRequestForwardEntity newRequest(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward) {
         return new ApiRequestForwardEntity(forwardId, requestForward);
     }
 
@@ -25,7 +24,7 @@ public class ApiRequestForwardEntity {
         return forwardId;
     }
 
-    public ApiRequestForward getRequestForward() {
+    public com.framework.message.ApiRequestForward getRequestForward() {
         return requestForward;
     }
 

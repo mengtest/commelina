@@ -2,6 +2,7 @@ package com.game.gateway.service;
 
 import com.framework.akka_router.ActorServiceHandler;
 import com.framework.akka_router.LocalServiceHandler;
+import com.framework.akka_router.LoginUserEntity;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.message.ApiRequest;
 import com.framework.message.BusinessMessage;
@@ -48,7 +49,7 @@ public class SessionImpl implements LocalServiceHandler {
 //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
             getLogger().info("userId:{}, 登录成功", tokenArg.getAsLong());
-//            getSender().tell(new LoginUserEntity(tokenArg.getAsLong()), getSelf());
+            getSender().tell(new LoginUserEntity(tokenArg.getAsLong()), getSelf());
 
 //            response(DefaultMessageProvider.produceMessage());
         }
