@@ -85,12 +85,13 @@ public final class MemberEventLoop {
 
             for (int i = 0; i < readEvents.size(); i++) {
                 ReadEvent event = readEvents.get(i);
-                if (!(event.getDomain().getNumber() == msg.getDomain() &&
-                                event.getApiOpcode().getNumber() == msg.getOpcode()
-                )) {
-                    continue;
-                }
+
                 if (msg.getCode() == SERVER_CODE.RESONSE_CODE || msg.getCode() == SERVER_CODE.NOTIFY_CODE) {
+                    if (!(event.getDomain().getNumber() == msg.getDomain() &&
+                            event.getApiOpcode().getNumber() == msg.getOpcode()
+                    )) {
+                        continue;
+                    }
                     switch (event.read(this, msg)) {
                         case UN_REMOVE:
                             break;
@@ -100,10 +101,11 @@ public final class MemberEventLoop {
                         default:
                             readEvents.remove(i);
                     }
+                    break;
                 } else {
                     switch (msg.getCode()) {
                         case RPC_API_NOT_FOUND:
-                            LOGGER.error("Api 没有找到.");
+                            LOGGER.error("Api 没有找到.forward:{},opcode:{}", msg.getDomain(), msg.getOpcode());
                             break;
                         case SERVER_ERROR:
                             LOGGER.error("服务器内部错误.");
@@ -112,10 +114,9 @@ public final class MemberEventLoop {
                             LOGGER.error("未解析的SERVER_CODE.");
 
                     }
+                    break;
                 }
-                break;
             }
-
 //                Iterator < ReadEvent > readEventIterator = readEvents.iterator();
 //        while (readEventIterator.hasNext()) {
 //            ReadEvent event = readEventIterator.next();

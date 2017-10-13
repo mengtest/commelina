@@ -1,7 +1,6 @@
 package com.framework.niosocket;
 
 import com.framework.message.MessageBus;
-import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 

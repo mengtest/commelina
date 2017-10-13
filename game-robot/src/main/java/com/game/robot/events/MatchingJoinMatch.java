@@ -26,7 +26,7 @@ public class MatchingJoinMatch implements MemberEvent {
     public SocketASK handler(MemberEventLoop eventLoop) {
         return SocketASK.newBuilder()
                 .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
-                .setOpcode(MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE)
+                .setOpcode(MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
                 .addArgs(Arg.newBuilder().setValue(ByteString.copyFromUtf8(userId.toString())))
                 .build();

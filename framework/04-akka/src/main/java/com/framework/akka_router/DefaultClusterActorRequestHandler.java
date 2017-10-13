@@ -1,11 +1,11 @@
 package com.framework.akka_router;
 
-import com.framework.akka_router.cluster.ClusterAskUtils;
+import com.framework.akka_router.cluster.AkkaMultiWorkerSystem;
+import com.framework.akka_router.cluster.AkkaMultiWorkerSystemContext;
 import com.framework.message.ApiRequest;
-import com.framework.message.MessageBus;
-import com.framework.message.ResponseMessage;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
+import com.framework.niosocket.proto.SERVER_CODE;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,13 @@ public abstract class DefaultClusterActorRequestHandler implements RequestHandle
     }
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
-        MessageBus result = ClusterAskUtils.askRouterClusterNode(getRouterId(), request);
-        ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
+        AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(getRouterId());
+        if (clusterSystem == null) {
+            ReplyUtils.reply(ctx, SERVER_CODE.RPC_API_NOT_FOUND, getRouterId(), request.getOpcode());
+            return;
+        }
+
+        ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), clusterSystem.askRouterClusterNode(request));
     }
 
 }

@@ -1,15 +1,16 @@
 package com.game.gateway;
 
 import com.framework.akka_router.LocalServiceHandler;
+import com.framework.akka_router.cluster.AkkaMultiWorkerSystemCreator;
 import com.framework.akka_router.local.AkkaLocalWorkerSystemCreator;
 import com.framework.niosocket.BootstrapNioSocket;
+import com.game.common.proto.DOMAIN;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import javax.annotation.PostConstruct;
 
@@ -37,11 +38,11 @@ public class GatewaySpringBoot implements ApplicationContextAware {
         AkkaLocalWorkerSystemCreator.create("gateway")
                 .registerRouter(applicationContext.getBeansOfType(LocalServiceHandler.class));
 
-//        // matching 集群 handler
-//        AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "ClusterMatchingSystem", "cluster-gateway-matching")
-//                .registerRouter()
-//                .building();
-//
+        // matching 集群 handler
+        AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "ClusterMatchingSystem", "cluster-gateway-matching")
+                .registerRouter()
+                .building();
+
 //        // room 集群 handler
 //        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem","cluster-gateway-room")
 //                .registerRouter(RoomRouterFrontedClusterActor.class)
