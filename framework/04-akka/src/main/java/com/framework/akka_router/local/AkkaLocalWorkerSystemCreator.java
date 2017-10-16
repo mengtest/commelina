@@ -26,11 +26,6 @@ public final class AkkaLocalWorkerSystemCreator {
         return new AkkaLocalWorkerSystemCreator();
     }
 
-    public static AkkaLocalWorkerSystemCreator create() {
-        AkkaLocalWorkerSystem.INSTANCE.create();
-        return new AkkaLocalWorkerSystemCreator();
-    }
-
     AkkaLocalWorkerSystemCreator() {
 
     }

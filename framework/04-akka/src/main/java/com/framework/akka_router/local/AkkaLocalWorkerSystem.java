@@ -7,7 +7,6 @@ import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka_router.RouterRegistrationEntity;
 import com.framework.message.ApiRequest;
-import com.framework.message.MessageBus;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -40,12 +39,8 @@ public class AkkaLocalWorkerSystem {
         return system;
     }
 
-    void create() {
-        system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load());
-    }
-
     void create(String config) {
-        system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load(config));
+        system = ActorSystem.create("AkkaWorkSystem", ConfigFactory.load().withFallback(ConfigFactory.load(config)));
     }
 
     void registerRouterFronted(Props props) {

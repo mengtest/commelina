@@ -57,7 +57,7 @@ public class AkkaMultiWorkerSystem {
     PipeToSupport.PipeableCompletionStage<ResponseEntity> askRouterClusterNodeFroward(final ApiRequestForward requestForward, ActorRef targetActor, Timeout timeout) {
         CompletableFuture<Object> askFuture = PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture();
 
-        CompletableFuture<ResponseEntity> transformed = CompletableFuture.allOf(askFuture).thenApply(v -> (ResponseEntity)askFuture.join());
+        CompletableFuture<ResponseEntity> transformed = CompletableFuture.allOf(askFuture).thenApply(v -> (ResponseEntity) askFuture.join());
 
         return PatternsCS.pipe(transformed, getSystem().dispatcher()).to(targetActor);
     }
@@ -67,7 +67,7 @@ public class AkkaMultiWorkerSystem {
     }
 
     void create(String clusterName, String config) {
-        system = ActorSystem.create(clusterName, ConfigFactory.load(config));
+        system = ActorSystem.create(clusterName, ConfigFactory.load().withFallback(ConfigFactory.load(config)));
     }
 
     void registerRouterFronted(Props props) {
