@@ -6,7 +6,7 @@ import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka_router.ApiRequest;
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -30,12 +30,12 @@ public class AkkaMultiWorkerSystem {
         return system;
     }
 
-    public MessageBus askRouterClusterNode(final ApiRequest ask) {
+    public MessageBody askRouterClusterNode(final ApiRequest ask) {
         return askRouterClusterNode(ask, DEFAULT_TIMEOUT);
     }
 
-    public MessageBus askRouterClusterNode(final ApiRequest ask, Timeout timeout) {
-        return (MessageBus) PatternsCS.ask(clusterRouterFrontend, ask, timeout).toCompletableFuture().join();
+    public MessageBody askRouterClusterNode(final ApiRequest ask, Timeout timeout) {
+        return (MessageBody) PatternsCS.ask(clusterRouterFrontend, ask, timeout).toCompletableFuture().join();
     }
 
     AkkaMultiWorkerSystem() {

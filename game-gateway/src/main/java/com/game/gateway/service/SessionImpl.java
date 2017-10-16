@@ -6,10 +6,10 @@ import com.framework.akka_router.LoginUserEntity;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
-import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SocketASK;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 
 /**
@@ -36,7 +36,7 @@ public class SessionImpl implements LocalServiceHandler {
 
         @Override
         public void onRequest(SocketASK request) {
-            Arg tokenArg = request.getArgs(0);
+            ByteString tokenArg = request.getArgs(0);
             if (tokenArg == null) {
                 // token 转换错误
                 response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
@@ -48,7 +48,7 @@ public class SessionImpl implements LocalServiceHandler {
 //        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
 //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
-            long userId = Long.valueOf(tokenArg.getValue().toStringUtf8());
+            long userId = Long.valueOf(tokenArg.toStringUtf8());
             getLogger().info("userId:{}, 登录成功", userId);
             getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceMessage()), getSelf());
         }

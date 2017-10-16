@@ -1,7 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.core.MessageBus;
-import com.framework.niosocket.proto.BusinessProtocol;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
@@ -19,19 +18,19 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
     private final Logger logger = LoggerFactory.getLogger(MessageResponseBuilderWithProtoBuff.class);
 
     @Override
-    public SocketMessage createPushMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus) {
-        return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.NOTIFY_CODE);
+    public SocketMessage createPushMessage(Internal.EnumLite domain, int opcode, MessageBody messageBody) {
+        return createMessageWithType(domain, opcode, messageBody, SERVER_CODE.NOTIFY_CODE);
     }
 
     @Override
-    public SocketMessage createResponseMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus) {
-        return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.RESONSE_CODE);
+    public SocketMessage createResponseMessage(Internal.EnumLite domain, int opcode, MessageBody messageBody) {
+        return createMessageWithType(domain, opcode, messageBody, SERVER_CODE.RESONSE_CODE);
     }
 
-    private SocketMessage createMessageWithType(Internal.EnumLite domain, int opcode, MessageBus messageBus, SERVER_CODE type) {
+    private SocketMessage createMessageWithType(Internal.EnumLite domain, int opcode, MessageBody body, SERVER_CODE type) {
         byte[] bytes;
         try {
-            bytes = messageBus.getBytes();
+            bytes = body.getBytes();
         } catch (IOException e) {
             logger.error("{}", e);
             return null;
@@ -40,7 +39,6 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
                 .setCode(type)
                 .setDomain(domain.getNumber())
                 .setOpcode(opcode)
-                .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                 .setMsg(ByteString.copyFrom(bytes))
                 .build();
     }

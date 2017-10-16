@@ -57,7 +57,6 @@ public final class MessageAdapter {
 
         for (Long userId : NettyServerContext.INSTANCE.LOGIN_USERS.values()) {
             Channel channel = NettyServerContext.INSTANCE.getUserChannel(userId);
-
             ReplyUtils.reply(channel, msg);
         }
 

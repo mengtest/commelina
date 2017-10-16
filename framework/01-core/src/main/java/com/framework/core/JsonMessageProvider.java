@@ -14,16 +14,16 @@ public class JsonMessageProvider {
     private static final BusinessMessage EMPTY_RESPONSE_MESSAGE =
             BusinessMessage.success();
 
-    public static MessageBus produceMessage() {
+    public static MessageBody produceMessage() {
         return new JsonMessage(EMPTY_RESPONSE_MESSAGE);
     }
 
-    public static MessageBus produceMessage(BusinessMessage message) {
+    public static MessageBody produceMessage(BusinessMessage message) {
         Preconditions.checkNotNull(message);
         return new JsonMessage(message);
     }
 
-    public static MessageBus produceMessageForKV(final String k, final Object v) {
+    public static MessageBody produceMessageForKV(final String k, final Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
         final Map<String, Object> kv = new HashMap<>();

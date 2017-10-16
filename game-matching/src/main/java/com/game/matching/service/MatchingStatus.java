@@ -4,12 +4,12 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.BroadcastMessage;
 import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
 import com.framework.core.DefaultMessageProvider;
 import com.game.matching.proto.OPCODE;
 import scala.concurrent.duration.Duration;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,13 +30,12 @@ public class MatchingStatus extends AbstractActor {
     }
 
     private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
-        BroadcastMessage broadcast = BroadcastMessage.newBroadcast(
-                OPCODE.NOTIFY_MATCH_SUCCESS,
-                notifyMatchStatus.userIds,
-                DefaultMessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.length));
-        log.info("Broadcast match status people: " + notifyMatchStatus.userIds.length);
+        log.info("Broadcast match status people: " + notifyMatchStatus.userIds.size());
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-        ClusterChildNodeSystem.INSTANCE.notify(broadcast);
+        ClusterChildNodeSystem.INSTANCE.broadcast(
+                OPCODE.NOTIFY_MATCH_SUCCESS_VALUE,
+                notifyMatchStatus.userIds,
+                DefaultMessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.size()));
 
         // 延迟 关闭此 actor
         getContext().getSystem().scheduler()
@@ -48,9 +47,9 @@ public class MatchingStatus extends AbstractActor {
     }
 
     static final class NOTIFY_MATCH_STATUS {
-        long[] userIds;
+        List<Long> userIds;
 
-        NOTIFY_MATCH_STATUS(long[] userIds) {
+        NOTIFY_MATCH_STATUS(List<Long> userIds) {
             this.userIds = userIds;
         }
     }

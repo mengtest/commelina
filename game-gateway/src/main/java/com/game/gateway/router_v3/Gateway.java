@@ -4,7 +4,7 @@ import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.DefaultLocalActorRequestHandler;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
@@ -21,7 +21,7 @@ import io.netty.channel.ChannelHandlerContext;
 @NioSocketRouter(forward = DOMAIN.GATE_WAY_VALUE)
 public class Gateway extends DefaultLocalActorRequestHandler {
 
-    private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.GATEWAY_API_UNAUTHORIZED));
+    private final MessageBody messageBody = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.GATEWAY_API_UNAUTHORIZED));
 
     @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
@@ -34,7 +34,7 @@ public class Gateway extends DefaultLocalActorRequestHandler {
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
             return false;
         }
 
@@ -53,7 +53,7 @@ public class Gateway extends DefaultLocalActorRequestHandler {
 //
 //        final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
 //        if (userId <= 0) {
-//            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
+//            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
 //            return false;
 //        }
 //

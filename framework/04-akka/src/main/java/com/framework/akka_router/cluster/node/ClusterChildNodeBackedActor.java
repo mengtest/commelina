@@ -9,15 +9,13 @@ import akka.cluster.MemberStatus;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka_router.*;
-import com.framework.akka_router.RouterRegistration;
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.message.ResponseMessage;
-import com.framework.niosocket.proto.SocketASK;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
+public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, ClusterNodeDispatchForward, MemberEvent {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
@@ -38,7 +36,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(SocketASK.class, this::onRequest)
+                .match(ApiRequest.class, this::onRequest)
                 .match(ApiRequestForward.class, this::onForward)
                 .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
                 .match(MemberOnlineEvent.class, on -> onOnline(on.getLoginUserId()))
@@ -72,7 +70,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
         // nothing to do
     }
 
-    protected void response(MessageBus message) {
+    protected void response(MessageBody message) {
         getSender().tell(ResponseMessage.newMessage(message), getSelf());
     }
 

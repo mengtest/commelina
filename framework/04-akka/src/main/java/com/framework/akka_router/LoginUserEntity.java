@@ -1,6 +1,6 @@
 package com.framework.akka_router;
 
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 
 /**
  * Created by @panyao on 2017/9/30.
@@ -8,18 +8,18 @@ import com.framework.core.MessageBus;
 public final class LoginUserEntity {
 
     private final long userId;
-    private final MessageBus messageBus;
+    private final MessageBody messageBody;
 
-    public LoginUserEntity(long userId, MessageBus messageBus) {
+    public LoginUserEntity(long userId, MessageBody messageBody) {
         this.userId = userId;
-        this.messageBus = messageBus;
+        this.messageBody = messageBody;
     }
 
     public long getUserId() {
         return userId;
     }
 
-    public MessageBus getMessageBus() {
-        return messageBus;
+    public MessageBody getMessageBody() {
+        return messageBody;
     }
 }

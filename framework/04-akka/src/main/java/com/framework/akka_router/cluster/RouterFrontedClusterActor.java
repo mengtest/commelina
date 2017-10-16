@@ -6,12 +6,12 @@ import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
-import com.framework.akka_router.*;
+import com.framework.akka_router.ActorResponse;
+import com.framework.akka_router.ApiRequestForward;
+import com.framework.akka_router.Rewrite;
+import com.framework.akka_router.RouterRegistration;
 import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
-import com.framework.niosocket.MessageAdapter;
-import com.framework.niosocket.message.BroadcastMessage;
 import com.framework.niosocket.message.NotifyMessage;
-import com.framework.niosocket.message.WorldMessage;
 import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -49,9 +49,11 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     }
                 })
                 // from cluster seed node.
-                .match(NotifyMessage.class, n -> MessageAdapter.addNotify(myRouterId, n))
-                .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(myRouterId, b))
-                .match(WorldMessage.class, w -> MessageAdapter.addWorld(myRouterId, w))
+                .match(NotifyMessage.class, n -> {
+//                    MessageAdapter.addNotify(myRouterId, n.);
+                })
+//                .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(myRouterId, b))
+//                .match(WorldMessage.class, w -> MessageAdapter.addWorld(myRouterId, w))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
                     AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(() -> rf.getForward());
@@ -67,9 +69,9 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                                     .toCompletableFuture();
 
                             // ask with pipe
-                            CompletableFuture<ResponseMessage> transformed = CompletableFuture
+                            CompletableFuture<ActorResponse> transformed = CompletableFuture
                                     .allOf(askFuture)
-                                    .thenApply(v -> (ResponseMessage) askFuture.join());
+                                    .thenApply(v -> (ActorResponse) askFuture.join());
 
                             // ask with pipe to sender.
                             PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender());

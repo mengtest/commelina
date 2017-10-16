@@ -6,7 +6,6 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka_router.cluster.node.AbstractServiceActor;
 import com.framework.core.DefaultMessageProvider;
-import com.framework.message.ResponseMessage;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
 
@@ -70,11 +69,8 @@ public class Matching extends AbstractServiceActor {
                 matchingRedirect.tell(new MatchingRedirect.CREATE_ROOM(userIds), getSelf());
             } while (matchList.size() >= MATCH_SUCCESS_PEOPLE);
         } else {
-            long[] userIds = new long[matchList.size()];
-
-            for (int i = 0; i < matchList.size(); i++) {
-                userIds[i] = matchList.get(i);
-            }
+            List<Long> userIds = Lists.newArrayList();
+            userIds.addAll(matchList);
             final ActorRef notifyMatchStatus = getContext().actorOf(MatchingStatus.props());
             notifyMatchStatus.tell(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getSelf());
         }
@@ -88,7 +84,7 @@ public class Matching extends AbstractServiceActor {
         log.info("cancel queue userId " + userId + ", result " + rs);
 
         // 回复 MatchingReceiveRequestActor 的 调用者成功
-        getSender().tell(ResponseMessage.newMessage(DefaultMessageProvider.produceMessage()), getSelf());
+        response(DefaultMessageProvider.produceMessage());
     }
 
     private void removeMatch(REMOVE_MATCH removeMatch) {

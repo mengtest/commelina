@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
@@ -63,7 +63,7 @@ public final class ReplyUtils {
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              Internal.EnumLite domain,
                              int opcode,
-                             MessageBus message) {
+                             MessageBody message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER.createResponseMessage(domain, opcode, message);
         reply(channelHandlerContext, msg);
     }

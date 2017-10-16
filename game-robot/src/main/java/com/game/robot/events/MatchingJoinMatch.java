@@ -1,6 +1,5 @@
 package com.game.robot.events;
 
-import com.framework.niosocket.proto.Arg;
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
 import com.game.common.proto.DOMAIN;
@@ -28,7 +27,7 @@ public class MatchingJoinMatch implements MemberEvent {
                 .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
                 .setOpcode(MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
-                .addArgs(Arg.newBuilder().setValue(ByteString.copyFromUtf8(userId.toString())))
+                .addArgs(ByteString.copyFromUtf8(userId.toString()))
                 .build();
     }
 

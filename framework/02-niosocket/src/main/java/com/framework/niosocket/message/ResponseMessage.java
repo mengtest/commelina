@@ -1,6 +1,6 @@
 package com.framework.niosocket.message;
 
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 
 import java.io.Serializable;
 
@@ -9,17 +9,17 @@ import java.io.Serializable;
  */
 public class ResponseMessage implements Serializable {
 
-    private final MessageBus message;
+    private final MessageBody message;
 
-    protected ResponseMessage(MessageBus messageBus) {
-        this.message = messageBus;
+    protected ResponseMessage(MessageBody messageBody) {
+        this.message = messageBody;
     }
 
-    public static ResponseMessage newMessage(MessageBus messageBus) {
-        return new ResponseMessage(messageBus);
+    public static ResponseMessage newMessage(MessageBody messageBody) {
+        return new ResponseMessage(messageBody);
     }
 
-    public MessageBus getMessage() {
+    public MessageBody getMessage() {
         return message;
     }
 

@@ -16,7 +16,7 @@ public class MatchAbstractClientRouterActorTest {
 //                new RequestArg("1", RequestArg.DATA_TYPE.LONG),
 //        }), probe.getRef());
 
-//        MessageBus response = probe.expectMsgClass(MessageBus.class);
+//        MessageBody response = probe.expectMsgClass(MessageBody.class);
 //        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response.getMessage().getOpCode());
 
 //        AkkaBroadcast broadcast = probe.expectMsgClass(AkkaBroadcast.class);

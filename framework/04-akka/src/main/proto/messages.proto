@@ -6,36 +6,36 @@ option java_package = "com.framework.akka_router";
 option java_outer_classname = "Messages";
 option java_multiple_files = true;
 
-message BroadcastMessage {
+message ActorBroadcast {
     uint32 opcode = 1;
     repeated uint64 userIds = 2;
     bytes message = 3;
 }
 
-message NotifyMessage {
+message ActorNotify {
     uint32 opcode = 1;
     uint64 userId = 2;
     bytes message = 3;
 }
 
-message ResponseMessage {
-    bytes message = 3;
+message ActorResponse {
+    bytes message = 1;
 }
 
-message WorldMessage {
+message ActorWorld {
     uint32 opcode = 1;
-    bytes message = 3;
+    bytes message = 2;
 }
 
 message ApiRequest {
     // 接口域
-    uint32 opcode = 2;
+    uint32 opcode = 1;
     // 接口版本
-    string version = 3;
+    string version = 2;
     // 参数列表
-    repeated bytes args = 4;
+    repeated bytes args = 3;
     // 登录用户uid
-    uint64 loginUserId = 5;
+    uint64 loginUserId = 4;
 }
 
 message ApiRequestForward {

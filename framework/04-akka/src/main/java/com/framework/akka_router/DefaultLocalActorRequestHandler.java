@@ -1,7 +1,7 @@
 package com.framework.akka_router;
 
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ReplyUtils;
@@ -38,11 +38,11 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
 
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
         Object result = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request);
-        if (result instanceof MessageBus) {
+        if (result instanceof MessageBody) {
             ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
         } else if (result instanceof LoginUserEntity) {
             ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
-            ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((LoginUserEntity) result).getMessageBus());
+            ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((LoginUserEntity) result).getMessageBody());
         } else {
             throw new InvalidParameterException("Undefined type: " + result.getClass().getName());
         }

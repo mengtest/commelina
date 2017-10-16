@@ -4,7 +4,7 @@ import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.DefaultClusterActorRequestHandler;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
-import com.framework.core.MessageBus;
+import com.framework.core.MessageBody;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
@@ -20,7 +20,7 @@ import io.netty.channel.ChannelHandlerContext;
 @NioSocketRouter(forward = DOMAIN.GAME_ROOM_VALUE)
 public class ProxyRoom extends DefaultClusterActorRequestHandler {
 
-    private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED));
+    private final MessageBody messageBody = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED));
 
     @Override
     public Internal.EnumLite getRouterId() {
@@ -31,7 +31,7 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
             return false;
         }
 

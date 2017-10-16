@@ -1,7 +1,5 @@
 package com.game.robot.events;
 
-import com.framework.niosocket.proto.Arg;
-import com.framework.niosocket.proto.DATA_TYPE;
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
 import com.game.common.proto.DOMAIN;
@@ -39,9 +37,7 @@ public class GatewayLogin implements MemberEvent {
                 .setForward(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
                 .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
                 .setVersion("1.0.0")
-                .addArgs(Arg.newBuilder()
-                        .setDataType(DATA_TYPE.LONG)
-                        .setValue(ByteString.copyFromUtf8("1")))
+                .addArgs(ByteString.copyFromUtf8("1"))
                 .build();
     }
 
