@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package netty.nio.socket.protocol.desc;
+package netty.nio.socket.protocol;
 
 option java_package = "com.framework.niosocket.proto";
 option java_outer_classname = "SocketNettyProtocolDesc";

@@ -1,8 +1,8 @@
 package com.framework.niosocket;
 
-import com.framework.message.BroadcastMessage;
-import com.framework.message.NotifyMessage;
-import com.framework.message.WorldMessage;
+import com.framework.niosocket.message.BroadcastMessage;
+import com.framework.niosocket.message.NotifyMessage;
+import com.framework.niosocket.message.WorldMessage;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 import io.netty.channel.Channel;
@@ -19,7 +19,7 @@ public final class MessageAdapter {
 
     public static boolean addNotify(Internal.EnumLite domain, NotifyMessage message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
         if (msg == null) {
             return false;
         }
@@ -34,7 +34,7 @@ public final class MessageAdapter {
     public static boolean addBroadcast(Internal.EnumLite domain, BroadcastMessage message) {
 
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
 
         if (msg == null) {
             return false;
@@ -50,7 +50,7 @@ public final class MessageAdapter {
 
     public static boolean addWorld(Internal.EnumLite domain, WorldMessage message) {
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
         if (msg == null) {
             return false;
         }

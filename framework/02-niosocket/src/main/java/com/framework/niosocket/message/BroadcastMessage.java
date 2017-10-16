@@ -1,8 +1,10 @@
-package com.framework.message;
+package com.framework.niosocket.message;
 
+import com.framework.core.MessageBus;
 import com.google.protobuf.Internal;
 
 import java.io.Serializable;
+
 
 /**
  * Created by @panyao on 2017/8/15.

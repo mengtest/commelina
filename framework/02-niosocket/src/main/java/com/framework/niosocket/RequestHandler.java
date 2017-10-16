@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.message.ApiRequest;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -8,6 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public interface RequestHandler {
 
-    void onRequest(ApiRequest request, ChannelHandlerContext ctx);
+    void onRequest(SocketASK ask, ChannelHandlerContext ctx);
 
 }

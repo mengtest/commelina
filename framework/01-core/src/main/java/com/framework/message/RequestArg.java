@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Created by @panyao on 2017/8/25.
  */
+@Deprecated
 public class RequestArg {
 
     private String arg;
@@ -63,6 +64,10 @@ public class RequestArg {
         }
         return Float.valueOf(arg);
     }
+//    public List<Long> getLongArgs() {
+//        return getArgs().stream().map(RequestArg::getAsLong).collect(Collectors.toList());
+//    }
+
 
     public enum DATA_TYPE {
         INT,

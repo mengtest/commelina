@@ -5,14 +5,19 @@ import akka.actor.ActorRef;
 import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.ApiRequestForwardEntity;
-import com.framework.akka_router.Rewrite;
-import com.framework.akka_router.RouterRegistrationEntity;
-import com.framework.message.*;
+import akka.pattern.PatternsCS;
+import com.framework.akka_router.*;
+import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
 import com.framework.niosocket.MessageAdapter;
+import com.framework.niosocket.message.BroadcastMessage;
+import com.framework.niosocket.message.NotifyMessage;
+import com.framework.niosocket.message.WorldMessage;
+import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by @panyao on 2017/9/25.
@@ -21,7 +26,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
-    private final BiMap<Internal.EnumLite, ActorRef> clusterNodeRouters = HashBiMap.create(8);
+    private final BiMap<Integer, ActorRef> clusterNodeRouters = HashBiMap.create(8);
 
     private final Internal.EnumLite myRouterId;
 
@@ -33,9 +38,15 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     public final Receive createReceive() {
         return receiveBuilder()
                 // 客户端请求
-                .match(ApiRequest.class, r -> {
+                .match(SocketASK.class, r -> {
                     // 重定向到远程的 seed node 上，它自己再做 router
-                    actorForward(selectActorSeed(r), r);
+                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r).getNumber());
+                    if (target != null) {
+                        // 重定向到远程的 seed node 上，它自己再做 router
+                        target.forward(r, getContext());
+                    } else {
+                        unhandled(r);
+                    }
                 })
                 // from cluster seed node.
                 .match(NotifyMessage.class, n -> MessageAdapter.addNotify(myRouterId, n))
@@ -43,21 +54,33 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                 .match(WorldMessage.class, w -> MessageAdapter.addWorld(myRouterId, w))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
-                    // 重定向到远程的 seed node 上，它自己再做 router
-                    actorForward(selectActorSeed(rf), rf);
-                })
-                // server 请求 重定向， 如 matching -> room
-                .match(ApiRequestForwardEntity.class, f -> {
-                    AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(f.getForwardId());
+                    AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(() -> rf.getForward());
                     if (targetSystem != null) {
-                        // 向远程 发起 ask 请求
                         // 重定向到远程的 seed node 上，它自己再做 router
-                        targetSystem.askRouterClusterNodeForward(f.getRequestForward(), getSender());
+                        // 重定向到远程的 seed node 上，它自己再做 router
+                        ActorRef target = clusterNodeRouters.get(selectActorSeed(rf).getNumber());
+                        if (target != null) {
+                            // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
+                            // 向远程 发起 ask 请求
+                            CompletableFuture<Object> askFuture = PatternsCS
+                                    .ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
+                                    .toCompletableFuture();
+
+                            // ask with pipe
+                            CompletableFuture<ResponseMessage> transformed = CompletableFuture
+                                    .allOf(askFuture)
+                                    .thenApply(v -> (ResponseMessage) askFuture.join());
+
+                            // ask with pipe to sender.
+                            PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender());
+                        } else {
+                            unhandled(rf);
+                        }
                     } else {
-                        unhandled(f);
+                        unhandled(rf);
                     }
                 })
-                .match(RouterRegistrationEntity.class, r -> {
+                .match(RouterRegistration.class, r -> {
                     logger.info("Router Id:{} , node register.", r.getRouterId());
                     getContext().watch(sender());
                     clusterNodeRouters.put(r.getRouterId(), sender());
@@ -67,12 +90,12 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     }
 
     @Override
-    public Internal.EnumLite selectActorSeed(ApiRequest apiRequest) {
+    public Internal.EnumLite selectActorSeed(SocketASK ask) {
         return DEFAULT;
     }
 
     @Override
-    public Internal.EnumLite selectActorSeed(ApiRequestForward requestForward) {
+    public Internal.EnumLite selectActorSeed(ApiRequestForward forward) {
         return DEFAULT;
     }
 

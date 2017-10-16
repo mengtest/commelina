@@ -6,11 +6,10 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
-import com.framework.akka_router.ApiRequestForwardEntity;
-import com.framework.message.BroadcastMessage;
-import com.framework.message.NotifyMessage;
-import com.framework.message.WorldMessage;
-import com.google.protobuf.Internal;
+import com.framework.akka_router.ApiRequestForward;
+import com.framework.niosocket.message.BroadcastMessage;
+import com.framework.niosocket.message.NotifyMessage;
+import com.framework.niosocket.message.WorldMessage;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -32,16 +31,12 @@ public class ClusterChildNodeSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
-    public Object askForward(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward) {
-        return askForward(forwardId, requestForward, DEFAULT_TIMEOUT);
+    public Object askForward(ApiRequestForward requestForward) {
+        return askForward(requestForward, DEFAULT_TIMEOUT);
     }
 
-    public Object askForward(Internal.EnumLite forwardId, com.framework.message.ApiRequestForward requestForward, Timeout timeout) {
-        return PatternsCS.ask(
-                clusterRouterFrontend,
-                ApiRequestForwardEntity.newRequest(forwardId, requestForward), timeout)
-                .toCompletableFuture()
-                .join();
+    public Object askForward(ApiRequestForward requestForward, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture().join();
     }
 
     public Object notify(BroadcastMessage message) {

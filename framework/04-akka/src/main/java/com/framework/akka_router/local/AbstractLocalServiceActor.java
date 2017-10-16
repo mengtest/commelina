@@ -4,10 +4,10 @@ import akka.actor.AbstractActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka_router.Dispatch;
-import com.framework.akka_router.RouterRegistrationEntity;
-import com.framework.message.ApiRequest;
-import com.framework.message.MessageBus;
-import com.framework.message.ResponseMessage;
+import com.framework.akka_router.RouterRegistration;
+import com.framework.core.MessageBus;
+import com.framework.niosocket.message.ResponseMessage;
+import com.framework.niosocket.proto.SocketASK;
 import com.google.protobuf.Internal;
 
 /**
@@ -17,21 +17,23 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
-    private Internal.EnumLite routerId;
+    private final Internal.EnumLite routerId;
+    private final RouterRegistration routerRegistration;
 
     public AbstractLocalServiceActor(Internal.EnumLite routerId) {
         this.routerId = routerId;
+        routerRegistration = RouterRegistration.newBuilder().setRouterId(routerId.getNumber()).build();
     }
 
     @Override
     public void preStart() throws Exception {
-        AkkaLocalWorkerSystem.INSTANCE.localRouterRegister(new RouterRegistrationEntity(routerId), getSelf());
+        AkkaLocalWorkerSystem.INSTANCE.localRouterRegister(routerRegistration, getSelf());
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequest.class, this::onRequest)
+                .match(SocketASK.class, this::onRequest)
                 .build();
     }
 

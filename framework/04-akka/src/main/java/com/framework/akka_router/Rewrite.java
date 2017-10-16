@@ -1,7 +1,6 @@
 package com.framework.akka_router;
 
-import com.framework.message.ApiRequest;
-import com.framework.message.ApiRequestForward;
+import com.framework.niosocket.proto.SocketASK;
 import com.google.protobuf.Internal;
 
 /**
@@ -9,8 +8,7 @@ import com.google.protobuf.Internal;
  */
 public interface Rewrite {
 
-    Internal.EnumLite selectActorSeed(ApiRequest apiRequest);
-
-    Internal.EnumLite selectActorSeed(ApiRequestForward requestForward);
+    Internal.EnumLite selectActorSeed(SocketASK ask);
+    Internal.EnumLite selectActorSeed(ApiRequestForward forward);
 
 }

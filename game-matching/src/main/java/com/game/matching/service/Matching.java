@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka_router.cluster.node.AbstractServiceActor;
-import com.framework.message.DefaultMessageProvider;
+import com.framework.core.DefaultMessageProvider;
 import com.framework.message.ResponseMessage;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;

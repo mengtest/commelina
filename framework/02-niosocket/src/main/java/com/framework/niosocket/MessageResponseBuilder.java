@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.message.MessageBus;
+import com.framework.core.MessageBus;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 
@@ -9,8 +9,8 @@ import com.google.protobuf.Internal;
  */
 public interface MessageResponseBuilder {
 
-    SocketMessage createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
+    SocketMessage createPushMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus);
 
-    SocketMessage createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus);
+    SocketMessage createResponseMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus);
 
 }

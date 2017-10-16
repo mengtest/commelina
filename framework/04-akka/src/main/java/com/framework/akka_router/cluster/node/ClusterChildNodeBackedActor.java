@@ -9,10 +9,10 @@ import akka.cluster.MemberStatus;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka_router.*;
-import com.framework.message.ApiRequest;
-import com.framework.message.ApiRequestForward;
-import com.framework.message.MessageBus;
-import com.framework.message.ResponseMessage;
+import com.framework.akka_router.RouterRegistration;
+import com.framework.core.MessageBus;
+import com.framework.niosocket.message.ResponseMessage;
+import com.framework.niosocket.proto.SocketASK;
 
 /**
  * Created by @panyao on 2017/9/25.
@@ -38,10 +38,10 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequest.class, this::onRequest)
+                .match(SocketASK.class, this::onRequest)
                 .match(ApiRequestForward.class, this::onForward)
-//                .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
-//                .match(MemberOnlineEvent.class, on -> onOnline(on.getLogoutUserId()))
+                .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
+                .match(MemberOnlineEvent.class, on -> onOnline(on.getLoginUserId()))
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -79,7 +79,7 @@ public abstract class ClusterChildNodeBackedActor extends AbstractActor implemen
     void register(Member member) {
         if (member.hasRole("frontend")) {
             ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/clusterRouterFrontend");
-            clusterFronted.tell(new RouterRegistrationEntity(getRouterId()), self());
+            clusterFronted.tell(RouterRegistration.newBuilder().setRouterId(getRouterId().getNumber()).build(), self());
             ClusterChildNodeSystem.INSTANCE.registerRouterFronted(clusterFronted);
         }
     }

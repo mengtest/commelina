@@ -5,8 +5,8 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
-import com.framework.akka_router.RouterRegistrationEntity;
-import com.framework.message.ApiRequest;
+import com.framework.akka_router.ApiRequest;
+import com.framework.akka_router.RouterRegistration;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -27,12 +27,12 @@ public class AkkaLocalWorkerSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(15, TimeUnit.SECONDS));
 
-    public Object askLocalRouterNode(ApiRequest apiRequest) {
-        return askLocalRouterNode(apiRequest, DEFAULT_TIMEOUT);
+    public Object askLocalRouterNode(ApiRequest ask) {
+        return askLocalRouterNode(ask, DEFAULT_TIMEOUT);
     }
 
-    public Object askLocalRouterNode(ApiRequest apiRequest, Timeout timeout) {
-        return PatternsCS.ask(localRouterFrontend, apiRequest, timeout).toCompletableFuture().join();
+    public Object askLocalRouterNode(ApiRequest ask, Timeout timeout) {
+        return PatternsCS.ask(localRouterFrontend, ask, timeout).toCompletableFuture().join();
     }
 
     public ActorSystem getSystem() {
@@ -50,7 +50,7 @@ public class AkkaLocalWorkerSystem {
         localRouterFrontend = system.actorOf(props, "localRouterFrontend");
     }
 
-    void localRouterRegister(RouterRegistrationEntity routerRegistration, ActorRef actorRef) {
+    void localRouterRegister(RouterRegistration routerRegistration, ActorRef actorRef) {
         system.actorSelection("/user/localRouterFrontend").tell(routerRegistration, actorRef);
     }
 

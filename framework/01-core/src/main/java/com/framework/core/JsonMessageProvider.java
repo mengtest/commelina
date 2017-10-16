@@ -1,4 +1,4 @@
-package com.framework.message;
+package com.framework.core;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;

@@ -1,13 +1,14 @@
 package com.game.gateway.router_v3;
 
+import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.DefaultClusterActorRequestHandler;
-import com.framework.message.ApiRequest;
-import com.framework.message.BusinessMessage;
-import com.framework.message.DefaultMessageProvider;
-import com.framework.message.MessageBus;
+import com.framework.core.BusinessMessage;
+import com.framework.core.DefaultMessageProvider;
+import com.framework.core.MessageBus;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
+import com.framework.niosocket.proto.SocketASK;
 import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.google.protobuf.Internal;
@@ -27,14 +28,14 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
     }
 
     @Override
-    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+    protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), messageBus);
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
             return false;
         }
 
-        request.setUserId(userId);
+        newRequestBuilder.setLoginUserId(userId);
 
         return true;
     }

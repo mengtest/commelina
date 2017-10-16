@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.message.MessageBus;
+import com.framework.core.MessageBus;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
@@ -55,14 +55,14 @@ public final class ReplyUtils {
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              SERVER_CODE serverCode,
                              Internal.EnumLite domain,
-                             Internal.EnumLite opcode) {
-        SocketMessage msg = ProtoBuffMap.createMessage(serverCode, domain.getNumber(), opcode.getNumber());
+                             int opcode) {
+        SocketMessage msg = ProtoBuffMap.createMessage(serverCode, domain.getNumber(), opcode);
         reply(channelHandlerContext, msg);
     }
 
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              Internal.EnumLite domain,
-                             Internal.EnumLite opcode,
+                             int opcode,
                              MessageBus message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER.createResponseMessage(domain, opcode, message);
         reply(channelHandlerContext, msg);

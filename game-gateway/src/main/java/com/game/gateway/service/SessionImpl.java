@@ -4,10 +4,10 @@ import com.framework.akka_router.ActorServiceHandler;
 import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.LoginUserEntity;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
-import com.framework.message.ApiRequest;
-import com.framework.message.BusinessMessage;
-import com.framework.message.DefaultMessageProvider;
-import com.framework.message.RequestArg;
+import com.framework.core.BusinessMessage;
+import com.framework.core.DefaultMessageProvider;
+import com.framework.niosocket.proto.Arg;
+import com.framework.niosocket.proto.SocketASK;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
@@ -35,8 +35,8 @@ public class SessionImpl implements LocalServiceHandler {
         }
 
         @Override
-        public void onRequest(ApiRequest request) {
-            RequestArg tokenArg = request.getArgs().get(0);
+        public void onRequest(SocketASK request) {
+            Arg tokenArg = request.getArgs(0);
             if (tokenArg == null) {
                 // token 转换错误
                 response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
@@ -48,8 +48,9 @@ public class SessionImpl implements LocalServiceHandler {
 //        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
 //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
 //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
-            getLogger().info("userId:{}, 登录成功", tokenArg.getAsLong());
-            getSender().tell(new LoginUserEntity(tokenArg.getAsLong(), DefaultMessageProvider.produceMessage()), getSelf());
+            long userId = Long.valueOf(tokenArg.getValue().toStringUtf8());
+            getLogger().info("userId:{}, 登录成功", userId);
+            getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceMessage()), getSelf());
         }
     }
 }

@@ -15,7 +15,7 @@ message SocketASK {
     // 接口版本
     string version = 3;
     // 参数列表
-    repeated Arg args = 4;
+    repeated bytes args = 4;
 }
 
 // niosocket 消息
@@ -32,14 +32,6 @@ message SocketMessage {
     bytes msg = 5;
 }
 
-// 参数格式
-message Arg {
-    // 参数类型
-    DATA_TYPE dataType = 1;
-    // 值内容
-    bytes value = 2;
-}
-
 // 系统错误码
 enum SERVER_CODE {
     // 心跳
@@ -52,16 +44,6 @@ enum SERVER_CODE {
     RPC_API_NOT_FOUND = 4;
     // 服务端内部错误
     SERVER_ERROR = 5;
-}
-
-// 基本数据类型
-enum DATA_TYPE {
-    INT = 0;
-    STRING = 1;
-    BOOL = 2;
-    LONG = 3;
-    DOUBLUE = 4;
-    FLOAT = 5;
 }
 
 enum BusinessProtocol {

@@ -1,4 +1,4 @@
-package com.framework.message;
+package com.framework.core;
 
 /**
  * Created by @panyao on 2017/8/16.

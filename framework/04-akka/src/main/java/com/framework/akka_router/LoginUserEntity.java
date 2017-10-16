@@ -1,11 +1,11 @@
 package com.framework.akka_router;
 
-import com.framework.message.MessageBus;
+import com.framework.core.MessageBus;
 
 /**
  * Created by @panyao on 2017/9/30.
  */
-public class LoginUserEntity {
+public final class LoginUserEntity {
 
     private final long userId;
     private final MessageBus messageBus;

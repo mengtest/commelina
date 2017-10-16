@@ -1,13 +1,14 @@
 package com.game.gateway.router_v3;
 
+import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.DefaultLocalActorRequestHandler;
-import com.framework.message.ApiRequest;
-import com.framework.message.BusinessMessage;
-import com.framework.message.DefaultMessageProvider;
-import com.framework.message.MessageBus;
+import com.framework.core.BusinessMessage;
+import com.framework.core.DefaultMessageProvider;
+import com.framework.core.MessageBus;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
+import com.framework.niosocket.proto.SocketASK;
 import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
@@ -23,8 +24,9 @@ public class Gateway extends DefaultLocalActorRequestHandler {
     private final MessageBus messageBus = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.GATEWAY_API_UNAUTHORIZED));
 
     @Override
-    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
-        switch (request.getOpcode().getNumber()) {
+    protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
+
+        switch (ask.getOpcode()) {
             // 登录接口允许匿名
             case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
                 return true;
@@ -32,14 +34,33 @@ public class Gateway extends DefaultLocalActorRequestHandler {
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, request.getOpcode(), messageBus);
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
             return false;
         }
 
-        request.setUserId(userId);
+        newRequestBuilder.setLoginUserId(userId);
 
         return true;
     }
+
+    //    @Override
+//    protected boolean beforeHook(SocketASK ask, ChannelHandlerContext ctx) {
+//        switch (ask.getOpcode()) {
+//            // 登录接口允许匿名
+//            case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
+//                return true;
+//        }
+//
+//        final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
+//        if (userId <= 0) {
+//            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBus);
+//            return false;
+//        }
+//
+//        ask.setUserId(userId);
+//
+//        return true;
+//    }
 
     @Override
     public final Internal.EnumLite getRouterId() {

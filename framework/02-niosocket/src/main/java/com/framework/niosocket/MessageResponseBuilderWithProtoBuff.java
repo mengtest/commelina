@@ -1,6 +1,6 @@
 package com.framework.niosocket;
 
-import com.framework.message.MessageBus;
+import com.framework.core.MessageBus;
 import com.framework.niosocket.proto.BusinessProtocol;
 import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
@@ -19,16 +19,16 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
     private final Logger logger = LoggerFactory.getLogger(MessageResponseBuilderWithProtoBuff.class);
 
     @Override
-    public SocketMessage createPushMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
+    public SocketMessage createPushMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus) {
         return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.NOTIFY_CODE);
     }
 
     @Override
-    public SocketMessage createResponseMessage(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus) {
+    public SocketMessage createResponseMessage(Internal.EnumLite domain, int opcode, MessageBus messageBus) {
         return createMessageWithType(domain, opcode, messageBus, SERVER_CODE.RESONSE_CODE);
     }
 
-    private SocketMessage createMessageWithType(Internal.EnumLite domain, Internal.EnumLite opcode, MessageBus messageBus, SERVER_CODE type) {
+    private SocketMessage createMessageWithType(Internal.EnumLite domain, int opcode, MessageBus messageBus, SERVER_CODE type) {
         byte[] bytes;
         try {
             bytes = messageBus.getBytes();
@@ -39,7 +39,7 @@ class MessageResponseBuilderWithProtoBuff implements MessageResponseBuilder {
         return SocketMessage.newBuilder()
                 .setCode(type)
                 .setDomain(domain.getNumber())
-                .setOpcode(opcode.getNumber())
+                .setOpcode(opcode)
                 .setBp(BusinessProtocol.forNumber(messageBus.getBp().ordinal()))
                 .setMsg(ByteString.copyFrom(bytes))
                 .build();

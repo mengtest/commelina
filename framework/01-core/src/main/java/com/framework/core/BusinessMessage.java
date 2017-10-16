@@ -1,4 +1,4 @@
-package com.framework.message;
+package com.framework.core;
 
 import com.google.protobuf.Internal;
 

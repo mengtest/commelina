@@ -1,8 +1,6 @@
-package com.framework.message;
+package com.framework.core;
 
 import com.framework.utils.Generator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 

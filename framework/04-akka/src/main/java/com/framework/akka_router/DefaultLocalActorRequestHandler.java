@@ -1,12 +1,12 @@
 package com.framework.akka_router;
 
 import com.framework.akka_router.local.AkkaLocalWorkerSystem;
-import com.framework.message.ApiRequest;
-import com.framework.message.MessageBus;
-import com.framework.message.ResponseMessage;
+import com.framework.core.MessageBus;
+import com.framework.niosocket.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
+import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +21,22 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public final void onRequest(ApiRequest request, ChannelHandlerContext ctx) {
-        if (beforeHook(request, ctx)) {
-            loginAfterHook(request, ctx);
+    public final void onRequest(SocketASK ask, ChannelHandlerContext ctx) {
+        final ApiRequest.Builder newRequestBuilder = ApiRequest.newBuilder()
+                .setOpcode(ask.getOpcode())
+                .setVersion(ask.getVersion())
+                .addAllArgs(ask.getArgsList());
+
+        if (beforeHook(ask, newRequestBuilder, ctx)) {
+            afterHook(newRequestBuilder.build(), ctx);
         }
     }
 
-    protected boolean beforeHook(ApiRequest request, ChannelHandlerContext ctx) {
+    protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
         return true;
     }
 
-    protected void loginAfterHook(ApiRequest request, ChannelHandlerContext ctx) {
+    protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
         Object result = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request);
         if (result instanceof MessageBus) {
             ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
