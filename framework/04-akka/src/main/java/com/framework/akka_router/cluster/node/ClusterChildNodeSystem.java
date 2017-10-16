@@ -77,7 +77,8 @@ public class ClusterChildNodeSystem {
     }
 
     void create(String clusterName, String config) {
-        system = ActorSystem.create(clusterName, ConfigFactory.load(config));
+        system = ActorSystem.create(clusterName, ConfigFactory.load(config)
+                .withFallback(ConfigFactory.load("default-remote-message-bindings")));
     }
 
     void registerRouterFronted(Props props) {

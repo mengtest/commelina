@@ -3,12 +3,13 @@ package com.framework.message;
 import com.framework.core.AppVersion;
 import com.google.protobuf.Internal;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by @panyao on 2017/8/25.
  */
-public final class ApiRequest extends ApiRequestForward implements AppVersion {
+public final class ApiRequest extends ApiRequestForward implements AppVersion, Serializable {
 
     private long userId = 0;
 

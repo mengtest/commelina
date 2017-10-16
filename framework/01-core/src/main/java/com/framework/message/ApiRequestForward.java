@@ -2,13 +2,14 @@ package com.framework.message;
 
 import com.google.protobuf.Internal;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by @panyao on 2017/9/15.
  */
-public class ApiRequestForward {
+public class ApiRequestForward implements Serializable {
 
     private final Internal.EnumLite opcode;
     private final String version;

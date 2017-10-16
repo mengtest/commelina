@@ -1,9 +1,11 @@
 package com.framework.message;
 
+import java.io.Serializable;
+
 /**
  * Created by @panyao on 2017/8/25.
  */
-public class ResponseMessage {
+public class ResponseMessage implements Serializable {
 
     private final MessageBus message;
 

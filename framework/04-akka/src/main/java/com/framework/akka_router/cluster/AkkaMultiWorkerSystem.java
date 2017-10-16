@@ -67,7 +67,8 @@ public class AkkaMultiWorkerSystem {
     }
 
     void create(String clusterName, String config) {
-        system = ActorSystem.create(clusterName, ConfigFactory.load().withFallback(ConfigFactory.load(config)));
+        system = ActorSystem.create(clusterName, ConfigFactory.load(config)
+                .withFallback(ConfigFactory.load("default-remote-message-bindings.conf")));
     }
 
     void registerRouterFronted(Props props) {

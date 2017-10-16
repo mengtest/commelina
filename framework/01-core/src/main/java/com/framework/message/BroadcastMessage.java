@@ -2,12 +2,14 @@ package com.framework.message;
 
 import com.google.protobuf.Internal;
 
+import java.io.Serializable;
+
 /**
  * Created by @panyao on 2017/8/15.
  * <p>
  * 广播消息
  */
-public class BroadcastMessage {
+public class BroadcastMessage implements Serializable {
 
     private final Internal.EnumLite opcode;
     private final long[] userIds;
