@@ -8,7 +8,7 @@ import akka.actor.Props;
 public class ClusterChildNodeSystemCreator {
 
     public static ClusterChildNodeSystemCreator create(
-            Class<? extends ClusterChildNodeBackedActor> backedClass,
+            Class<? extends BackedActor> backedClass,
             String clusterName,
             String akkaActorConfig) {
         ClusterChildNodeSystem.INSTANCE.create(clusterName, akkaActorConfig);

@@ -3,7 +3,7 @@ package com.game.room.router_v3;
 import akka.actor.ActorRef;
 import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.ApiRequestForward;
-import com.framework.akka_router.cluster.node.ClusterChildNodeBackedActor;
+import com.framework.akka_router.cluster.node.BackedActor;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
 import com.framework.core.MessageBody;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by @panyao on 2017/9/26.
  */
-public class RoomRouter extends ClusterChildNodeBackedActor {
+public class RoomRouter extends BackedActor {
 
     private final ActorRef roomManger = getContext().getSystem().actorOf(RoomManger.props(), "roomManger");
 

@@ -3,17 +3,17 @@ package com.framework.akka_router.local;
 import akka.actor.AbstractActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.LocalRequestWatching;
+import com.framework.akka_router.ApiRequest;
+import com.framework.akka_router.Dispatch;
 import com.framework.akka_router.RouterRegistration;
 import com.framework.core.MessageBody;
 import com.framework.niosocket.message.ResponseMessage;
-import com.framework.niosocket.proto.SocketASK;
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class AbstractLocalServiceActor extends AbstractActor implements LocalRequestWatching {
+public abstract class AbstractLocalServiceActor extends AbstractActor implements Dispatch {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
@@ -33,7 +33,7 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(SocketASK.class, this::onRequest)
+                .match(ApiRequest.class, this::onRequest)
                 .build();
     }
 

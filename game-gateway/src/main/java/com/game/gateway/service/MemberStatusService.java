@@ -1,8 +1,8 @@
 package com.game.gateway.service;
 
+import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
-import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Internal;
 
@@ -35,7 +35,7 @@ public class MemberStatusService implements LocalServiceHandler {
         }
 
         @Override
-        public void onRequest(SocketASK request) {
+        public void onRequest(ApiRequest request) {
             // in game 逻辑
         }
 

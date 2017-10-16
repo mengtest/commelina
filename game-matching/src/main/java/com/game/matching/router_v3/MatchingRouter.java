@@ -2,14 +2,14 @@ package com.game.matching.router_v3;
 
 import akka.actor.ActorRef;
 import com.framework.akka_router.ApiRequest;
-import com.framework.akka_router.cluster.node.ClusterChildNodeBackedActor;
+import com.framework.akka_router.cluster.node.BackedActor;
 import com.game.matching.service.Matching;
 import com.google.protobuf.Internal;
 
 /**
  * Created by @panyao on 2017/9/26.
  */
-public class MatchingRouter extends ClusterChildNodeBackedActor {
+public class MatchingRouter extends BackedActor {
 
     private final ActorRef matching = getContext().getSystem().actorOf(Matching.props(10, 2));
 

@@ -15,7 +15,7 @@ import com.framework.niosocket.message.ResponseMessage;
 /**
  * Created by @panyao on 2017/9/25.
  */
-public abstract class ClusterChildNodeBackedActor extends AbstractActor implements Router, ClusterNodeDispatchForward, MemberEvent {
+public abstract class BackedActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 

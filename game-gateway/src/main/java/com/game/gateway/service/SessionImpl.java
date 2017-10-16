@@ -1,12 +1,12 @@
 package com.game.gateway.service;
 
 import com.framework.akka_router.ActorServiceHandler;
+import com.framework.akka_router.ApiRequest;
 import com.framework.akka_router.LocalServiceHandler;
 import com.framework.akka_router.LoginUserEntity;
 import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
-import com.framework.niosocket.proto.SocketASK;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.ByteString;
@@ -35,7 +35,7 @@ public class SessionImpl implements LocalServiceHandler {
         }
 
         @Override
-        public void onRequest(SocketASK request) {
+        public void onRequest(ApiRequest request) {
             ByteString tokenArg = request.getArgs(0);
             if (tokenArg == null) {
                 // token 转换错误
