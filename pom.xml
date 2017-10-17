@@ -152,23 +152,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-gateway-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/game-gateway/src/main/proto/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-matching-resources</id>
+                        <id>copy-proto-matching-resources</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -177,10 +161,6 @@
                             <outputDirectory>${basedir}/game-matching/src/main/proto/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                                <resource>
                                     <directory>${basedir}/messages/server-matching-room/</directory>
                                     <filtering>true</filtering>
                                 </resource>
@@ -188,7 +168,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-robot-resources</id>
+                        <id>copy-proto-robot-resources</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -212,15 +192,11 @@
                                     <directory>${basedir}/framework/02-niosocket/src/main/proto/</directory>
                                     <filtering>true</filtering>
                                 </resource>
-                                <resource>
-                                    <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
                             </resources>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-room-resources</id>
+                        <id>copy-proto-room-resources</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -228,10 +204,6 @@
                         <configuration>
                             <outputDirectory>${basedir}/game-room/src/main/proto/</outputDirectory>
                             <resources>
-                                <resource>
-                                    <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-matching-room/</directory>
                                     <filtering>true</filtering>

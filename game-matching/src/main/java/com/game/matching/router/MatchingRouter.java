@@ -4,7 +4,6 @@ import akka.actor.ActorRef;
 import com.framework.akka.router.cluster.nodes.BackendActor;
 import com.framework.akka.router.proto.ApiRequest;
 import com.game.matching.service.Matching;
-import com.google.protobuf.Internal;
 
 /**
  *
@@ -14,12 +13,6 @@ import com.google.protobuf.Internal;
 public class MatchingRouter extends BackendActor {
 
     private final ActorRef matching = getContext().getSystem().actorOf(Matching.props(10, 2));
-
-    @Override
-    public Internal.EnumLite getRouterId() {
-        // 这里就是配置节点，节点 1 节点 2 节点 3，不会因为集群的启动顺序而改变
-        return () -> 0;
-    }
 
     @Override
     public void onOffline(long logoutUserId) {

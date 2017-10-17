@@ -12,11 +12,11 @@ import com.google.protobuf.Internal;
  */
 public class AkkaMultiWorkerSystemCreator {
 
-    private AkkaMultiWorkerSystem systemV3;
-    private int routerId;
+    private AkkaMultiWorkerSystem system;
+    private Internal.EnumLite routerId;
 
     public AkkaMultiWorkerSystemCreator registerRouter(Class<? extends RouterFrontedClusterActor> routerClass) {
-        systemV3.registerRouterFronted(Props.create(routerClass, routerId));
+        system.registerRouterFronted(Props.create(routerClass, routerId));
         return this;
     }
 
@@ -25,14 +25,14 @@ public class AkkaMultiWorkerSystemCreator {
     }
 
     public void building() {
-        AkkaMultiWorkerSystemContext.INSTANCE.registerWorkerSystem(routerId, systemV3);
+        AkkaMultiWorkerSystemContext.INSTANCE.registerWorkerSystem(routerId.getNumber(), system);
     }
 
     public static AkkaMultiWorkerSystemCreator create(Internal.EnumLite routerId, String clusterName, String akkaActorConfig) {
         AkkaMultiWorkerSystemCreator creator = new AkkaMultiWorkerSystemCreator();
-        creator.systemV3 = new AkkaMultiWorkerSystem();
-        creator.systemV3.create(clusterName, akkaActorConfig);
-        creator.routerId = routerId.getNumber();
+        creator.system = new AkkaMultiWorkerSystem();
+        creator.system.create(clusterName, akkaActorConfig);
+        creator.routerId = routerId;
         return creator;
     }
 

@@ -20,7 +20,7 @@ import com.framework.niosocket.message.ResponseMessage;
  * @author @panyao
  * @date 2017/9/25
  */
-public abstract class BackendActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
+public abstract class BackendActor extends AbstractActor implements DispatchForward, MemberEvent {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 

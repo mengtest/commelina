@@ -7,6 +7,8 @@ package com.framework.akka.router.cluster;
 public interface Constants {
 
     String CLUSTER_FRONTEND = "frontend";
+    String CLUSTER_BACKEND = "backend";
+
     String CLUSTER_ROUTER_FRONTEND = "clusterRouterFrontend";
 
 }
