@@ -108,9 +108,9 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     }
                 })
                 .match(Terminated.class, t -> {
-                    getContext().unwatch(t.getActor());
-                    clusterNodeRouters.inverse().remove(t.getActor());
-                    logger.info("Remote backend left.");
+//                    getContext().unwatch(t.getActor());
+//                    clusterNodeRouters.inverse().remove(t.getActor());
+                    logger.info("Remote backend {} left.", t.getActor());
                 })
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
@@ -138,15 +138,15 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
 
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_BACKEND)) {
-            logger.info("Remote port:{} , nodes register.", member.address().port());
+            logger.info("Remote port:{} , nodes register.", member.address().port().get());
             getContext().watch(sender());
-            clusterNodeRouters.put(Integer.valueOf(member.address().port().toString()), sender());
+            clusterNodeRouters.put(Integer.valueOf(member.address().port().get().toString()), sender());
         }
     }
 
     void remove(Member member) {
         if (member.hasRole(Constants.CLUSTER_BACKEND)) {
-            logger.info("Remote port:{} , nodes remove.", member.address().port());
+            logger.info("Remote port:{} , nodes remove.", member.address().port().get());
             getContext().unwatch(sender());
             clusterNodeRouters.inverse().remove(getSender());
         }

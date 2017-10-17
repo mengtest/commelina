@@ -1,6 +1,7 @@
 package com.framework.akka.router.cluster.nodes;
 
 import akka.actor.AbstractActor;
+import akka.actor.Address;
 import akka.actor.Terminated;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
@@ -27,6 +28,7 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
     private final Cluster cluster = Cluster.get(getContext().system());
+    private Address frontendAddress;
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -60,9 +62,9 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
                 .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
                 .match(Terminated.class, t -> {
-                    logger.info("Frontend left.");
-                    getContext().unwatch(getSender());
-                    ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
+                    logger.info("Frontend {} left.", getSender());
+//                    getContext().unwatch(getSender());
+//                    ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
                 })
                 .build();
     }
@@ -88,17 +90,18 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
 
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
-            logger.info("Frontend port:{} , nodes register.", member.address().port());
-            getContext().watch(getSender());
+            logger.info("Frontend port:{} , nodes register.", member.address().port().get());
+//            getContext().watch(getSender());
             ClusterChildNodeSystem.INSTANCE.registerRouterFronted(getSender());
         }
     }
 
     void remove(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
-            logger.info("Frontend port:{} , nodes remove.", member.address().port());
-            getContext().unwatch(getSender());
+            logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
+//            getContext().unwatch(getSender());
             ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
+//            frontendAddress = null;
         }
     }
 
