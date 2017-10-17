@@ -3,7 +3,9 @@ package com.framework.niosocket;
 import io.netty.channel.ChannelId;
 
 /**
- * Created by @panyao on 2017/8/25.
+ *
+ * @author @panyao
+ * @date 2017/8/25
  */
 public class ContextAdapter {
 

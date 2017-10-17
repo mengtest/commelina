@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by @panyao on 2017/9/7.
+ *
+ * @author @panyao
+ * @date 2017/9/7
  */
 public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
 

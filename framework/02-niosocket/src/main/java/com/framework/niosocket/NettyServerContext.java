@@ -13,9 +13,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class NettyServerContext {
 
-    // 用户会话组
+    /**
+     * 用户会话组
+     */
     private final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup("sessionGroups", GlobalEventExecutor.INSTANCE);
-    // 用户会话管理
+    /**
+     * 用户会话管理
+     */
     final BiMap<ChannelId, Long> LOGIN_USERS = HashBiMap.create(128);
 
     private final Lock removeLock = new ReentrantLock();
@@ -26,12 +30,22 @@ class NettyServerContext {
 
     }
 
-    // 用户上线
+    /**
+     * 用户上线
+     *
+     * @param channel
+     * @return
+     */
     boolean channelActive(Channel channel) {
         return CHANNEL_GROUP.add(channel);
     }
 
-    // 用户下线
+    /**
+     * 用户下线
+     *
+     * @param channel
+     * @return
+     */
     long channelInactive(Channel channel) {
         // 先把这个 channel 的用户都下线了
         Long userId = LOGIN_USERS.remove(channel.id());
@@ -39,7 +53,13 @@ class NettyServerContext {
         return userId == null ? 0 : userId;
     }
 
-    // 把用户加入到登录会话中去
+    /**
+     * 把用户加入到登录会话中去
+     *
+     * @param channelId
+     * @param userId
+     * @return
+     */
     long userJoin(ChannelId channelId, long userId) {
         Channel channel = CHANNEL_GROUP.find(channelId);
         if (channel == null) {
@@ -49,14 +69,19 @@ class NettyServerContext {
         return userId;
     }
 
-    // 用户注销了
+    /**
+     * 用户注销了
+     *
+     * @param userId
+     * @return
+     */
     ChannelId userRemove(long userId) {
         ChannelId channelId = LOGIN_USERS.inverse().remove(userId);
         if (channelId != null) {
             // FIXME: 2017/8/29 这里是因为编辑检查泛型不过才这样写的，实际上是可以运行的 netty 这set实现太锤子了
             CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
         }
-//        CHANNEL_GROUP.remove(channelId);
+        //CHANNEL_GROUP.remove(channelId);
         return channelId;
     }
 
@@ -68,7 +93,11 @@ class NettyServerContext {
         return userId == null ? 0 : userId;
     }
 
-    // 用户是否在线
+    /**
+     * 用户是否在线
+     * @param userId
+     * @return
+     */
     boolean isOnline(long userId) {
         ChannelId channelId = LOGIN_USERS.inverse().get(userId);
         if (channelId == null) {

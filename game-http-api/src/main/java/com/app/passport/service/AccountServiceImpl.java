@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by panyao on 2017/9/2.
+ *
+ * @author panyao
+ * @date 2017/9/2
  */
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -38,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setPwd(PWDUtils.createPwd(tel));
+        memberEntity.setPwd(PwdUtils.createPwd(tel));
         memberEntity = memberRepository.save(memberEntity);
 
         AccountEntity accountEntity = new AccountEntity();
@@ -61,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
             return ServiceDomainEmptyMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_EXISTS);
         }
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setPwd(PWDUtils.createPwd(pwd));
+        memberEntity.setPwd(PwdUtils.createPwd(pwd));
         memberEntity = memberRepository.save(memberEntity);
 
         AccountEntity accountEntity = new AccountEntity();
@@ -77,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional(readOnly = true)
     @Override
-    public ServiceDomainMessage<MemberEntity> singInWithTel(@NotNull String tel, @NotNull String pwd) {
+    public ServiceDomainMessage<MemberEntity> signInWithTel(@NotNull String tel, @NotNull String pwd) {
         AccountEntity entity = accountRepository.findByAccountAndType(tel, AccountEntity.ACCOUNT_TYPE.TELEPHONE);
         if (entity == null) {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_NOT_FOUND);
@@ -88,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_MEMBER_NOT_FOUND);
         }
 
-        String inputHashPwd = PWDUtils.createPwd(pwd);
+        String inputHashPwd = PwdUtils.createPwd(pwd);
         if (!inputHashPwd.equals(memberEntity.getPwd())) {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.PASSWORD_VALID_ERROR);
         }

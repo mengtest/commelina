@@ -7,9 +7,10 @@ import java.io.Serializable;
 
 
 /**
- * Created by @panyao on 2017/8/15.
- * <p>
  * 广播消息
+ *
+ * @author @panyao
+ * @date 2017/8/15
  */
 public class BroadcastMessage implements Serializable {
 

@@ -6,10 +6,11 @@ import com.game.matching.proto.MATCHING_METHODS;
 import com.game.robot.interfaces.MemberEventLoop;
 import com.game.robot.interfaces.ReadEvent;
 import com.google.protobuf.Internal;
-import io.netty.channel.ChannelHandlerContext;
 
 /**
- * Created by @panyao on 2017/9/11.
+ *
+ * @author @panyao
+ * @date 2017/9/11
  */
 public class MatchingWaitForJoinRoom implements ReadEvent {
 

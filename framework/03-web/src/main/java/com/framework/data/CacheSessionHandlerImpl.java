@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Resource;
 
 /**
- * Created by @panyao on 2017/9/1.
+ *
+ * @author @panyao
+ * @date 2017/9/1
  */
 public class CacheSessionHandlerImpl implements SessionHandler {
 

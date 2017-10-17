@@ -9,7 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 
 /**
- * Created by @panyao on 2017/9/8.
+ *
+ * @author @panyao
+ * @date 2017/9/8
  */
 @SpringBootApplication
 public class RobotSpringBoot {

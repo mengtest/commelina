@@ -2,12 +2,15 @@ package com.framework.core;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by @panyao on 2017/8/16.
+ * json 消息生成者,可以不修改对外接口更换实现
+ *
+ * @author @panyao
+ * @date 2017/8/16
  */
 public class JsonMessageProvider {
 
@@ -26,12 +29,8 @@ public class JsonMessageProvider {
     public static MessageBody produceMessageForKV(final String k, final Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
-        final Map<String, Object> kv = new HashMap<>();
+        final Map<String, Object> kv = Maps.newHashMap();
         kv.put(k, v);
-
-//        KVEntity entity = new KVEntity();
-//        entity.k = k;
-//        entity.v = v;
         return new JsonMessage(BusinessMessage.success(kv));
     }
 

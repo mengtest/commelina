@@ -8,7 +8,6 @@ import com.game.robot.interfaces.ReadEvent;
 import com.game.robot.message.BusinessMessage;
 import com.game.robot.utils.Generator;
 import com.google.protobuf.Internal;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,9 @@ import java.util.Map;
 
 
 /**
- * Created by @panyao on 2017/9/11.
+ *
+ * @author @panyao
+ * @date 2017/9/11
  */
 public class MatchingWaitForMatchStatus implements ReadEvent {
 

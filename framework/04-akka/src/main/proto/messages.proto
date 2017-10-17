@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package com.framework.akka_router;
+package com.framework.akka.router;
 
-option java_package = "com.framework.akka_router";
-option java_outer_classname = "Messages";
+option java_package = "com.framework.akka.router.proto";
+option java_outer_classname = "ExchangeProtocol";
 option java_multiple_files = true;
 
 message ActorBroadcast {

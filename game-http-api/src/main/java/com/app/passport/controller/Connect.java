@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by @panyao on 2017/8/31.
+ *
+ * @author @panyao
+ * @date 2017/8/31
  */
 @Controller
 @RequestMapping("/api/passport/connect")

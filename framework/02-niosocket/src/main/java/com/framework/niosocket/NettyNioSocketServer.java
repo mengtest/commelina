@@ -20,7 +20,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
- * Created by @panyao on 2017/8/3.
+ * @author @panyao
+ * @date 2017/8/3
  */
 public class NettyNioSocketServer {
 
@@ -65,15 +66,14 @@ public class NettyNioSocketServer {
                         ch.pipeline().addLast("encoder", new ProtobufEncoder());
 
                         // http://blog.csdn.net/z69183787/article/details/52625095
-//                        // 心跳检查 5s 检查一次
-//                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
+                        // 心跳检查 5s 检查一次
+                        //ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
-//                        ch.pipeline().addLast("heartbeatTrigger", trigger);
+                        //ch.pipeline().addLast("heartbeatTrigger", trigger);
 
                         final ChannelInboundHandlerRouterAdapter routerAdapter = new ChannelInboundHandlerRouterAdapter();
                         routerAdapter.setHandlers(router, memberEventHandler);
                         ch.pipeline().addLast("routerAdapter", routerAdapter);
-//                        ch.pipeline().addLast(new ChannelInboundHandlerRouterAdapter());
                     }
                 });
 

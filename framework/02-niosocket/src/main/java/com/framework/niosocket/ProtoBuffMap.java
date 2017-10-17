@@ -4,7 +4,9 @@ import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 
 /**
- * Created by @panyao on 2017/9/27.
+ *
+ * @author @panyao
+ * @date 2017/9/27
  */
 public class ProtoBuffMap {
 

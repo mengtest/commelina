@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Created by @panyao on 2017/8/4.
+ * 实现ApplicationContextAware以获得ApplicationContext中的所有bean
  *
- *  实现ApplicationContextAware以获得ApplicationContext中的所有bean
+ * @author @panyao
+ * @date 2017/8/4
  */
 public final class BootstrapNioSocket implements ApplicationContextAware {
 

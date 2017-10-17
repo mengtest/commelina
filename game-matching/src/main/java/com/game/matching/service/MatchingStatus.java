@@ -4,7 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
+import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystem;
 import com.framework.core.DefaultMessageProvider;
 import com.game.matching.proto.OPCODE;
 import scala.concurrent.duration.Duration;
@@ -13,9 +13,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by @panyao on 2017/8/14.
- * <p>
  * 同步匹配状态dao到客户端
+ *
+ * @author @panyao
+ * @date 2017/8/14
  */
 public class MatchingStatus extends AbstractActor {
 

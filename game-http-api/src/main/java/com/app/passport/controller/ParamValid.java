@@ -4,7 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by @panyao on 2017/9/4.
+ * @author @panyao
+ * @date 2017/9/4
  */
 class ParamValid {
 

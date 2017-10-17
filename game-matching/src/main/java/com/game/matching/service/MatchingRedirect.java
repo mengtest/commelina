@@ -4,16 +4,18 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.ApiRequestForward;
-import com.framework.akka_router.cluster.node.ClusterChildNodeSystem;
+import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystem;
+import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.AppVersion;
 import com.google.protobuf.ByteString;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
 
 /**
- * Created by @panyao on 2017/8/14.
- * <p>
+ *
  * 匹配重定向到房间的操作
+ *
+ * @author @panyao
+ * @date 2017/8/14
  */
 public class MatchingRedirect extends AbstractActor {
 

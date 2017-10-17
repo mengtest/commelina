@@ -1,14 +1,16 @@
 package com.game.matching;
 
-import com.framework.akka_router.cluster.node.ClusterChildNodeSystemCreator;
-import com.game.matching.router_v3.MatchingRouter;
+import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.game.matching.router.MatchingRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 
 /**
- * Created by @panyao on 2017/8/29.
+ *
+ * @author @panyao
+ * @date 2017/8/29
  */
 @SpringBootApplication
 public class MatchingSpringBoot {

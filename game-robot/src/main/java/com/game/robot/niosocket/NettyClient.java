@@ -19,7 +19,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by @panyao on 2017/9/7.
+ *
+ * @author @panyao
+ * @date 2017/9/7
  */
 public class NettyClient {
 

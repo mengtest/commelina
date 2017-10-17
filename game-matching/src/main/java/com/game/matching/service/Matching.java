@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka_router.cluster.node.AbstractServiceActor;
+import com.framework.akka.router.cluster.nodes.AbstractServiceActor;
 import com.framework.core.DefaultMessageProvider;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;
@@ -12,7 +12,9 @@ import com.google.protobuf.Internal;
 import java.util.List;
 
 /**
- * Created by @panyao on 2017/8/10.
+ *
+ * @author @panyao
+ * @date 2017/8/10
  */
 public class Matching extends AbstractServiceActor {
 

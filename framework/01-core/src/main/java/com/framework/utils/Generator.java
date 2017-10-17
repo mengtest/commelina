@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * Created by @panyao on 2016/4/27.
- *
  * @author panyao
+ * @date 2016/4/27
  */
 public final class Generator {
 

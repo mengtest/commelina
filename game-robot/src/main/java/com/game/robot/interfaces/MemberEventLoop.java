@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by @panyao on 2017/9/11.
+ *
+ * @author @panyao
+ * @date 2017/9/11
  */
 public final class MemberEventLoop {
 

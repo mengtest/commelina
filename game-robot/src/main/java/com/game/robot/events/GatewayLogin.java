@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by @panyao on 2017/9/11.
+ *
+ * @author @panyao
+ * @date 2017/9/11
  */
 public class GatewayLogin implements MemberEvent {
 

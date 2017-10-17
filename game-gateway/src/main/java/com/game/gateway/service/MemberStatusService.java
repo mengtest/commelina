@@ -1,15 +1,17 @@
 package com.game.gateway.service;
 
-import com.framework.akka_router.ApiRequest;
-import com.framework.akka_router.LocalServiceHandler;
-import com.framework.akka_router.local.AbstractLocalServiceActor;
+import com.framework.akka.router.LocalServiceHandler;
+import com.framework.akka.router.local.AbstractLocalServiceActor;
+import com.framework.akka.router.proto.ApiRequest;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Internal;
 
 import java.util.Map;
 
 /**
- * Created by panyao on 2017/8/30.
+ *
+ * @author panyao
+ * @date 2017/8/30
  * <p>
  * 记录用户状态，是匹配中，还是游戏中
  */

@@ -1,14 +1,16 @@
 package com.game.room;
 
-import com.framework.akka_router.cluster.node.ClusterChildNodeSystemCreator;
-import com.game.room.router_v3.RoomRouter;
+import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.game.room.router.RoomRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
 
 /**
- * Created by @panyao on 2017/8/29.
+ *
+ * @author @panyao
+ * @date 2017/8/29
  */
 @SpringBootApplication
 public class RoomSpringBoot {

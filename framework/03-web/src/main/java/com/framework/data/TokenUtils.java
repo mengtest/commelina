@@ -7,7 +7,8 @@ import com.google.common.io.BaseEncoding;
 import java.util.List;
 
 /**
- * Created by @panyao on 2017/9/5.
+ * @author @panyao
+ * @date 2017/9/5
  */
 class TokenUtils {
 

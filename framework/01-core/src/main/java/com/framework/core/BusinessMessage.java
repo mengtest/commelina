@@ -3,7 +3,10 @@ package com.framework.core;
 import com.google.protobuf.Internal;
 
 /**
- * Created by @panyao on 2016/8/24.
+ * 业务消息实体
+ *
+ * @author @panyao
+ * @date 2016/8/24
  */
 public final class BusinessMessage<T> {
 

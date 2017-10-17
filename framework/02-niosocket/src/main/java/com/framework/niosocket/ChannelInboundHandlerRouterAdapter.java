@@ -7,7 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by @panyao on 2017/8/24.
+ * @author @panyao
+ * @date 2017/8/24
  */
 class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
@@ -18,7 +19,13 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     private MemberEventHandler memberEventHandler = new MemberEventHandler() {
     };
 
-    //当客户端连上服务器的时候会触发此函数
+    /**
+     * 当客户端连上服务器的时候会触发此函数
+     *
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         final boolean result = NettyServerContext.INSTANCE.channelActive(ctx.channel());
         if (LOGGER.isDebugEnabled()) {
@@ -27,7 +34,13 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         memberEventHandler.onOnline(ctx);
     }
 
-    //当客户端断开连接的时候触发函数
+    /**
+     * 当客户端断开连接的时候触发函数
+     *
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
         if (LOGGER.isDebugEnabled()) {
@@ -36,7 +49,14 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         memberEventHandler.onOffline(logoutUserId, ctx);
     }
 
-    //当客户端发送数据到服务器会触发此函数
+    /**
+     * 当客户端发送数据到服务器会触发此函数
+     *
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
+    @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final SocketASK ask = (SocketASK) msg;
         // forward = 0 表示心跳

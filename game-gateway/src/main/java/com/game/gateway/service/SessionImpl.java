@@ -1,10 +1,10 @@
 package com.game.gateway.service;
 
+import com.framework.akka.router.LocalServiceHandler;
+import com.framework.akka.router.LoginUserEntity;
+import com.framework.akka.router.local.AbstractLocalServiceActor;
+import com.framework.akka.router.proto.ApiRequest;
 import com.framework.akka_router.ActorServiceHandler;
-import com.framework.akka_router.ApiRequest;
-import com.framework.akka_router.LocalServiceHandler;
-import com.framework.akka_router.LoginUserEntity;
-import com.framework.akka_router.local.AbstractLocalServiceActor;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
 import com.game.gateway.proto.ERROR_CODE;
@@ -13,7 +13,9 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 
 /**
- * Created by @panyao on 2017/9/25.
+ *
+ * @author @panyao
+ * @date 2017/9/25
  */
 @ActorServiceHandler
 public class SessionImpl implements LocalServiceHandler {

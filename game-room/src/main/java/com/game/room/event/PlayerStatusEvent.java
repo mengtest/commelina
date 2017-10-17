@@ -3,7 +3,9 @@ package com.game.room.event;
 import com.game.room.entity.PlayerStatus;
 
 /**
- * Created by @panyao on 2017/10/11.
+ *
+ * @author @panyao
+ * @date 2017/10/11
  */
 public class PlayerStatusEvent {
     private final long userId;

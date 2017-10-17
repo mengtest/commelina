@@ -3,7 +3,9 @@ package com.framework.utils;
 import com.google.protobuf.Internal;
 
 /**
- * Created by panyao on 2017/9/2.
+ *
+ * @author panyao
+ * @date 2017/9/2
  */
 public final class ServiceDomainEmptyMessage {
 

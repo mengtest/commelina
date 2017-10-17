@@ -11,7 +11,9 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 
 /**
- * Created by @panyao on 2017/9/11.
+ *
+ * @author @panyao
+ * @date 2017/9/11
  */
 public class MatchingJoinMatch implements MemberEvent {
 

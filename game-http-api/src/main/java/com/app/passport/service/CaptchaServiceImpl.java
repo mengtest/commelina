@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 /**
- * Created by @panyao on 2017/9/4.
+ *
+ * @author @panyao
+ * @date 2017/9/4
  */
 @Repository
 public class CaptchaServiceImpl implements CaptchaService {

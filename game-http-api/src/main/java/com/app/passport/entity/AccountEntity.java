@@ -3,7 +3,9 @@ package com.app.passport.entity;
 import javax.persistence.*;
 
 /**
- * Created by panyao on 2017/9/2.
+ *
+ * @author panyao
+ * @date 2017/9/2
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

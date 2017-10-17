@@ -5,7 +5,9 @@ import com.google.common.base.Preconditions;
 import java.util.Random;
 
 /**
- * Created by @panyao on 2017/9/4.
+ *
+ * @author @panyao
+ * @date 2017/9/4
  */
 public final class RandomEnhanced extends Random {
 

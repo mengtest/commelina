@@ -10,7 +10,7 @@
     <context:component-scan base-package="com.foundation.app"></context:component-scan>
 
     <!-- controller apis -->
-    <!--<context:component-scan base-package="com.foundation.app.client_app.controller"/>-->
+    <!--<context:component-scan base-package="com.foundation.app_app.controller"/>-->
     <!--<context:component-scan base-package="com.foundation.app.passport.controller"/>-->
     <!--<context:component-scan base-package="com.foundation.app.pay.controller"/>-->
     <!--<context:component-scan base-package="com.foundation.app.version.controller"/>-->

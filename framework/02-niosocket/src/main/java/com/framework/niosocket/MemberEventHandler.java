@@ -3,7 +3,9 @@ package com.framework.niosocket;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- * Created by @panyao on 2017/8/28.
+ *
+ * @author @panyao
+ * @date 2017/8/28
  */
 public interface MemberEventHandler {
 

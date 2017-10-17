@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;
 
 /**
- * Created by @panyao on 2016/8/24.
+ *
+ * @author @panyao
+ * @date 2016/8/24
  */
 public final class BusinessMessage<T> {
 

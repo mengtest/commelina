@@ -1,7 +1,9 @@
 package com.framework.data;
 
 /**
- * Created by @panyao on 2017/9/4.
+ *
+ * @author @panyao
+ * @date 2017/9/4
  */
 public interface CacheKvRepository {
 

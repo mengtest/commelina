@@ -6,7 +6,9 @@ import com.google.protobuf.Internal;
 import java.io.Serializable;
 
 /**
- * Created by @panyao on 2017/8/15.
+ *
+ * @author @panyao
+ * @date 2017/8/15
  */
 public class NotifyMessage implements Serializable {
 

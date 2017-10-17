@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by @panyao on 2017/9/29.
+ *
+ * @author @panyao
+ * @date 2017/9/29
  */
 @Controller
 @RequestMapping("/api/game/room")

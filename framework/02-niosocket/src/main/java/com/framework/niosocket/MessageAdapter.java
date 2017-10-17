@@ -10,9 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by @panyao on 2017/8/11.
+ *
+ * @author @panyao
+ * @date 2017/8/11
  */
-
 public final class MessageAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageAdapter.class);

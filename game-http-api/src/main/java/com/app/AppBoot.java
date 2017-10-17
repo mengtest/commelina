@@ -9,7 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 
 /**
- * Created by @panyao on 2017/8/30.
+ *
+ * @author @panyao
+ * @date 2017/8/30
  */
 @SpringBootApplication
 @ImportResource(locations = {

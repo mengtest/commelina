@@ -1,7 +1,9 @@
 package com.framework.niosocket;
 
 /**
- * Created by @panyao on 2017/8/8.
+ *
+ * @author @panyao
+ * @date 2017/8/8
  */
-class UserChannelUnActiveException extends RuntimeException {
+public class UserChannelUnActiveException extends RuntimeException {
 }

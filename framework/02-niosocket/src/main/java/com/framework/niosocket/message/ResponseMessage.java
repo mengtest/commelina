@@ -5,7 +5,9 @@ import com.framework.core.MessageBody;
 import java.io.Serializable;
 
 /**
- * Created by @panyao on 2017/8/25.
+ *
+ * @author @panyao
+ * @date 2017/8/25
  */
 public class ResponseMessage implements Serializable {
 
