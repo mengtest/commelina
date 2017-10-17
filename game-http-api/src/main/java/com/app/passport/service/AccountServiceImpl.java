@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 
 /**
- *
  * @author panyao
  * @date 2017/9/2
  */
@@ -54,8 +53,12 @@ public class AccountServiceImpl implements AccountService {
         return ServiceDomainMessage.newMessage(memberEntity);
     }
 
+    /**
+     * @param tel
+     * @param pwd
+     * @return
+     */
     @Transactional
-    // 这里只处理 unique 异常
     @Override
     public ServiceDomainEmptyMessage registerTel(@NotNull String tel, @NotNull String pwd) {
         AccountEntity entity = accountRepository.findByAccountAndType(tel, AccountEntity.ACCOUNT_TYPE.TELEPHONE);
