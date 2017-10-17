@@ -5,8 +5,8 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
+import com.framework.akka.router.RouterRegistration;
 import com.framework.akka.router.proto.ApiRequest;
-import com.framework.akka.router.proto.RouterRegistration;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 

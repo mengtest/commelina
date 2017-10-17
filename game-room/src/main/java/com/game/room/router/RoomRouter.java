@@ -12,7 +12,6 @@ import com.game.room.event.PlayerStatusEvent;
 import com.game.room.proto.ERROR_CODE;
 import com.game.room.service.RoomManger;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Internal;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
 
 import java.util.List;
@@ -28,12 +27,6 @@ public class RoomRouter extends BackendActor {
     private final ActorRef roomManger = getContext().getSystem().actorOf(RoomManger.props(), "roomManger");
 
     private static final MessageBody ROOM_NOT_FOUND = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
-
-    @Override
-    public Internal.EnumLite getRouterId() {
-        // 这里就是配置节点，节点 1 节点 2 节点 3，不会因为集群的启动顺序而改变
-        return () -> 0;
-    }
 
     @Override
     public void onOffline(long logoutUserId) {

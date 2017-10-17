@@ -60,7 +60,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                 // 客户端请求
                 .match(SocketASK.class, r -> {
                     // 重定向到远程的 seed nodes 上，它自己再做 router
-                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r).getNumber());
+                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r));
                     if (target != null) {
                         // 重定向到远程的 seed nodes 上，它自己再做 router
                         target.forward(r, getContext());
@@ -85,7 +85,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     if (targetSystem != null) {
                         // 重定向到远程的 seed nodes 上，它自己再做 router
                         // 重定向到远程的 seed nodes 上，它自己再做 router
-                        ActorRef target = clusterNodeRouters.get(selectActorSeed(rf).getNumber());
+                        ActorRef target = clusterNodeRouters.get(selectActorSeed(rf));
                         if (target != null) {
                             // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
                             // 向远程 发起 ask 请求
@@ -107,13 +107,11 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                         unhandled(rf);
                     }
                 })
-                .match(RouterRegistration.class, r -> {
-                    logger.info("Router Id:{} , nodes register.", r.getRouterId());
-                    getContext().watch(sender());
-                    clusterNodeRouters.put(r.getRouterId(), sender());
+                .match(Terminated.class, t -> {
+                    getContext().unwatch(t.getActor());
+                    clusterNodeRouters.inverse().remove(t.getActor());
+                    logger.info("Remote backend left.");
                 })
-                .match(Terminated.class, t -> clusterNodeRouters.inverse().remove(t.getActor()))
-
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -129,35 +127,27 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     }
 
     @Override
-    public Internal.EnumLite selectActorSeed(SocketASK ask) {
-        return DEFAULT;
+    public int selectActorSeed(SocketASK ask) {
+        return clusterNodeRouters.keySet().iterator().next();
     }
 
     @Override
-    public Internal.EnumLite selectActorSeed(ApiRequestForward forward) {
-        return DEFAULT;
-    }
-
-    private static final Internal.EnumLite DEFAULT = () -> 0;
-
-    private void actorForward(Internal.EnumLite seed, Object msg) {
-        ActorRef target = clusterNodeRouters.get(seed);
-        if (target != null) {
-            // 重定向到远程的 seed nodes 上，它自己再做 router
-            target.forward(msg, getContext());
-        } else {
-            unhandled(msg);
-        }
+    public int selectActorSeed(ApiRequestForward forward) {
+        return clusterNodeRouters.keySet().iterator().next();
     }
 
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_BACKEND)) {
-
+            logger.info("Remote port:{} , nodes register.", member.address().port());
+            getContext().watch(sender());
+            clusterNodeRouters.put(Integer.valueOf(member.address().port().toString()), sender());
         }
     }
 
     void remove(Member member) {
         if (member.hasRole(Constants.CLUSTER_BACKEND)) {
+            logger.info("Remote port:{} , nodes remove.", member.address().port());
+            getContext().unwatch(sender());
             clusterNodeRouters.inverse().remove(getSender());
         }
     }

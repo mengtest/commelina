@@ -6,7 +6,7 @@ import akka.actor.DeadLetter;
 import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka.router.proto.RouterRegistration;
+import com.framework.akka.router.RouterRegistration;
 import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -29,7 +29,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                     // 死信，防止一个 front nodes 崩溃之后 service actor 成为游离状态
                     if (d.message() instanceof RouterRegistration) {
                         getContext().watch(d.sender());
-                        localRouters.put(((RouterRegistration) d.message()).getRouterId(), d.sender());
+                        localRouters.put(((RouterRegistration) d.message()).getRouterId().getNumber(), d.sender());
                     } else if (d.message() instanceof SocketASK) {
                         logger.info("ignore. {}", d.message());
                     } else {
@@ -46,7 +46,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
                 })
                 .match(RouterRegistration.class, r -> {
                     getContext().watch(sender());
-                    localRouters.put(r.getRouterId(), sender());
+                    localRouters.put(r.getRouterId().getNumber(), sender());
                 })
                 .match(Terminated.class, terminated -> localRouters.inverse().remove(terminated.getActor()))
                 .build();

@@ -56,7 +56,3 @@ message MemberOfflineEvent {
 message MemberOnlineEvent {
     uint64 loginUserId = 1;
 }
-
-message RouterRegistration {
-    uint32 routerId = 1;
-}

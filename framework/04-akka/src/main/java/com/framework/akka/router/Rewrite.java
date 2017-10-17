@@ -2,7 +2,6 @@ package com.framework.akka.router;
 
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.niosocket.proto.SocketASK;
-import com.google.protobuf.Internal;
 
 /**
  * @author @panyao
@@ -16,7 +15,7 @@ public interface Rewrite {
      * @param ask
      * @return
      */
-    Internal.EnumLite selectActorSeed(SocketASK ask);
+    int selectActorSeed(SocketASK ask);
 
     /**
      * server 重定向请求进行集群分发
@@ -24,6 +23,6 @@ public interface Rewrite {
      * @param forward
      * @return
      */
-    Internal.EnumLite selectActorSeed(ApiRequestForward forward);
+    int selectActorSeed(ApiRequestForward forward);
 
 }

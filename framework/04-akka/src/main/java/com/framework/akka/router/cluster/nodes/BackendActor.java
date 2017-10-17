@@ -1,7 +1,7 @@
 package com.framework.akka.router.cluster.nodes;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorSelection;
+import akka.actor.Terminated;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent;
 import akka.cluster.Member;
@@ -10,9 +10,11 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.framework.akka.router.DispatchForward;
 import com.framework.akka.router.MemberEvent;
-import com.framework.akka.router.Router;
 import com.framework.akka.router.cluster.Constants;
-import com.framework.akka.router.proto.*;
+import com.framework.akka.router.proto.ApiRequest;
+import com.framework.akka.router.proto.ApiRequestForward;
+import com.framework.akka.router.proto.MemberOfflineEvent;
+import com.framework.akka.router.proto.MemberOnlineEvent;
 import com.framework.core.MessageBody;
 import com.framework.niosocket.message.ResponseMessage;
 
@@ -29,10 +31,7 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
     //subscribe to cluster changes, MemberUp
     @Override
     public void preStart() {
-        cluster.subscribe(self(),
-                ClusterEvent.MemberUp.class,
-                ClusterEvent.MemberRemoved.class
-        );
+        cluster.subscribe(self(), ClusterEvent.MemberUp.class, ClusterEvent.MemberRemoved.class);
     }
 
     //re-subscribe when restart
@@ -48,6 +47,7 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
                 .match(ApiRequestForward.class, this::onForward)
                 .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
                 .match(MemberOnlineEvent.class, on -> onOnline(on.getLoginUserId()))
+
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
                         if (member.status().equals(MemberStatus.up())) {
@@ -59,7 +59,11 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
                 .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
-//                .match(Terminated.class, terminated -> {})
+                .match(Terminated.class, t -> {
+                    logger.info("Frontend left.");
+                    getContext().unwatch(getSender());
+                    ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
+                })
                 .build();
     }
 
@@ -84,14 +88,16 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
 
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
-            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/" + Constants.CLUSTER_ROUTER_FRONTEND);
-            clusterFronted.tell(RouterRegistration.newBuilder().setRouterId(getRouterId().getNumber()).build(), self());
-            ClusterChildNodeSystem.INSTANCE.registerRouterFronted(clusterFronted);
+            logger.info("Frontend port:{} , nodes register.", member.address().port());
+            getContext().watch(getSender());
+            ClusterChildNodeSystem.INSTANCE.registerRouterFronted(getSender());
         }
     }
 
     void remove(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
+            logger.info("Frontend port:{} , nodes remove.", member.address().port());
+            getContext().unwatch(getSender());
             ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
         }
     }

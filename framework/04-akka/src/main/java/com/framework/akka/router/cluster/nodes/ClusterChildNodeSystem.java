@@ -1,14 +1,13 @@
 package com.framework.akka.router.cluster.nodes;
 
 import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka.router.proto.ActorBroadcast;
-import com.framework.akka.router.proto.ActorWorld;
 import com.framework.akka.router.proto.ActorNotify;
+import com.framework.akka.router.proto.ActorWorld;
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.MessageBody;
 import com.google.protobuf.ByteString;
@@ -33,7 +32,7 @@ public class ClusterChildNodeSystem {
 
     private final Logger logger = LoggerFactory.getLogger(ClusterChildNodeSystem.class);
 
-    private ActorSelection clusterRouterFrontend;
+    private ActorRef clusterRouterFrontend;
 
     private ActorRef localRouterFrontend;
 
@@ -107,7 +106,7 @@ public class ClusterChildNodeSystem {
                 .build(), timeout).toCompletableFuture().join();
     }
 
-    void registerRouterFronted(ActorSelection routerFronted) {
+    void registerRouterFronted(ActorRef routerFronted) {
         clusterRouterFrontend = routerFronted;
     }
 
