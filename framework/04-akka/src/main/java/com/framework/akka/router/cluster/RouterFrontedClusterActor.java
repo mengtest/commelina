@@ -6,12 +6,13 @@ import akka.actor.Terminated;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
-import com.framework.akka.router.proto.ActorResponse;
 import com.framework.akka.router.Rewrite;
 import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystem;
-import com.framework.akka.router.proto.ApiRequestForward;
-import com.framework.akka.router.proto.RouterRegistration;
+import com.framework.akka.router.proto.*;
+import com.framework.niosocket.MessageAdapter;
+import com.framework.niosocket.message.BroadcastMessage;
 import com.framework.niosocket.message.NotifyMessage;
+import com.framework.niosocket.message.WorldMessage;
 import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -20,7 +21,6 @@ import com.google.protobuf.Internal;
 import java.util.concurrent.CompletableFuture;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
@@ -51,14 +51,19 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     }
                 })
                 // from cluster seed nodes.
-                .match(NotifyMessage.class, n -> {
-//                    MessageAdapter.addNotify(myRouterId, n.);
-                })
-//                .match(BroadcastMessage.class, b -> MessageAdapter.addBroadcast(myRouterId, b))
+                .match(ActorNotify.class, n -> MessageAdapter.addNotify(myRouterId, NotifyMessage.newMessage(
+                        n.getOpcode(),
+                        n.getUserId(),
+                        () -> n.getMessage().toByteArray()
+                )))
+                .match(ActorBroadcast.class, b -> MessageAdapter.addBroadcast(myRouterId, BroadcastMessage.newBroadcast(
+                        b.getOpcode(), b.getUserIdsList(), () -> b.getMessage().toByteArray()
+                )))
+                .match(ActorWorld.class, w -> MessageAdapter.addWorld(myRouterId, WorldMessage.newMessage(w.getOpcode(), () -> w.getMessage().toByteArray())))
 //                .match(WorldMessage.class, w -> MessageAdapter.addWorld(myRouterId, w))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
-                    AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(() -> rf.getForward());
+                    AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(rf.getForward());
                     if (targetSystem != null) {
                         // 重定向到远程的 seed nodes 上，它自己再做 router
                         // 重定向到远程的 seed nodes 上，它自己再做 router

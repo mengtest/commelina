@@ -1,7 +1,7 @@
 package com.game.room.router;
 
 import akka.actor.ActorRef;
-import com.framework.akka.router.cluster.nodes.BackedActor;
+import com.framework.akka.router.cluster.nodes.BackendActor;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.BusinessMessage;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @author @panyao
  * @date 2017/9/26
  */
-public class RoomRouter extends BackedActor {
+public class RoomRouter extends BackendActor {
 
     private final ActorRef roomManger = getContext().getSystem().actorOf(RoomManger.props(), "roomManger");
 

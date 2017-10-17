@@ -20,7 +20,7 @@ import com.framework.niosocket.message.ResponseMessage;
  * @author @panyao
  * @date 2017/9/25
  */
-public abstract class BackedActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
+public abstract class BackendActor extends AbstractActor implements Router, DispatchForward, MemberEvent {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
@@ -29,7 +29,10 @@ public abstract class BackedActor extends AbstractActor implements Router, Dispa
     //subscribe to cluster changes, MemberUp
     @Override
     public void preStart() {
-        cluster.subscribe(self(), ClusterEvent.MemberUp.class, ClusterEvent.MemberRemoved.class);
+        cluster.subscribe(self(),
+                ClusterEvent.MemberUp.class,
+                ClusterEvent.MemberRemoved.class
+        );
     }
 
     //re-subscribe when restart

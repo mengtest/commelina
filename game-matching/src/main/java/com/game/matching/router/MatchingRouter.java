@@ -1,7 +1,7 @@
 package com.game.matching.router;
 
 import akka.actor.ActorRef;
-import com.framework.akka.router.cluster.nodes.BackedActor;
+import com.framework.akka.router.cluster.nodes.BackendActor;
 import com.framework.akka.router.proto.ApiRequest;
 import com.game.matching.service.Matching;
 import com.google.protobuf.Internal;
@@ -11,7 +11,7 @@ import com.google.protobuf.Internal;
  * @author @panyao
  * @date 2017/9/26
  */
-public class MatchingRouter extends BackedActor {
+public class MatchingRouter extends BackendActor {
 
     private final ActorRef matching = getContext().getSystem().actorOf(Matching.props(10, 2));
 

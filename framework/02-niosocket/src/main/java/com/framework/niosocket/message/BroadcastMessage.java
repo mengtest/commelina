@@ -1,9 +1,8 @@
 package com.framework.niosocket.message;
 
 import com.framework.core.MessageBody;
-import com.google.protobuf.Internal;
 
-import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -12,23 +11,23 @@ import java.io.Serializable;
  * @author @panyao
  * @date 2017/8/15
  */
-public class BroadcastMessage implements Serializable {
+public class BroadcastMessage {
 
-    private final Internal.EnumLite opcode;
-    private final long[] userIds;
+    private final int opcode;
+    private final List<Long> userIds;
     private final MessageBody message;
 
-    private BroadcastMessage(Internal.EnumLite opcode, long[] userIds, MessageBody messageBody) {
+    private BroadcastMessage(int opcode, List<Long> userIds, MessageBody messageBody) {
         this.opcode = opcode;
         this.message = messageBody;
         this.userIds = userIds;
     }
 
-    public static BroadcastMessage newBroadcast(Internal.EnumLite opcode, long[] userIds, MessageBody messageBody) {
+    public static BroadcastMessage newBroadcast(int opcode, List<Long> userIds, MessageBody messageBody) {
         return new BroadcastMessage(opcode, userIds, messageBody);
     }
 
-    public long[] getUserIds() {
+    public List<Long> getUserIds() {
         return userIds;
     }
 
@@ -36,7 +35,7 @@ public class BroadcastMessage implements Serializable {
         return message;
     }
 
-    public Internal.EnumLite getOpcode() {
+    public int getOpcode() {
         return opcode;
     }
 }

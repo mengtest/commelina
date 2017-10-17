@@ -2,7 +2,6 @@ package com.framework.akka.router.cluster;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.protobuf.Internal;
 
 /**
  *
@@ -15,13 +14,13 @@ public class AkkaMultiWorkerSystemContext {
 
     public static final AkkaMultiWorkerSystemContext INSTANCE = new AkkaMultiWorkerSystemContext();
 
-    private final BiMap<Internal.EnumLite, AkkaMultiWorkerSystem> clusterSystems = HashBiMap.create(4);
+    private final BiMap<Integer, AkkaMultiWorkerSystem> clusterSystems = HashBiMap.create(4);
 
-    public AkkaMultiWorkerSystem getContext(Internal.EnumLite routerId) {
+    public AkkaMultiWorkerSystem getContext(int routerId) {
         return clusterSystems.get(routerId);
     }
 
-    void registerWorkerSystem(Internal.EnumLite routerId, AkkaMultiWorkerSystem systemV3) {
+    void registerWorkerSystem(int routerId, AkkaMultiWorkerSystem systemV3) {
         clusterSystems.put(routerId, systemV3);
     }
 

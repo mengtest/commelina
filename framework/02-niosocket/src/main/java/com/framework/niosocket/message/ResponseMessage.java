@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author @panyao
  * @date 2017/8/25
  */
-public class ResponseMessage implements Serializable {
+public class ResponseMessage {
 
     private final MessageBody message;
 

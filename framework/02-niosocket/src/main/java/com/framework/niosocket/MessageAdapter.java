@@ -20,7 +20,7 @@ public final class MessageAdapter {
 
     public static boolean addNotify(Internal.EnumLite domain, NotifyMessage message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {
             return false;
         }
@@ -35,7 +35,7 @@ public final class MessageAdapter {
     public static boolean addBroadcast(Internal.EnumLite domain, BroadcastMessage message) {
 
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode(), message.getMessage());
 
         if (msg == null) {
             return false;
@@ -51,7 +51,7 @@ public final class MessageAdapter {
 
     public static boolean addWorld(Internal.EnumLite domain, WorldMessage message) {
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
-                .createPushMessage(domain, message.getOpcode().getNumber(), message.getMessage());
+                .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {
             return false;
         }

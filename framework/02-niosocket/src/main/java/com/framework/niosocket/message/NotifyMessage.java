@@ -1,28 +1,24 @@
 package com.framework.niosocket.message;
 
 import com.framework.core.MessageBody;
-import com.google.protobuf.Internal;
-
-import java.io.Serializable;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/15
  */
-public class NotifyMessage implements Serializable {
+public class NotifyMessage {
 
-    private final Internal.EnumLite opcode;
+    private final int opcode;
     private final long userId;
     private final MessageBody message;
 
-    private NotifyMessage(Internal.EnumLite opcode, long userId, MessageBody messageBody) {
+    private NotifyMessage(int opcode, long userId, MessageBody messageBody) {
         this.opcode = opcode;
         this.userId = userId;
         this.message = messageBody;
     }
 
-    public static NotifyMessage newMessage(Internal.EnumLite opcode, long userId, MessageBody messageBody) {
+    public static NotifyMessage newMessage(int opcode, long userId, MessageBody messageBody) {
         return new NotifyMessage(opcode, userId, messageBody);
     }
 
@@ -34,7 +30,7 @@ public class NotifyMessage implements Serializable {
         return message;
     }
 
-    public Internal.EnumLite getOpcode() {
+    public int getOpcode() {
         return opcode;
     }
 }

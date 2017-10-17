@@ -19,7 +19,7 @@ public abstract class DefaultClusterActorRequestHandler extends DefaultLocalActo
 
     @Override
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
-        AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(getRouterId());
+        AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(getRouterId().getNumber());
         if (clusterSystem == null) {
             ReplyUtils.reply(ctx, SERVER_CODE.RPC_API_NOT_FOUND, getRouterId(), request.getOpcode());
             return;
