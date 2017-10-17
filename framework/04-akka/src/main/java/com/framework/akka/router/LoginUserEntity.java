@@ -24,4 +24,5 @@ public final class LoginUserEntity {
     public MessageBody getMessageBody() {
         return messageBody;
     }
+
 }

@@ -10,13 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
-public abstract class DefaultClusterActorRequestHandler extends DefaultLocalActorRequestHandler{
+public abstract class DefaultClusterActorRequestHandler extends DefaultLocalActorRequestHandler {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
@@ -27,6 +26,11 @@ public abstract class DefaultClusterActorRequestHandler extends DefaultLocalActo
         }
 
         ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), clusterSystem.askRouterClusterNode(request));
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return logger;
     }
 
 }

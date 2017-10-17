@@ -11,12 +11,12 @@ import akka.event.LoggingAdapter;
 import com.framework.akka.router.DispatchForward;
 import com.framework.akka.router.MemberEvent;
 import com.framework.akka.router.Router;
+import com.framework.akka.router.cluster.Constants;
 import com.framework.akka.router.proto.*;
 import com.framework.core.MessageBody;
 import com.framework.niosocket.message.ResponseMessage;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
@@ -80,15 +80,15 @@ public abstract class BackedActor extends AbstractActor implements Router, Dispa
     }
 
     void register(Member member) {
-        if (member.hasRole("frontend")) {
-            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/clusterRouterFrontend");
+        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
+            ActorSelection clusterFronted = getContext().actorSelection(member.address() + "/user/" + Constants.CLUSTER_ROUTER_FRONTEND);
             clusterFronted.tell(RouterRegistration.newBuilder().setRouterId(getRouterId().getNumber()).build(), self());
             ClusterChildNodeSystem.INSTANCE.registerRouterFronted(clusterFronted);
         }
     }
 
     void remove(Member member) {
-        if (member.hasRole("frontend")) {
+        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
             ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
         }
     }

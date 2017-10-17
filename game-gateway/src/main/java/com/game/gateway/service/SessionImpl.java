@@ -4,7 +4,7 @@ import com.framework.akka.router.LocalServiceHandler;
 import com.framework.akka.router.LoginUserEntity;
 import com.framework.akka.router.local.AbstractLocalServiceActor;
 import com.framework.akka.router.proto.ApiRequest;
-import com.framework.akka_router.ActorServiceHandler;
+import com.framework.akka.router.ActorServiceHandler;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
 import com.game.gateway.proto.ERROR_CODE;

@@ -1,11 +1,12 @@
-package com.framework.akka_router;
+package com.framework.akka.router;
 
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
 /**
- * Created by @panyao on 2017/10/11.
+ * @author @panyao
+ * @date 2017/10/1
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

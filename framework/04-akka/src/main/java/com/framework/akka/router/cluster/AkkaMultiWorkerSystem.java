@@ -52,7 +52,7 @@ public class AkkaMultiWorkerSystem {
         if (clusterRouterFrontend != null) {
             throw new InvalidParameterException();
         }
-        clusterRouterFrontend = system.actorOf(props, "clusterRouterFrontend");
+        clusterRouterFrontend = system.actorOf(props, Constants.CLUSTER_ROUTER_FRONTEND);
     }
 
 }
