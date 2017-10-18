@@ -21,10 +21,11 @@ import java.util.concurrent.TimeUnit;
 
     private final long roomId;
 
-
     private final BiMap<Long, PlayerEntity> players = HashBiMap.create(128);
 
-    // 10 分钟之后结束游戏
+    /**
+     * 10 分钟之后结束游戏
+     */
     private final FiniteDuration lazyCheckOver = Duration.create(10, TimeUnit.MINUTES);
 
     public RoomContext(long roomId, List<PlayerEntity> playerEntities) {
