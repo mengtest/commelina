@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/26
  */
@@ -26,7 +25,8 @@ public class RoomRouter extends BackendActor {
 
     private final ActorRef roomManger = getContext().getSystem().actorOf(RoomManger.props(), "roomManger");
 
-    private static final MessageBody ROOM_NOT_FOUND = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
+    private static final MessageBody ROOM_NOT_FOUND =
+            DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
 
     @Override
     public void onOffline(long logoutUserId) {

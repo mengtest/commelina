@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/29
  */
@@ -23,7 +22,7 @@ public class RoomSpringBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(RoomRouter.class, "ClusterRoomSystem","cluster-room");
+        ClusterChildNodeSystemCreator.create(RoomRouter.class, "ClusterRoomSystem", "cluster-room");
     }
 
 }

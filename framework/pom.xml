@@ -52,6 +52,7 @@
         <akka.version>2.5.6</akka.version>
         <akka.http.version>10.0.10</akka.http.version>
         <spring.version>4.3.10.RELEASE</spring.version>
+        <scala-library.version>2.12.3</scala-library.version>
     </properties>
 
     <dependencies>
@@ -338,6 +339,13 @@
                 <scope>runtime</scope>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala-library.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -441,6 +449,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- scala 配置 -->
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*.scala</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

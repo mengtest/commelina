@@ -20,12 +20,16 @@ import java.util.Map;
  */
 public class RoomManger extends AbstractServiceActor {
 
-    // roomId -> roomContextActorRef
+    /**
+     * roomId -> roomContextActorRef
+     */
     private final BiMap<Long, ActorRef> roomIdToRoomContextActor = HashBiMap.create(128);
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
 
-    // userId -> roomId
+    /**
+     * userId -> roomId
+     */
     private final Map<Long, Long> usersToRoomId = Maps.newHashMap();
     private long roomId = 0;
 
@@ -64,7 +68,6 @@ public class RoomManger extends AbstractServiceActor {
         public CreateRoomEntity(List<Long> players) {
             this.players = players;
         }
-
 
     }
 }
