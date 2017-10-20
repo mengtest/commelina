@@ -1,9 +1,12 @@
 package com.game.matching.router;
 
 import akka.actor.ActorRef;
+import akka.routing.Routee;
+import akka.routing.RoutingLogic;
 import com.framework.akka.router.cluster.nodes.BackendActor;
 import com.framework.akka.router.proto.ApiRequest;
 import com.game.matching.service.Matching;
+import scala.collection.immutable.IndexedSeq;
 
 /**
  *
@@ -32,6 +35,16 @@ public class MatchingRouter extends BackendActor {
 //                matching.forward(new Matching.JOIN_MATCH(request.getUserId(), request.getOpcode()), getContext());
 //                break;
 //        }
+
+        new RoutingLogic(){
+
+            @Override
+            public Routee select(Object message, IndexedSeq<Routee> routees) {
+
+                return null;
+            }
+
+        };
     }
 
 }

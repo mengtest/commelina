@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author @panyao
  * @date 2017/8/17
  */
- class RoomContext extends AbstractServiceActor {
+ class RoomContext1 extends AbstractServiceActor {
 
     private final long roomId;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
      */
     private final FiniteDuration lazyCheckOver = Duration.create(10, TimeUnit.MINUTES);
 
-    public RoomContext(long roomId, List<PlayerEntity> playerEntities) {
+    public RoomContext1(long roomId, List<PlayerEntity> playerEntities) {
         this.roomId = roomId;
         playerEntities.forEach(v -> players.put(v.getUserId(), v));
     }
@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
     }
 
     static Props props(long roomId, List<PlayerEntity> playerEntities) {
-        return Props.create(RoomContext.class, roomId, playerEntities);
+        return Props.create(RoomContext1.class, roomId, playerEntities);
     }
 
 }

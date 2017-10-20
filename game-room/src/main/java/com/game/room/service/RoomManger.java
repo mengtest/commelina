@@ -53,7 +53,7 @@ public class RoomManger extends AbstractServiceActor {
 
         // 加载用户信息
         final long newRoomId = roomId++;
-        final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
+        final ActorRef roomContext = getContext().actorOf(RoomContext1.props(newRoomId, null), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);
         createRoomEntity.players.forEach(v -> usersToRoomId.put(v, newRoomId));
     }

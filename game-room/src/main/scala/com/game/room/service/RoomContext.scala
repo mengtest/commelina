@@ -15,6 +15,7 @@ class RoomContext(roomId: Long, playerEntities: util.List[PlayerEntity]) extends
 
   override def createReceive(): AbstractActor.Receive = {
     case PlayerStatusEvent => getLogger.info("received test")
+    case _ => getLogger.info("Un handler")
   }
 
 }

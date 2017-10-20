@@ -89,8 +89,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                         if (target != null) {
                             // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
                             // 向远程 发起 ask 请求
-                            CompletableFuture<Object> askFuture = PatternsCS
-                                    .ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
+                            CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
                                     .toCompletableFuture();
 
                             // ask with pipe

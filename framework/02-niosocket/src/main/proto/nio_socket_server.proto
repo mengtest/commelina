@@ -20,11 +20,11 @@ message SocketASK {
 
 // niosocket 消息
 message SocketMessage {
-    // 错误码 0 表示成功响应，1表示通知 , 参考 SYSTEM_CODE_CONSTANTS
+    // 错误码 参考 SERVER_CODE
     SERVER_CODE code = 1;
     // 服务端预定义 消息的域
     uint32 domain = 2;
-    // 操作码  code = 0 , opCode 与 请求的 apiMethod 保持一致，code = 1 则会新定义操作码
+    // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
     uint32 opcode = 3;
     // 消息内容 约定字节，如 json
     bytes msg = 4;
