@@ -83,7 +83,6 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(rf.getForward());
                     if (targetSystem != null) {
                         // 重定向到远程的 seed nodes 上，它自己再做 router
-                        // 重定向到远程的 seed nodes 上，它自己再做 router
                         ActorRef target = clusterNodeRouters.get(selectActorSeed(rf));
                         if (target != null) {
                             // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
@@ -97,7 +96,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                                     .thenApply(v -> (ActorResponse) askFuture.join());
 
                             // ask with pipe to sender.
-                            PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender());
+                            PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender(), getSelf());
                         } else {
                             unhandled(rf);
                         }
