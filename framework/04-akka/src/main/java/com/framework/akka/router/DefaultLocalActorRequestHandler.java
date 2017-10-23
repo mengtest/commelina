@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.security.InvalidParameterException;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
@@ -25,12 +24,11 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
 
     @Override
     public final void onRequest(SocketASK ask, ChannelHandlerContext ctx) {
-        final ApiRequest.Builder newRequestBuilder = ApiRequest.newBuilder()
-                .setOpcode(ask.getOpcode())
-                .setVersion(ask.getVersion())
-                .addAllArgs(ask.getArgsList());
-
+        final ApiRequest.Builder newRequestBuilder = ApiRequest.newBuilder();
         if (beforeHook(ask, newRequestBuilder, ctx)) {
+            newRequestBuilder.setOpcode(ask.getOpcode())
+                    .setVersion(ask.getVersion())
+                    .addAllArgs(ask.getArgsList());
             afterHook(newRequestBuilder.build(), ctx);
         }
     }

@@ -1,7 +1,9 @@
 package com.game.gateway.router;
 
 import com.framework.akka.router.DefaultClusterActorRequestHandler;
+import com.framework.akka.router.cluster.RouterFrontedClusterActor;
 import com.framework.akka.router.proto.ApiRequest;
+import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
 import com.framework.core.MessageBody;
@@ -15,7 +17,6 @@ import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/22
  */
@@ -31,6 +32,9 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
 
     @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
+
+        final long roomId = Long.valueOf(ask.getArgs(0).toStringUtf8());
+
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
             ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
@@ -40,6 +44,23 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         newRequestBuilder.setLoginUserId(userId);
 
         return true;
+    }
+
+    public static class RoomRouterFrontedClusterActor extends RouterFrontedClusterActor {
+
+        public RoomRouterFrontedClusterActor(Internal.EnumLite myRouterId) {
+            super(myRouterId);
+        }
+
+        @Override
+        public int selectActorSeed(SocketASK ask) {
+            return super.selectActorSeed(ask);
+        }
+
+        @Override
+        public int selectActorSeed(ApiRequestForward forward) {
+            return super.selectActorSeed(forward);
+        }
     }
 
 }
