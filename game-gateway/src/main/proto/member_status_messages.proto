@@ -9,4 +9,3 @@ option java_multiple_files = true;
 message FindRoom {
     uint64 roomId = 1;
 }
-
