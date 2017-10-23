@@ -26,7 +26,7 @@ public class AkkaLocalWorkerSystem {
     private ActorSystem system;
     private ActorRef localRouterFrontend;
 
-    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(15, TimeUnit.SECONDS));
+    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     public Object askLocalRouterNode(ApiRequest ask) {
         return askLocalRouterNode(ask, DEFAULT_TIMEOUT);

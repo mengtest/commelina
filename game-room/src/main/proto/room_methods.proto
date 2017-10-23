@@ -8,5 +8,4 @@ option java_multiple_files = true;
 
 enum ROOM_METHODS {
     EMPTY1 = 0;
-
 }
