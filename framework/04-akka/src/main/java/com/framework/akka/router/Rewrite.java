@@ -1,7 +1,7 @@
 package com.framework.akka.router;
 
+import com.framework.akka.router.proto.ApiRequest;
 import com.framework.akka.router.proto.ApiRequestForward;
-import com.framework.niosocket.proto.SocketASK;
 
 /**
  * @author @panyao
@@ -15,7 +15,7 @@ public interface Rewrite {
      * @param ask
      * @return
      */
-    int selectActorSeed(SocketASK ask);
+    int selectActorSeed(ApiRequest ask);
 
     /**
      * server 重定向请求进行集群分发

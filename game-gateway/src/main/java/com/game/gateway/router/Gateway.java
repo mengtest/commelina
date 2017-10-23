@@ -16,7 +16,6 @@ import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/22
  */
@@ -32,6 +31,8 @@ public class Gateway extends DefaultLocalActorRequestHandler {
             // 登录接口允许匿名
             case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
                 return true;
+            default:
+
         }
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());

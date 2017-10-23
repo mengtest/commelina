@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.gateway.member_status;
+
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "memberStatusMessage";
+option java_multiple_files = true;
+
+message FindRoom {
+    uint64 roomId = 1;
+}
+

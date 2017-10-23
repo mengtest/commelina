@@ -3,6 +3,7 @@ package com.framework.akka.router.local;
 import akka.actor.AbstractActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import akka.japi.pf.ReceiveBuilder;
 import com.framework.akka.router.Dispatch;
 import com.framework.akka.router.RouterRegistration;
 import com.framework.akka.router.proto.ApiRequest;
@@ -30,10 +31,16 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
     }
 
     @Override
-    public Receive createReceive() {
-        return receiveBuilder()
+    public final Receive createReceive() {
+        ReceiveBuilder builder = receiveBuilder();
+        addLocalMatch(builder);
+        return builder
                 .match(ApiRequest.class, this::onRequest)
                 .build();
+    }
+
+    protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
+        return builder;
     }
 
     public final void response(MessageBody message) {

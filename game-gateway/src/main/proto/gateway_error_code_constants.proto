@@ -19,6 +19,9 @@ enum ERROR_CODE {
     // 第一个参数必须是 room id
     ROOM_API_IMPORT_ROOM_ID = 4;
 
+    // 房间不存在
+    ROOM_NOT_FOUND = 5;
+
     // token 转换错误
     TOKEN_PARSE_ERROR = 10;
 }

@@ -2,6 +2,7 @@ package com.game.gateway.router;
 
 import com.framework.akka.router.DefaultClusterActorRequestHandler;
 import com.framework.akka.router.cluster.RouterFrontedClusterActor;
+import com.framework.akka.router.local.AkkaLocalWorkerSystem;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.BusinessMessage;
@@ -13,6 +14,7 @@ import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
 import com.game.common.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
+import com.game.gateway.proto.FindRoom;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -33,7 +35,15 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
     @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
 
-        final long roomId = Long.valueOf(ask.getArgs(0).toStringUtf8());
+        boolean isExists = (Boolean) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(FindRoom.newBuilder()
+                .setRoomId(Long.valueOf(ask.getArgs(0).toStringUtf8()))
+                .build());
+
+        if (!isExists) {
+            // 房间不存在
+            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
+            return false;
+        }
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
@@ -53,8 +63,8 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         }
 
         @Override
-        public int selectActorSeed(SocketASK ask) {
-            return super.selectActorSeed(ask);
+        public int selectActorSeed(ApiRequest request) {
+            return (int) (Long.valueOf(request.getArgs(0).toStringUtf8()) % 2);
         }
 
         @Override

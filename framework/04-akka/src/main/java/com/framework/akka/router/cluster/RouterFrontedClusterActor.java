@@ -17,7 +17,6 @@ import com.framework.niosocket.MessageAdapter;
 import com.framework.niosocket.message.BroadcastMessage;
 import com.framework.niosocket.message.NotifyMessage;
 import com.framework.niosocket.message.WorldMessage;
-import com.framework.niosocket.proto.SocketASK;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
@@ -58,7 +57,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     public final Receive createReceive() {
         return receiveBuilder()
                 // 客户端请求
-                .match(SocketASK.class, r -> {
+                .match(ApiRequest.class, r -> {
                     // 重定向到远程的 seed nodes 上，它自己再做 router
                     ActorRef target = clusterNodeRouters.get(selectActorSeed(r));
                     if (target != null) {
@@ -126,7 +125,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     }
 
     @Override
-    public int selectActorSeed(SocketASK ask) {
+    public int selectActorSeed(ApiRequest ask) {
         return clusterNodeRouters.keySet().iterator().next();
     }
 
