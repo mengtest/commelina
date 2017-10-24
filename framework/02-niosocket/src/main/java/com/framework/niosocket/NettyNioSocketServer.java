@@ -20,6 +20,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
+ * netty nio socket server
+ *
  * @author @panyao
  * @date 2017/8/3
  */
@@ -28,6 +30,11 @@ public class NettyNioSocketServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
     private Channel serverChannel;
 
+    /**
+     * 获取服务器运行的端口
+     *
+     * @return
+     */
     public int getPort() {
         if (serverChannel == null) {
             return -1;
@@ -39,7 +46,16 @@ public class NettyNioSocketServer {
         return ((InetSocketAddress) socketAddress).getPort();
     }
 
-    public void bind(String host, int port, final RouterContextHandler router, final MemberEventHandler memberEventHandler) throws IOException {
+    /**
+     * 绑定并启动 server ， accept 连接
+     *
+     * @param host
+     * @param port
+     * @param router
+     * @param memberEventHandler
+     * @throws IOException
+     */
+    public void bindAndStart(String host, int port, final RouterContextHandler router, final MemberEventHandler memberEventHandler) throws IOException {
         // 管理线程
         final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         // 默认线程数是 cpu 核数的两倍
@@ -83,15 +99,18 @@ public class NettyNioSocketServer {
             future.await();
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted waiting for bind");
+            throw new RuntimeException("Interrupted waiting for bindAndStart");
         }
         if (!future.isSuccess()) {
-            throw new IOException("Failed to bind", future.cause());
+            throw new IOException("Failed to bindAndStart", future.cause());
         }
         LOGGER.info("listen port:{} started.", port);
         serverChannel = future.channel();
     }
 
+    /**
+     * 停止 socket server
+     */
     public void shutdown() {
         if (serverChannel == null || !serverChannel.isOpen()) {
             // Already closed.

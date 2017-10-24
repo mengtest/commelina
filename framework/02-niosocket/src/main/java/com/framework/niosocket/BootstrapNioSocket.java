@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * 实现ApplicationContextAware以获得ApplicationContext中的所有bean
+ * nio socket 启动类，基于spring bean
  *
  * @author @panyao
  * @date 2017/8/4
@@ -50,7 +51,7 @@ public final class BootstrapNioSocket implements ApplicationContextAware {
 
         RouterContextHandlerImpl routerContextHandler = new RouterContextHandlerImpl();
         routerContextHandler.addRequestHandlers(handlerMap);
-        server.bind(host, port, routerContextHandler, memberEventHandler);
+        server.bindAndStart(host, port, routerContextHandler, memberEventHandler);
     }
 
     @PreDestroy

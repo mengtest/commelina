@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 消息适配器
  *
  * @author @panyao
  * @date 2017/8/11
@@ -18,7 +19,14 @@ public final class MessageAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageAdapter.class);
 
-    public static boolean addNotify(Internal.EnumLite domain, NotifyMessage message) {
+    /**
+     * 发送一个通知消息
+     *
+     * @param domain
+     * @param message
+     * @return
+     */
+    public static boolean sendNotify(Internal.EnumLite domain, NotifyMessage message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {
@@ -32,7 +40,14 @@ public final class MessageAdapter {
         return true;
     }
 
-    public static boolean addBroadcast(Internal.EnumLite domain, BroadcastMessage message) {
+    /**
+     * 添加一个广播消息
+     *
+     * @param domain
+     * @param message
+     * @return
+     */
+    public static boolean sendBroadcast(Internal.EnumLite domain, BroadcastMessage message) {
 
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
@@ -49,7 +64,14 @@ public final class MessageAdapter {
         return true;
     }
 
-    public static boolean addWorld(Internal.EnumLite domain, WorldMessage message) {
+    /**
+     * 发送一个世界消息
+     *
+     * @param domain
+     * @param message
+     * @return
+     */
+    public static boolean sendWorld(Internal.EnumLite domain, WorldMessage message) {
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {

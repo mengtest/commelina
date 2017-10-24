@@ -4,6 +4,7 @@ import com.framework.niosocket.proto.SERVER_CODE;
 import com.framework.niosocket.proto.SocketMessage;
 
 /**
+ * 静态的 proto 映射
  *
  * @author @panyao
  * @date 2017/9/27

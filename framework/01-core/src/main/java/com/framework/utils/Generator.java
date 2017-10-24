@@ -13,7 +13,7 @@ public final class Generator {
     }
 
     /**
-     * json帮助类
+     * json 帮助类
      *
      * @return
      */

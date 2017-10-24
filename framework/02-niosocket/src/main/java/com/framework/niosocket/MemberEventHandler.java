@@ -3,6 +3,7 @@ package com.framework.niosocket;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
+ * 用户事件
  *
  * @author @panyao
  * @date 2017/8/28

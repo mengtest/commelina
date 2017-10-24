@@ -1,7 +1,10 @@
 package com.framework.niosocket;
 
 /**
- * Created by @panyao on 2017/8/24.
+ * 默认的消息生成器
+ *
+ * @author @panyao
+ * @date 2017/8/24
  */
 class MessageResponseProvider {
 

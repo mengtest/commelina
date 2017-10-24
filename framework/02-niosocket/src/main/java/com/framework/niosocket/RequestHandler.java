@@ -4,6 +4,7 @@ import com.framework.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
+ * 请求的观察者
  *
  * @author @panyao
  * @date 2017/9/6

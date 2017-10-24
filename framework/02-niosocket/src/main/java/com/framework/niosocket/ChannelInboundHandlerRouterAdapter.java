@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 用户消息接收的handler
+ *
  * @author @panyao
  * @date 2017/8/24
  */
@@ -16,6 +18,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private RouterContextHandler routerContextHandlerImpl;
 
+    /**
+     * 给出一个空的 member event 实现
+     */
     private MemberEventHandler memberEventHandler = new MemberEventHandler() {
     };
 

@@ -14,11 +14,10 @@ import java.util.Map;
  */
 public class JsonMessageProvider {
 
-    private static final BusinessMessage EMPTY_RESPONSE_MESSAGE =
-            BusinessMessage.success();
+    private static final MessageBody EMPTY = new JsonMessage(BusinessMessage.success());
 
     public static MessageBody produceMessage() {
-        return new JsonMessage(EMPTY_RESPONSE_MESSAGE);
+        return EMPTY;
     }
 
     public static MessageBody produceMessage(BusinessMessage message) {

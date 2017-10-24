@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 响应的utils
  *
  * @author @panyao
  * @date 2017/9/22
@@ -19,6 +20,12 @@ public final class ReplyUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReplyUtils.class);
 
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param socketMessage
+     */
     public static void reply(ChannelHandlerContext channelHandlerContext, SocketMessage socketMessage) {
         ChannelFuture future = channelHandlerContext.writeAndFlush(socketMessage);
 
@@ -28,7 +35,6 @@ public final class ReplyUtils {
         } else if (future.cause() != null) {
             // FIXME: 2017/8/8 全部转换为领域模型
             // 异常
-            //  throw new Exception(future.cause());
             LOGGER.error("{}", future.cause());
         } else {
             // 取消
@@ -37,6 +43,12 @@ public final class ReplyUtils {
         }
     }
 
+    /**
+     * 回复消息到客户端
+     *
+     * @param channel
+     * @param socketMessage
+     */
     public static void reply(Channel channel, SocketMessage socketMessage) {
         ChannelFuture future = channel.writeAndFlush(socketMessage);
 
@@ -45,7 +57,6 @@ public final class ReplyUtils {
         } else if (future.cause() != null) {
             // FIXME: 2017/8/8 全部转换为领域模型
             // 异常
-            //  throw new Exception(future.cause());
             LOGGER.error("{}", future.cause());
         } else {
             // 取消
@@ -54,6 +65,14 @@ public final class ReplyUtils {
         }
     }
 
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param serverCode
+     * @param domain
+     * @param opcode
+     */
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              SERVER_CODE serverCode,
                              Internal.EnumLite domain,
@@ -62,6 +81,14 @@ public final class ReplyUtils {
         reply(channelHandlerContext, msg);
     }
 
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param domain
+     * @param opcode
+     * @param message
+     */
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              Internal.EnumLite domain,
                              int opcode,

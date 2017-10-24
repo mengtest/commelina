@@ -11,6 +11,12 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * socket server 上下文
+ *
+ * @author @panyao
+ * @date 2017/8/11
+ */
 class NettyServerContext {
 
     /**
@@ -85,6 +91,12 @@ class NettyServerContext {
         return channelId;
     }
 
+    /**
+     * 根据channel id 获取用户登录的 user id
+     *
+     * @param channelId
+     * @return
+     */
     long getLoginUserId(ChannelId channelId) {
         if (CHANNEL_GROUP.find(channelId) == null) {
             return 0;
@@ -95,6 +107,7 @@ class NettyServerContext {
 
     /**
      * 用户是否在线
+     *
      * @param userId
      * @return
      */

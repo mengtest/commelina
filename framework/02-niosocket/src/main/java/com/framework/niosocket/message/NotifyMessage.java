@@ -3,6 +3,8 @@ package com.framework.niosocket.message;
 import com.framework.core.MessageBody;
 
 /**
+ * 通知消息
+ *
  * @author @panyao
  * @date 2017/8/15
  */

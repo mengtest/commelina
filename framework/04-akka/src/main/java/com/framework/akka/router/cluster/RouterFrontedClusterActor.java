@@ -68,15 +68,15 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     }
                 })
                 // from cluster seed nodes.
-                .match(ActorNotify.class, n -> MessageAdapter.addNotify(myRouterId, NotifyMessage.newMessage(
+                .match(ActorNotify.class, n -> MessageAdapter.sendNotify(myRouterId, NotifyMessage.newMessage(
                         n.getOpcode(),
                         n.getUserId(),
                         () -> n.getMessage().toByteArray()
                 )))
-                .match(ActorBroadcast.class, b -> MessageAdapter.addBroadcast(myRouterId, BroadcastMessage.newBroadcast(
+                .match(ActorBroadcast.class, b -> MessageAdapter.sendBroadcast(myRouterId, BroadcastMessage.newBroadcast(
                         b.getOpcode(), b.getUserIdsList(), () -> b.getMessage().toByteArray()
                 )))
-                .match(ActorWorld.class, w -> MessageAdapter.addWorld(myRouterId, WorldMessage.newMessage(
+                .match(ActorWorld.class, w -> MessageAdapter.sendWorld(myRouterId, WorldMessage.newMessage(
                         w.getOpcode(), () -> w.getMessage().toByteArray())))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {

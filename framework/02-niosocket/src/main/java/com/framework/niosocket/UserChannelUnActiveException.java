@@ -1,6 +1,7 @@
 package com.framework.niosocket;
 
 /**
+ * 用户 channel 无效的异常
  *
  * @author @panyao
  * @date 2017/8/8

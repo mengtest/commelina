@@ -9,6 +9,8 @@ import com.framework.akka.router.proto.ActorBroadcast;
 import com.framework.akka.router.proto.ActorNotify;
 import com.framework.akka.router.proto.ActorWorld;
 import com.framework.akka.router.proto.ApiRequestForward;
+import com.framework.core.BusinessMessage;
+import com.framework.core.DefaultMessageProvider;
 import com.framework.core.MessageBody;
 import com.google.protobuf.ByteString;
 import com.typesafe.config.ConfigFactory;
@@ -18,11 +20,9 @@ import scala.concurrent.duration.Duration;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
@@ -48,11 +48,15 @@ public class ClusterChildNodeSystem {
         return PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture().join();
     }
 
-    public Object broadcast(int opcode, List<Long> userIds, MessageBody messageBody) {
+    public Object broadcast(int opcode, Iterable<Long> userIds, MessageBody messageBody) {
         return broadcast(opcode, userIds, messageBody, DEFAULT_TIMEOUT);
     }
 
-    public Object broadcast(int opcode, List<Long> userIds, MessageBody messageBody, Timeout timeout) {
+    public Object broadcast(int opcode, Iterable<Long> userIds, BusinessMessage<?> messageBody) {
+        return broadcast(opcode, userIds, DefaultMessageProvider.produceMessage(messageBody), DEFAULT_TIMEOUT);
+    }
+
+    public Object broadcast(int opcode, Iterable<Long> userIds, MessageBody messageBody, Timeout timeout) {
         byte[] bytes;
         try {
             bytes = messageBody.getBytes();

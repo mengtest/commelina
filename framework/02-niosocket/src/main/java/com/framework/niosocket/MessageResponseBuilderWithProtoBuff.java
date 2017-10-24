@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
+ * proto buff 的消息成器
+ *
  * @author @panyao
  * @date 2017/8/24
  */

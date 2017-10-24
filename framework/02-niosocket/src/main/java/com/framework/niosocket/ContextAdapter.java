@@ -3,6 +3,7 @@ package com.framework.niosocket;
 import io.netty.channel.ChannelId;
 
 /**
+ * 用户会话上下文
  *
  * @author @panyao
  * @date 2017/8/25
