@@ -25,7 +25,7 @@ public class RoomManger extends AbstractServiceActor {
      */
     private final BiMap<Long, ActorRef> roomIdToRoomContextActor = HashBiMap.create(128);
 
-    private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
+    private final LoggingAdapter LOGGER = Logging.getLogger(getContext().system(), this);
 
     /**
      * userId -> roomId

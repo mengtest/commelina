@@ -56,7 +56,6 @@ public class RoomRouter extends BackendActor {
 
         // 检查房间是否存在
 
-
         // 重定向
         requestRouter(request);
     }
@@ -72,6 +71,8 @@ public class RoomRouter extends BackendActor {
 
                 roomManger.forward(new RoomManger.CreateRoomEntity(userIds), getContext());
                 break;
+            default:
+                unhandled(forward);
         }
     }
 
