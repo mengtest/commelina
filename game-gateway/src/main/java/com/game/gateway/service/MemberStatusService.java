@@ -39,11 +39,6 @@ public class MemberStatusService implements LocalServiceHandler {
         @Override
         protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
             return builder
-                    .match(FindRoomRequest.class, roomId -> {
-
-
-                        getSender().tell(FindRoomResponse.getDefaultInstance(), getSelf());
-                    })
                     // 查询最后访问的 domain
                     .match(FindLastAccessDomainRequest.class, r -> {
                         DOMAIN domain = accessDomain.get(r.getUserId());
@@ -57,7 +52,8 @@ public class MemberStatusService implements LocalServiceHandler {
                         }
                     })
                     // 重置访问的 domain
-                    .match(ResetAccesssDoamin.class, ra -> accessDomain.remove(ra.getUserId()));
+                    .match(ResetAccesssDoamin.class, ra -> accessDomain.remove(ra.getUserId()))
+                    .match(ChangeAccesssDoamin.class, ca -> accessDomain.put(ca.getUserId(), ca.getDomain()));
         }
 
     }
