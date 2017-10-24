@@ -29,6 +29,14 @@ public class AkkaLocalWorkerSystem {
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
+    public Object askLocalRouterNodeWithRaw(Object msg) {
+        return askLocalRouterNodeWithRaw(msg, DEFAULT_TIMEOUT);
+    }
+
+    public Object askLocalRouterNodeWithRaw(Object msg, Timeout timeout) {
+        return PatternsCS.ask(localRouterFrontend, msg, timeout).toCompletableFuture().join();
+    }
+
     public Object askLocalRouterNode(GeneratedMessageV3 messageV3, Timeout timeout) {
         return PatternsCS.ask(localRouterFrontend, messageV3, timeout).toCompletableFuture().join();
     }

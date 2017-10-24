@@ -76,8 +76,8 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                 .match(ActorBroadcast.class, b -> MessageAdapter.addBroadcast(myRouterId, BroadcastMessage.newBroadcast(
                         b.getOpcode(), b.getUserIdsList(), () -> b.getMessage().toByteArray()
                 )))
-                .match(ActorWorld.class, w -> MessageAdapter.addWorld(myRouterId, WorldMessage.newMessage(w.getOpcode(), () -> w.getMessage().toByteArray())))
-//                .match(WorldMessage.class, w -> MessageAdapter.addWorld(myRouterId, w))
+                .match(ActorWorld.class, w -> MessageAdapter.addWorld(myRouterId, WorldMessage.newMessage(
+                        w.getOpcode(), () -> w.getMessage().toByteArray())))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
                     AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(rf.getForward());

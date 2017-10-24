@@ -3,7 +3,6 @@ package com.framework.akka.router;
 import com.framework.akka.router.local.AkkaLocalWorkerSystem;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.core.MessageBody;
-import com.framework.niosocket.message.ResponseMessage;
 import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.RequestHandler;
@@ -40,7 +39,7 @@ public abstract class DefaultLocalActorRequestHandler implements RequestHandler,
     protected void afterHook(ApiRequest request, ChannelHandlerContext ctx) {
         Object result = AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(request);
         if (result instanceof MessageBody) {
-            ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((ResponseMessage) result).getMessage());
+            ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), (MessageBody) result);
         } else if (result instanceof LoginUserEntity) {
             ContextAdapter.userLogin(ctx.channel().id(), ((LoginUserEntity) result).getUserId());
             ReplyUtils.reply(ctx, getRouterId(), request.getOpcode(), ((LoginUserEntity) result).getMessageBody());

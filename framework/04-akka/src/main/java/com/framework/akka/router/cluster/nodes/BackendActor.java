@@ -17,7 +17,6 @@ import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.akka.router.proto.MemberOfflineEvent;
 import com.framework.akka.router.proto.MemberOnlineEvent;
 import com.framework.core.MessageBody;
-import com.framework.niosocket.message.ResponseMessage;
 
 /**
  * @author @panyao
@@ -85,7 +84,7 @@ public abstract class BackendActor extends AbstractActor implements DispatchForw
     }
 
     protected void response(MessageBody message) {
-        getSender().tell(ResponseMessage.newMessage(message), getSelf());
+        getSender().tell(message, getSelf());
     }
 
     void register(Member member) {

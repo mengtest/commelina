@@ -5,11 +5,7 @@ import com.framework.akka.router.ActorServiceHandler;
 import com.framework.akka.router.LocalServiceHandler;
 import com.framework.akka.router.local.AbstractLocalServiceActor;
 import com.framework.akka.router.proto.ApiRequest;
-import com.game.gateway.proto.FindRoom;
-import com.google.common.collect.Maps;
 import com.google.protobuf.Internal;
-
-import java.util.Map;
 
 /**
  * @author panyao
@@ -32,8 +28,6 @@ public class MemberStatusService implements LocalServiceHandler {
 
     private static class MemberStatusActor extends AbstractLocalServiceActor {
 
-        private final Map<Long, Internal.EnumLite> userLastAccessServer = Maps.newHashMap();
-
         public MemberStatusActor(Internal.EnumLite routerId) {
             super(routerId);
         }
@@ -47,7 +41,7 @@ public class MemberStatusService implements LocalServiceHandler {
         @Override
         protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
             return builder
-                    .match(FindRoom.class, f -> {
+                    .match(Long.class, roomId -> {
                         getSender().tell(Boolean.TRUE, getSelf());
                     });
         }

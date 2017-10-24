@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package def.gateway.constants;
+
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "ServerMethodDef";
+option java_multiple_files = true;
+
+// 接口列表
+enum SERVER_GATEWAY_METHODS {
+    // 登录
+    MATCHIN = 0;
+    // 用户状态查询
+}

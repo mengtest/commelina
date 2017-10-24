@@ -8,7 +8,6 @@ import com.framework.akka.router.Dispatch;
 import com.framework.akka.router.RouterRegistration;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.core.MessageBody;
-import com.framework.niosocket.message.ResponseMessage;
 import com.google.protobuf.Internal;
 
 /**
@@ -44,7 +43,7 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
     }
 
     public final void response(MessageBody message) {
-        getSender().tell(ResponseMessage.newMessage(message), getSelf());
+        getSender().tell(message, getSelf());
     }
 
     protected LoggingAdapter getLogger() {
