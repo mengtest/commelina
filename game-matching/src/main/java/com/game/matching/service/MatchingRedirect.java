@@ -19,7 +19,7 @@ import java.util.List;
  * @author @panyao
  * @date 2017/8/14
  */
-public class MatchingRedirect extends AbstractActor {
+class MatchingRedirect extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -57,26 +57,6 @@ public class MatchingRedirect extends AbstractActor {
             getContext().stop(getSelf());
         }
 
-    }
-
-    static final class CREATE_ROOM_BO {
-        long[] userIds;
-
-        CREATE_ROOM_BO(long[] userIds) {
-            this.userIds = userIds;
-        }
-    }
-
-    static final class CREATE_ROOM_FAILED_BO {
-        private long[] userIds;
-
-        CREATE_ROOM_FAILED_BO(long[] userIds) {
-            this.userIds = userIds;
-        }
-
-        long[] getUserIds() {
-            return userIds;
-        }
     }
 
     static Props props() {

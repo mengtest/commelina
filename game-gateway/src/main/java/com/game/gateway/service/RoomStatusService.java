@@ -17,7 +17,7 @@ import com.google.protobuf.Internal;
  * 记录用户状态，是匹配中，还是游戏中
  */
 @ActorServiceHandler
-public class MemberStatusService implements LocalServiceHandler {
+public class RoomStatusService implements LocalServiceHandler {
 
     @Override
     public Internal.EnumLite getRouterId() {

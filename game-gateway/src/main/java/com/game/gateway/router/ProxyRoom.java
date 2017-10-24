@@ -14,6 +14,8 @@ import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
+import com.game.gateway.proto.FindRoomRequest;
+import com.game.gateway.proto.FindRoomResponse;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,24 +30,28 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
     private final MessageBody messageBody = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_API_UNAUTHORIZED));
 
     @Override
-    public Internal.EnumLite getRouterId() {
-        return DOMAIN.GAME_ROOM;
-    }
-
-    @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
-
-        ByteString roomId = ask.getArgs(0);
-        if (roomId == null || (Boolean) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNodeWithRaw(Long.valueOf(roomId.toStringUtf8()))) {
+        do {
+            ByteString roomId = ask.getArgs(0);
+            if (roomId != null) {
+                FindRoomResponse response = (FindRoomResponse) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+                        FindRoomRequest.newBuilder()
+                                .setRoomId(Long.valueOf(roomId.toStringUtf8()))
+                                .build()
+                );
+                if (response.getExists()) {
+                    break;
+                }
+            }
             // 房间不存在
             ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
             return false;
-        }
+        } while (false);
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
 
         if (userId <= 0) {
-            // 用户为登录
+            // 用户未登录
             ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ask.getOpcode(), messageBody);
             return false;
         }
@@ -53,6 +59,11 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         newRequestBuilder.setLoginUserId(userId);
 
         return true;
+    }
+
+    @Override
+    public Internal.EnumLite getRouterId() {
+        return DOMAIN.GAME_ROOM;
     }
 
     public static class RoomRouterFrontedClusterActor extends RouterFrontedClusterActor {

@@ -46,25 +46,6 @@ public class Gateway extends DefaultLocalActorRequestHandler {
         return true;
     }
 
-    //    @Override
-//    protected boolean beforeHook(SocketASK ask, ChannelHandlerContext ctx) {
-//        switch (ask.getOpcode()) {
-//            // 登录接口允许匿名
-//            case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
-//                return true;
-//        }
-//
-//        final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
-//        if (userId <= 0) {
-//            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
-//            return false;
-//        }
-//
-//        ask.setUserId(userId);
-//
-//        return true;
-//    }
-
     @Override
     public final Internal.EnumLite getRouterId() {
         return DOMAIN.GATEWAY;

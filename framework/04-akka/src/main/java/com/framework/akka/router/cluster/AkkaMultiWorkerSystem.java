@@ -7,6 +7,7 @@ import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.core.MessageBody;
+import com.google.protobuf.GeneratedMessageV3;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -29,6 +30,14 @@ public class AkkaMultiWorkerSystem {
 
     public ActorSystem getSystem() {
         return system;
+    }
+
+    public Object askRouterClusterNode(final GeneratedMessageV3 ask) {
+        return askRouterClusterNode(ask, DEFAULT_TIMEOUT);
+    }
+
+    public Object askRouterClusterNode(final GeneratedMessageV3 ask, Timeout timeout) {
+        return (MessageBody) PatternsCS.ask(clusterRouterFrontend, ask, timeout).toCompletableFuture().join();
     }
 
     public MessageBody askRouterClusterNode(final ApiRequest ask) {

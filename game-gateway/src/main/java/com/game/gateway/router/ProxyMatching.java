@@ -25,11 +25,6 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
     private final MessageBody messageBody = DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.MATCHING_API_UNAUTHORIZED));
 
     @Override
-    public Internal.EnumLite getRouterId() {
-        return DOMAIN.MATCHING;
-    }
-
-    @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
@@ -40,6 +35,11 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
         newRequestBuilder.setLoginUserId(userId);
 
         return true;
+    }
+
+    @Override
+    public Internal.EnumLite getRouterId() {
+        return DOMAIN.MATCHING;
     }
 
 }

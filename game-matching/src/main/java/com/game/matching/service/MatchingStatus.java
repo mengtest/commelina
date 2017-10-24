@@ -18,25 +18,25 @@ import java.util.concurrent.TimeUnit;
  * @author @panyao
  * @date 2017/8/14
  */
-public class MatchingStatus extends AbstractActor {
+class MatchingStatus extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(NOTIFY_MATCH_STATUS.class, this::notifyMatchStatus)
+                .match(List.class, this::notifyMatchStatus)
                 .matchAny(o -> log.info("MatchingStatus received unknown message."))
                 .build();
     }
 
-    private void notifyMatchStatus(NOTIFY_MATCH_STATUS notifyMatchStatus) {
-        log.info("Broadcast match status people: " + notifyMatchStatus.userIds.size());
+    private void notifyMatchStatus(List<Long> userIds) {
+        log.info("Broadcast match status people: " + userIds.size());
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
         ClusterChildNodeSystem.INSTANCE.broadcast(
                 OPCODE.NOTIFY_MATCH_SUCCESS_VALUE,
-                notifyMatchStatus.userIds,
-                DefaultMessageProvider.produceMessageForKV("matchUserCount", notifyMatchStatus.userIds.size()));
+                userIds,
+                DefaultMessageProvider.produceMessageForKV("matchUserCount", userIds.size()));
 
         // 延迟 关闭此 actor
         getContext().getSystem().scheduler()
@@ -47,10 +47,10 @@ public class MatchingStatus extends AbstractActor {
                 );
     }
 
-    static final class NOTIFY_MATCH_STATUS {
+    static final class NotifyMatchStatus {
         List<Long> userIds;
 
-        NOTIFY_MATCH_STATUS(List<Long> userIds) {
+        NotifyMatchStatus(List<Long> userIds) {
             this.userIds = userIds;
         }
     }

@@ -73,7 +73,7 @@ public class Matching extends AbstractServiceActor {
             List<Long> userIds = Lists.newArrayList();
             userIds.addAll(matchList);
             final ActorRef notifyMatchStatus = getContext().actorOf(MatchingStatus.props());
-            notifyMatchStatus.tell(new MatchingStatus.NOTIFY_MATCH_STATUS(userIds), getSelf());
+            notifyMatchStatus.tell(userIds, getSelf());
         }
     }
 
