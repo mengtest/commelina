@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package def.gateway;
+
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "ErrorCodeProtos";
+option java_multiple_files = true;
+
+// 错误码定义
+enum ERROR_CODE {
+    // 成功
+    SUCESS = 0;
+    // 网关该接口必须登录才能访问
+    GATEWAY_API_UNAUTHORIZED = 1;
+    // 匹配接口必须登录才能访问
+    MATCHING_API_UNAUTHORIZED = 2;
+    // 房间必须登录才能访问
+    ROOM_API_UNAUTHORIZED = 3;
+    // 第一个参数必须是 room id
+    ROOM_API_IMPORT_ROOM_ID = 4;
+
+    // 房间不存在
+    ROOM_NOT_FOUND = 5;
+
+    // token 转换错误
+    TOKEN_PARSE_ERROR = 10;
+}

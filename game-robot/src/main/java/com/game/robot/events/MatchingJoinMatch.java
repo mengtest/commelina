@@ -2,8 +2,7 @@ package com.game.robot.events;
 
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.common.proto.DOMAIN;
-import com.game.gateway.proto.GATEWAY_APIS;
+import com.game.gateway.proto.DOMAIN;
 import com.game.matching.proto.MATCHING_METHODS;
 import com.game.robot.interfaces.MemberEvent;
 import com.game.robot.interfaces.MemberEventLoop;
@@ -26,7 +25,7 @@ public class MatchingJoinMatch implements MemberEvent {
     @Override
     public SocketASK handler(MemberEventLoop eventLoop) {
         return SocketASK.newBuilder()
-                .setForward(GATEWAY_APIS.MATCHING_V1_0_0_VALUE)
+                .setForward(DOMAIN.MATCHING_VALUE)
                 .setOpcode(MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
                 .addArgs(ByteString.copyFromUtf8(userId.toString()))
@@ -35,7 +34,7 @@ public class MatchingJoinMatch implements MemberEvent {
 
     @Override
     public Internal.EnumLite getDomain() {
-        return DOMAIN.GATE_WAY;
+        return DOMAIN.GATEWAY;
     }
 
     @Override

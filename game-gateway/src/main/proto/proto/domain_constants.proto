@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package def.common.constants;
+package def.gateway;
 
-option java_package = "com.game.common.proto";
-option java_outer_classname = "DomainDef";
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "DomainProtos";
 option java_multiple_files = true;
 
 // 响应的 domain 列表，目前就这三个
 enum DOMAIN {
     HEARTBEAT = 0; // 心跳
-    GATE_WAY = 1; // 网关
+    GATEWAY = 1; // 网关
     MATCHING = 2; // 匹配
     GAME_ROOM = 3; // 游戏房间
 }

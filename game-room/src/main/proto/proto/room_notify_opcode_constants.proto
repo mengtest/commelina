@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.room;
+
+option java_package = "com.game.room.proto";
+option java_outer_classname = "NotifyOpcodeProtos";
+option java_multiple_files = true;
+
+enum OPCODE {
+    // 通知匹配成功
+    EMPTY = 0;
+}

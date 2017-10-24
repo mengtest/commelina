@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package def.room.constants;
+package def.room;
 
 option java_package = "com.game.room.proto";
-option java_outer_classname = "MethodDef";
+option java_outer_classname = "MethodProtos";
 option java_multiple_files = true;
 
 enum ROOM_METHODS {

@@ -40,8 +40,7 @@ public class MemberStatusService implements LocalServiceHandler {
 
         @Override
         protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
-            return builder
-                    .match(Long.class, roomId -> {
+            return builder.match(Long.class, roomId -> {
                         getSender().tell(Boolean.TRUE, getSelf());
                     });
         }

@@ -2,8 +2,7 @@ package com.game.robot.events;
 
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.common.proto.DOMAIN;
-import com.game.gateway.proto.GATEWAY_APIS;
+import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.game.robot.interfaces.MemberEvent;
 import com.game.robot.interfaces.MemberEventLoop;
@@ -36,7 +35,7 @@ public class GatewayLogin implements MemberEvent {
         LOGGER.debug("向服务器发送登录请求。");
 
         return SocketASK.newBuilder()
-                .setForward(GATEWAY_APIS.GATEWAY_V1_0_0_VALUE)
+                .setForward(DOMAIN.GATEWAY_VALUE)
                 .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
                 .setVersion("1.0.0")
                 .addArgs(ByteString.copyFromUtf8("1"))
@@ -45,7 +44,7 @@ public class GatewayLogin implements MemberEvent {
 
     @Override
     public Internal.EnumLite getDomain() {
-        return DOMAIN.GATE_WAY;
+        return DOMAIN.GATEWAY;
     }
 
     @Override

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package def.matching.constants;
+package def.matching;
 
 option java_package = "com.game.matching.proto";
-option java_outer_classname = "MethodDef";
+option java_outer_classname = "MethodProtos";
 option java_multiple_files = true;
 
 enum MATCHING_METHODS {

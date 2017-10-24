@@ -12,7 +12,7 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
-import com.game.common.proto.DOMAIN;
+import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
@@ -38,7 +38,7 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         ByteString roomId = ask.getArgs(0);
         if (roomId == null || (Boolean) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNodeWithRaw(Long.valueOf(roomId.toStringUtf8()))) {
             // 房间不存在
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
+            ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
             return false;
         }
 
@@ -46,7 +46,7 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
 
         if (userId <= 0) {
             // 用户为登录
-            ReplyUtils.reply(ctx, DOMAIN.GATE_WAY, ask.getOpcode(), messageBody);
+            ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ask.getOpcode(), messageBody);
             return false;
         }
 
