@@ -1,6 +1,7 @@
 package com.game.gateway.router;
 
 import com.framework.akka.router.DefaultClusterActorRequestHandler;
+import com.framework.akka.router.local.AkkaLocalWorkerSystem;
 import com.framework.akka.router.proto.ApiRequest;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
@@ -9,6 +10,7 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
+import com.game.gateway.proto.ChangeAccesssDoamin;
 import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.google.protobuf.Internal;
@@ -33,6 +35,13 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
         }
 
         newRequestBuilder.setLoginUserId(userId);
+
+        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+                ChangeAccesssDoamin.newBuilder()
+                        .setUserId(userId)
+                        .setDomain(DOMAIN.MATCHING)
+                        .build()
+        );
 
         return true;
     }

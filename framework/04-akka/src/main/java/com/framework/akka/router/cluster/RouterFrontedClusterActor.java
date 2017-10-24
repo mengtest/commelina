@@ -137,7 +137,9 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
         if (member.hasRole(Constants.CLUSTER_BACKEND)) {
             logger.info("Remote port:{} , nodes register.", member.address().port().get());
             getContext().watch(sender());
-            clusterNodeRouters.put(Integer.valueOf(member.address().port().get().toString()), sender());
+
+            String portStr = member.address().port().get().toString();
+            clusterNodeRouters.put(Integer.valueOf(portStr.substring(portStr.length() - 2)), sender());
         }
     }
 

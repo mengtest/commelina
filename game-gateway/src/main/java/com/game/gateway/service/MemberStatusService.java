@@ -4,7 +4,6 @@ import akka.japi.pf.ReceiveBuilder;
 import com.framework.akka.router.ActorServiceHandler;
 import com.framework.akka.router.LocalServiceHandler;
 import com.framework.akka.router.local.AbstractLocalServiceActor;
-import com.framework.akka.router.proto.ApiRequest;
 import com.game.gateway.proto.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -21,7 +20,7 @@ public class MemberStatusService implements LocalServiceHandler {
 
     @Override
     public Internal.EnumLite getRouterId() {
-        return null;
+        return GATEWAY_METHODS.MEMEBER_STATUS;
     }
 
     @Override
@@ -35,12 +34,6 @@ public class MemberStatusService implements LocalServiceHandler {
 
         public MemberStatusActor(Internal.EnumLite routerId) {
             super(routerId);
-        }
-
-        @Override
-        public void onRequest(ApiRequest request) {
-
-            // in game 逻辑
         }
 
         @Override

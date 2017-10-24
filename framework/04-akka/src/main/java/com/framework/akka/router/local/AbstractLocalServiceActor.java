@@ -38,6 +38,11 @@ public abstract class AbstractLocalServiceActor extends AbstractActor implements
                 .build();
     }
 
+    @Override
+    public void onRequest(ApiRequest request) {
+
+    }
+
     protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
         return builder;
     }

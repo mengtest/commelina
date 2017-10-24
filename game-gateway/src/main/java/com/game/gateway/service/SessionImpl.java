@@ -8,18 +8,14 @@ import com.framework.akka.router.cluster.AkkaMultiWorkerSystemContext;
 import com.framework.akka.router.local.AbstractLocalServiceActor;
 import com.framework.akka.router.local.AkkaLocalWorkerSystem;
 import com.framework.akka.router.proto.ApiRequest;
-import com.framework.akka.router.proto.MemberOfflineEvent;
+import com.framework.akka.router.proto.MemberOnlineEvent;
 import com.framework.core.BusinessMessage;
 import com.framework.core.DefaultMessageProvider;
-import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.FindLastAccessDomainRequest;
-import com.game.gateway.proto.FindLastAccessDomainResponse;
-import com.game.gateway.proto.GATEWAY_METHODS;
+import com.game.gateway.proto.*;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/25
  */
@@ -60,7 +56,7 @@ public class SessionImpl implements LocalServiceHandler {
             getLogger().info("userId:{}, 登录成功", userId);
             getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceMessage()), getSelf());
 
-            // 获取用户最好访问的 domain
+            // 获取用户最后访问的 domain
             FindLastAccessDomainResponse domain = (FindLastAccessDomainResponse) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
                     FindLastAccessDomainRequest.newBuilder()
                             .setUserId(userId)
@@ -71,10 +67,16 @@ public class SessionImpl implements LocalServiceHandler {
                 AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(domain.getDomainValue());
                 if (clusterSystem != null) {
                     // 向远程发送下线通知
-                    clusterSystem.askRouterClusterNode(MemberOfflineEvent.newBuilder().setLogoutUserId(userId).build());
+                    clusterSystem.askRouterClusterNode(MemberOnlineEvent.newBuilder().setLoginUserId(userId).build());
                 }
             }
 
+            // 重置访问的 domain
+            AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+                    ResetAccesssDoamin.newBuilder()
+                            .setUserId(userId)
+                            .build()
+            );
 
         }
     }

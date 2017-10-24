@@ -38,5 +38,5 @@ message ResetAccesssDoamin {
 
 message ChangeAccesssDoamin {
     uint64 userId = 1;
-    DOMAIN domain = 1;
+    DOMAIN domain = 2;
 }

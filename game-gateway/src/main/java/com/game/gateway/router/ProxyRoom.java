@@ -12,10 +12,7 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
-import com.game.gateway.proto.DOMAIN;
-import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.FindRoomRequest;
-import com.game.gateway.proto.FindRoomResponse;
+import com.game.gateway.proto.*;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
@@ -57,6 +54,13 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         }
 
         newRequestBuilder.setLoginUserId(userId);
+
+        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+                ChangeAccesssDoamin.newBuilder()
+                        .setUserId(userId)
+                        .setDomain(DOMAIN.GAME_ROOM)
+                        .build()
+        );
 
         return true;
     }
