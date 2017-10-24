@@ -20,7 +20,7 @@ public class MatchingRouter extends BackendActor {
     @Override
     public void onOffline(long logoutUserId) {
         // 用户下线，取消匹配
-//        matching.forward(new Matching.CANCEL_MATCH(logoutUserId, () -> 0), getContext());
+//        matching.forward(new Matching.CancelMatch(logoutUserId, () -> 0), getContext());
     }
 
     @Override
@@ -28,11 +28,11 @@ public class MatchingRouter extends BackendActor {
 //        switch (request.getOpcode().getNumber()) {
 //            // 加入匹配队列
 //            case MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE:
-//                matching.forward(new Matching.JOIN_MATCH(request.getUserId(), request.getOpcode()), getContext());
+//                matching.forward(new Matching.JoinMatch(request.getUserId(), request.getOpcode()), getContext());
 //                break;
 //            // 用户取消匹配
 //            case MATCHING_METHODS.CANCEL_MATCH_QUENE_VALUE:
-//                matching.forward(new Matching.JOIN_MATCH(request.getUserId(), request.getOpcode()), getContext());
+//                matching.forward(new Matching.JoinMatch(request.getUserId(), request.getOpcode()), getContext());
 //                break;
 //        }
 

@@ -152,6 +152,22 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-proto-gateway-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/game-gateway/src/main/proto/proto/copy</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/messages/common/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-proto-matching-resources</id>
                         <phase>validate</phase>
                         <goals>
@@ -183,6 +199,9 @@
                                 <resource>
                                     <directory>${basedir}/game-gateway/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
+                                    <!--<excludes>-->
+                                        <!--<exclude>copy/*.*</exclude>-->
+                                    <!--</excludes>-->
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/game-matching/src/main/proto/proto/</directory>

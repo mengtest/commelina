@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.gateway;
 
-import "proto/domain_constants.proto";
+import "proto/copy/domain_constants.proto";
 
 option java_package = "com.game.gateway.proto";
 option java_outer_classname = "MemberStatusProtos";

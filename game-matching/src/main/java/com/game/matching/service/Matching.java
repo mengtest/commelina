@@ -12,7 +12,6 @@ import com.google.protobuf.Internal;
 import java.util.List;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/10
  */
@@ -31,15 +30,15 @@ public class Matching extends AbstractServiceActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(JOIN_MATCH.class, this::joinMatch)
-                .match(REMOVE_MATCH.class, this::removeMatch)
-                .match(CANCEL_MATCH.class, this::cancelMatch)
-                .match(MatchingRedirect.CREATE_ROOM_FAILED.class, this::createMatchFailed)
+                .match(JoinMatch.class, this::joinMatch)
+                .match(RemoveMatch.class, this::removeMatch)
+                .match(CancelMatch.class, this::cancelMatch)
+                .match(List.class, this::createMatchFailed)
                 .matchAny(o -> log.info("Matching received unknown message" + o))
                 .build();
     }
 
-    private void joinMatch(JOIN_MATCH joinMatch) {
+    private void joinMatch(JoinMatch joinMatch) {
         final long userId = joinMatch.userId;
         if (matchList.contains(userId)) {
             log.info("userId exists in queue " + userId + ", ignored.");
@@ -62,13 +61,13 @@ public class Matching extends AbstractServiceActor {
 
         if (matchList.size() >= MATCH_SUCCESS_PEOPLE) {
             do {
-                final long[] userIds = new long[MATCH_SUCCESS_PEOPLE];
+                List<Long> userIds = Lists.newArrayListWithExpectedSize(MATCH_SUCCESS_PEOPLE);
                 for (int i = 0; i < MATCH_SUCCESS_PEOPLE && matchList.iterator().hasNext(); i++) {
-                    userIds[i] = matchList.iterator().next();
+                    userIds.add(matchList.iterator().next());
                     matchList.iterator().remove();
                 }
                 final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
-                matchingRedirect.tell(new MatchingRedirect.CREATE_ROOM(userIds), getSelf());
+                matchingRedirect.tell(userIds, getSelf());
             } while (matchList.size() >= MATCH_SUCCESS_PEOPLE);
         } else {
             List<Long> userIds = Lists.newArrayList();
@@ -78,7 +77,7 @@ public class Matching extends AbstractServiceActor {
         }
     }
 
-    private void cancelMatch(CANCEL_MATCH cancelMatch) {
+    private void cancelMatch(CancelMatch cancelMatch) {
         long userId = cancelMatch.userId;
 
         boolean rs = matchList.remove(userId);
@@ -89,7 +88,7 @@ public class Matching extends AbstractServiceActor {
         response(DefaultMessageProvider.produceMessage());
     }
 
-    private void removeMatch(REMOVE_MATCH removeMatch) {
+    private void removeMatch(RemoveMatch removeMatch) {
         long userId = removeMatch.userId;
 
         boolean rs = matchList.remove(userId);
@@ -97,39 +96,42 @@ public class Matching extends AbstractServiceActor {
         log.info("remove queue userId " + userId + ", result " + rs);
     }
 
-    private void createMatchFailed(MatchingRedirect.CREATE_ROOM_FAILED failed) {
+    private void createMatchFailed(List<Long> userIds) {
         // 把用户重新加入失败队列
 
-        for (long userId : failed.getUserIds()) {
-            getSelf().tell(new JOIN_MATCH(userId, null), getSelf());
+        for (long userId : userIds) {
+            getSelf().tell(new JoinMatch(userId, null), getSelf());
         }
+
     }
 
-    // http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html
-    public static final class JOIN_MATCH {
+    /**
+     * http://doc.akka.io/docs/akka/current/java/guide/tutorial_3.html
+     */
+    public static final class JoinMatch {
         long userId;
         Internal.EnumLite apiOpcode;
 
-        public JOIN_MATCH(long userId, Internal.EnumLite apiOpcode) {
+        public JoinMatch(long userId, Internal.EnumLite apiOpcode) {
             this.userId = userId;
             this.apiOpcode = apiOpcode;
         }
     }
 
-    public static final class CANCEL_MATCH {
+    public static final class CancelMatch {
         long userId;
         Internal.EnumLite apiOpcode;
 
-        public CANCEL_MATCH(long userId, Internal.EnumLite apiOpcode) {
+        public CancelMatch(long userId, Internal.EnumLite apiOpcode) {
             this.userId = userId;
             this.apiOpcode = apiOpcode;
         }
     }
 
-    public static final class REMOVE_MATCH {
+    public static final class RemoveMatch {
         long userId;
 
-        public REMOVE_MATCH(long userId) {
+        public RemoveMatch(long userId) {
             this.userId = userId;
         }
     }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package def.gateway;
+package def;
 
 option java_package = "com.game.gateway.proto";
 option java_outer_classname = "DomainProtos";

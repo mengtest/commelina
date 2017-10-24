@@ -7,11 +7,13 @@ import akka.event.LoggingAdapter;
 import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystem;
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.AppVersion;
+import com.game.gateway.proto.DOMAIN;
 import com.google.protobuf.ByteString;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
 
+import java.util.List;
+
 /**
- *
  * 匹配重定向到房间的操作
  *
  * @author @panyao
@@ -29,18 +31,19 @@ public class MatchingRedirect extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(CREATE_ROOM.class, this::createRoom)
+                .match(List.class, this::createRoom)
                 .matchAny(o -> log.info("MatchingRedirect received unknown message " + o))
                 .build();
     }
 
-    private void createRoom(CREATE_ROOM createRoom) {
+    private void createRoom(List<Long> userIds) {
 
         ApiRequestForward.Builder builder = ApiRequestForward.newBuilder()
-                .setForward(MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE)
+                .setForward(DOMAIN.GAME_ROOM_VALUE)
+                .setOpcode(MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE)
                 .setVersion(AppVersion.FIRST_VERSION);
 
-        for (Long userId : createRoom.userIds) {
+        for (Long userId : userIds) {
             builder.addArgs(ByteString.copyFromUtf8(userId.toString()));
         }
 
@@ -48,7 +51,7 @@ public class MatchingRedirect extends AbstractActor {
 
         if (result == null) {
             // 失败了就把元素投递回去 Matching 队列
-            getSender().tell(new CREATE_ROOM_FAILED(createRoom.userIds), getSelf());
+            getSender().tell(userIds, getSelf());
         } else {
             // 成功了就关闭此次的重定向 actor
             getContext().stop(getSelf());
@@ -56,18 +59,18 @@ public class MatchingRedirect extends AbstractActor {
 
     }
 
-    static final class CREATE_ROOM {
+    static final class CREATE_ROOM_BO {
         long[] userIds;
 
-        CREATE_ROOM(long[] userIds) {
+        CREATE_ROOM_BO(long[] userIds) {
             this.userIds = userIds;
         }
     }
 
-    static final class CREATE_ROOM_FAILED {
+    static final class CREATE_ROOM_FAILED_BO {
         private long[] userIds;
 
-        CREATE_ROOM_FAILED(long[] userIds) {
+        CREATE_ROOM_FAILED_BO(long[] userIds) {
             this.userIds = userIds;
         }
 
