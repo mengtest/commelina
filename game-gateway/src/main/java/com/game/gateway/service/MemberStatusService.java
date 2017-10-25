@@ -8,6 +8,7 @@ import com.game.gateway.proto.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
+import com.message.common.proto.DOMAIN;
 
 /**
  * @author panyao

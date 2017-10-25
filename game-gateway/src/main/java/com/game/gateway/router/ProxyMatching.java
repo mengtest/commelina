@@ -11,9 +11,9 @@ import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
 import com.game.gateway.proto.ChangeAccesssDoamin;
-import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.google.protobuf.Internal;
+import com.message.common.proto.DOMAIN;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

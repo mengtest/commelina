@@ -7,8 +7,8 @@ import akka.event.LoggingAdapter;
 import com.framework.akka.router.cluster.nodes.ClusterChildNodeSystem;
 import com.framework.akka.router.proto.ApiRequestForward;
 import com.framework.core.AppVersion;
-import com.game.gateway.proto.DOMAIN;
 import com.google.protobuf.ByteString;
+import com.message.common.proto.DOMAIN;
 import com.message.matching_room.proto.MATCHING_ROOM_METHODS;
 
 import java.util.List;

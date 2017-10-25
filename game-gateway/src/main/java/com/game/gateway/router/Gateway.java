@@ -9,10 +9,10 @@ import com.framework.niosocket.ContextAdapter;
 import com.framework.niosocket.NioSocketRouter;
 import com.framework.niosocket.ReplyUtils;
 import com.framework.niosocket.proto.SocketASK;
-import com.game.gateway.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
+import com.message.common.proto.DOMAIN;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

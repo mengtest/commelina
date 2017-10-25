@@ -2,12 +2,12 @@ package com.game.robot.events;
 
 import com.framework.niosocket.proto.SocketASK;
 import com.framework.niosocket.proto.SocketMessage;
-import com.game.gateway.proto.DOMAIN;
 import com.game.matching.proto.MATCHING_METHODS;
 import com.game.robot.interfaces.MemberEvent;
 import com.game.robot.interfaces.MemberEventLoop;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
+import com.message.common.proto.DOMAIN;
 
 /**
  *
