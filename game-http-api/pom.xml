@@ -12,7 +12,7 @@
     <artifactId>http-api</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>app-api</name>
+    <name>game-app-api</name>
 
     <modules>
         <!--<module>../framework</module>-->
