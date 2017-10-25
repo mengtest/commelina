@@ -14,14 +14,6 @@
     <version>1.0.0</version>
     <name>game-app-api</name>
 
-    <modules>
-        <!--<module>../framework</module>-->
-    </modules>
-
-    <properties>
-        <docker.image.prefix>app</docker.image.prefix>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
