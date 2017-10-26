@@ -10,7 +10,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.freedompy.commelina</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>parent-commelina</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <description>Mobile micro game server framework.Nio socket and web tool and akka actor.</description>

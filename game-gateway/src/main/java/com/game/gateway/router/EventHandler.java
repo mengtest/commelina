@@ -1,9 +1,9 @@
 package com.game.gateway.router;
 
-import com.github.freedompy.commelina.akka.router.cluster.AkkaMultiWorkerSystem;
-import com.github.freedompy.commelina.akka.router.cluster.AkkaMultiWorkerSystemContext;
-import com.github.freedompy.commelina.akka.router.local.AkkaLocalWorkerSystem;
-import com.github.freedompy.commelina.akka.router.proto.MemberOfflineEvent;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemContext;
+import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.github.freedompy.commelina.niosocket.MemberEventHandler;
 import com.game.gateway.proto.FindLastAccessDomainRequest;
 import com.game.gateway.proto.FindLastAccessDomainResponse;

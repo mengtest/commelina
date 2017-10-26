@@ -3,22 +3,30 @@
 
     <parent>
         <groupId>com.game</groupId>
-        <artifactId>game-parent</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.app</groupId>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>http-api</artifactId>
-    <packaging>jar</packaging>
+    <groupId>com.game.app</groupId>
+    <artifactId>parent-app</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>game-app-api</name>
+    <name>game-app-http-api</name>
+
+    <modules>
+        <module>apis</module>
+
+        <module>service_publicx</module>
+
+        <module>service_admin</module>
+        <module>service_app</module>
+        <module>service_game</module>
+        <module>service_pay</module>
+        <module>service_uc</module>
+    </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.github.freedompy.commelina</groupId>
             <artifactId>web</artifactId>
@@ -28,48 +36,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.foundation.app</groupId>
-                <artifactId>foundation-app-platform</artifactId>
-                <scope>compile</scope>
+                <groupId>com.game.app.service</groupId>
+                <artifactId>uc</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.3</version>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.app.AppBoot</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

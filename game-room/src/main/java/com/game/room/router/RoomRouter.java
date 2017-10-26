@@ -1,9 +1,9 @@
 package com.game.room.router;
 
 import akka.actor.ActorRef;
-import com.github.freedompy.commelina.akka.router.cluster.nodes.BackendActor;
-import com.github.freedompy.commelina.akka.router.proto.ApiRequest;
-import com.github.freedompy.commelina.akka.router.proto.ApiRequestForward;
+import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.BackendActor;
+import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
+import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.github.freedompy.commelina.core.BusinessMessage;
 import com.github.freedompy.commelina.core.DefaultMessageProvider;
 import com.github.freedompy.commelina.core.MessageBody;

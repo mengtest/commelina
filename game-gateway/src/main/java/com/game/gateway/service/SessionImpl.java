@@ -1,14 +1,14 @@
 package com.game.gateway.service;
 
-import com.github.freedompy.commelina.akka.router.ActorServiceHandler;
-import com.github.freedompy.commelina.akka.router.LocalServiceHandler;
-import com.github.freedompy.commelina.akka.router.LoginUserEntity;
-import com.github.freedompy.commelina.akka.router.cluster.AkkaMultiWorkerSystem;
-import com.github.freedompy.commelina.akka.router.cluster.AkkaMultiWorkerSystemContext;
-import com.github.freedompy.commelina.akka.router.local.AbstractLocalServiceActor;
-import com.github.freedompy.commelina.akka.router.local.AkkaLocalWorkerSystem;
-import com.github.freedompy.commelina.akka.router.proto.ApiRequest;
-import com.github.freedompy.commelina.akka.router.proto.MemberOnlineEvent;
+import com.github.freedompy.commelina.akka.dispatching.ActorServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.LoginUserEntity;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemContext;
+import com.github.freedompy.commelina.akka.dispatching.local.AbstractLocalServiceActor;
+import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
+import com.github.freedompy.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.github.freedompy.commelina.core.BusinessMessage;
 import com.github.freedompy.commelina.core.DefaultMessageProvider;
 import com.game.gateway.proto.*;

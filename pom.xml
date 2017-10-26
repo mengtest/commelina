@@ -3,14 +3,14 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>parent-commelina</artifactId>
         <version>1.0.0</version>
         <relativePath>./commelina</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.game</groupId>
-    <artifactId>game-parent</artifactId>
+    <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>root</name>
@@ -19,9 +19,11 @@
         <module>commelina</module>
 
         <module>game-http-api</module>
+
         <module>game-gateway</module>
         <module>game-matching</module>
         <module>game-room</module>
+
         <module>game-robot</module>
     </modules>
 

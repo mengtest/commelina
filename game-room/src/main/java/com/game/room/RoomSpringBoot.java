@@ -1,6 +1,6 @@
 package com.game.room;
 
-import com.github.freedompy.commelina.akka.router.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystemCreator;
 import com.game.room.router.RoomRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

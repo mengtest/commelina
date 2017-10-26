@@ -1,8 +1,8 @@
 package com.game.gateway;
 
-import com.github.freedompy.commelina.akka.router.LocalServiceHandler;
-import com.github.freedompy.commelina.akka.router.cluster.AkkaMultiWorkerSystemCreator;
-import com.github.freedompy.commelina.akka.router.local.AkkaLocalWorkerSystemCreator;
+import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemCreator;
+import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystemCreator;
 import com.github.freedompy.commelina.niosocket.BootstrapNioSocket;
 import com.game.gateway.router.ProxyRoom;
 import com.message.common.proto.DOMAIN;

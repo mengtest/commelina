@@ -1,9 +1,9 @@
 package com.game.gateway.service;
 
 import akka.japi.pf.ReceiveBuilder;
-import com.github.freedompy.commelina.akka.router.ActorServiceHandler;
-import com.github.freedompy.commelina.akka.router.LocalServiceHandler;
-import com.github.freedompy.commelina.akka.router.local.AbstractLocalServiceActor;
+import com.github.freedompy.commelina.akka.dispatching.ActorServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.local.AbstractLocalServiceActor;
 import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
 

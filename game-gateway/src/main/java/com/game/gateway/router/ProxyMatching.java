@@ -1,8 +1,8 @@
 package com.game.gateway.router;
 
-import com.github.freedompy.commelina.akka.router.DefaultClusterActorRequestHandler;
-import com.github.freedompy.commelina.akka.router.local.AkkaLocalWorkerSystem;
-import com.github.freedompy.commelina.akka.router.proto.ApiRequest;
+import com.github.freedompy.commelina.akka.dispatching.DefaultClusterActorRequestHandler;
+import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
 import com.github.freedompy.commelina.core.BusinessMessage;
 import com.github.freedompy.commelina.core.DefaultMessageProvider;
 import com.github.freedompy.commelina.core.MessageBody;

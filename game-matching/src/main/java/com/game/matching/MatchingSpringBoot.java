@@ -1,6 +1,6 @@
 package com.game.matching;
 
-import com.github.freedompy.commelina.akka.router.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystemCreator;
 import com.game.matching.router.MatchingRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

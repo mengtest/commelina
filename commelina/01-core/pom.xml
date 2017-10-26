@@ -3,7 +3,7 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>parent-commelina</artifactId>
         <version>1.0.0</version>
     </parent>
 
