@@ -4,10 +4,10 @@ import com.app.passport.entity.MemberEntity;
 import com.app.passport.proto.ERROR_CODE_CONSTANTS;
 import com.app.passport.service.AccountService;
 import com.app.passport.service.CaptchaService;
-import com.framework.utils.ServiceDomainMessage;
-import com.framework.web.AuthenticatedApiInterceptor;
-import com.framework.web.ResponseBodyMessage;
-import com.framework.web.SessionHandler;
+import com.github.freedompy.commelina.utils.ServiceDomainMessage;
+import com.github.freedompy.commelina.web.AuthenticatedApiInterceptor;
+import com.github.freedompy.commelina.web.ResponseBodyMessage;
+import com.github.freedompy.commelina.web.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/31
  */
 @Controller
-@RequestMapping("/api/passport/connect")
+@RequestMapping("/passport/api/connect")
 public class Connect {
 
     @Resource
@@ -44,11 +43,10 @@ public class Connect {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/nopasswordtel", method = RequestMethod.GET)
+    @RequestMapping(value = "/telwithvalidcode", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode,
-                                                 HttpServletRequest request,
-                                                 HttpServletResponse response) {
+                                                 HttpServletRequest request, HttpServletResponse response) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE_CONSTANTS.INPUT_TELEPHONE_FORMAT_ERROR);
         }
@@ -65,6 +63,14 @@ public class Connect {
         }
 
         return ResponseBodyMessage.error(message.getErrorCode());
+    }
+
+    @RequestMapping(value = "/telwithpass", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBodyMessage<String> telephone1(@RequestParam String tel, @RequestParam int smsCode,
+                                                  HttpServletRequest request, HttpServletResponse response) {
+
+        return null;
     }
 
 }

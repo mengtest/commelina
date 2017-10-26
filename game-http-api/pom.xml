@@ -3,7 +3,7 @@
 
     <parent>
         <groupId>com.game</groupId>
-        <artifactId>game-root</artifactId>
+        <artifactId>game-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
@@ -20,7 +20,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.nexus.maven</groupId>
+            <groupId>com.github.freedompy.commelina</groupId>
             <artifactId>web</artifactId>
         </dependency>
     </dependencies>

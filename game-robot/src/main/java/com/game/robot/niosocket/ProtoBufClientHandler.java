@@ -1,8 +1,8 @@
 package com.game.robot.niosocket;
 
-import com.framework.niosocket.proto.SERVER_CODE;
-import com.framework.niosocket.proto.SocketASK;
-import com.framework.niosocket.proto.SocketMessage;
+import com.github.freedompy.commelina.niosocket.proto.SERVER_CODE;
+import com.github.freedompy.commelina.niosocket.proto.SocketASK;
+import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.game.robot.interfaces.SocketHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

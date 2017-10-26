@@ -1,7 +1,7 @@
 package com.app.passport.service;
 
-import com.framework.data.CacheKvRepository;
-import com.framework.utils.RandomEnhanced;
+import com.github.freedompy.commelina.data.CacheKvRepository;
+import com.github.freedompy.commelina.utils.RandomEnhanced;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

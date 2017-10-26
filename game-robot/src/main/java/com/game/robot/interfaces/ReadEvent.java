@@ -1,6 +1,6 @@
 package com.game.robot.interfaces;
 
-import com.framework.niosocket.proto.SocketMessage;
+import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 /**
  *
  * @author @panyao

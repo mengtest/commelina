@@ -1,7 +1,7 @@
 package com.game.robot.events;
 
-import com.framework.niosocket.proto.SocketASK;
-import com.framework.niosocket.proto.SocketMessage;
+import com.github.freedompy.commelina.niosocket.proto.SocketASK;
+import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.game.matching.proto.MATCHING_METHODS;
 import com.game.robot.interfaces.MemberEvent;
 import com.game.robot.interfaces.MemberEventLoop;

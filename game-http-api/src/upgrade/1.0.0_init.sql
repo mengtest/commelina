@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS `twenty_four` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `twenty_four`;
 
-
 CREATE TABLE `passport_member` (
   `uid` bigint(20) UNSIGNED NOT NULL COMMENT '用户uid',
   `pwd` varchar(60) NOT NULL COMMENT '账号密码',

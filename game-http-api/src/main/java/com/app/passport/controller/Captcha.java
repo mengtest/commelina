@@ -2,7 +2,7 @@ package com.app.passport.controller;
 
 import com.app.passport.proto.ERROR_CODE_CONSTANTS;
 import com.app.passport.service.CaptchaService;
-import com.framework.web.ResponseBodyMessage;
+import com.github.freedompy.commelina.web.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,12 +17,17 @@ import javax.annotation.Resource;
  * @date 2017/9/4
  */
 @Controller
-@RequestMapping("/api/passport/captcha")
+@RequestMapping("/passport/api/captcha")
 public class Captcha {
 
     @Resource
     private CaptchaService captchaService;
 
+    /**
+     *
+     * @param tel
+     * @return
+     */
     @RequestMapping(value = "/sms", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBodyMessage telephone(@RequestParam String tel) {

@@ -1,6 +1,6 @@
 package com.app.app.controller;
 
-import com.framework.web.ResponseBodyMessage;
+import com.github.freedompy.commelina.web.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;

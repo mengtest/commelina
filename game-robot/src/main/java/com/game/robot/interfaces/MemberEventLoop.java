@@ -1,8 +1,8 @@
 package com.game.robot.interfaces;
 
-import com.framework.niosocket.proto.SERVER_CODE;
-import com.framework.niosocket.proto.SocketASK;
-import com.framework.niosocket.proto.SocketMessage;
+import com.github.freedompy.commelina.niosocket.proto.SERVER_CODE;
+import com.github.freedompy.commelina.niosocket.proto.SocketASK;
+import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultEventLoop;

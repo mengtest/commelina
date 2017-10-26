@@ -1,9 +1,9 @@
 package com.game.gateway.service;
 
 import akka.japi.pf.ReceiveBuilder;
-import com.framework.akka.router.ActorServiceHandler;
-import com.framework.akka.router.LocalServiceHandler;
-import com.framework.akka.router.local.AbstractLocalServiceActor;
+import com.github.freedompy.commelina.akka.router.ActorServiceHandler;
+import com.github.freedompy.commelina.akka.router.LocalServiceHandler;
+import com.github.freedompy.commelina.akka.router.local.AbstractLocalServiceActor;
 import com.game.gateway.proto.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

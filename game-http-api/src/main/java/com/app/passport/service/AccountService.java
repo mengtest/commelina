@@ -1,8 +1,8 @@
 package com.app.passport.service;
 
 import com.app.passport.entity.MemberEntity;
-import com.framework.utils.ServiceDomainEmptyMessage;
-import com.framework.utils.ServiceDomainMessage;
+import com.github.freedompy.commelina.utils.ServiceDomainEmptyMessage;
+import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 
 /**
  * @author panyao

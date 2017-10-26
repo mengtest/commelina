@@ -1,12 +1,12 @@
 package com.app.passport.service;
 
-import com.app.passport.dao.AccountRepository;
+import com.app.passport.dao.AccountTelephoneRepository;
 import com.app.passport.dao.MemberRepository;
-import com.app.passport.entity.AccountEntity;
+import com.app.passport.entity.AccountTelephoneEntity;
 import com.app.passport.entity.MemberEntity;
 import com.app.passport.proto.ERROR_CODE_CONSTANTS;
-import com.framework.utils.ServiceDomainEmptyMessage;
-import com.framework.utils.ServiceDomainMessage;
+import com.github.freedompy.commelina.utils.ServiceDomainEmptyMessage;
+import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 public class AccountServiceImpl implements AccountService {
 
     @Resource
-    private AccountRepository accountRepository;
+    private AccountTelephoneRepository accountTephoneRepository;
 
     @Resource
     private MemberRepository memberRepository;
@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public ServiceDomainMessage<MemberEntity> singInWithTelAndNoPassword(String tel) {
-        AccountEntity entity = accountRepository.findByAccountAndType(tel, AccountEntity.ACCOUNT_TYPE.TELEPHONE);
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
         if (entity != null) {
             MemberEntity memberEntity = memberRepository.findOne(entity.getUid());
             if (memberEntity == null) {
@@ -42,13 +42,12 @@ public class AccountServiceImpl implements AccountService {
         memberEntity.setPwd(PwdUtils.createPwd(tel));
         memberEntity = memberRepository.save(memberEntity);
 
-        AccountEntity accountEntity = new AccountEntity();
+        AccountTelephoneEntity accountEntity = new AccountTelephoneEntity();
         accountEntity.setUid(memberEntity.getUid());
-        accountEntity.setType(AccountEntity.ACCOUNT_TYPE.TELEPHONE);
         accountEntity.setAccount(tel);
 
         // FIXME: 2017/9/4 这里要处理唯一索引问题
-        accountRepository.save(accountEntity);
+        accountTephoneRepository.save(accountEntity);
 
         return ServiceDomainMessage.newMessage(memberEntity);
     }
@@ -61,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public ServiceDomainEmptyMessage registerTel(@NotNull String tel, @NotNull String pwd) {
-        AccountEntity entity = accountRepository.findByAccountAndType(tel, AccountEntity.ACCOUNT_TYPE.TELEPHONE);
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
         if (entity != null) {
             return ServiceDomainEmptyMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_EXISTS);
         }
@@ -69,13 +68,12 @@ public class AccountServiceImpl implements AccountService {
         memberEntity.setPwd(PwdUtils.createPwd(pwd));
         memberEntity = memberRepository.save(memberEntity);
 
-        AccountEntity accountEntity = new AccountEntity();
+        AccountTelephoneEntity accountEntity = new AccountTelephoneEntity();
         accountEntity.setUid(memberEntity.getUid());
-        accountEntity.setType(AccountEntity.ACCOUNT_TYPE.TELEPHONE);
         accountEntity.setAccount(tel);
 
         // FIXME: 2017/9/4 这里要处理唯一索引问题
-        accountRepository.save(accountEntity);
+        accountTephoneRepository.save(accountEntity);
 
         return ServiceDomainEmptyMessage.newMessage();
     }
@@ -83,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Override
     public ServiceDomainMessage<MemberEntity> signInWithTel(@NotNull String tel, @NotNull String pwd) {
-        AccountEntity entity = accountRepository.findByAccountAndType(tel, AccountEntity.ACCOUNT_TYPE.TELEPHONE);
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
         if (entity == null) {
             return ServiceDomainMessage.newMessage(ERROR_CODE_CONSTANTS.ACCOUNT_NOT_FOUND);
         }

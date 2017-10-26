@@ -1,6 +1,6 @@
 package com.game.robot.niosocket;
 
-import com.framework.niosocket.proto.SocketMessage;
+import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.game.robot.interfaces.SocketHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

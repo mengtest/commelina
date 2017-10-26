@@ -6,9 +6,9 @@
         ">
 
     <!-- kv 仓库实现 -->
-    <bean class="com.framework.data.RedisCacheKvRepositoryImpl"/>
+    <bean class="com.github.freedompy.commelina.data.RedisCacheKvRepositoryImpl"/>
 
     <!-- redis session handler 实现 -->
-    <bean class="com.framework.data.CacheSessionHandlerImpl"/>
+    <bean class="com.github.freedompy.commelina.data.CacheSessionHandlerImpl"/>
 
 </beans>

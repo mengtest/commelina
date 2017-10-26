@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.framework.akka.router.cluster.nodes.AbstractServiceActor;
+import com.github.freedompy.commelina.akka.router.cluster.nodes.AbstractServiceActor;
 import com.game.room.event.PlayerStatusEvent;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

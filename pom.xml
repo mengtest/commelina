@@ -2,21 +2,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.nexus.maven</groupId>
-        <artifactId>framework-root</artifactId>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>parent</artifactId>
         <version>1.0.0</version>
-        <relativePath>./framework</relativePath>
+        <relativePath>./commelina</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.game</groupId>
-    <artifactId>game-root</artifactId>
+    <artifactId>game-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>root</name>
 
     <modules>
-        <module>framework</module>
+        <module>commelina</module>
 
         <module>game-http-api</module>
         <module>game-gateway</module>
@@ -200,7 +200,7 @@
                                     <directory>${basedir}/game-gateway/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
                                     <!--<excludes>-->
-                                        <!--<exclude>copy/*.*</exclude>-->
+                                    <!--<exclude>copy/*.*</exclude>-->
                                     <!--</excludes>-->
                                 </resource>
                                 <resource>

@@ -17,24 +17,37 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
-            <bean class="com.framework.web.JsonMessageConverter"/>
+            <bean class="com.github.freedompy.commelina.web.JsonMessageConverter"/>
             <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/api"/>
-            <mvc:mapping path="/api/*"/>
-            <bean class="com.framework.web.AuthenticatedApiInterceptor"/>
+            <mvc:mapping path="/admin/api"/>
+            <mvc:mapping path="/admin/api/*"/>
+
+            <mvc:mapping path="/app/api"/>
+            <mvc:mapping path="/app/api/*"/>
+
+            <mvc:mapping path="/game/api"/>
+            <mvc:mapping path="/game/api/*"/>
+
+            <mvc:mapping path="/passport/api"/>
+            <mvc:mapping path="/passport/api/*"/>
+
+            <mvc:mapping path="/pay/api"/>
+            <mvc:mapping path="/pay/api/*"/>
+
+            <bean class="com.github.freedompy.commelina.web.AuthenticatedApiInterceptor"/>
         </mvc:interceptor>
-        <bean class="com.framework.web.AuthenticatedWebInterceptor"/>
+        <bean class="com.github.freedompy.commelina.web.AuthenticatedWebInterceptor"/>
     </mvc:interceptors>
 
     <!-- 拦截器配置 -->
-    <bean class="com.framework.web.JsonExceptionHandlerResolver"/>
+    <bean class="com.github.freedompy.commelina.web.ExceptionHandlerResolverWithJsonOutput"/>
 
     <!-- session 实现 -->
-    <bean class="com.framework.data.CacheSessionHandlerImpl"/>
+    <bean class="com.github.freedompy.commelina.data.CacheSessionHandlerImpl"/>
 
 </beans>

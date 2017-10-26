@@ -1,7 +1,7 @@
 package com.app;
 
-import com.framework.data.CacheSessionHandlerImpl;
-import com.framework.web.SessionHandler;
+import com.github.freedompy.commelina.data.CacheSessionHandlerImpl;
+import com.github.freedompy.commelina.web.SessionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.ImportResource;
         "classpath:data-jpa-session-factory.xml",
         "classpath:data-beans.xml",
 })
-@ComponentScan("com.framework.data")
+@ComponentScan("com.github.freedompy.commelina.data")
 public class AppBoot {
 
     public static void main(String[] args) {
