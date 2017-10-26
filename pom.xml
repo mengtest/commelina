@@ -13,12 +13,11 @@
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>root</name>
 
     <modules>
         <module>commelina</module>
 
-        <module>game-http-api</module>
+        <module>app-http-api</module>
 
         <module>game-gateway</module>
         <module>game-matching</module>
