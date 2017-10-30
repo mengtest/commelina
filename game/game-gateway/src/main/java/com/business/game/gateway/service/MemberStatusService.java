@@ -1,14 +1,14 @@
 package com.business.game.gateway.service;
 
 import akka.japi.pf.ReceiveBuilder;
+import com.business.game.message.common.proto.DOMAIN;
+import com.game.gateway.proto.*;
 import com.github.freedompy.commelina.akka.dispatching.ActorServiceHandler;
 import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
 import com.github.freedompy.commelina.akka.dispatching.local.AbstractLocalServiceActor;
-import com.game.gateway.proto.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
-import com.message.common.proto.DOMAIN;
 
 /**
  * @author panyao

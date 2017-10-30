@@ -1,5 +1,8 @@
 package com.business.game.gateway.router;
 
+import com.business.game.message.common.proto.DOMAIN;
+import com.game.gateway.proto.ERROR_CODE;
+import com.game.gateway.proto.GATEWAY_METHODS;
 import com.github.freedompy.commelina.akka.dispatching.DefaultLocalActorRequestHandler;
 import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
 import com.github.freedompy.commelina.core.BusinessMessage;
@@ -9,10 +12,7 @@ import com.github.freedompy.commelina.niosocket.ContextAdapter;
 import com.github.freedompy.commelina.niosocket.NioSocketRouter;
 import com.github.freedompy.commelina.niosocket.ReplyUtils;
 import com.github.freedompy.commelina.niosocket.proto.SocketASK;
-import com.game.gateway.proto.ERROR_CODE;
-import com.game.gateway.proto.GATEWAY_METHODS;
 import com.google.protobuf.Internal;
-import com.message.common.proto.DOMAIN;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

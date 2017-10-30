@@ -3,7 +3,7 @@
 
     <parent>
         <groupId>com.business</groupId>
-        <artifactId>parent-api</artifactId>
+        <artifactId>api-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
@@ -12,6 +12,6 @@
     <artifactId>admin</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>app-service-admin</name>
+    <name>api-service-admin</name>
 
 </project>
