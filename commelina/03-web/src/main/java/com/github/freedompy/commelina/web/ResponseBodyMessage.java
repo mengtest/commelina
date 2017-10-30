@@ -6,7 +6,9 @@ import com.google.protobuf.Internal;
 import java.io.Serializable;
 
 /**
- * Created by @panyao on 2016/8/24.
+ *
+ * @author @panyao
+ * @date 2016/8/24
  */
 public final class ResponseBodyMessage<T extends Serializable> {
 

@@ -9,8 +9,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.io.IOException;
 
 /**
- * Created by @panyao on 2016/4/25.
  * http://jackyrong.iteye.com/blog/2247621
+ *
+ * @author @panyao
+ * @date 2016/4/25
  */
 public class JsonMessageConverter extends MappingJackson2HttpMessageConverter {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonMessageConverter.class);

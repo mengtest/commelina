@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisCacheKvRepositoryImpl implements CacheKvRepository {
 
-    @Resource
+    @Resource(name = "")
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
