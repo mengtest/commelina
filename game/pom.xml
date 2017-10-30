@@ -8,14 +8,14 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>parent-game</artifactId>
+    <groupId>com.business.game</groupId>
+    <artifactId>game-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
         <module>game-gateway</module>
         <module>game-matching</module>
-        <module>game-robot</module>
         <module>game-room</module>
     </modules>
 

@@ -20,6 +20,8 @@
         <module>api</module>
 
         <module>game</module>
+
+		<module>robot-test</module>
     </modules>
 
 </project>

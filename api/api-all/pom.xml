@@ -12,7 +12,7 @@
     <artifactId>all</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-    <name>api-http-api</name>
+    <name>api-http-all</name>
 
     <dependencies>
         <dependency>
