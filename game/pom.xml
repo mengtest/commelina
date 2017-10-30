@@ -14,9 +14,9 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>game-gateway</module>
-        <module>game-matching</module>
-        <module>game-room</module>
+        <module>gateway</module>
+        <module>matching</module>
+        <module>room</module>
     </modules>
 
     <dependencies>
@@ -134,7 +134,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-gateway/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/gateway/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/gateway</directory>
@@ -143,7 +143,6 @@
                             </resources>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>copy-actor-matching-config-resources</id>
                         <phase>compile</phase>
@@ -151,7 +150,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-matching/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/matching/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/matching</directory>
@@ -167,7 +166,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-room/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/room/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/room</directory>
@@ -183,7 +182,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-gateway/src/main/proto/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/gateway/src/main/proto/proto/copy</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
@@ -199,7 +198,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-matching/src/main/proto/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/matching/src/main/proto/proto/copy</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
@@ -213,50 +212,13 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-proto-robot-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/game-robot/src/main/proto/proto/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/game-gateway/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <!--<excludes>-->
-                                    <!--<exclude>copy/*.*</exclude>-->
-                                    <!--</excludes>-->
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/game-matching/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <excludes>
-                                        <exclude>copy/*.*</exclude>
-                                    </excludes>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/game-room/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <excludes>
-                                        <exclude>copy/*.*</exclude>
-                                    </excludes>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/framework/02-niosocket/src/main/proto/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>copy-proto-room-resources</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/game-room/src/main/proto/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/room/src/main/proto/proto/copy</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
