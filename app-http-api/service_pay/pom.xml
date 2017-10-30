@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.game_name.app</groupId>
+        <groupId>com.business</groupId>
         <artifactId>parent-app</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.game_name.app.service</groupId>
+    <groupId>com.business.service</groupId>
     <artifactId>pay</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>

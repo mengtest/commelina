@@ -46,7 +46,7 @@ public class GatewaySpringBoot implements ApplicationContextAware {
                 .registerRouter()
                 .building();
 
-//        // room 集群 handler
+        // room 集群 handler
         AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem","cluster-gateway-room")
                 .registerRouter(ProxyRoom.RoomRouterFrontedClusterActor.class)
                 .building();

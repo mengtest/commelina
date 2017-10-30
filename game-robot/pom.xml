@@ -9,7 +9,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.game_name</groupId>
+    <groupId>com.business.game</groupId>
     <artifactId>robot</artifactId>
     <packaging>jar</packaging>
     <name>game-robot</name>
