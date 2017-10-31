@@ -48,6 +48,6 @@
     <bean class="com.github.freedompy.commelina.web.ExceptionHandlerResolverWithJsonOutput"/>
 
     <!-- session 实现 -->
-    <bean class="com.github.freedompy.commelina.data.CacheSessionHandlerImpl"/>
+    <bean class="com.github.freedompy.commelina.data.RedisSessionHandlerImpl"/>
 
 </beans>

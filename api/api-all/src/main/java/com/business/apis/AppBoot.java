@@ -1,6 +1,6 @@
 package com.business.apis;
 
-import com.github.freedompy.commelina.data.CacheSessionHandlerImpl;
+import com.github.freedompy.commelina.data.RedisSessionHandlerImpl;
 import com.github.freedompy.commelina.web.SessionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,7 +31,7 @@ public class AppBoot {
 
     @Bean
     public SessionHandler sessionHandler() {
-        return new CacheSessionHandlerImpl();
+        return new RedisSessionHandlerImpl();
     }
 
 }

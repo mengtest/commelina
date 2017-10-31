@@ -4,31 +4,37 @@ import com.github.freedompy.commelina.utils.SnowflakeIdWorker;
 import com.github.freedompy.commelina.web.SessionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/1
  */
-public class CacheSessionHandlerImpl implements SessionHandler {
+public class RedisSessionHandlerImpl implements SessionHandler {
 
-    @Resource
-    private CacheKvRepository cacheKvRepository;
+    @Resource(name = "session")
+    private RedisTemplate<String, Long> redisTemplate;
 
-    //  因为没有规模，所以这里直接写死, 否则也需要通过依赖注入实现
+    /**
+     * 因为没有规模，所以这里直接写死
+     */
     private final SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0, 0);
+    /**
+     * 因为没有规模，所以这里直接写死
+     */
     private final SnowflakeIdWorker anonymousSnowflakeIdWorker = new SnowflakeIdWorker(0, 1);
 
-    private final String prefix = "session:";
+    private static final String PREFIX = "session:";
 
     private static final Long SESSION_EXPIRE_TTL = 7 * 86400 * 1000L;
     private static final Long ANONYMOUS_EXPIRE_TTL = 5 * 60 * 1000L;
 
     private static final Long TOKEN_CHANGE_TIME = 60000L;
 
-    private final Logger logger = LoggerFactory.getLogger(CacheSessionHandlerImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RedisSessionHandlerImpl.class);
 
     @Override
     public SessionTokenEntity validToken(String token) {
@@ -45,19 +51,19 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
         // 登录用户
         if (tokenEntity.getUid() > 0) {
-            final long sid = cacheKvRepository.getAsLong(prefix + tokenEntity.getUid());
+            final Long sid = redisTemplate.opsForValue().get(PREFIX + tokenEntity.getUid());
             if (sid != tokenEntity.getSid()) {
                 // 明天最好改成 list
-                final long userId = cacheKvRepository.getAsLong(prefix + tokenEntity.getSid());
+                final long userId = redisTemplate.opsForValue().get(PREFIX + tokenEntity.getSid());
                 if (userId <= 0 || userId != tokenEntity.getUid()) {
-                    cacheKvRepository.remove(prefix + tokenEntity.getSid());
+                    redisTemplate.delete(PREFIX + tokenEntity.getSid());
                     return null;
                 }
 
                 // 令被劫持的 uid 下的 token 失效
                 if (System.currentTimeMillis() - tokenEntity.getExpireTime() - SESSION_EXPIRE_TTL > TOKEN_CHANGE_TIME) {
-                    cacheKvRepository.remove(prefix + tokenEntity.getSid());
-                    cacheKvRepository.remove(prefix + tokenEntity.getUid());
+                    redisTemplate.delete(PREFIX + tokenEntity.getSid());
+                    redisTemplate.delete(PREFIX + tokenEntity.getUid());
                     return null;
                 }
                 // 在此期间，两个 token 都有效
@@ -86,12 +92,17 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
     @Override
     public SessionTokenEntity doSignIn(long userId) {
-        final long sid = snowflakeIdWorker.nextId();
-        final String token = TokenUtils.encodeToken(userId, sid, SESSION_EXPIRE_TTL);
-        final long oldSid = cacheKvRepository.getAndSet(prefix + userId, sid, SESSION_EXPIRE_TTL);
-        if (oldSid > 0) {
+        long sid = snowflakeIdWorker.nextId();
+        String token = TokenUtils.encodeToken(userId, sid, SESSION_EXPIRE_TTL);
+
+        redisTemplate.multi();
+        redisTemplate.opsForValue().getAndSet(PREFIX + userId, sid);
+        redisTemplate.expire(PREFIX + userId, SESSION_EXPIRE_TTL, TimeUnit.MILLISECONDS);
+
+        Object oldSid = redisTemplate.exec().stream().findFirst();
+        if (oldSid != null) {
             logger.info("Old sid {}, new sid {}.", oldSid, sid);
-            cacheKvRepository.put(prefix + sid, userId, TOKEN_CHANGE_TIME);
+            redisTemplate.opsForValue().set(PREFIX + sid, userId, TOKEN_CHANGE_TIME, TimeUnit.MILLISECONDS);
         }
 
         NewTokenEntity tokenEntity = new NewTokenEntity();
@@ -106,8 +117,8 @@ public class CacheSessionHandlerImpl implements SessionHandler {
 
     @Override
     public NewTokenEntity initAnonymous() {
-        final long sid = anonymousSnowflakeIdWorker.nextId();
-        final String token = TokenUtils.encodeToken(0, sid, ANONYMOUS_EXPIRE_TTL);
+        long sid = anonymousSnowflakeIdWorker.nextId();
+        String token = TokenUtils.encodeToken(0, sid, ANONYMOUS_EXPIRE_TTL);
         NewTokenEntity tokenEntity = new NewTokenEntity();
         tokenEntity.setNewToken(token);
         tokenEntity.setSid(sid);
