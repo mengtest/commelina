@@ -8,7 +8,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.business.game</groupId>
     <artifactId>room</artifactId>
     <packaging>jar</packaging>
     <name>game-room</name>

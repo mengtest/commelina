@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.business</groupId>
+        <groupId>com.business.api</groupId>
         <artifactId>api-parent</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -20,7 +20,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.business.service</groupId>
+            <groupId>com.business.api.service</groupId>
             <artifactId>uc</artifactId>
         </dependency>
     </dependencies>
