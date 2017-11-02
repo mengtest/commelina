@@ -1,4 +1,4 @@
-package com.business.game.gateway.router;
+package com.business.game.gateway.portal;
 
 import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
 import com.github.freedompy.commelina.akka.dispatching.proto.MemberOfflineEvent;

@@ -1,4 +1,4 @@
-package com.business.game.gateway.router;
+package com.business.game.gateway.portal;
 
 import com.business.game.message.common.proto.DOMAIN;
 import com.game.gateway.proto.ERROR_CODE;

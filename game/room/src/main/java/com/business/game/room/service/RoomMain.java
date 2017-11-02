@@ -3,8 +3,9 @@ package com.business.game.room.service;
 import akka.actor.Props;
 import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.AbstractServiceActor;
 import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystem;
+import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
 import com.github.freedompy.commelina.core.BusinessMessage;
-import com.business.game.room.BM.NotifyJoinRoom;
+import com.business.game.room.bm.NotifyJoinRoom;
 import com.business.game.room.entity.PlayerEntity;
 import com.business.game.room.event.PlayerStatusEvent;
 import com.game.room.proto.OPCODE;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @author @panyao
  * @date 2017/8/17
  */
-class RoomContext1 extends AbstractServiceActor {
+public class RoomMain extends AbstractServiceActor {
 
     private final long roomId;
 
@@ -31,7 +32,7 @@ class RoomContext1 extends AbstractServiceActor {
      */
     private final FiniteDuration lazyCheckOver = Duration.create(10, TimeUnit.MINUTES);
 
-    public RoomContext1(long roomId, List<PlayerEntity> playerEntities) {
+    public RoomMain(long roomId, List<PlayerEntity> playerEntities) {
         this.roomId = roomId;
         playerEntities.forEach(v -> players.put(v.getUserId(), v));
     }
@@ -65,11 +66,14 @@ class RoomContext1 extends AbstractServiceActor {
                         playerEntity.setPlayerStatus(statusEvent.getStatus());
                     }
                 })
+                .match(ApiRequest.class, r -> {
+                    // TODO: 2017/11/2 处理具体业务
+                })
                 .build();
     }
 
-    static Props props(long roomId, List<PlayerEntity> playerEntities) {
-        return Props.create(RoomContext1.class, roomId, playerEntities);
+    public static Props props(long roomId, List<PlayerEntity> playerEntities) {
+        return Props.create(RoomMain.class, roomId, playerEntities);
     }
 
 }

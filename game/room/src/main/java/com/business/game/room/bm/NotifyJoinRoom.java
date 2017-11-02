@@ -1,4 +1,4 @@
-package com.business.game.room.BM;
+package com.business.game.room.bm;
 
 /**
  * @author panyao

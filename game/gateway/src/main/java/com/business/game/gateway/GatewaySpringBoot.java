@@ -1,6 +1,6 @@
 package com.business.game.gateway;
 
-import com.business.game.gateway.router.ProxyRoom;
+import com.business.game.gateway.portal.ProxyRoom;
 import com.business.game.message.common.proto.DOMAIN;
 import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
 import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemCreator;

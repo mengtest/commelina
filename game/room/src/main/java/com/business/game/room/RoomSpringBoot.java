@@ -1,7 +1,6 @@
 package com.business.game.room;
 
 import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystemCreator;
-import com.business.game.room.router.RoomRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -22,7 +21,7 @@ public class RoomSpringBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(RoomRouter.class, "ClusterRoomSystem", "cluster-room");
+        ClusterChildNodeSystemCreator.create(RoomPortal.class, "ClusterRoomSystem", "cluster-room");
     }
 
 }

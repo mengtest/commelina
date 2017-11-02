@@ -1,4 +1,4 @@
-package com.business.game.matching.router;
+package com.business.game.matching;
 
 import akka.actor.ActorRef;
 import akka.routing.Routee;
@@ -13,7 +13,7 @@ import scala.collection.immutable.IndexedSeq;
  * @author @panyao
  * @date 2017/9/26
  */
-public class MatchingRouter extends BackendActor {
+public class MatchingPortal extends BackendActor {
 
     private final ActorRef matching = getContext().getSystem().actorOf(Matching.props(10, 2));
 

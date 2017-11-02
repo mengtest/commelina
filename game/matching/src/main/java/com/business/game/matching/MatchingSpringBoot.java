@@ -1,7 +1,6 @@
 package com.business.game.matching;
 
 import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystemCreator;
-import com.business.game.matching.router.MatchingRouter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -23,7 +22,7 @@ public class MatchingSpringBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(MatchingRouter.class, "ClusterMatchingSystem", "cluster-matching");
+        ClusterChildNodeSystemCreator.create(MatchingPortal.class, "ClusterMatchingSystem", "cluster-matching");
     }
 
 }
