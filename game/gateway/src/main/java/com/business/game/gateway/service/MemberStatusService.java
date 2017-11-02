@@ -5,7 +5,11 @@ import com.business.game.message.common.proto.DOMAIN;
 import com.game.gateway.proto.*;
 import com.github.freedompy.commelina.akka.dispatching.ActorServiceHandler;
 import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystem;
+import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemContext;
 import com.github.freedompy.commelina.akka.dispatching.local.AbstractLocalServiceActor;
+import com.github.freedompy.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.github.freedompy.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.protobuf.Internal;
@@ -40,23 +44,37 @@ public class MemberStatusService implements LocalServiceHandler {
         @Override
         protected ReceiveBuilder addLocalMatch(ReceiveBuilder builder) {
             return builder
-                    // 查询最后访问的 domain
-                    .match(FindLastAccessDomainRequest.class, r -> {
-                        DOMAIN domain = accessDomain.get(r.getUserId());
-                        if (domain == null) {
-                            getSender().tell(FindLastAccessDomainResponse.getDefaultInstance(), getSelf());
-                        } else {
-                            getSender().tell(FindLastAccessDomainResponse.newBuilder()
-                                            .setDomain(domain)
-                                            .build()
-                                    , getSelf());
+                    // 用户上线
+                    .match(MemberOnlineEvent.class, on -> {
+                        DOMAIN domain = accessDomain.get(on.getLoginUserId());
+                        // 获取用户后的 domain
+                        if (domain != null) {
+                            AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(domain.getNumber());
+                            if (clusterSystem != null) {
+                                // 向远程发送下线通知
+                                clusterSystem.askRouterClusterNode(on);
+                            }
                         }
                     })
-                    // 重置访问的 domain
-                    .match(ResetAccesssDoamin.class, ra -> accessDomain.remove(ra.getUserId()))
+                    // 用户下线
+                    .match(MemberOfflineEvent.class, off -> {
+                        DOMAIN domain = accessDomain.get(off.getLogoutUserId());
+                        // 获取用户后的 domain
+                        if (domain != null) {
+                            AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(domain.getNumber());
+                            if (clusterSystem != null) {
+                                // 向远程发送下线通知
+                                clusterSystem.askRouterClusterNode(off);
+                            }
+                        }
+                        // 重置用户访问的 domain
+                        accessDomain.remove(off.getLogoutUserId());
+                    })
+                    // 更新用户最后访问的 domain
                     .match(ChangeAccesssDoamin.class, ca -> accessDomain.put(ca.getUserId(), ca.getDomain()));
         }
 
     }
+
 
 }

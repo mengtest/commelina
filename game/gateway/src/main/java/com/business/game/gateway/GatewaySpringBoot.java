@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import javax.annotation.PostConstruct;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/10
  */
@@ -47,7 +46,7 @@ public class GatewaySpringBoot implements ApplicationContextAware {
                 .building();
 
         // room 集群 handler
-        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem","cluster-gateway-room")
+        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem", "cluster-gateway-room")
                 .registerRouter(ProxyRoom.RoomRouterFrontedClusterActor.class)
                 .building();
     }
