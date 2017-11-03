@@ -1,6 +1,6 @@
 package com.business.apis.pay.controller;
 
-import com.github.freedompy.commelina.web.ResponseBodyMessage;
+import com.github.freedompy.commelina.webmvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

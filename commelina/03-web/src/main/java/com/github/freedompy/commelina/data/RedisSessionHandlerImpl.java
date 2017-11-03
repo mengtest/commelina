@@ -1,7 +1,7 @@
 package com.github.freedompy.commelina.data;
 
 import com.github.freedompy.commelina.utils.SnowflakeIdWorker;
-import com.github.freedompy.commelina.web.SessionHandler;
+import com.github.freedompy.commelina.webmvc.SessionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;

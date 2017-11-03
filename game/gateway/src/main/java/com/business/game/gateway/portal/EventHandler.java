@@ -1,7 +1,7 @@
 package com.business.game.gateway.portal;
 
-import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
-import com.github.freedompy.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.github.freedompy.commelina.akkadispatching.local.AkkaLocalWorkerSystem;
+import com.github.freedompy.commelina.akkadispatching.proto.MemberOfflineEvent;
 import com.github.freedompy.commelina.niosocket.MemberEventHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;

@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.AbstractServiceActor;
+import com.github.freedompy.commelina.akkadispatching.cluster.nodes.AbstractServiceActor;
 import com.github.freedompy.commelina.core.DefaultMessageProvider;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;

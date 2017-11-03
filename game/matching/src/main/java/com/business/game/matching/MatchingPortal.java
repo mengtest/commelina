@@ -3,8 +3,8 @@ package com.business.game.matching;
 import akka.actor.ActorRef;
 import akka.routing.Routee;
 import akka.routing.RoutingLogic;
-import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.BackendActor;
-import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
+import com.github.freedompy.commelina.akkadispatching.cluster.nodes.BackendActor;
+import com.github.freedompy.commelina.akkadispatching.proto.ApiRequest;
 import com.business.game.matching.service.Matching;
 import scala.collection.immutable.IndexedSeq;
 

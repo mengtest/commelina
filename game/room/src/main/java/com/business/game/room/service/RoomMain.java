@@ -1,9 +1,9 @@
 package com.business.game.room.service;
 
 import akka.actor.Props;
-import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.AbstractServiceActor;
-import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystem;
-import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequest;
+import com.github.freedompy.commelina.akkadispatching.cluster.nodes.AbstractServiceActor;
+import com.github.freedompy.commelina.akkadispatching.cluster.nodes.ClusterChildNodeSystem;
+import com.github.freedompy.commelina.akkadispatching.proto.ApiRequest;
 import com.github.freedompy.commelina.core.BusinessMessage;
 import com.business.game.room.bm.NotifyJoinRoom;
 import com.business.game.room.entity.PlayerEntity;

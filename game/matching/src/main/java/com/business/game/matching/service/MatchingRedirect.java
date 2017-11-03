@@ -6,8 +6,8 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.business.game.message.common.proto.DOMAIN;
 import com.business.game.message.matching_room.proto.MATCHING_ROOM_METHODS;
-import com.github.freedompy.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystem;
-import com.github.freedompy.commelina.akka.dispatching.proto.ApiRequestForward;
+import com.github.freedompy.commelina.akkadispatching.cluster.nodes.ClusterChildNodeSystem;
+import com.github.freedompy.commelina.akkadispatching.proto.ApiRequestForward;
 import com.github.freedompy.commelina.core.AppVersion;
 import com.google.protobuf.ByteString;
 

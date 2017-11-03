@@ -2,9 +2,9 @@ package com.business.game.gateway;
 
 import com.business.game.gateway.portal.ProxyRoom;
 import com.business.game.message.common.proto.DOMAIN;
-import com.github.freedompy.commelina.akka.dispatching.LocalServiceHandler;
-import com.github.freedompy.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemCreator;
-import com.github.freedompy.commelina.akka.dispatching.local.AkkaLocalWorkerSystemCreator;
+import com.github.freedompy.commelina.akkadispatching.LocalServiceHandler;
+import com.github.freedompy.commelina.akkadispatching.cluster.AkkaMultiWorkerSystemCreator;
+import com.github.freedompy.commelina.akkadispatching.local.AkkaLocalWorkerSystemCreator;
 import com.github.freedompy.commelina.niosocket.BootstrapNioSocket;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;

@@ -241,7 +241,7 @@
                 <version>${akka.http.version}</version>
             </dependency>
 
-            <!-- web 相关 -->
+            <webmvc web 相关 -->
             <!-- spring 依赖-->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -255,7 +255,7 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <!-- spring web -->
+            <!-- sprwebakkaweb web -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
@@ -269,7 +269,7 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <!-- ignore web servlet jar-->
+            <!-- ignwebakkaweb web servlet jar-->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>

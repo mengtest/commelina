@@ -2,7 +2,7 @@ package com.business.apis.passport.controller;
 
 import com.business.service.uc.service.CaptchaService;
 import com.game.app.apis.proto.PASSPORT_ERROR_CODE;
-import com.github.freedompy.commelina.web.ResponseBodyMessage;
+import com.github.freedompy.commelina.webmvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
