@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2017/10/25
  */
 @Controller
-@RequestMapping("/passport/api/connect/channel/huawei")
+@RequestMapping("/api/connect/channel/huawei")
 public class Huawei {
 
     @RequestMapping(value = "/valid", method = RequestMethod.GET)

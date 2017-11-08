@@ -24,21 +24,8 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/admin/api"/>
-            <mvc:mapping path="/admin/api/*"/>
-
-            <mvc:mapping path="/app/api"/>
-            <mvc:mapping path="/app/api/*"/>
-
-            <mvc:mapping path="/game/api"/>
-            <mvc:mapping path="/game/api/*"/>
-
-            <mvc:mapping path="/passport/api"/>
-            <mvc:mapping path="/passport/api/*"/>
-
-            <mvc:mapping path="/pay/api"/>
-            <mvc:mapping path="/pay/api/*"/>
-
+            <mvc:mapping path="/api"/>
+            <mvc:mapping path="/api/*"/>
             <bean class="com.github.freedompy.commelina.mvc.AuthenticatedApiInterceptor"/>
         </mvc:interceptor>
         <bean class="com.github.freedompy.commelina.mvc.AuthenticatedWebInterceptor"/>

@@ -16,6 +16,8 @@
 
     <modules>
         <module>passport</module>
+
+        <module>admin-portal</module>
     </modules>
 
     <properties>

@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @date 2017/9/4
  */
 @Controller
-@RequestMapping("/passport/api/captcha")
+@RequestMapping("/api/captcha")
 public class Captcha {
 
     @Resource

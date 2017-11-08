@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2017/8/31
  */
 @Controller
-@RequestMapping("/passport/api/connect")
+@RequestMapping("/api/connect")
 public class Connect {
 
     @Resource
