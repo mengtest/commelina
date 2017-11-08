@@ -12,7 +12,7 @@
     <artifactId>example-game-robot-test</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>robot-test</name>
+    <name>game-robot</name>
 
     <properties>
         <file.encoding>UTF-8</file.encoding>
