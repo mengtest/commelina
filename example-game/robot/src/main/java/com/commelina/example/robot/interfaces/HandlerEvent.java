@@ -1,4 +1,4 @@
-package com.commelina.example.robot.test.interfaces;
+package com.commelina.example.robot.interfaces;
 
 import com.github.freedompy.commelina.niosocket.proto.SocketASK;
 

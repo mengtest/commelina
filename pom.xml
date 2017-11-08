@@ -17,7 +17,7 @@
         <module>04-server</module>
         <!--<module>api</module>-->
         <module>example-game</module>
-        <module>example-game/robot-test</module>
+        <module>example-game/robot</module>
     </modules>
 
 </project>

@@ -1,9 +1,9 @@
-package com.commelina.example.robot.test.events;
+package com.commelina.example.robot.events;
 
 import com.business.game.message.common.proto.DOMAIN;
 import com.game.matching.proto.MATCHING_METHODS;
-import com.commelina.example.robot.test.interfaces.MemberEvent;
-import com.commelina.example.robot.test.interfaces.MemberEventLoop;
+import com.commelina.example.robot.interfaces.MemberEvent;
+import com.commelina.example.robot.interfaces.MemberEventLoop;
 import com.github.freedompy.commelina.niosocket.proto.SocketASK;
 import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;

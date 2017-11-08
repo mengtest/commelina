@@ -1,4 +1,4 @@
-package com.commelina.example.robot.test.utils;
+package com.commelina.example.robot.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,7 +1,7 @@
-package com.commelina.example.robot.test.interfaces;
+package com.commelina.example.robot.interfaces;
 
 import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
-import com.commelina.example.robot.test.niosocket.NettyClient;
+import com.commelina.example.robot.niosocket.NettyClient;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;

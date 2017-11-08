@@ -1,7 +1,7 @@
-package com.commelina.example.robot.test.niosocket;
+package com.commelina.example.robot.niosocket;
 
 import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
-import com.commelina.example.robot.test.interfaces.SocketHandler;
+import com.commelina.example.robot.interfaces.SocketHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

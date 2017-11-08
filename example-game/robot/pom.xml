@@ -118,7 +118,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.commelina.example.robot.test.RobotSpringBoot</mainClass>
+                    <mainClass>com.commelina.example.robot.RobotSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
