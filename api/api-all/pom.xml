@@ -19,10 +19,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.business.api.service</groupId>
-            <artifactId>passport</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

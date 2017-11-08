@@ -9,58 +9,12 @@
 
     <modules>
         <module>commelina</module>
-        <module>api</module>
-        <module>game</module>
-        <module>robot-test</module>
-    </modules>
+        <module>commelina-server-tools</module>
+        <module>commelina-services</module>
+        <module>commelina-servers</module>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <id>copy-proto-robot-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/robot-test/src/main/proto/proto/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/game/gateway/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <!--<excludes>-->
-                                    <!--<exclude>copy/*.*</exclude>-->
-                                    <!--</excludes>-->
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/game/matching/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <excludes>
-                                        <exclude>copy/*.*</exclude>
-                                    </excludes>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/game/room/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
-                                    <excludes>
-                                        <exclude>copy/*.*</exclude>
-                                    </excludes>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/commelina/02-niosocket/src/main/proto/</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+        <!--<module>api</module>-->
+        <!--<module>game</module>-->
+    </modules>
 
 </project>

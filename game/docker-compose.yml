@@ -6,7 +6,7 @@ services:
     image: app/http-api
     restart: always
     ports:
-      # webmvc 端口，暴露给外网
+      # mvc 端口，暴露给外网
       - 8887:8887
       # 内网端口 暴露给 内网调用
       - "127.0.0.1:8888:8888"
