@@ -1,8 +1,8 @@
 package com.github.freedompy.commelina.server.passport.controller;
 
-import com.business.apis.proto.PASSPORT_ERROR_CODE;
-import com.business.service.passport.service.CaptchaService;
 import com.github.freedompy.commelina.mvc.ResponseBodyMessage;
+import com.github.freedompy.commelina.server.passport.proto.ERROR_CODE;
+import com.github.freedompy.commelina.server.passport.service.CaptchaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +32,7 @@ public class Captcha {
     @ResponseBody
     public ResponseBodyMessage telephone(@RequestParam String tel) {
         if (!ParamValid.telephone(tel)) {
-            return ResponseBodyMessage.error(PASSPORT_ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
+            return ResponseBodyMessage.error(ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
         }
 
         captchaService.telephoneSms(tel);

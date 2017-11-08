@@ -1,10 +1,10 @@
 package com.github.freedompy.commelina.server.passport.service;
 
-import com.business.service.passport.dao.AccountTelephoneRepository;
-import com.business.service.passport.dao.MemberRepository;
-import com.business.service.passport.entity.AccountTelephoneEntity;
-import com.business.service.passport.entity.MemberEntity;
-import com.business.service.passport.proto.ERROR_CODE;
+import com.github.freedompy.commelina.server.passport.dao.AccountTelephoneRepository;
+import com.github.freedompy.commelina.server.passport.dao.MemberRepository;
+import com.github.freedompy.commelina.server.passport.entity.AccountTelephoneEntity;
+import com.github.freedompy.commelina.server.passport.entity.MemberEntity;
+import com.github.freedompy.commelina.server.passport.proto.ERROR_CODE;
 import com.github.freedompy.commelina.utils.ServiceDomainEmptyMessage;
 import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 import org.springframework.stereotype.Service;

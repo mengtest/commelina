@@ -1,12 +1,12 @@
 package com.github.freedompy.commelina.server.passport.controller;
 
-import com.business.apis.proto.PASSPORT_ERROR_CODE;
-import com.business.service.passport.entity.MemberEntity;
-import com.business.service.passport.service.AccountService;
-import com.business.service.passport.service.CaptchaService;
 import com.github.freedompy.commelina.mvc.AuthenticatedApiInterceptor;
 import com.github.freedompy.commelina.mvc.ResponseBodyMessage;
 import com.github.freedompy.commelina.mvc.SessionHandler;
+import com.github.freedompy.commelina.server.passport.entity.MemberEntity;
+import com.github.freedompy.commelina.server.passport.proto.ERROR_CODE;
+import com.github.freedompy.commelina.server.passport.service.AccountService;
+import com.github.freedompy.commelina.server.passport.service.CaptchaService;
 import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,11 +48,11 @@ public class Connect {
     public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode,
                                                  HttpServletRequest request, HttpServletResponse response) {
         if (!ParamValid.telephone(tel)) {
-            return ResponseBodyMessage.error(PASSPORT_ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
+            return ResponseBodyMessage.error(ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
         }
 
         if (!captchaService.validTelephoneCode(tel, smsCode)) {
-            return ResponseBodyMessage.error(PASSPORT_ERROR_CODE.INPUT_SMS_CODE_ERROR);
+            return ResponseBodyMessage.error(ERROR_CODE.INPUT_SMS_CODE_ERROR);
         }
 
         ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelAndNoPassword(tel);

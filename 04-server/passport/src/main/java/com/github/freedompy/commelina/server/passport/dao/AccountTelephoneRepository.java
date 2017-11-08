@@ -1,6 +1,6 @@
 package com.github.freedompy.commelina.server.passport.dao;
 
-import com.business.service.passport.entity.AccountTelephoneEntity;
+import com.github.freedompy.commelina.server.passport.entity.AccountTelephoneEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

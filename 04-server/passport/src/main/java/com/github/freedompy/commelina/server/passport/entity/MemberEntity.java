@@ -1,5 +1,7 @@
 package com.github.freedompy.commelina.server.passport.entity;
 
+import javax.persistence.*;
+
 /**
  *
  * @author panyao

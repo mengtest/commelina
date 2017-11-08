@@ -1,6 +1,6 @@
 package com.github.freedompy.commelina.server.passport.service;
 
-import com.business.service.passport.entity.MemberEntity;
+import com.github.freedompy.commelina.server.passport.entity.MemberEntity;
 import com.github.freedompy.commelina.utils.ServiceDomainEmptyMessage;
 import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 

@@ -3,20 +3,19 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>commelina-parent</artifactId>
+        <artifactId>kernel-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>nioscoket</artifactId>
+    <artifactId>kernel-niosocket</artifactId>
     <packaging>jar</packaging>
-    <name>commelina-niosocket</name>
 
     <dependencies>
 
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>kernel-core</artifactId>
             <scope>compile</scope>
         </dependency>
 
@@ -28,13 +27,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

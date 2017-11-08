@@ -1,16 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
-        <relativePath/>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.freedompy.commelina</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>kernel-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
@@ -24,7 +17,6 @@
     <properties>
         <file.encoding>UTF-8</file.encoding>
         <java.version>1.8</java.version>
-
         <guava.version>23.2-jre</guava.version>
         <jackson-core.version>2.9.2</jackson-core.version>
         <jackson-annotations.version>${jackson-core.version}</jackson-annotations.version>
@@ -39,12 +31,7 @@
         <spring-data-jpa.version>2.0.1.RELEASE</spring-data-jpa.version>
         <spring-data-redis.version>2.0.1.RELEASE</spring-data-redis.version>
 
-        <hibernate-core.version>5.0.7.Final</hibernate-core.version>
-        <!--<hibernate-core.version>4.3.11.Final</hibernate-core.version>-->
-        <!--<hibernate-entitymanage.version>${hibernate-core.version}</hibernate-entitymanage.version>-->
-        <!--<hibernate-commons-annotations.version>4.0.5.Final</hibernate-commons-annotations.version>-->
-
-        <!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
+        <hibernate-core.version>5.2.12.Final</hibernate-core.version>
 
         <redis-lettuce.version>4.4.1.Final</redis-lettuce.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
@@ -53,78 +40,39 @@
         <akka.version>2.5.6</akka.version>
         <akka.http.version>10.0.10</akka.http.version>
         <spring.version>5.0.1.RELEASE</spring.version>
-        <!--<spring.version>4.3.10.RELEASE</spring.version>-->
-        <!--<scala-library.version>2.12.3</scala-library.version>-->
+        <slf4j-api.version>1.7.25</slf4j-api.version>
+        <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
     </properties>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- 单元测试-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.9.5</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-testkit_2.11</artifactId>
-            <version>2.5.4</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.kamon/sigar-loader -->
-        <dependency>
-            <groupId>io.kamon</groupId>
-            <artifactId>sigar-loader</artifactId>
-            <version>1.6.6</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>
+
             <!--  本地依赖 -->
             <dependency>
                 <groupId>com.github.freedompy.commelina</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>kernel-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.freedompy.commelina</groupId>
-                <artifactId>nioscoket</artifactId>
+                <artifactId>kernel-niosocket</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.freedompy.commelina</groupId>
-                <artifactId>web</artifactId>
+                <artifactId>kernel-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.freedompy.commelina</groupId>
-                <artifactId>akka</artifactId>
+                <artifactId>kernel-akka</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!--  本地bao包结束 -->
+            <!--  本地包结束 -->
 
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -289,9 +237,9 @@
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
             <!--<dependency>-->
-                <!--<groupId>org.hibernate</groupId>-->
-                <!--<artifactId>hibernate-entitymanager</artifactId>-->
-                <!--<version>${hibernate-entitymanage.version}</version>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-entitymanager</artifactId>-->
+            <!--<version>${hibernate-entitymanage.version}</version>-->
             <!--</dependency>-->
 
             <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
@@ -303,7 +251,7 @@
 
             <!-- https://mvnrepository.com/artifact/org.springframewddata/sprddata-redis -->
             <dependency>
-                <groupId>org.springframework.d</groupId>
+                <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-redis</artifactId>
                 <version>${spring-data-redis.version}</version>
             </dependency>
@@ -345,37 +293,20 @@
             <!--<version>${scala-library.version}</version>-->
             <!--</dependency>-->
 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j-log4j12.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
-            <layout>default</layout>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <!--maven 标准仓库地址-->
-        <repository>
-            <id>maven</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-        <!-- spring 的仓库 -->
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
         <finalName>${project.name}-${project.version}</finalName>
@@ -416,20 +347,6 @@
                 <!--</dependency>-->
                 <!--</dependencies>-->
             </plugin>
-
-            <!-- 过滤插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                        <include>**/*Test.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-
             <!-- protobuff 配置 -->
             <!-- https://github.com/mjkonarski/amber-java-clients/blob/master/amber-ninedof/pom.xml -->
             <plugin>
@@ -448,33 +365,19 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- scala 配置 -->
-            <!--<plugin>-->
-            <!--<groupId>org.scala-tools</groupId>-->
-            <!--<artifactId>maven-scala-plugin</artifactId>-->
-            <!--<version>2.15.2</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>scala-compile-first</id>-->
-            <!--<goals>-->
-            <!--<goal>compile</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<includes>-->
-            <!--<include>**/*.scala</include>-->
-            <!--</includes>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--<execution>-->
-            <!--<id>scala-test-compile</id>-->
-            <!--<goals>-->
-            <!--<goal>testCompile</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
-
+            <!-- 过滤插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
 </project>
