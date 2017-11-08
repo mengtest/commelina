@@ -51,11 +51,6 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
         return true;
     }
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        super.afterCompletion(request, response, handler, ex);
-    }
-
     public static void addLogin(HttpServletRequest request, HttpServletResponse response,
                                 SessionHandler.SessionTokenEntity sessionTokenEntity) {
         request.setAttribute(SessionHandler.ATTRIBUTE_USER_ID, sessionTokenEntity.userId);

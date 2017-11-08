@@ -17,7 +17,7 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
-            <bean class="com.github.freedompy.commelina.webmvc.JsonMessageConverter"/>
+            <bean class="com.github.freedompy.commelina.webmvc.JsonMessageConverterWithLanguage"/>
             <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
         </mvc:message-converters>
     </mvc:annotation-driven>

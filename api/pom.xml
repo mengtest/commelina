@@ -25,7 +25,7 @@
         <module>service_app</module>
         <module>service_game</module>
         <module>service_pay</module>
-        <module>service_uc</module>
+        <module>service_passport</module>
     </modules>
 
     <properties>
@@ -43,7 +43,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.business.api.service</groupId>
-                <artifactId>uc</artifactId>
+                <artifactId>passport</artifactId>
                 <version>1.0.0</version>
             </dependency>
         </dependencies>

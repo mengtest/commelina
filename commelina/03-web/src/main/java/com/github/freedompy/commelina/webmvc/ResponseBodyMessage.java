@@ -6,28 +6,31 @@ import com.google.protobuf.Internal;
 import java.io.Serializable;
 
 /**
- *
  * @author @panyao
  * @date 2016/8/24
  */
 public final class ResponseBodyMessage<T extends Serializable> {
 
     private final int businessCode;
-    private final long serverTimeMillis;
-    private final T data;
+    String businessMsg;
+    final long serverTimeMillis;
+    final T data;
 
     private static final int DEFAULT_SUCCESS = 0;
     static final int SERVER_ERROR = -1;
+    static final String SERVER_ERROR_STR = SERVER_ERROR + "";
 
-    static String getServerErrorJson() {
-        return "{\"businessCode\":" + SERVER_ERROR + ",\"serverTimeMillis\":"
-                + System.currentTimeMillis() + ",\"data\":\"unknown error.\"}";
+    static String getServerErrorJson(String msg) {
+        return "{\"businessCode\":" + SERVER_ERROR + "," +
+                "\"businessMsg\":\"" + msg + "\"," +
+                "\"serverTimeMillis\":" + System.currentTimeMillis() + "," +
+                "\"data\":null}";
     }
 
     private ResponseBodyMessage(int businessCode, T data) {
         this.businessCode = businessCode;
-        this.serverTimeMillis = System.currentTimeMillis();
         this.data = data;
+        this.serverTimeMillis = System.currentTimeMillis();
     }
 
     public static ResponseBodyMessage<String> error(Internal.EnumLite code) {
@@ -47,16 +50,8 @@ public final class ResponseBodyMessage<T extends Serializable> {
         return new ResponseBodyMessage<>(code.getNumber(), data);
     }
 
-    public int getBusinessCode() {
+    public Integer getBusinessCode() {
         return businessCode;
-    }
-
-    public long getServerTimeMillis() {
-        return serverTimeMillis;
-    }
-
-    public T getData() {
-        return data;
     }
 
 }

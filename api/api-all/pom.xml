@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.business.api.service</groupId>
-            <artifactId>uc</artifactId>
+            <artifactId>passport</artifactId>
         </dependency>
     </dependencies>
 

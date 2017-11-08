@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisSessionHandlerImpl implements SessionHandler {
 
-    @Resource(name = "session")
+//    @Resource(name = "session")
     private RedisTemplate<String, Long> redisTemplate;
 
     /**

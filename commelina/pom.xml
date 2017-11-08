@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -41,8 +41,9 @@
         <spring-data-jpa.version>1.11.6.RELEASE</spring-data-jpa.version>
         <spring-data-redis.version>1.8.6.RELEASE</spring-data-redis.version>
 
-        <hibernate-core.version>4.3.11.Final</hibernate-core.version>
-        <hibernate-entitymanage.version>${hibernate-core.version}</hibernate-entitymanage.version>
+        <hibernate-core.version>5.0.7.Final</hibernate-core.version>
+        <!--<hibernate-core.version>4.3.11.Final</hibernate-core.version>-->
+        <!--<hibernate-entitymanage.version>${hibernate-core.version}</hibernate-entitymanage.version>-->
         <!--<hibernate-commons-annotations.version>4.0.5.Final</hibernate-commons-annotations.version>-->
 
         <!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
@@ -53,7 +54,8 @@
 
         <akka.version>2.5.6</akka.version>
         <akka.http.version>10.0.10</akka.http.version>
-        <spring.version>4.3.10.RELEASE</spring.version>
+        <spring.version>5.0.1.RELEASE</spring.version>
+        <!--<spring.version>4.3.10.RELEASE</spring.version>-->
         <!--<scala-library.version>2.12.3</scala-library.version>-->
     </properties>
 
@@ -288,11 +290,11 @@
                 <version>${hibernate-core.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>${hibernate-entitymanage.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate</groupId>-->
+                <!--<artifactId>hibernate-entitymanager</artifactId>-->
+                <!--<version>${hibernate-entitymanage.version}</version>-->
+            <!--</dependency>-->
 
             <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
             <!--<dependency>-->

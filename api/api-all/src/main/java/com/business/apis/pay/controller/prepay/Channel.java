@@ -23,7 +23,7 @@ public class Channel {
         return null;
     }
 
-    @RequestMapping(value = "/uc", method = RequestMethod.GET)
+    @RequestMapping(value = "/passport", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBodyMessage<String> wxpay() {
 

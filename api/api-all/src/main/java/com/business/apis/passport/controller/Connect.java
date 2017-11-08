@@ -1,9 +1,9 @@
 package com.business.apis.passport.controller;
 
-import com.business.service.uc.entity.MemberEntity;
-import com.business.service.uc.service.AccountService;
-import com.business.service.uc.service.CaptchaService;
-import com.game.app.apis.proto.PASSPORT_ERROR_CODE;
+import com.business.apis.proto.PASSPORT_ERROR_CODE;
+import com.business.service.passport.entity.MemberEntity;
+import com.business.service.passport.service.AccountService;
+import com.business.service.passport.service.CaptchaService;
 import com.github.freedompy.commelina.utils.ServiceDomainMessage;
 import com.github.freedompy.commelina.webmvc.AuthenticatedApiInterceptor;
 import com.github.freedompy.commelina.webmvc.ResponseBodyMessage;
