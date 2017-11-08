@@ -2,16 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.business</groupId>
+    <groupId>com.github.freedompy.commelina</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
-        <module>commelina</module>
-        <module>commelina-server-tools</module>
-        <module>commelina-services</module>
-        <module>commelina-servers</module>
+
 
         <!--<module>api</module>-->
         <!--<module>game</module>-->
