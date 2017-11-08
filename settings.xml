@@ -9,5 +9,17 @@
             <name>Nexus aliyun</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </mirror>
+        <mirror>
+            <id>nexus-maven</id>
+            <mirrorOf>*,!nexus-aliyun</mirrorOf>
+            <name>Nexus maven</name>
+            <url>http://repo.maven.apache.org/maven2/</url>
+        </mirror>
+        <mirror>
+            <id>spring-milestones</id>
+            <mirrorOf>*,!nexus-aliyun</mirrorOf>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </mirror>
     </mirrors>
 </settings>

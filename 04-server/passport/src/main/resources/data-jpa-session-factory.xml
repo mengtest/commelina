@@ -18,7 +18,7 @@
         ">
 
     <!-- 加载数据库配置文件 -->
-    <context:property-placeholder location="classpath:com/business/service/passport/jdbc.properties"/>
+    <context:property-placeholder location="classpath:jdbc.properties"/>
     <!--配置数据库连接池Druid-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 数据库基本信息配置 -->
@@ -59,7 +59,7 @@
         <!--实体类位置-->
         <property name="packagesToScan">
             <list>
-                <value>com.business.service.passport.entity</value>
+                <value>com.commelina.server.passport.entity</value>
             </list>
         </property>
         <!--持久化单元名-->
@@ -95,7 +95,7 @@
     <!--定义接口实现的后缀，通常用Impl-->
     <!--定义实体工厂的引用-->
     <!--定义事务管理器的引用-->
-    <jpa:repositories base-package="com.business.service.passport.dao.*"
+    <jpa:repositories base-package="com.commelina.server.passport.dao.*"
                       repository-impl-postfix="Repository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>

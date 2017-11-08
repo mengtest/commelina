@@ -5,6 +5,7 @@
         <groupId>com.github.freedompy.commelina</groupId>
         <artifactId>server-parent</artifactId>
         <version>1.0.0</version>
+        <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

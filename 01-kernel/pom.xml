@@ -42,6 +42,7 @@
         <spring.version>5.0.1.RELEASE</spring.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
+        <kotlin.version>1.2-M2</kotlin.version>
     </properties>
 
     <dependencyManagement>
@@ -216,6 +217,13 @@
                 <version>${spring.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib -->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+
             <!-- ignwebakkaweb web servlet jar-->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -275,7 +283,6 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
-                <scope>runtime</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
@@ -283,7 +290,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${db-pool.druid.version}</version>
-                <scope>runtime</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->

@@ -12,9 +12,9 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource(locations = {
         "classpath:spring-beans.xml",
         "classpath:spring-mvc.xml",
-        "classpath:com/business/service/passport/data-beans.xml",
-        "classpath:com/business/service/passport/data-redis-connection-factory.xml",
-        "classpath:com/business/service/passport/data-jpa-session-factory.xml",
+        "classpath:data-beans.xml",
+        "classpath:data-redis-connection-factory.xml",
+        "classpath:data-jpa-session-factory.xml",
 })
 public class AppBoot {
 
