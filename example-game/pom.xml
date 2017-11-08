@@ -2,27 +2,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>commelina-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../commelina</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.business.game</groupId>
+    <groupId>com.github.freedompy.commelina</groupId>
     <artifactId>game-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
-        <!--<module>../commelina</module>-->
-
         <module>gateway</module>
-
         <module>matching</module>
-
         <module>room</module>
     </modules>
+
+    <properties>
+        <file.encoding>UTF-8</file.encoding>
+        <java.version>1.8</java.version>
+        <docker.image.prefix>game</docker.image.prefix>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -31,20 +33,111 @@
         </dependency>
         <dependency>
             <groupId>com.github.freedompy.commelina</groupId>
-            <artifactId>nioscoket</artifactId>
+            <artifactId>kernel-niosocket</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.freedompy.commelina</groupId>
-            <artifactId>akka</artifactId>
+            <artifactId>kernel-akka</artifactId>
         </dependency>
     </dependencies>
 
-    <properties>
-        <docker.image.prefix>game</docker.image.prefix>
-    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.freedompy.commelina</groupId>
+                <artifactId>kernel-parent</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.4.1.Final</version>
+            </extension>
+        </extensions>
         <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- 编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <!--<compilerId>javac-with-errorprone</compilerId>-->
+                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+                    <!-- maven-compiler-plugin defaults to targeting Java 5, but our javac
+                         only supports >=6 -->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${file.encoding}</encoding>
+                </configuration>
+                <!--<dependencies>-->
+                <!--<dependency>-->
+                <!--<groupId>org.codehaus.plexus</groupId>-->
+                <!--<artifactId>plexus-compiler-javac-errorprone</artifactId>-->
+                <!--<version>2.8</version>-->
+                <!--</dependency>-->
+                <!--&lt;!&ndash; override plexus-compiler-javac-errorprone's dependency on-->
+                <!--Error Prone with the latest version &ndash;&gt;-->
+                <!--<dependency>-->
+                <!--<groupId>com.google.errorprone</groupId>-->
+                <!--<artifactId>error_prone_core</artifactId>-->
+                <!--<version>2.0.19</version>-->
+                <!--</dependency>-->
+                <!--</dependencies>-->
+            </plugin>
+            <!-- protobuff 配置 -->
+            <!-- https://github.com/mjkonarski/amber-java-clients/blob/master/amber-ninedof/pom.xml -->
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <configuration>
+                    <protocArtifact>com.google.protobuf:protoc:3.2.0:exe:${os.detected.classifier}</protocArtifact>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <!--<goal>compile-custom</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 过滤插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>

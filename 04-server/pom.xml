@@ -16,7 +16,6 @@
 
     <modules>
         <module>passport</module>
-
         <module>admin-portal</module>
     </modules>
 
@@ -72,7 +71,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
     <build>
         <finalName>${project.name}-${project.version}</finalName>

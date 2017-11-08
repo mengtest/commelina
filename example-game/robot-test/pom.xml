@@ -4,13 +4,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.6.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
         <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.business.robot</groupId>
-    <artifactId>test</artifactId>
+    <groupId>com.github.freedompy.commelina</groupId>
+    <artifactId>example-game-robot-test</artifactId>
     <packaging>jar</packaging>
     <name>robot-test</name>
 
@@ -118,7 +118,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.game.robot.RobotSpringBoot</mainClass>
+                    <mainClass>com.commelina.example.robot.test.RobotSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

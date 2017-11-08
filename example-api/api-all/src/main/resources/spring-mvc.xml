@@ -17,7 +17,7 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
-            <bean class="com.github.freedompy.commelina.mvc.JsonMessageConverterWithLanguage"/>
+            <bean class="JsonMessageConverterWithLanguage"/>
             <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
@@ -39,15 +39,15 @@
             <mvc:mapping path="/pay/api"/>
             <mvc:mapping path="/pay/api/*"/>
 
-            <bean class="com.github.freedompy.commelina.mvc.AuthenticatedApiInterceptor"/>
+            <bean class="AuthenticatedApiInterceptor"/>
         </mvc:interceptor>
-        <bean class="com.github.freedompy.commelina.mvc.AuthenticatedWebInterceptor"/>
+        <bean class="AuthenticatedWebInterceptor"/>
     </mvc:interceptors>
 
     <!-- 拦截器配置 -->
-    <bean class="com.github.freedompy.commelina.mvc.ExceptionHandlerResolverWithJsonOutput"/>
+    <bean class="ExceptionHandlerResolverWithJsonOutput"/>
 
     <!-- session 实现 -->
-    <bean class="com.github.freedompy.commelina.data.RedisSessionHandlerImpl"/>
+    <bean class="RedisSessionHandlerImpl"/>
 
 </beans>

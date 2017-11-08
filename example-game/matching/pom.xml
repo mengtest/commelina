@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.business.game</groupId>
+        <groupId>com.github.freedompy.commelina</groupId>
         <artifactId>game-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>matching</artifactId>
+    <artifactId>example-game-matching</artifactId>
     <packaging>jar</packaging>
     <name>game-matching</name>
     <build>
@@ -17,7 +17,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.business.game.matching.MatchingSpringBoot</mainClass>
+                    <mainClass>com.commelina.example.game.matching.MatchingSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

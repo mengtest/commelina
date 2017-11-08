@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package netty.nio.socket.protocol;
 
-option java_package = "com.github.freedompy.commelina.niosocket.proto";
+option java_package = "com.commelina.niosocket.proto";
 option java_outer_classname = "SocketNettyProtocolDesc";
 
 // 编码

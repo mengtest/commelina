@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.error_code;
 
-option java_package = "com.github.freedompy.commelina.server.passport.proto";
+option java_package = "com.commelina.server.passport.proto";
 option java_outer_classname = "ErrorCodeDef";
 option java_multiple_files = true;
 
