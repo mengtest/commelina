@@ -2,10 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.freedompy.commelina</groupId>
+
+    <parent>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../</relativePath>
+    </parent>
+
     <artifactId>kernel-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
 
     <modules>
         <module>core</module>
@@ -15,6 +21,7 @@
     </modules>
 
     <properties>
+        <main.basedir>${basedir}/../..</main.basedir>
         <file.encoding>UTF-8</file.encoding>
         <java.version>1.8</java.version>
         <guava.version>23.3-jre</guava.version>
@@ -342,26 +349,6 @@
 
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
-            <layout>default</layout>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <!--maven 标准仓库地址-->
-        <repository>
-            <id>maven</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 
     <build>
         <finalName>${project.name}-${project.version}</finalName>

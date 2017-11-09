@@ -2,27 +2,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.business.api</groupId>
+
+    <parent>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>kernel-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../01-kernel</relativePath>
+    </parent>
+
     <artifactId>api-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
 
     <modules>
-        <!--<module>../commelina</module>-->
-
         <module>api-all</module>
-
-        <!--<module>service_passport</module>-->
     </modules>
 
     <properties>
-        <docker.image.prefix>api</docker.image.prefix>
+        <docker.image.prefix>example-api</docker.image.prefix>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.github.freedompy.commelina</groupId>
-            <artifactId>web</artifactId>
+            <artifactId>kernel-web</artifactId>
         </dependency>
     </dependencies>
 

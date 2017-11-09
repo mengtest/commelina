@@ -2,11 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.freedompy.commelina</groupId>
+
+    <parent>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../</relativePath>
+    </parent>
+
     <artifactId>tool-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
-    <name>commelina-tool-parent</name>
 
     <modules>
         <module>management-cloud-resource</module>
