@@ -1,4 +1,4 @@
-package com.commelina.example.robot.interfaces;
+package com.commelina.example.game.robot.interfaces;
 
 /**
  *

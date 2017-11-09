@@ -1,4 +1,4 @@
-package com.commelina.example.robot.message;
+package com.commelina.example.game.robot.message;
 
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;

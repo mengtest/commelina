@@ -1,11 +1,11 @@
-package com.commelina.example.robot.events;
+package com.commelina.example.game.robot.events;
 
 import com.business.game.message.common.proto.DOMAIN;
+import com.commelina.example.game.robot.interfaces.MemberEventLoop;
+import com.commelina.example.game.robot.message.BusinessMessage;
 import com.game.matching.proto.OPCODE;
-import com.commelina.example.robot.interfaces.MemberEventLoop;
-import com.commelina.example.robot.interfaces.ReadEvent;
-import com.commelina.example.robot.message.BusinessMessage;
-import com.commelina.example.robot.utils.Generator;
+import com.commelina.example.game.robot.interfaces.ReadEvent;
+import com.commelina.example.game.robot.utils.Generator;
 import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 import org.slf4j.Logger;

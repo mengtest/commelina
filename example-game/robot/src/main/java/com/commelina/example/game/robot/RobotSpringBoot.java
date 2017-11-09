@@ -1,8 +1,8 @@
-package com.commelina.example.robot;
+package com.commelina.example.game.robot;
 
-import com.commelina.example.robot.events.GatewayLogin;
-import com.commelina.example.robot.interfaces.MainGameEvent;
-import com.commelina.example.robot.interfaces.MainHandler;
+import com.commelina.example.game.robot.interfaces.MainGameEvent;
+import com.commelina.example.game.robot.interfaces.MainHandler;
+import com.commelina.example.game.robot.events.GatewayLogin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
