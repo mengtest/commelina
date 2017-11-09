@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>example-game-parent</artifactId>
+        <artifactId>example-match24-play-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>example-game-room</artifactId>
+    <artifactId>example-match24-play-matching</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.example.game.room.RoomSpringBoot</mainClass>
+                    <mainClass>org.commelina.example.game.matching.MatchingSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

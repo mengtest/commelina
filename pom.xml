@@ -22,18 +22,15 @@
             </activation>
             <modules>
                 <module>01-kernel</module>
-                <!--<module>02-service</module>-->
+                <module>02-service</module>
                 <module>03-server-tool</module>
-                <!--<module>04-server</module>-->
-                <!--<module>example-api</module>-->
-                <!--<module>example-game</module>-->
+                <module>04-server</module>
             </modules>
         </profile>
         <profile>
             <id>example</id>
             <modules>
-                <module>example-api</module>
-                <module>example-game</module>
+                <module>examples</module>
             </modules>
         </profile>
     </profiles>

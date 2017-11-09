@@ -7,10 +7,10 @@
         <groupId>com.github.freedompy.commelina</groupId>
         <artifactId>kernel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../01-kernel</relativePath>
+        <relativePath>../../../01-kernel</relativePath>
     </parent>
 
-    <artifactId>example-api-parent</artifactId>
+    <artifactId>example-match24-api-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>

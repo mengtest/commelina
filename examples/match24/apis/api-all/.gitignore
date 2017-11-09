@@ -1,5 +1,5 @@
 # Compiled class file
-*.class
+target/classes/com/business/apis/proto/ErrorCodeConstantsDef.class
 
 # Log file
 *.log

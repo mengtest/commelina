@@ -1,5 +1,5 @@
 # Compiled class file
-*.class
+target/classes/com/game/gateway/proto/FindRoomResponse.class
 
 # Log file
 *.log
@@ -22,7 +22,7 @@
 hs_err_pid*
 
 # IDE intellij忽略
-*.iml
+robot.iml
 /.idea
 /target
 
