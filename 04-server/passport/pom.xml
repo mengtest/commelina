@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.commelina.server.passport.AppBoot</mainClass>
+                    <mainClass>org.commelina.server.passport.AppBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

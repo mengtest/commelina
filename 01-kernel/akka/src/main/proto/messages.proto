@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package com.framework.akka.router;
 
-option java_package = "com.commelina.akka.dispatching.proto";
+option java_package = "org.commelina.akka.dispatching.proto";
 option java_outer_classname = "ExchangeProtocol";
 option java_multiple_files = true;
 

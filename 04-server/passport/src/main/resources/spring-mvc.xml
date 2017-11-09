@@ -17,7 +17,7 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>-->
-            <bean class="com.commelina.mvc.JsonMessageConverterWithLanguage"/>
+            <bean class="org.commelina.mvc.JsonMessageConverterWithLanguage"/>
             <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>-->
         </mvc:message-converters>
     </mvc:annotation-driven>
@@ -26,15 +26,15 @@
         <mvc:interceptor>
             <mvc:mapping path="/api"/>
             <mvc:mapping path="/api/*"/>
-            <bean class="com.commelina.mvc.AuthenticatedApiInterceptor"/>
+            <bean class="org.commelina.mvc.AuthenticatedApiInterceptor"/>
         </mvc:interceptor>
-        <bean class="com.commelina.mvc.AuthenticatedWebInterceptor"/>
+        <bean class="org.commelina.mvc.AuthenticatedWebInterceptor"/>
     </mvc:interceptors>
 
     <!-- 拦截器配置 -->
-    <bean class="com.commelina.mvc.ExceptionHandlerResolverWithJsonOutput"/>
+    <bean class="org.commelina.mvc.ExceptionHandlerResolverWithJsonOutput"/>
 
     <!-- session 实现 -->
-    <bean class="com.commelina.data.RedisSessionHandlerImpl"/>
+    <bean class="org.commelina.data.RedisSessionHandlerImpl"/>
 
 </beans>

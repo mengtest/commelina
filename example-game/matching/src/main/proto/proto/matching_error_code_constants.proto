@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.matching;
 
-option java_package = "com.game.matching.proto";
+option java_package = "org.commelina.example.game.matching.proto";
 option java_outer_classname = "ErrorCodeProtos";
 option java_multiple_files = true;
 

@@ -1,6 +1,6 @@
 package com.business.apis.game.controller;
 
-import com.commelina.mvc.ResponseBodyMessage;
+import org.commelina.mvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

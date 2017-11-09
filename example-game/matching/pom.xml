@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.commelina.example.game.matching.MatchingSpringBoot</mainClass>
+                    <mainClass>org.commelina.example.game.matching.MatchingSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,6 +1,6 @@
 package com.business.apis.pay.controller.prepay;
 
-import com.commelina.mvc.ResponseBodyMessage;
+import org.commelina.mvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

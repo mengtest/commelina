@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.commelina.example.game.room.RoomSpringBoot</mainClass>
+                    <mainClass>org.commelina.example.game.room.RoomSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
