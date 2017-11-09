@@ -2,6 +2,7 @@ package org.commelina.server.passport.dao;
 
 import org.commelina.server.passport.entity.AccountTelephoneEntity;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author panyao
  * @date 2017/9/2
  */
-@Repository("accountTelephoneRepository")
+@Repository
 public interface AccountTelephoneRepository extends CrudRepository<AccountTelephoneEntity, Long> {
 
     /**
@@ -18,6 +19,7 @@ public interface AccountTelephoneRepository extends CrudRepository<AccountTeleph
      * @param account
      * @return
      */
-    AccountTelephoneEntity findByAccountAndType(String account);
+    @Nullable
+    AccountTelephoneEntity findByAccount(String account);
 
 }

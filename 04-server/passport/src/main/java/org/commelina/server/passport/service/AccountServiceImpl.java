@@ -1,11 +1,11 @@
 package org.commelina.server.passport.service;
 
+import org.commelina.server.passport.dao.AccountTelephoneRepository;
 import org.commelina.server.passport.dao.MemberRepository;
 import org.commelina.server.passport.entity.AccountTelephoneEntity;
 import org.commelina.server.passport.entity.MemberEntity;
 import org.commelina.server.passport.proto.ERROR_CODE;
 import org.commelina.utils.ServiceDomainEmptyMessage;
-import org.commelina.server.passport.dao.AccountTelephoneRepository;
 import org.commelina.utils.ServiceDomainMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,21 +19,26 @@ import javax.annotation.Resource;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Resource(name = "accountTelephoneRepository")
+    @Resource
     private AccountTelephoneRepository accountTephoneRepository;
 
     @Resource
     private MemberRepository memberRepository;
 
-    @Transactional
     @Override
-    public ServiceDomainMessage<MemberEntity> singInWithTelAndNoPassword(String tel) {
-        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
+    public ServiceDomainMessage<MemberEntity> singInWithTelOrNoPassword(String tel) {
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccount(tel);
         if (entity != null) {
-            MemberEntity memberEntity = memberRepository.findOne(entity.getUid());
+            return ServiceDomainMessage.newMessage(memberRepository.findById(entity.getUid()).get());
+        }
+
+        if (entity != null) {
+            MemberEntity memberEntity = memberRepository.findById(entity.getUid()).orElse(null);
+
             if (memberEntity == null) {
                 return ServiceDomainMessage.newMessage(ERROR_CODE.ACCOUNT_MEMBER_NOT_FOUND);
             }
+
             return ServiceDomainMessage.newMessage(memberEntity);
         }
 
@@ -59,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public ServiceDomainEmptyMessage registerTel(String tel, String pwd) {
-        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccount(tel);
         if (entity != null) {
             return ServiceDomainEmptyMessage.newMessage(ERROR_CODE.ACCOUNT_EXISTS);
         }
@@ -80,12 +85,12 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     @Override
     public ServiceDomainMessage<MemberEntity> signInWithTel(String tel, String pwd) {
-        AccountTelephoneEntity entity = accountTephoneRepository.findByAccountAndType(tel);
+        AccountTelephoneEntity entity = accountTephoneRepository.findByAccount(tel);
         if (entity == null) {
             return ServiceDomainMessage.newMessage(ERROR_CODE.ACCOUNT_NOT_FOUND);
         }
 
-        MemberEntity memberEntity = memberRepository.findOne(entity.getUid());
+        MemberEntity memberEntity = memberRepository.findById(entity.getUid()).orElse(null);
         if (memberEntity == null) {
             return ServiceDomainMessage.newMessage(ERROR_CODE.ACCOUNT_MEMBER_NOT_FOUND);
         }

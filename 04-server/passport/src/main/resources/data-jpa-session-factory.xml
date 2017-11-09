@@ -19,6 +19,7 @@
 
     <!-- 加载数据库配置文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
+
     <!--配置数据库连接池Druid-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 数据库基本信息配置 -->
@@ -48,7 +49,7 @@
         <property name="removeAbandoned" value="${removeAbandoned}"/>
         <!-- 1800秒，也就是30分钟 -->
         <property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>
-        <!-- 关闭abanded连接时输出错误日志 -->
+        <!-- 关闭 abanded 连接时输出错误日志 -->
         <property name="logAbandoned" value="${logAbandoned}"/>
     </bean>
 
@@ -59,11 +60,11 @@
         <!--实体类位置-->
         <property name="packagesToScan">
             <list>
-                <value>com.commelina.server.passport.entity</value>
+                <value>org.commelina.server.passport.entity</value>
             </list>
         </property>
         <!--持久化单元名-->
-        <property name="persistenceUnitName" value="GlobalJPA"/>
+        <property name="persistenceUnitName" value="PassportJPA"/>
         <!--JPA提供者-->
         <property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider"/>
         <!--JPA属性-->
@@ -95,7 +96,9 @@
     <!--定义接口实现的后缀，通常用Impl-->
     <!--定义实体工厂的引用-->
     <!--定义事务管理器的引用-->
-    <jpa:repositories base-package="com.commelina.server.passport.dao.*"
+
+
+    <jpa:repositories base-package="org.commelina.server.passport.dao"
                       repository-impl-postfix="Repository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>

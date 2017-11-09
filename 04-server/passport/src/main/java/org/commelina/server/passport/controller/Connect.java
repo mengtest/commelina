@@ -55,7 +55,7 @@ public class Connect {
             return ResponseBodyMessage.error(ERROR_CODE.INPUT_SMS_CODE_ERROR);
         }
 
-        ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelAndNoPassword(tel);
+        ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelOrNoPassword(tel);
         if (message.isSuccess()) {
             SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.doSignIn(message.getData().getUid());
             AuthenticatedApiInterceptor.addLogin(request, response, sessionTokenEntity);

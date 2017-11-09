@@ -16,7 +16,7 @@ public interface AccountService {
      * @param tel
      * @return
      */
-    ServiceDomainMessage<MemberEntity> singInWithTelAndNoPassword(String tel);
+    ServiceDomainMessage<MemberEntity> singInWithTelOrNoPassword(String tel);
 
     /**
      * 用手机号注册

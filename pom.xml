@@ -52,12 +52,20 @@
             </releases>
         </repository>
         <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <id>spring-milestone</id>
+            <name>Spring Milestone</name>
+            <url>http://repo.spring.io/milestone</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
+        <!--<repository>-->
+            <!--<id>central</id>-->
+            <!--<url>https://repo.maven.apache.org/maven2</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -73,12 +81,20 @@
             </releases>
         </pluginRepository>
         <pluginRepository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
+            <id>spring-milestone</id>
+            <name>Spring Milestone</name>
+            <url>http://repo.spring.io/milestone</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
+        <!--<pluginRepository>-->
+            <!--<id>central</id>-->
+            <!--<url>https://repo.maven.apache.org/maven2</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</pluginRepository>-->
     </pluginRepositories>
 
 </project>
