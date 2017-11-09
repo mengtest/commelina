@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>api-parent</artifactId>
+        <artifactId>example-api-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>api-all</artifactId>
+    <artifactId>example-api-all</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

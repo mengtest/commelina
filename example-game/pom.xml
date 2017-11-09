@@ -10,7 +10,7 @@
         <relativePath>../01-kernel</relativePath>
     </parent>
 
-    <artifactId>game-parent</artifactId>
+    <artifactId>example-game-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>

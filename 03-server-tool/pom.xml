@@ -10,7 +10,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>tool-parent</artifactId>
+    <artifactId>server-tool-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>

@@ -10,7 +10,7 @@
         <relativePath>../01-kernel</relativePath>
     </parent>
 
-    <artifactId>api-parent</artifactId>
+    <artifactId>example-api-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>

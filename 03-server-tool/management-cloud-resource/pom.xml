@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>tool-parent</artifactId>
+        <artifactId>server-tool-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
