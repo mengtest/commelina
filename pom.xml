@@ -7,17 +7,12 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
-    <properties>
-        <file.encoding>UTF-8</file.encoding>
-        <java.version>1.8</java.version>
-    </properties>
-
     <modules>
         <module>01-kernel</module>
         <module>04-server</module>
         <!--<module>api</module>-->
-        <module>example-game</module>
-        <module>example-game/robot</module>
+        <!--<module>example-game</module>-->
+        <!--<module>example-game/robot</module>-->
     </modules>
 
 </project>

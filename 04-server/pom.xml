@@ -2,34 +2,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>kernel-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../01-kernel</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.freedompy.commelina</groupId>
     <artifactId>server-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <modules>
         <module>passport</module>
+        <module>app-version</module>
+        <module>pay</module>
+        <module>admin</module>
         <module>admin-portal</module>
     </modules>
 
     <properties>
-        <file.encoding>UTF-8</file.encoding>
-        <java.version>1.8</java.version>
         <docker.image.prefix>commelina_server</docker.image.prefix>
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.github.freedompy.commelina</groupId>
@@ -38,68 +34,18 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- 单元测试-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.9.5</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
-    
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.github.freedompy.commelina</groupId>
-                <artifactId>kernel-parent</artifactId>
-                <version>1.0.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
-            <layout>default</layout>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <!--maven 标准仓库地址-->
-        <repository>
-            <id>maven</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 
     <build>
-        <finalName>${project.name}-${project.version}</finalName>
-        <extensions>
-            <extension>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.4.1.Final</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -115,65 +61,6 @@
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
-                </configuration>
-            </plugin>
-            <!-- 编译插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <!--<compilerId>javac-with-errorprone</compilerId>-->
-                    <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
-                    <!-- maven-compiler-plugin defaults to targeting Java 5, but our javac
-                         only supports >=6 -->
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${file.encoding}</encoding>
-                </configuration>
-                <!--<dependencies>-->
-                <!--<dependency>-->
-                <!--<groupId>org.codehaus.plexus</groupId>-->
-                <!--<artifactId>plexus-compiler-javac-errorprone</artifactId>-->
-                <!--<version>2.8</version>-->
-                <!--</dependency>-->
-                <!--&lt;!&ndash; override plexus-compiler-javac-errorprone's dependency on-->
-                <!--Error Prone with the latest version &ndash;&gt;-->
-                <!--<dependency>-->
-                <!--<groupId>com.google.errorprone</groupId>-->
-                <!--<artifactId>error_prone_core</artifactId>-->
-                <!--<version>2.0.19</version>-->
-                <!--</dependency>-->
-                <!--</dependencies>-->
-            </plugin>
-            <!-- protobuff 配置 -->
-            <!-- https://github.com/mjkonarski/amber-java-clients/blob/master/amber-ninedof/pom.xml -->
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.5.0</version>
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:3.2.0:exe:${os.detected.classifier}</protocArtifact>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <!--<goal>compile-custom</goal>-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- 过滤插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                        <include>**/*Test.java</include>
-                    </includes>
                 </configuration>
             </plugin>
         </plugins>
