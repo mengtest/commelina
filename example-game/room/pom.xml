@@ -10,7 +10,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>room</artifactId>
+    <artifactId>example-game-room</artifactId>
     <packaging>jar</packaging>
 
     <build>

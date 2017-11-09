@@ -10,7 +10,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>tool-static-table</artifactId>
+    <artifactId>server-tool-static-table</artifactId>
     <packaging>jar</packaging>
 
 </project>
