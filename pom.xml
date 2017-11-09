@@ -25,10 +25,8 @@
                 <module>02-service</module>
                 <module>03-server-tool</module>
                 <module>04-server</module>
-
                 <module>example-api</module>
                 <module>example-game</module>
-
             </modules>
         </profile>
         <profile>
@@ -41,6 +39,15 @@
     </profiles>
 
     <repositories>
+        <!-- Repositories to allow snapshot and milestone BOM imports during development.
+            This section is stripped by the flatten plugin during install/deploy. -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>nexus-aliyun</id>
             <name>Nexus aliyun</name>
@@ -53,11 +60,27 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <!--maven 标准仓库地址-->
-        <repository>
-            <id>maven</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-        </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <layout>default</layout>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
