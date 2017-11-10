@@ -27,7 +27,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.match24.admin.AppBoot</mainClass>
+                    <mainClass>com.commelina.match24.admin.AppBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>

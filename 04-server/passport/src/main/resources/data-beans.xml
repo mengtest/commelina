@@ -6,6 +6,6 @@
         ">
 
     <!-- redis session handler 实现 -->
-    <bean class="org.commelina.data.RedisSessionHandlerImpl"/>
+    <bean class="com.commelina.data.RedisSessionHandlerImpl"/>
 
 </beans>

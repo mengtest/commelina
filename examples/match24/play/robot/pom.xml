@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.match24.play.robot.RobotSpringBoot</mainClass>
+                    <mainClass>com.commelina.match24.play.robot.RobotSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
