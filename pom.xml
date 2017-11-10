@@ -16,19 +16,30 @@
     <profiles>
         <!-- 默认构建 -->
         <profile>
-            <id>default</id>
+            <id>0kernel</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
                 <module>01-kernel</module>
-                <module>02-service</module>
-                <module>03-server-tool</module>
-                <module>04-server</module>
             </modules>
         </profile>
         <profile>
-            <id>match24</id>
+            <id>1service</id>
+            <modules>
+                <module>02-service</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>2server</id>
+            <modules>
+                <module>03-server-tool</module>
+                <module>04-server</module>
+                <module>05-server-sdk</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>3match24</id>
             <modules>
                 <module>examples/match24</module>
             </modules>
