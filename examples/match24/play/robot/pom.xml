@@ -13,15 +13,6 @@
     <artifactId>match24-play-robot</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
