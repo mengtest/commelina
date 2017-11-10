@@ -29,7 +29,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.example.game.robot.RobotSpringBoot</mainClass>
+                    <mainClass>org.commelina.match24.play.robot.RobotSpringBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -56,15 +56,16 @@
                                 <resource>
                                     <directory>${basedir}/../game/gateway/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
-                                    <!--<excludes>-->
-                                    <!--<exclude>copy/*.*</exclude>-->
-                                    <!--</excludes>-->
+									<excludes>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../game/matching/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
+                                        <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -72,11 +73,15 @@
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
+										 <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../commelina/02-niosocket/src/main/proto/</directory>
                                     <filtering>true</filtering>
+									<excludes>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
                         </configuration>

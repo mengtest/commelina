@@ -55,10 +55,9 @@
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
                                     <filtering>true</filtering>
+                                    <includes>*.conf</includes>
                                     <excludes>
-                                        <exclude>gateway/*.*</exclude>
-                                        <exclude>matching/*.*</exclude>
-                                        <exclude>room/*.*</exclude>
+                                        <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -74,13 +73,10 @@
                             <outputDirectory>${basedir}/actor_config/matching/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/actor_config/</directory>
+                                    <directory>${basedir}/actor_config/matching/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
-                                        <exclude>gateway/*.*</exclude>
-                                        <exclude>matching/*.*</exclude>
-                                        <exclude>room/*.*</exclude>
-                                        <exclude>cluster-room-common.conf</exclude>
+                                        <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -103,6 +99,7 @@
                                         <exclude>matching/*.*</exclude>
                                         <exclude>room/*.*</exclude>
                                         <exclude>cluster-matching-common.conf</exclude>
+                                        <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                             </resources>

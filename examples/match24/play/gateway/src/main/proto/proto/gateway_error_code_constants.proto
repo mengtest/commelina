@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package def.gateway;
 
-option java_package = "org.commelina.example.game.gateway.proto";
+option java_package = "org.commelina.match24.play.gateway.proto";
 option java_outer_classname = "ErrorCodeProtos";
 option java_multiple_files = true;
 
