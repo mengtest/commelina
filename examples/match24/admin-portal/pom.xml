@@ -5,13 +5,20 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>match24-play-parent</artifactId>
+        <artifactId>match24-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>match24-play-room</artifactId>
+    <artifactId>match24-admin-portal</artifactId>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.freedompy.commelina</groupId>
+            <artifactId>kernel-web</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -20,7 +27,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.example.game.room.RoomSpringBoot</mainClass>
+                    <mainClass>org.commelina.match24.admin.AppBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -32,4 +39,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

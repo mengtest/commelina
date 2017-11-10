@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>kernel-parent</artifactId>
+        <artifactId>match24-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../../01-kernel</relativePath>
+        <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>example-match24-play-parent</artifactId>
+    <artifactId>match24-play-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
@@ -20,10 +20,6 @@
 
         <module>robot</module>
     </modules>
-
-    <properties>
-        <docker.image.prefix>game</docker.image.prefix>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -42,22 +38,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.3</version>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>

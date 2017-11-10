@@ -28,9 +28,9 @@
             </modules>
         </profile>
         <profile>
-            <id>example</id>
+            <id>match24</id>
             <modules>
-                <module>examples</module>
+                <module>examples/match24</module>
             </modules>
         </profile>
     </profiles>

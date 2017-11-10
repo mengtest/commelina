@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>example-match24-play-parent</artifactId>
+        <artifactId>match24-play-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>example-match24-play-matching</artifactId>
+    <artifactId>match24-play-matching</artifactId>
     <packaging>jar</packaging>
 
     <build>

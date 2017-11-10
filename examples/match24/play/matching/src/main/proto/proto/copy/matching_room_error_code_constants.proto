@@ -7,6 +7,6 @@ option java_outer_classname = "ErrorCodeDef";
 option java_multiple_files = true;
 
 enum MATCHING_ROOM_ERROR_CODE {
-    // 房间不存在
+    // 房间不存�?
     EMPTYS = 0;
 }
