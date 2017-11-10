@@ -15,7 +15,7 @@
 
     <modules>
         <module>gateway</module>
-        <module>matching</module>
+        <module>match</module>
         <module>room</module>
 
         <module>robot</module>

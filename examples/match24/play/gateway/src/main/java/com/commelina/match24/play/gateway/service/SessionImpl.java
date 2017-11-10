@@ -54,7 +54,7 @@ public class SessionImpl implements LocalServiceHandler {
 
             long userId = Long.valueOf(tokenArg.toStringUtf8());
             getLogger().info("userId:{}, 登录成功", userId);
-            getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceMessage()), getSelf());
+            getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceEmptyMessage()), getSelf());
 
             AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(MemberOnlineEvent.newBuilder().setLoginUserId(userId).build());
 

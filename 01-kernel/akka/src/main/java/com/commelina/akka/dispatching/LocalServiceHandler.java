@@ -10,7 +10,7 @@ import com.commelina.akka.dispatching.local.AbstractLocalServiceActor;
 public interface LocalServiceHandler extends Router {
 
     /**
-     * 获取 service 的 actor props
+     * 获取 context 的 actor props
      *
      * @return
      */

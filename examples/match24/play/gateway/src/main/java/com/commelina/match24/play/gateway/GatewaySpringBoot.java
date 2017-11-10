@@ -3,7 +3,7 @@ package com.commelina.match24.play.gateway;
 import com.commelina.akka.dispatching.LocalServiceHandler;
 import com.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemCreator;
 import com.commelina.akka.dispatching.local.AkkaLocalWorkerSystemCreator;
-import com.commelina.example.game.common.proto.DOMAIN;
+import com.commelina.match24.common.proto.DOMAIN;
 import com.commelina.match24.play.gateway.portal.ProxyRoom;
 import com.commelina.niosocket.BootstrapNioSocket;
 import org.springframework.beans.BeansException;
@@ -40,8 +40,8 @@ public class GatewaySpringBoot implements ApplicationContextAware {
         AkkaLocalWorkerSystemCreator.create("gateway")
                 .registerRouter(applicationContext.getBeansOfType(LocalServiceHandler.class));
 
-        // matching 集群 handler
-        AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "ClusterMatchingSystem", "cluster-gateway-matching")
+        // match 集群 handler
+        AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "ClusterMatchingSystem", "cluster-gateway-match")
                 .registerRouter()
                 .building();
 

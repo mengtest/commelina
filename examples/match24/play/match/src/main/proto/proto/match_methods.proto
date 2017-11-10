@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package def.match.methods;
+
+option java_package = "com.commelina.match24.play.match.proto";
+option java_outer_classname = "MethodProtos";
+option java_multiple_files = true;
+
+enum MATCH_METHODS {
+    // 加入匹配队列
+    JOIN_MATCH_QUENE = 0;
+}
+
+enum MATCH_MODE {
+    FAST = 0;
+}

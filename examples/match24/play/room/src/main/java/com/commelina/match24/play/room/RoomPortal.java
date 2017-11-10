@@ -3,7 +3,7 @@ package com.commelina.match24.play.room;
 import akka.actor.ActorRef;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.cluster.nodes.BackendActor;
+import com.commelina.akka.dispatching.cluster.nodes.AbstractBackendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.BusinessMessage;
@@ -13,7 +13,7 @@ import com.commelina.example.game.matching_room.proto.MATCHING_ROOM_METHODS;
 import com.commelina.match24.play.room.entity.PlayerStatus;
 import com.commelina.match24.play.room.event.PlayerStatusEvent;
 import com.commelina.match24.play.room.proto.ERROR_CODE;
-import com.commelina.match24.play.room.service.RoomMain;
+import com.commelina.match24.play.room.context.RoomContext;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
@@ -24,13 +24,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 房间 server 入口
+ *
  * @author @panyao
  * @date 2017/9/26
  */
-public class RoomPortal extends BackendActor {
+public class RoomPortal extends AbstractBackendActor {
 
     /**
-     * roomId -> RoomMainActorRef
+     * roomId -> RoomContextActorRef
      */
     private final BiMap<Long, ActorRef> roomIdToRoomContextActor = HashBiMap.create(128);
 
@@ -40,12 +42,15 @@ public class RoomPortal extends BackendActor {
     private final Map<Long, Long> usersToRoomId = Maps.newHashMap();
 
     /**
-     * 当前 子曾的房间id
+     * 当前 自增的房间id
      */
     private long currentRoomId = 0;
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
 
+    /**
+     * 房间不存在通知信息
+     */
     private static final MessageBody ROOM_NOT_FOUND =
             DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
 
@@ -61,6 +66,11 @@ public class RoomPortal extends BackendActor {
         sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Online));
     }
 
+    /**
+     * 当客户端有请求过来时触发
+     *
+     * @param request
+     */
     @Override
     public void onRequest(ApiRequest request) {
         ByteString roomIdArg = request.getArgs(0);
@@ -78,7 +88,7 @@ public class RoomPortal extends BackendActor {
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
             response(ROOM_NOT_FOUND);
-            logger.info("Api request room id {} not instance RoomMain.", roomId);
+            logger.info("Api request room id {} not instance RoomContext.", roomId);
             return;
         }
 
@@ -88,6 +98,11 @@ public class RoomPortal extends BackendActor {
         roomContext.forward(request, getContext());
     }
 
+    /**
+     * 当有服务端消息过来时触发
+     *
+     * @param forward
+     */
     @Override
     public void onForward(ApiRequestForward forward) {
         switch (forward.getOpcode()) {
@@ -108,7 +123,7 @@ public class RoomPortal extends BackendActor {
         // fixme 加载用户信息
 
         final long newRoomId = currentRoomId++;
-        final ActorRef roomContext = getContext().actorOf(RoomMain.props(newRoomId, null), "roomContext");
+        final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);
 
         // 把当前用户加入 room Id 列表上
@@ -125,7 +140,7 @@ public class RoomPortal extends BackendActor {
 
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
-            logger.info("Room id {} not instance RoomMain.", roomId);
+            logger.info("RoomContext id {} not instance RoomContext.", roomId);
             return;
         }
 

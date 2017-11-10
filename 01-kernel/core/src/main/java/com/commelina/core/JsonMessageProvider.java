@@ -16,7 +16,7 @@ public class JsonMessageProvider {
 
     private static final MessageBody EMPTY = new JsonMessage(BusinessMessage.success());
 
-    public static MessageBody produceMessage() {
+    public static MessageBody produceEmptyMessage() {
         return EMPTY;
     }
 

@@ -5,7 +5,7 @@ import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.core.BusinessMessage;
 import com.commelina.core.DefaultMessageProvider;
 import com.commelina.core.MessageBody;
-import com.commelina.example.game.common.proto.DOMAIN;
+import com.commelina.match24.common.proto.DOMAIN;
 import com.commelina.match24.play.gateway.proto.ERROR_CODE;
 import com.commelina.match24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ContextAdapter;

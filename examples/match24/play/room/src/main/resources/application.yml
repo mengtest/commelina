@@ -1,0 +1,10 @@
+# 设置棋盘
+checkerboard:
+  size:
+    x:  100
+    y:  100
+
+# 房间配置
+room:
+  # 多少分钟后结束
+  checkOeverMinute: 10

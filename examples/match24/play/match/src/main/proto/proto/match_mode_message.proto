@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package def.match.message;
+
+option java_package = "com.commelina.match24.play.match.proto";
+option java_outer_classname = "ModeProtos";
+option java_multiple_files = true;
+
+message JoinMatch {
+    uint64 userId = 1;
+}

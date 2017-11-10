@@ -13,7 +13,7 @@ services:
 
   # 游戏匹配
   game-matching:
-      image: game/matching
+      image: game/match
       restart: always
       ports:
         # 内网端口
@@ -41,7 +41,7 @@ services:
         # 内网端口，用于和依赖节点进行 notify
         - "3004:3004"
 #      links:
-#        - game-matching
+#        - game-match
 #        - game-room
 
 #  # 客户端测试机器人

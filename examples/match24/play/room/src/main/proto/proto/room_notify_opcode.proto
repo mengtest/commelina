@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.room.notify.opcode;
+
+option java_package = "com.commelina.match24.play.room.proto";
+option java_outer_classname = "NotifyOpcodeProtos";
+option java_multiple_files = true;
+
+enum OPCODE {
+    //
+    EMPTY = 0;
+}

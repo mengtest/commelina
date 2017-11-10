@@ -8,7 +8,7 @@ import com.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemContext;
 import com.commelina.akka.dispatching.local.AbstractLocalServiceActor;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
-import com.commelina.example.game.common.proto.DOMAIN;
+import com.commelina.match24.common.proto.DOMAIN;
 import com.commelina.match24.play.gateway.proto.GATEWAY_METHODS;
 import com.game.gateway.proto.ChangeAccesssDoamin;
 import com.google.common.collect.BiMap;

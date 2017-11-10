@@ -3,7 +3,7 @@ package com.commelina.utils;
 import com.google.protobuf.Internal;
 
 /**
- * service 返回的domain 实体
+ * context 返回的domain 实体
  *
  * @author panyao
  * @date 2017/9/2

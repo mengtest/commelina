@@ -26,7 +26,7 @@ public class RouterFrontendLocalActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(DeadLetter.class, d -> {
-                    // 死信，防止一个 front nodes 崩溃之后 service actor 成为游离状态
+                    // 死信，防止一个 front nodes 崩溃之后 context actor 成为游离状态
                     if (d.message() instanceof RouterRegistration) {
                         getContext().watch(d.sender());
                         localRouters.put(((RouterRegistration) d.message()).getRouterId().getNumber(), d.sender());

@@ -40,6 +40,9 @@
         </profile>
         <profile>
             <id>3match24</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <modules>
                 <module>examples/match24</module>
             </modules>
