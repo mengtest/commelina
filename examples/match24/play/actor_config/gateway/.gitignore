@@ -1,4 +1,5 @@
-cluster-matching-common.conf
-cluster-room-common.conf
-common.conf
-remote-common.conf
+*
+!.gitignore
+!cluster-gateway-matching.conf
+!cluster-gateway-room.conf
+!gateway.conf

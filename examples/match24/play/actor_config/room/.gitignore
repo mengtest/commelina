@@ -1,2 +1,3 @@
-cluster-room-common.conf
-common.conf
+*
+!.gitignore
+!cluster-room.conf

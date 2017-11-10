@@ -1,2 +1,3 @@
-cluster-matching-common.conf
-common.conf
+*
+!.gitignore
+!cluster-matching.conf

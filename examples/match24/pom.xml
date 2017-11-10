@@ -12,7 +12,6 @@
 
     <artifactId>match24-parent</artifactId>
     <packaging>pom</packaging>
-    <version>${revision}</version>
 
     <modules>
         <module>admin</module>
