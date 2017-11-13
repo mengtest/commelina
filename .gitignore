@@ -34,3 +34,12 @@ hs_err_pid*
 .classpath
 .mymetadata
 .project
+checkerboard_message.proto
+copy/
+gateway_error_code_constants.proto
+gateway_methods.proto
+gateway_notify_opcode_constants.proto
+member_status_messages.proto
+room_error_code.proto
+room_methods.proto
+room_notify_opcode.proto

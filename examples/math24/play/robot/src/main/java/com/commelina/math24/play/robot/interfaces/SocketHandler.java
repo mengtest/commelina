@@ -1,6 +1,6 @@
 package com.commelina.math24.play.robot.interfaces;
 
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

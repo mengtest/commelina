@@ -1,12 +1,12 @@
 package com.commelina.math24.play.robot.events;
 
-import com.business.game.message.common.proto.DOMAIN;
+import com.commelina.core.BusinessMessage;
+import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.play.match.proto.OPCODE;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
-import com.commelina.math24.play.robot.message.BusinessMessage;
-import com.game.matching.proto.OPCODE;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
-import com.commelina.math24.play.robot.utils.Generator;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SocketMessage;
+import com.commelina.utils.Generator;
 import com.google.protobuf.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

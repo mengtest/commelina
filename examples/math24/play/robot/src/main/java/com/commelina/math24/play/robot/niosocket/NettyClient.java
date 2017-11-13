@@ -1,7 +1,7 @@
 package com.commelina.math24.play.robot.niosocket;
 
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
 import com.commelina.math24.play.robot.interfaces.SocketHandler;
+import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

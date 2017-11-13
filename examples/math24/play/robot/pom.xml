@@ -45,14 +45,14 @@
                             <outputDirectory>${basedir}/src/main/proto/proto/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../game/gateway/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../gateway/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../game/matching/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../match/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
@@ -60,7 +60,7 @@
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../game/room/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../room/src/main/proto/proto/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
@@ -68,7 +68,7 @@
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../commelina/02-niosocket/src/main/proto/</directory>
+                                    <directory>${basedir}/../../../commelina/02-niosocket/src/main/proto/</directory>
                                     <filtering>true</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>

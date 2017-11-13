@@ -1,7 +1,7 @@
 package com.commelina.math24.play.robot.interfaces;
 
 import com.commelina.math24.play.robot.niosocket.NettyClient;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;

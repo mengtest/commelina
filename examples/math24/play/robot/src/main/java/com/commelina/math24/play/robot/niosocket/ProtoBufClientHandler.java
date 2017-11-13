@@ -1,9 +1,9 @@
 package com.commelina.math24.play.robot.niosocket;
 
 import com.commelina.math24.play.robot.interfaces.SocketHandler;
-import com.github.freedompy.commelina.niosocket.proto.SERVER_CODE;
-import com.github.freedompy.commelina.niosocket.proto.SocketASK;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SERVER_CODE;
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;

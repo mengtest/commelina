@@ -1,4 +1,1 @@
-.gitignore
-!.gitignore
-!*.md
-*.prtoto
+*.proto

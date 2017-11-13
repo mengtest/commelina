@@ -1,11 +1,11 @@
 package com.commelina.math24.play.robot.events;
 
-import com.business.game.message.common.proto.DOMAIN;
-import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
-import com.game.gateway.proto.GATEWAY_METHODS;
+import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
-import com.github.freedompy.commelina.niosocket.proto.SocketASK;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import org.slf4j.Logger;

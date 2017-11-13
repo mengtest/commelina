@@ -1,10 +1,10 @@
 package com.commelina.math24.play.robot.events;
 
-import com.business.game.message.common.proto.DOMAIN;
+import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.play.match.proto.MATCH_METHODS;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
-import com.game.matching.proto.MATCHING_METHODS;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
 /**
  *
@@ -20,7 +20,7 @@ public class MatchingWaitForJoinRoom implements ReadEvent {
 
     @Override
     public Internal.EnumLite getApiOpcode() {
-        return MATCHING_METHODS.JOIN_MATCH_QUENE;
+        return MATCH_METHODS.JOIN_MATCH_QUENE;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.commelina.math24.play.robot.interfaces;
 
-import com.github.freedompy.commelina.niosocket.proto.SERVER_CODE;
-import com.github.freedompy.commelina.niosocket.proto.SocketASK;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SERVER_CODE;
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.google.common.collect.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultEventLoop;

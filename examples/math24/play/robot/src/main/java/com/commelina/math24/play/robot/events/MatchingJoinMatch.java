@@ -1,11 +1,11 @@
 package com.commelina.math24.play.robot.events;
 
-import com.business.game.message.common.proto.DOMAIN;
+import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.play.match.proto.MATCH_METHODS;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
-import com.game.match.proto.MATCHING_METHODS;
-import com.github.freedompy.commelina.niosocket.proto.SocketASK;
-import com.github.freedompy.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 
@@ -26,7 +26,7 @@ public class MatchingJoinMatch implements MemberEvent {
     public SocketASK handler(MemberEventLoop eventLoop) {
         return SocketASK.newBuilder()
                 .setForward(DOMAIN.MATCHING_VALUE)
-                .setOpcode(MATCHING_METHODS.JOIN_MATCH_QUENE_VALUE)
+                .setOpcode(MATCH_METHODS.JOIN_MATCH_QUENE_VALUE)
                 .setVersion("1.0.0")
                 .addArgs(ByteString.copyFromUtf8(userId.toString()))
                 .build();
@@ -39,7 +39,7 @@ public class MatchingJoinMatch implements MemberEvent {
 
     @Override
     public Internal.EnumLite getApiOpcode() {
-        return MATCHING_METHODS.JOIN_MATCH_QUENE;
+        return MATCH_METHODS.JOIN_MATCH_QUENE;
     }
 
     @Override
