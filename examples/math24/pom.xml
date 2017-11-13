@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>kernel-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../../01-kernel</relativePath>
+    </parent>
+
+    <artifactId>math24-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>admin</module>
+        <module>admin-portal</module>
+        <module>api-all</module>
+
+        <module>play</module>
+    </modules>
+
+    <properties>
+        <docker.image.prefix>math24</docker.image.prefix>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.3</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>${basedir}/src/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

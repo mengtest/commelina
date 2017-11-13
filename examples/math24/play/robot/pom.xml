@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.freedompy.commelina</groupId>
+        <artifactId>math24-play-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>math24-play-robot</artifactId>
+    <packaging>jar</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.commelina.math24.play.robot.RobotSpringBoot</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-proto-robot-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/proto/proto/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../game/gateway/src/main/proto/proto/</directory>
+                                    <filtering>true</filtering>
+									<excludes>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../game/matching/src/main/proto/proto/</directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>copy/*.*</exclude>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../game/room/src/main/proto/proto/</directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>copy/*.*</exclude>
+										 <exclude>.gitignore</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/../commelina/02-niosocket/src/main/proto/</directory>
+                                    <filtering>true</filtering>
+									<excludes>
+                                        <exclude>.gitignore</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

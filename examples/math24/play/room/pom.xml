@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>server-parent</artifactId>
+        <artifactId>math24-play-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>server-admin-portal</artifactId>
+    <artifactId>math24-play-room</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>org.commelina.math24.admin.AppBoot</mainClass>
+                    <mainClass>com.commelina.math24.play.room.AppBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -32,5 +32,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

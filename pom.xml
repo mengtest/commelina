@@ -39,12 +39,12 @@
             </modules>
         </profile>
         <profile>
-            <id>3match24</id>
+            <id>3math24</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>examples/match24</module>
+                <module>examples/math24</module>
             </modules>
         </profile>
     </profiles>
