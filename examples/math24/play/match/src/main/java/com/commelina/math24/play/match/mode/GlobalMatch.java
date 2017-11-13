@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.cluster.nodes.AbstractServiceActor;
+import com.commelina.akka.cluster.nodes.AbstractServiceActor;
 import com.commelina.core.DefaultMessageProvider;
 import com.commelina.math24.play.match.proto.JoinMatch;
 import com.google.common.collect.Lists;
@@ -20,6 +20,7 @@ import java.util.List;
 public class GlobalMatch extends AbstractServiceActor {
 
     private final int successPeople;
+
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
     /**

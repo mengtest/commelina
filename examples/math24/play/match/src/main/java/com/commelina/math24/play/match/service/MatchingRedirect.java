@@ -4,7 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystem;
+import com.commelina.akka.cluster.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.AppVersion;
 import com.commelina.math24.common.proto.DOMAIN;

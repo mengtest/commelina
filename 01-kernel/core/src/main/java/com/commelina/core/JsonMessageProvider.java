@@ -28,7 +28,7 @@ public class JsonMessageProvider {
     public static MessageBody produceMessageForKV(final String k, final Object v) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(k));
         Preconditions.checkNotNull(v);
-        final Map<String, Object> kv = Maps.newHashMap();
+        Map<String, Object> kv = Maps.newHashMap();
         kv.put(k, v);
         return new JsonMessage(BusinessMessage.success(kv));
     }

@@ -1,8 +1,8 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.akka.dispatching.DefaultClusterActorRequestHandler;
-import com.commelina.akka.dispatching.cluster.RouterFrontedClusterActor;
-import com.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.commelina.akka.DefaultClusterActorRequestHandler;
+import com.commelina.akka.cluster.RouterFrontedClusterActor;
+import com.commelina.akka.local.AkkaLocalWorkerSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.BusinessMessage;

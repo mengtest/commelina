@@ -1,10 +1,10 @@
 package com.commelina.math24.play.gateway.service;
 
-import com.commelina.akka.dispatching.ActorServiceHandler;
-import com.commelina.akka.dispatching.LocalServiceHandler;
-import com.commelina.akka.dispatching.LoginUserEntity;
-import com.commelina.akka.dispatching.local.AbstractLocalServiceActor;
-import com.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.commelina.akka.ActorServiceHandler;
+import com.commelina.akka.LocalServiceHandler;
+import com.commelina.akka.LoginUserEntity;
+import com.commelina.akka.local.AbstractLocalServiceActor;
+import com.commelina.akka.local.AkkaLocalWorkerSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.core.BusinessMessage;

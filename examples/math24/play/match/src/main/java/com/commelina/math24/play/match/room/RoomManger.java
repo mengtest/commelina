@@ -3,7 +3,6 @@ package com.commelina.math24.play.match.room;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.commelina.math24.play.match.proto.CreateRoom;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class RoomManger extends AbstractActor {
 
         roomList.put(currentLastRoomId++, temporary);
 
-        temporary.tell(CreateRoom.getDefaultInstance(), getSelf());
+//        temporary.tell(CreateRoom.getDefaultInstance(), getSelf());
     }
 
     public static Props props() {

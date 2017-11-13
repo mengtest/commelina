@@ -1,8 +1,8 @@
 package com.commelina.math24.play.gateway;
 
-import com.commelina.akka.dispatching.LocalServiceHandler;
-import com.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemCreator;
-import com.commelina.akka.dispatching.local.AkkaLocalWorkerSystemCreator;
+import com.commelina.akka.LocalServiceHandler;
+import com.commelina.akka.cluster.AkkaMultiWorkerSystemCreator;
+import com.commelina.akka.local.AkkaLocalWorkerSystemCreator;
 import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.gateway.portal.ProxyRoom;
 import com.commelina.niosocket.BootstrapNioSocket;

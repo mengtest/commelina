@@ -1,11 +1,11 @@
 package com.commelina.math24.play.gateway.service;
 
 import akka.japi.pf.ReceiveBuilder;
-import com.commelina.akka.dispatching.ActorServiceHandler;
-import com.commelina.akka.dispatching.LocalServiceHandler;
-import com.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystem;
-import com.commelina.akka.dispatching.cluster.AkkaMultiWorkerSystemContext;
-import com.commelina.akka.dispatching.local.AbstractLocalServiceActor;
+import com.commelina.akka.ActorServiceHandler;
+import com.commelina.akka.LocalServiceHandler;
+import com.commelina.akka.cluster.AkkaMultiWorkerSystem;
+import com.commelina.akka.cluster.AkkaMultiWorkerSystemContext;
+import com.commelina.akka.local.AbstractLocalServiceActor;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.common.proto.DOMAIN;

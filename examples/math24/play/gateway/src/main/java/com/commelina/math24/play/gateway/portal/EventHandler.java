@@ -1,6 +1,6 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.akka.dispatching.local.AkkaLocalWorkerSystem;
+import com.commelina.akka.local.AkkaLocalWorkerSystem;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.niosocket.MemberEventHandler;
 import io.netty.channel.ChannelHandlerContext;

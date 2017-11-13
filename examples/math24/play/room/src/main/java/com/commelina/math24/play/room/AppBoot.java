@@ -1,6 +1,6 @@
 package com.commelina.math24.play.room;
 
-import com.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.commelina.akka.cluster.nodes.ClusterChildNodeSystemCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
