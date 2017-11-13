@@ -6,13 +6,13 @@ import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.cluster.nodes.AbstractBackendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
+import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.core.BusinessMessage;
 import com.commelina.core.DefaultMessageProvider;
 import com.commelina.core.MessageBody;
 import com.commelina.math24.matching_room.proto.MATCHING_ROOM_METHODS;
 import com.commelina.math24.play.room.context.RoomContext;
-import com.commelina.math24.play.room.entity.PlayerStatus;
-import com.commelina.math24.play.room.event.PlayerStatusEvent;
 import com.commelina.math24.play.room.proto.ERROR_CODE;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -55,16 +55,52 @@ public class RoomPortal extends AbstractBackendActor {
             DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
 
     @Override
-    public void onOffline(long logoutUserId) {
-        // 用户下线，标记为下线
-        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Offline));
+    public void onOnline(MemberOnlineEvent onlineEvent) {
+
+        Long roomId = usersToRoomId.get(onlineEvent.getLoginUserId());
+
+        if (roomId == null || roomId <= 0) {
+            logger.info("User id {} not found room id.", onlineEvent.getLoginUserId());
+            return;
+        }
+
+        ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
+        if (roomContext == null) {
+            logger.info("RoomContext id {} not instance RoomContext.", roomId);
+            return;
+        }
+
+        roomContext.forward(onlineEvent, getContext());
     }
 
     @Override
-    public void onOnline(long logoutUserId) {
-        // 用户上线,标记为重新上线
-        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Online));
+    public void onOffline(MemberOfflineEvent offlineEvent) {
+        Long roomId = usersToRoomId.get(offlineEvent.getLogoutUserId());
+
+        if (roomId == null || roomId <= 0) {
+            logger.info("User id {} not found room id.", offlineEvent.getLogoutUserId());
+            return;
+        }
+
+        ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
+        if (roomContext == null) {
+            logger.info("RoomContext id {} not instance RoomContext.", roomId);
+            return;
+        }
+
+        roomContext.forward(offlineEvent, getContext());
     }
+//    @Override
+//    public void onOffline(long logoutUserId) {
+//        // 用户下线，标记为下线
+//        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Offline));
+//    }
+//
+//    @Override
+//    public void onOnline(long logoutUserId) {
+//        // 用户上线,标记为重新上线
+//        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Online));
+//    }
 
     /**
      * 当客户端有请求过来时触发
@@ -121,6 +157,7 @@ public class RoomPortal extends AbstractBackendActor {
                 .collect(Collectors.toList());
 
         // fixme 加载用户信息
+        // 默认用户为在线
 
         final long newRoomId = currentRoomId++;
         final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
@@ -128,23 +165,6 @@ public class RoomPortal extends AbstractBackendActor {
 
         // 把当前用户加入 room Id 列表上
         userIds.forEach(v -> usersToRoomId.put(v, newRoomId));
-    }
-
-    private void sendPlayerStatus(PlayerStatusEvent event) {
-        Long roomId = usersToRoomId.get(event.getUserId());
-
-        if (roomId == null || roomId <= 0) {
-            logger.info("User id {} not found room id.", event.getUserId());
-            return;
-        }
-
-        ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
-        if (roomContext == null) {
-            logger.info("RoomContext id {} not instance RoomContext.", roomId);
-            return;
-        }
-
-        roomContext.forward(event, getContext());
     }
 
 }

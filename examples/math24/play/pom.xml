@@ -70,7 +70,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/actor_config/matching/</outputDirectory>
+                            <outputDirectory>${basedir}/actor_config/match/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
@@ -131,10 +131,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/matching//src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/match/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/actor_config/matching/</directory>
+                                    <directory>${basedir}/actor_config/match/</directory>
                                     <filtering>true</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
@@ -151,7 +151,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/room//src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/room/src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/room/</directory>
@@ -179,7 +179,7 @@
                                     <filtering>true</filtering>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/messages/server-matching-room/</directory>
+                                    <directory>${basedir}/messages/server-match-room/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -192,14 +192,14 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/matching/src/main/proto/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/match/src/main/proto/proto/copy</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/messages/server-matching-room/</directory>
+                                    <directory>${basedir}/messages/server-match-room/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
@@ -219,7 +219,7 @@
                                     <filtering>true</filtering>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/messages/server-matching-room/</directory>
+                                    <directory>${basedir}/messages/server-match-room/</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

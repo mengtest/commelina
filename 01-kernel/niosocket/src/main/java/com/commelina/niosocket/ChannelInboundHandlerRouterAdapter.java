@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
 
     private RouterContextHandler routerContextHandlerImpl;
 
@@ -47,11 +47,11 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-        }
-        memberEventHandler.onOffline(logoutUserId, ctx);
+//        final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
+//        if (LOGGER.isDebugEnabled()) {
+//            LOGGER.debug("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
+//        }
+//        memberEventHandler.onOffline(logoutUserId, ctx);
     }
 
     /**

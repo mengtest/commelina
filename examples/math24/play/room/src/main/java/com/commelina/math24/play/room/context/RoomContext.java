@@ -6,9 +6,11 @@ import akka.actor.Props;
 import com.commelina.akka.dispatching.cluster.nodes.AbstractServiceActor;
 import com.commelina.akka.dispatching.cluster.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
+import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.core.BusinessMessage;
 import com.commelina.math24.play.room.entity.PlayerEntity;
-import com.commelina.math24.play.room.event.PlayerStatusEvent;
+import com.commelina.math24.play.room.entity.PlayerStatus;
 import com.commelina.math24.play.room.message.NotifyJoinRoom;
 import com.commelina.math24.play.room.proto.Prepare;
 import com.commelina.math24.play.room.proto.Prepared;
@@ -91,15 +93,21 @@ public class RoomContext extends AbstractServiceActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(PlayerStatusEvent.class, statusEvent -> {
-                    PlayerEntity playerEntity = players.get(statusEvent.getUserId());
-                    if (playerEntity != null) {
-                        playerEntity.setPlayerStatus(statusEvent.getStatus());
-                    }
-                })
                 .match(ApiRequest.class, r -> {
                     //
 
+                })
+                .match(MemberOfflineEvent.class, offlineEvent -> {
+                    PlayerEntity playerEntity = players.get(offlineEvent.getLogoutUserId());
+                    if (playerEntity != null) {
+                        playerEntity.setPlayerStatus(PlayerStatus.Offline);
+                    }
+                })
+                .match(MemberOnlineEvent.class, onlineEvent -> {
+                    PlayerEntity playerEntity = players.get(onlineEvent.getLoginUserId());
+                    if (playerEntity != null) {
+                        playerEntity.setPlayerStatus(PlayerStatus.Online);
+                    }
                 })
                 // 标记棋盘为准备完成状态
                 .match(Prepared.class, p -> checkerboardPrepared = true)

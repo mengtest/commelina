@@ -27,8 +27,14 @@ public class GlobalMatch extends AbstractServiceActor {
      */
     private final List<Long> matchList;
 
-    public GlobalMatch(int successPeople) {
+    /**
+     * 房间管理 actor
+     */
+    private ActorRef roomMangerActor;
+
+    public GlobalMatch(int successPeople, ActorRef roomMangerActor) {
         this.successPeople = successPeople;
+        this.roomMangerActor = roomMangerActor;
         this.matchList = Lists.newArrayListWithExpectedSize(successPeople * 3);
     }
 
@@ -43,11 +49,13 @@ public class GlobalMatch extends AbstractServiceActor {
         if (logger.isDebugEnabled()) {
             logger.info("add queue userId " + joinMatch.getUserId());
         }
+
         matchList.add(joinMatch.getUserId());
 
         // 回复客户端成功
         response(DefaultMessageProvider.produceEmptyMessage());
 
+        checkMatchList();
     }
 
     private void checkMatchList() {
@@ -58,8 +66,7 @@ public class GlobalMatch extends AbstractServiceActor {
                     userIds.add(matchList.iterator().next());
                     matchList.iterator().remove();
                 }
-//                final ActorRef matchingRedirect = getContext().actorOf(MatchingRedirect.props());
-//                matchingRedirect.tell(userIds, getSelf());
+                roomMangerActor.tell(userIds, getSelf());
             } while (matchList.size() >= successPeople);
         } else {
             List<Long> userIds = Lists.newArrayList();
@@ -69,8 +76,8 @@ public class GlobalMatch extends AbstractServiceActor {
         }
     }
 
-    public static Props props(int successPeople) {
-        return Props.create(GlobalMatch.class, successPeople);
+    public static Props props(int successPeople, ActorRef roomMangerActor) {
+        return Props.create(GlobalMatch.class, successPeople, roomMangerActor);
     }
 
 }

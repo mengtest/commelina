@@ -46,8 +46,8 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         return receiveBuilder()
                 .match(ApiRequest.class, this::onRequest)
                 .match(ApiRequestForward.class, this::onForward)
-                .match(MemberOfflineEvent.class, off -> onOffline(off.getLogoutUserId()))
-                .match(MemberOnlineEvent.class, on -> onOnline(on.getLoginUserId()))
+                .match(MemberOfflineEvent.class, this::onOffline)
+                .match(MemberOnlineEvent.class, this::onOnline)
 
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
@@ -69,12 +69,12 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
     }
 
     @Override
-    public void onOnline(long logoutUserId) {
+    public void onOnline(MemberOnlineEvent onlineEvent) {
         // nothing to do
     }
 
     @Override
-    public void onOffline(long logoutUserId) {
+    public void onOffline(MemberOfflineEvent offlineEvent) {
         // nothing to do
     }
 

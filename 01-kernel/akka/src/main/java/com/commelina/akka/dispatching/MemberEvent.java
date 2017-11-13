@@ -1,5 +1,8 @@
 package com.commelina.akka.dispatching;
 
+import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
+
 /**
  * @author @panyao
  * @date 2017/10/11
@@ -11,13 +14,13 @@ public interface MemberEvent {
      *
      * @param logoutUserId
      */
-    void onOnline(long logoutUserId);
+    void onOnline(MemberOnlineEvent logoutUserId);
 
     /**
      * 当用户离线的时候触发的事件
      *
      * @param logoutUserId
      */
-    void onOffline(long logoutUserId);
+    void onOffline(MemberOfflineEvent logoutUserId);
 
 }

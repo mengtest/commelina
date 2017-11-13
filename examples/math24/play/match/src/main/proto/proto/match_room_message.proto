@@ -3,13 +3,13 @@ syntax = "proto3";
 package def.match.message;
 
 option java_package = "com.commelina.math24.play.match.proto";
-option java_outer_classname = "ModeProtos";
+option java_outer_classname = "RoomProtos";
 option java_multiple_files = true;
 
-message JoinMatch {
-    uint64 userId = 1;
+message PrepareTemporaryRoom {
+
 }
 
-message CancelMatch {
+message JoinRoom {
     uint64 userId = 1;
 }

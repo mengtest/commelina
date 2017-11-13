@@ -27,7 +27,7 @@ import java.net.SocketAddress;
  */
 public class NettyNioSocketServer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
     private Channel serverChannel;
 
     /**
@@ -66,7 +66,8 @@ public class NettyNioSocketServer {
 //        final ChannelAcceptorIdleStateTrigger trigger = new ChannelAcceptorIdleStateTrigger();
         boot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)//最大客户端连接数为 0x7fffffff
+                //最大客户端连接数为 0x7fffffff
+                .option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -83,7 +84,7 @@ public class NettyNioSocketServer {
 
                         // http://blog.csdn.net/z69183787/article/details/52625095
                         // 心跳检查 5s 检查一次
-                        //ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
+//                        ch.pipeline().addLast("heartbeatHandler", new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
                         // 闲置事件
                         //ch.pipeline().addLast("heartbeatTrigger", trigger);
 

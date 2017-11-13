@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class MessageAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageAdapter.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(MessageAdapter.class);
 
     /**
      * 发送一个通知消息
