@@ -46,14 +46,14 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/../gateway/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../match/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
                                         <exclude>.gitignore</exclude>
@@ -61,7 +61,7 @@
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../room/src/main/proto/proto/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
 										 <exclude>.gitignore</exclude>
@@ -69,7 +69,7 @@
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../../../commelina/02-niosocket/src/main/proto/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>

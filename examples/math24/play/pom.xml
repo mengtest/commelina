@@ -54,7 +54,7 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
@@ -64,7 +64,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-actor-to-matching</id>
+                        <id>copy-actor-to-match</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -74,8 +74,8 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
-                                    <filtering>true</filtering>
-                                    <includes>*.conf</includes>
+                                    <filtering>false</filtering>
+                                    <includes>*.*</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
@@ -94,7 +94,7 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
@@ -115,7 +115,7 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/gateway/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
@@ -135,7 +135,7 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/match/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
@@ -155,7 +155,7 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/room/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                     <includes>*.conf</includes>
                                     <excludes>
                                         <exclude>.gitignore</exclude>
@@ -176,11 +176,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -196,11 +196,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -216,11 +216,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                             </resources>
                         </configuration>
