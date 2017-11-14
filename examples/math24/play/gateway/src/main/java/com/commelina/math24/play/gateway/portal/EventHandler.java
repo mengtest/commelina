@@ -1,7 +1,5 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.akka.local.AkkaLocalWorkerSystem;
-import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.niosocket.MemberEventHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -20,7 +18,7 @@ public class EventHandler implements MemberEventHandler {
     @Override
     public void onOffline(long logoutUserId, ChannelHandlerContext ctx) {
         if (logoutUserId > 0) {
-            AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(MemberOfflineEvent.newBuilder().setLogoutUserId(logoutUserId).build());
+//            AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(MemberOfflineEvent.newBuilder().setLogoutUserId(logoutUserId).build());
         }
     }
 

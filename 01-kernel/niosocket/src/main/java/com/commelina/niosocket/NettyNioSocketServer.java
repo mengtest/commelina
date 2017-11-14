@@ -55,7 +55,7 @@ public class NettyNioSocketServer {
      * @param memberEventHandler
      * @throws IOException
      */
-    public void bindAndStart(String host, int port, final RouterContextHandler router, final MemberEventHandler memberEventHandler) throws IOException {
+    public void bindAndStart(String host, int port, final RequestRouterHandler router, final MemberEventHandler memberEventHandler) throws IOException {
         // 管理线程
         final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         // 默认线程数是 cpu 核数的两倍

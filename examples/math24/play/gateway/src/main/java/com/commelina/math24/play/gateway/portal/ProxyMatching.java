@@ -1,7 +1,6 @@
 package com.commelina.math24.play.gateway.portal;
 
 import com.commelina.akka.DefaultClusterActorRequestHandler;
-import com.commelina.akka.local.AkkaLocalWorkerSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.core.BusinessMessage;
 import com.commelina.core.DefaultMessageProvider;
@@ -12,7 +11,6 @@ import com.commelina.niosocket.ContextAdapter;
 import com.commelina.niosocket.NioSocketRouter;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.proto.SocketASK;
-import com.game.gateway.proto.ChangeAccesssDoamin;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -37,12 +35,12 @@ public class ProxyMatching extends DefaultClusterActorRequestHandler {
         newRequestBuilder.setLoginUserId(userId);
 
         //
-        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
-                ChangeAccesssDoamin.newBuilder()
-                        .setUserId(userId)
-                        .setDomain(DOMAIN.MATCHING)
-                        .build()
-        );
+        //        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+        //                ChangeAccesssDoamin.newBuilder()
+        //                        .setUserId(userId)
+        //                        .setDomain(DOMAIN.MATCHING)
+        //                        .build()
+        //        );
 
         return true;
     }

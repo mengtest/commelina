@@ -16,7 +16,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
 
-    private RouterContextHandler routerContextHandlerImpl;
+    private RequestRouterHandler requestRouterHandlerImpl;
 
     /**
      * 给出一个空的 member event 实现
@@ -72,7 +72,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
             try {
-                routerContextHandlerImpl.onRequest(ctx, ask);
+                requestRouterHandlerImpl.onRequest(ctx, ask);
             } catch (Throwable throwable) {
                 ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
                 exceptionCaught(ctx, throwable);
@@ -103,8 +103,8 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 //        }
 //    }
 
-    void setHandlers(RouterContextHandler routerContextHandlerImpl, MemberEventHandler memberEventHandler) {
-        this.routerContextHandlerImpl = routerContextHandlerImpl;
+    void setHandlers(RequestRouterHandler requestRouterHandlerImpl, MemberEventHandler memberEventHandler) {
+        this.requestRouterHandlerImpl = requestRouterHandlerImpl;
         if (memberEventHandler != null) {
             this.memberEventHandler = memberEventHandler;
         }

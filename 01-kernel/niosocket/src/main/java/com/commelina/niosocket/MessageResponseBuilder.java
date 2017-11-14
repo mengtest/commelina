@@ -8,7 +8,7 @@ import com.google.protobuf.Internal;
  * @author @panyao
  * @date 2017/8/24
  */
-public interface MessageResponseBuilder {
+interface MessageResponseBuilder {
 
     /**
      * 构建 server notify 的消息体

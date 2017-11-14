@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cloud-resource</module>
+        <module>static-cloud-resource</module>
         <module>static-table</module>
     </modules>
 

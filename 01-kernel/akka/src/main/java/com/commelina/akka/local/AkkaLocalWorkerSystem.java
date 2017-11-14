@@ -7,7 +7,6 @@ import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.commelina.akka.RouterRegistration;
 import com.commelina.akka.dispatching.proto.ApiRequest;
-import com.google.protobuf.GeneratedMessageV3;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 
@@ -28,14 +27,6 @@ public class AkkaLocalWorkerSystem {
     private ActorRef localRouterFrontend;
 
     public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
-
-    public Object askLocalRouterNode(GeneratedMessageV3 messageV3, Timeout timeout) {
-        return PatternsCS.ask(localRouterFrontend, messageV3, timeout).toCompletableFuture().join();
-    }
-
-    public Object askLocalRouterNode(GeneratedMessageV3 messageV3) {
-        return askLocalRouterNode(messageV3, DEFAULT_TIMEOUT);
-    }
 
     public Object askLocalRouterNode(ApiRequest ask) {
         return askLocalRouterNode(ask, DEFAULT_TIMEOUT);

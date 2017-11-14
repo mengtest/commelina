@@ -10,7 +10,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>server-tool-cloud-resource</artifactId>
+    <artifactId>server-tool-static-cloud-resource</artifactId>
     <packaging>jar</packaging>
 
 </project>

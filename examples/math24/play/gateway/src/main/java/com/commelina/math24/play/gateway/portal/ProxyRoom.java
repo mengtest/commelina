@@ -2,7 +2,6 @@ package com.commelina.math24.play.gateway.portal;
 
 import com.commelina.akka.DefaultClusterActorRequestHandler;
 import com.commelina.akka.cluster.RouterFrontedClusterActor;
-import com.commelina.akka.local.AkkaLocalWorkerSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.BusinessMessage;
@@ -14,10 +13,6 @@ import com.commelina.niosocket.ContextAdapter;
 import com.commelina.niosocket.NioSocketRouter;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.proto.SocketASK;
-import com.game.gateway.proto.ChangeAccesssDoamin;
-import com.game.gateway.proto.FindRoomRequest;
-import com.game.gateway.proto.FindRoomResponse;
-import com.google.protobuf.ByteString;
 import com.google.protobuf.Internal;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -32,22 +27,22 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
 
     @Override
     protected boolean beforeHook(SocketASK ask, ApiRequest.Builder newRequestBuilder, ChannelHandlerContext ctx) {
-        do {
-            ByteString roomId = ask.getArgs(0);
-            if (roomId != null) {
-                FindRoomResponse response = (FindRoomResponse) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
-                        FindRoomRequest.newBuilder()
-                                .setRoomId(Long.valueOf(roomId.toStringUtf8()))
-                                .build()
-                );
-                if (response.getExists()) {
-                    break;
-                }
-            }
-            // 房间不存在
-            ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
-            return false;
-        } while (false);
+//        do {
+//            ByteString roomId = ask.getArgs(0);
+//            if (roomId != null) {
+//                FindRoomResponse response = (FindRoomResponse) AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+//                        FindRoomRequest.newBuilder()
+//                               .setRoomId(Long.valueOf(roomId.toStringUtf8()))
+//                                .build()
+//                );
+//                if (response.getExists()) {
+//                    break;
+//                }
+//            }
+//            // 房间不存在
+//            ReplyUtils.reply(ctx, DOMAIN.GATEWAY, ERROR_CODE.ROOM_NOT_FOUND_VALUE, messageBody);
+//            return false;
+//        } while (false);
 
         final long userId = ContextAdapter.getLoginUserId(ctx.channel().id());
 
@@ -59,12 +54,12 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
 
         newRequestBuilder.setLoginUserId(userId);
 
-        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
-                ChangeAccesssDoamin.newBuilder()
-                        .setUserId(userId)
-                        .setDomain(DOMAIN.GAME_ROOM)
-                        .build()
-        );
+//        AkkaLocalWorkerSystem.INSTANCE.askLocalRouterNode(
+//                ChangeAccesssDoamin.newBuilder()
+//                        .setUserId(userId)
+//                        .setDomain(DOMAIN.GAME_ROOM)
+//                        .build()
+//        );
 
         return true;
     }
