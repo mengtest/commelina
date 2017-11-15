@@ -1,4 +1,4 @@
-package com.commelina.akka.cluster.nodes;
+package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.AbstractActor;
 import akka.actor.Terminated;
@@ -10,7 +10,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.DispatchForward;
 import com.commelina.akka.MemberEvent;
-import com.commelina.akka.cluster.Constants;
+import com.commelina.akka.dispatching.Constants;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;

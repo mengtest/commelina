@@ -3,7 +3,7 @@ package com.commelina.math24.play.match;
 import akka.actor.ActorRef;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.cluster.nodes.AbstractBackendActor;
+import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.math24.play.match.mode.GlobalMatch;

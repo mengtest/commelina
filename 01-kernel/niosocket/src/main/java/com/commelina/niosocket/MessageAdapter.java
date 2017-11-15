@@ -4,7 +4,6 @@ import com.commelina.niosocket.message.BroadcastMessage;
 import com.commelina.niosocket.message.NotifyMessage;
 import com.commelina.niosocket.message.WorldMessage;
 import com.commelina.niosocket.proto.SocketMessage;
-import com.google.protobuf.Internal;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendNotify(Internal.EnumLite domain, NotifyMessage message) {
+    public static boolean sendNotify(int domain, NotifyMessage message) {
         SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {
@@ -47,7 +46,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendBroadcast(Internal.EnumLite domain, BroadcastMessage message) {
+    public static boolean sendBroadcast(int domain, BroadcastMessage message) {
 
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
@@ -71,7 +70,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendWorld(Internal.EnumLite domain, WorldMessage message) {
+    public static boolean sendWorld(int domain, WorldMessage message) {
         final SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER
                 .createPushMessage(domain, message.getOpcode(), message.getMessage());
         if (msg == null) {

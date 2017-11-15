@@ -16,13 +16,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     private final Logger LOGGER = LoggerFactory.getLogger(NettyNioSocketServer.class);
 
-    private RequestRouterHandler requestRouterHandlerImpl;
-
-    /**
-     * 给出一个空的 member event 实现
-     */
-    private MemberEventHandler memberEventHandler = new MemberEventHandler() {
-    };
+    private SocketEventHandler socketEventHandler;
 
     /**
      * 当客户端连上服务器的时候会触发此函数
@@ -36,7 +30,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("client:{}, login server: {}", ctx.channel().id(), result);
         }
-        memberEventHandler.onOnline(ctx);
+        socketEventHandler.onOnline(ctx);
     }
 
     /**
@@ -51,7 +45,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
         }
-        memberEventHandler.onOffline(logoutUserId, ctx);
+        socketEventHandler.onOffline(ctx, logoutUserId);
     }
 
     /**
@@ -72,7 +66,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
         } else {
             try {
-                requestRouterHandlerImpl.onRequest(ctx, ask);
+                socketEventHandler.onRequest(ctx, ask);
             } catch (Throwable throwable) {
                 ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
                 exceptionCaught(ctx, throwable);
@@ -83,7 +77,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     // 调用异常的处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        memberEventHandler.onException(ctx, cause);
+        socketEventHandler.onException(ctx, cause);
     }
 
 //    @Override
@@ -94,7 +88,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 //                // 发现连接是闲置状态就关闭它
 //                final long logoutUserId = NettyServerContext.INSTANCE.channelInactive(ctx.channel());
 //                LOGGER.info("Idle client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
-//                memberEventHandler.onOffline(logoutUserId, ctx);
+//                socketEventHandler.onOffline(logoutUserId, ctx);
 //                ctx.close();
 //                // throw new Exception("idle exception");
 //            }
@@ -103,11 +97,8 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 //        }
 //    }
 
-    void setHandlers(RequestRouterHandler requestRouterHandlerImpl, MemberEventHandler memberEventHandler) {
-        this.requestRouterHandlerImpl = requestRouterHandlerImpl;
-        if (memberEventHandler != null) {
-            this.memberEventHandler = memberEventHandler;
-        }
+    void setHandlers(SocketEventHandler socketEventHandler) {
+        this.socketEventHandler = socketEventHandler;
     }
 
 }

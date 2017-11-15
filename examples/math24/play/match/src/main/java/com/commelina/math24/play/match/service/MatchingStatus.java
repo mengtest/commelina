@@ -4,7 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.cluster.nodes.ClusterChildNodeSystem;
+import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.core.DefaultMessageProvider;
 import com.commelina.math24.play.match.proto.OPCODE;
 import scala.concurrent.duration.Duration;

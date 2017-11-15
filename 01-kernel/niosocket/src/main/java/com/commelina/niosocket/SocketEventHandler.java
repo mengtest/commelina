@@ -1,5 +1,6 @@
 package com.commelina.niosocket;
 
+import com.commelina.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -8,7 +9,15 @@ import io.netty.channel.ChannelHandlerContext;
  * @author @panyao
  * @date 2017/8/28
  */
-public interface MemberEventHandler {
+public interface SocketEventHandler {
+
+    /**
+     * 路由上下文，当有消息来触发，用来分发消息
+     *
+     * @param ctx
+     * @param ask
+     */
+    void onRequest(ChannelHandlerContext ctx, SocketASK ask);
 
     /**
      * 用户上线
@@ -22,10 +31,10 @@ public interface MemberEventHandler {
     /**
      * 用户离线
      *
-     * @param logoutUserId
      * @param ctx
+     * @param logoutUserId
      */
-    default void onOffline(long logoutUserId, ChannelHandlerContext ctx) {
+    default void onOffline(ChannelHandlerContext ctx, long logoutUserId) {
 
     }
 

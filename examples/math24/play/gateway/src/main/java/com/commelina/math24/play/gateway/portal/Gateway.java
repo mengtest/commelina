@@ -9,7 +9,6 @@ import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.gateway.proto.ERROR_CODE;
 import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ContextAdapter;
-import com.commelina.niosocket.NioSocketRouter;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.proto.SocketASK;
 import com.google.protobuf.Internal;

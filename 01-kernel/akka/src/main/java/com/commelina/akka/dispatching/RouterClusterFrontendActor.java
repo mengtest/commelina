@@ -1,4 +1,4 @@
-package com.commelina.akka.cluster;
+package com.commelina.akka.dispatching;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -11,7 +11,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
 import com.commelina.akka.Rewrite;
-import com.commelina.akka.cluster.nodes.ClusterChildNodeSystem;
+import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.*;
 import com.commelina.niosocket.MessageAdapter;
 import com.commelina.niosocket.message.BroadcastMessage;
@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
  * @author @panyao
  * @date 2017/9/25
  */
-public class RouterFrontedClusterActor extends AbstractActor implements Rewrite {
+public class RouterClusterFrontendActor extends AbstractActor implements Rewrite {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
@@ -37,7 +37,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
 
     private Cluster cluster = Cluster.get(getContext().system());
 
-    public RouterFrontedClusterActor(Internal.EnumLite myRouterId) {
+    public RouterClusterFrontendActor(Internal.EnumLite myRouterId) {
         this.myRouterId = myRouterId;
     }
 
@@ -59,7 +59,7 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                 // 客户端请求
                 .match(ApiRequest.class, r -> {
                     // 重定向到远程的 seed nodes 上，它自己再做 dispatching
-                    ActorRef target = clusterNodeRouters.get(selectActorSeed(r));
+                    ActorRef target = selectActor(r, clusterNodeRouters);
                     if (target != null) {
                         // 重定向到远程的 seed nodes 上，它自己再做 dispatching
                         target.forward(r, getContext());
@@ -68,38 +68,34 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
                     }
                 })
                 // from cluster seed nodes.
-                .match(ActorNotify.class, n -> MessageAdapter.sendNotify(myRouterId, NotifyMessage.newMessage(
+                .match(ActorNotify.class, n -> MessageAdapter.sendNotify(myRouterId.getNumber(), NotifyMessage.newMessage(
                         n.getOpcode(),
                         n.getUserId(),
                         () -> n.getMessage().toByteArray()
                 )))
-                .match(ActorBroadcast.class, b -> MessageAdapter.sendBroadcast(myRouterId, BroadcastMessage.newBroadcast(
+                .match(ActorBroadcast.class, b -> MessageAdapter.sendBroadcast(myRouterId.getNumber(), BroadcastMessage.newBroadcast(
                         b.getOpcode(), b.getUserIdsList(), () -> b.getMessage().toByteArray()
                 )))
-                .match(ActorWorld.class, w -> MessageAdapter.sendWorld(myRouterId, WorldMessage.newMessage(
+                .match(ActorWorld.class, w -> MessageAdapter.sendWorld(myRouterId.getNumber(), WorldMessage.newMessage(
                         w.getOpcode(), () -> w.getMessage().toByteArray())))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
-                    AkkaMultiWorkerSystem targetSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(rf.getForward());
-                    if (targetSystem != null) {
-                        // 重定向到远程的 seed nodes 上，它自己再做 dispatching
-                        ActorRef target = clusterNodeRouters.get(selectActorSeed(rf));
-                        if (target != null) {
-                            // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
-                            // 向远程 发起 ask 请求
-                            CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
-                                    .toCompletableFuture();
+                    // eg: gateway -> room
+                    // 重定向到远程的 seed nodes 上，它自己再做 dispatching
+                    ActorRef target = selectActor(rf, clusterNodeRouters);
+                    if (target != null) {
+                        // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
+                        // 向远程 发起 ask 请求
+                        CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
+                                .toCompletableFuture();
 
-                            // ask with pipe
-                            CompletableFuture<ActorResponse> transformed = CompletableFuture
-                                    .allOf(askFuture)
-                                    .thenApply(v -> (ActorResponse) askFuture.join());
+                        // ask with pipe
+                        CompletableFuture<ActorResponse> transformed = CompletableFuture
+                                .allOf(askFuture)
+                                .thenApply(v -> (ActorResponse) askFuture.join());
 
-                            // ask with pipe to sender.
-                            PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender(), getSelf());
-                        } else {
-                            unhandled(rf);
-                        }
+                        // ask with pipe to sender.
+                        PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender(), getSelf());
                     } else {
                         unhandled(rf);
                     }
@@ -124,13 +120,13 @@ public class RouterFrontedClusterActor extends AbstractActor implements Rewrite 
     }
 
     @Override
-    public int selectActorSeed(ApiRequest ask) {
-        return clusterNodeRouters.keySet().iterator().next();
+    public ActorRef selectActor(ApiRequest ask, BiMap<Integer, ActorRef> clusterNodeRouters) {
+        return clusterNodeRouters.values().iterator().next();
     }
 
     @Override
-    public int selectActorSeed(ApiRequestForward forward) {
-        return clusterNodeRouters.keySet().iterator().next();
+    public ActorRef selectActor(ApiRequestForward forward, BiMap<Integer, ActorRef> clusterNodeRouters) {
+        return clusterNodeRouters.values().iterator().next();
     }
 
     void register(Member member) {

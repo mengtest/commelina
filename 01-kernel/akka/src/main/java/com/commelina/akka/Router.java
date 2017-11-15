@@ -6,6 +6,7 @@ import com.google.protobuf.Internal;
  * @author @panyao
  * @date 2017/9/25
  */
+@Deprecated
 public interface Router {
 
     /**

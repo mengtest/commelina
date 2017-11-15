@@ -1,6 +1,6 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.niosocket.MemberEventHandler;
+import com.commelina.niosocket.SocketEventHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @date 2017/9/22
  */
 @Component
-public class EventHandler implements MemberEventHandler {
+public class EventHandler implements SocketEventHandler {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

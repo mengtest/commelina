@@ -1,7 +1,7 @@
 package com.commelina.math24.play.gateway.portal;
 
 import com.commelina.akka.DefaultClusterActorRequestHandler;
-import com.commelina.akka.cluster.RouterFrontedClusterActor;
+import com.commelina.akka.dispatching.RouterClusterFrontendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.BusinessMessage;
@@ -69,20 +69,20 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         return DOMAIN.GAME_ROOM;
     }
 
-    public static class RoomRouterFrontedClusterActor extends RouterFrontedClusterActor {
+    public static class RoomRouterClusterFrontendActor extends RouterClusterFrontendActor {
 
-        public RoomRouterFrontedClusterActor(Internal.EnumLite myRouterId) {
+        public RoomRouterClusterFrontendActor(Internal.EnumLite myRouterId) {
             super(myRouterId);
         }
 
         @Override
-        public int selectActorSeed(ApiRequest request) {
+        public int selectActor(ApiRequest request) {
             return (int) (Long.valueOf(request.getArgs(0).toStringUtf8()) % 2);
         }
 
         @Override
-        public int selectActorSeed(ApiRequestForward forward) {
-            return super.selectActorSeed(forward);
+        public int selectActor(ApiRequestForward forward) {
+            return super.selectActor(forward);
         }
 
     }

@@ -31,9 +31,8 @@ public final class BootstrapNioSocket implements ApplicationContextAware {
     @PostConstruct
     public void initServer() throws IOException {
         server = new NettyNioSocketServer();
-        RequestRouterHandler requestRouterHandler = context.getBean(RequestRouterHandler.class);
-        MemberEventHandler memberEventHandler = context.getBean(MemberEventHandler.class);
-        server.bindAndStart(host, port, requestRouterHandler, memberEventHandler);
+        SocketEventHandler socketEventHandler = context.getBean(SocketEventHandler.class);
+        server.bindAndStart(host, port, socketEventHandler);
     }
 
     @PreDestroy

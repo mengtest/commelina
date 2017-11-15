@@ -3,7 +3,7 @@ package com.commelina.math24.play.gateway.service;
 import akka.japi.pf.ReceiveBuilder;
 import com.commelina.akka.ActorServiceHandler;
 import com.commelina.akka.LocalServiceHandler;
-import com.commelina.akka.cluster.AkkaMultiWorkerSystem;
+import com.commelina.akka.dispatching.AkkaMultiWorkerSystem;
 import com.commelina.akka.cluster.AkkaMultiWorkerSystemContext;
 import com.commelina.akka.local.AbstractLocalServiceActor;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
@@ -53,7 +53,7 @@ public class MemberStatusService implements LocalServiceHandler {
                             AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(domain.getNumber());
                             if (clusterSystem != null) {
                                 // 向远程发送下线通知
-                                clusterSystem.askRouterClusterNode(on);
+                                clusterSystem.askActor(on);
                             }
                         }
                     })
@@ -65,7 +65,7 @@ public class MemberStatusService implements LocalServiceHandler {
                             AkkaMultiWorkerSystem clusterSystem = AkkaMultiWorkerSystemContext.INSTANCE.getContext(domain.getNumber());
                             if (clusterSystem != null) {
                                 // 向远程发送下线通知
-                                clusterSystem.askRouterClusterNode(off);
+                                clusterSystem.askActor(off);
                             }
                         }
                         // 重置用户访问的 domain

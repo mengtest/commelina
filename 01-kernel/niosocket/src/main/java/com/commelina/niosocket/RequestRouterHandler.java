@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author @panyao
  * @date 2017/9/22
  */
+@Deprecated
 public interface RequestRouterHandler {
 
     /**

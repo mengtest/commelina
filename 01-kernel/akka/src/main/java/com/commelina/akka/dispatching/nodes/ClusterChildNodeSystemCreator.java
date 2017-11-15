@@ -1,4 +1,4 @@
-package com.commelina.akka.cluster.nodes;
+package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.Props;
 

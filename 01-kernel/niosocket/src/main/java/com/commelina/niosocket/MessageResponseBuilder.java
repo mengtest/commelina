@@ -2,7 +2,6 @@ package com.commelina.niosocket;
 
 import com.commelina.core.MessageBody;
 import com.commelina.niosocket.proto.SocketMessage;
-import com.google.protobuf.Internal;
 
 /**
  * @author @panyao
@@ -18,7 +17,7 @@ interface MessageResponseBuilder {
      * @param messageBody
      * @return
      */
-    SocketMessage createPushMessage(Internal.EnumLite domain, int opcode, MessageBody messageBody);
+    SocketMessage createPushMessage(int domain, int opcode, MessageBody messageBody);
 
     /**
      * 创建 response 的消息体
@@ -28,6 +27,6 @@ interface MessageResponseBuilder {
      * @param messageBody
      * @return
      */
-    SocketMessage createResponseMessage(Internal.EnumLite domain, int opcode, MessageBody messageBody);
+    SocketMessage createResponseMessage(int domain, int opcode, MessageBody messageBody);
 
 }

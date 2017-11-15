@@ -38,8 +38,6 @@ enum SERVER_CODE {
     RESONSE_CODE = 1;
     // 通知
     NOTIFY_CODE = 2;
-    // 要调用的 api 不存在
-    RPC_API_NOT_FOUND = 4;
     // 服务端内部错误
-    SERVER_ERROR = 5;
+    SERVER_ERROR = 3;
 }

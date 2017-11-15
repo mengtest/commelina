@@ -1,4 +1,4 @@
-package com.commelina.akka.cluster;
+package com.commelina.akka.dispatching;
 
 /**
  * @author panyao

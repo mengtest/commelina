@@ -1,6 +1,6 @@
 package com.commelina.math24.play.match;
 
-import com.commelina.akka.cluster.nodes.ClusterChildNodeSystemCreator;
+import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystemCreator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

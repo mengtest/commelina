@@ -1,7 +1,9 @@
 package com.commelina.akka;
 
+import akka.actor.ActorRef;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
+import com.google.common.collect.BiMap;
 
 /**
  * @author @panyao
@@ -15,7 +17,7 @@ public interface Rewrite {
      * @param ask
      * @return
      */
-    int selectActorSeed(ApiRequest ask);
+    ActorRef selectActor(ApiRequest ask, BiMap<Integer, ActorRef> clusterNodeRouters);
 
     /**
      * server 重定向请求进行集群分发
@@ -23,6 +25,6 @@ public interface Rewrite {
      * @param forward
      * @return
      */
-    int selectActorSeed(ApiRequestForward forward);
+    ActorRef selectActor(ApiRequestForward forward, BiMap<Integer, ActorRef> clusterNodeRouters);
 
 }
