@@ -29,7 +29,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setMsg(message.getBody())
+                .setBody(message.getBody())
                 .build();
 
         Channel channel = NettyServerContext.INSTANCE.getUserChannel(message.getUserId());
@@ -51,7 +51,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setMsg(message.getBody())
+                .setBody(message.getBody())
                 .build();
 
         for (Long userId : message.getUserIds()) {
@@ -74,7 +74,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setMsg(message.getBody())
+                .setBody(message.getBody())
                 .build();
 
         for (Long userId : NettyServerContext.INSTANCE.LOGIN_USERS.values()) {

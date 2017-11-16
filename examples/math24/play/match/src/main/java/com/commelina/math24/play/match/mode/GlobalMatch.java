@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
-import com.commelina.core.DefaultMessageProvider;
+import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 import com.commelina.math24.play.match.proto.JoinMatch;
 import com.google.common.collect.Lists;
 
@@ -54,7 +54,7 @@ public class GlobalMatch extends AbstractServiceActor {
         matchList.add(joinMatch.getUserId());
 
         // 回复客户端成功
-        response(DefaultMessageProvider.produceEmptyMessage());
+//        response(DefaultMessageProvider.produceEmptyMessage());
 
         checkMatchList();
     }
@@ -77,8 +77,8 @@ public class GlobalMatch extends AbstractServiceActor {
         }
     }
 
-    public static Props props(int successPeople, ActorRef roomMangerActor) {
-        return Props.create(GlobalMatch.class, successPeople, roomMangerActor);
+    public static Props props(int successPeople, ClusterBackendActorSystem actorSystem) {
+        return Props.create(GlobalMatch.class, successPeople, actorSystem);
     }
 
 }

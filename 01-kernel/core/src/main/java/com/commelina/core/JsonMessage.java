@@ -1,8 +1,7 @@
 package com.commelina.core;
 
 import com.commelina.utils.Generator;
-
-import java.io.IOException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * json 消息实现
@@ -20,8 +19,13 @@ final class JsonMessage implements MessageBody {
     }
 
     @Override
-    public byte[] getBytes() throws IOException {
-        return Generator.getJsonHolder().writeValueAsBytes(message);
+    public byte[] getBytes() {
+        try {
+            Generator.getJsonHolder().writeValueAsBytes(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

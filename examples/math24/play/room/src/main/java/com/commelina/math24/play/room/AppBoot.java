@@ -1,6 +1,6 @@
 package com.commelina.math24.play.room;
 
-import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystemCreator;
+import com.commelina.akka.dispatching.ClusterActorSystemCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -32,10 +32,7 @@ public class AppBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(
-                RoomPortal.class,
-                "ClusterRoomSystem",
-                "cluster-room");
+        ClusterActorSystemCreator.createAsClusterBackend("ClusterRoomSystem", "cluster-room", RoomPortal.class);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.commelina.math24.play.match;
 
-import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystemCreator;
+import com.commelina.akka.dispatching.ClusterActorSystemCreator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 
 /**
- *
  * @author @panyao
  * @date 2017/8/29
  */
@@ -23,7 +22,7 @@ public class AppBoot {
 
     @PostConstruct
     public void init() {
-        ClusterChildNodeSystemCreator.create(MatchPortal.class, "ClusterMatchingSystem", "cluster-match");
+        ClusterActorSystemCreator.createAsClusterBackend("ClusterMatchingSystem", "cluster-match", MatchPortal.class);
     }
 
 }

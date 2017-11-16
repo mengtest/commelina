@@ -4,11 +4,9 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
-import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
-import com.commelina.core.BusinessMessage;
 import com.commelina.math24.play.room.entity.PlayerEntity;
 import com.commelina.math24.play.room.entity.PlayerStatus;
 import com.commelina.math24.play.room.message.NotifyJoinRoom;
@@ -77,12 +75,12 @@ public class RoomContext extends AbstractServiceActor {
         room.setRoomId(roomId);
         room.setOverMicrosecond(System.currentTimeMillis() + finiteDuration.toMillis());
 
-        ClusterChildNodeSystem.INSTANCE.broadcast(
-                0,
-//                OPCODE.JOIN_ROOM_VALUE,
-                players.keySet(),
-                BusinessMessage.success(room)
-        );
+//        ClusterChildNodeSystem.INSTANCE.broadcast(
+//                0,
+////                OPCODE.JOIN_ROOM_VALUE,
+//                players.keySet(),
+//                BusinessMessage.success(room)
+//        );
         ActorSystem system = getContext().getSystem();
         // 十秒之后
         players.keySet().forEach(u -> system.scheduler().scheduleOnce(finiteDuration, () -> {

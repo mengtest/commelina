@@ -25,6 +25,12 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
+    private final ClusterBackendActorSystem backendActorSystem;
+
+    public AbstractBackendActor(ClusterBackendActorSystem backendActorSystem) {
+        this.backendActorSystem = backendActorSystem;
+    }
+
     //subscribe to cluster changes, MemberUp
     @Override
     public void preStart() {
@@ -79,28 +85,32 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         // nothing to do
     }
 
-    protected void response(ActorResponse message) {
-        getSender().tell(message, getSelf());
-    }
-
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
             logger.info("Frontend port:{} , nodes register.", member.address().port().get());
+            backendActorSystem.registerRouterFronted(member.address() + Constants.CLUSTER_FRONETEDN_PATH);
 //            getContext().watch(getSender());
-
         }
     }
 
     void remove(Member member) {
-//        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
-//            logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
-////            getContext().unwatch(getSender());
-////            frontendAddress = null;
-//        }
+        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
+            logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
+//            getContext().unwatch(getSender());
+            backendActorSystem.removeRouterFronted();
+        }
     }
 
-    protected LoggingAdapter getLogger() {
+    protected void response(ActorResponse message) {
+        getSender().tell(message, getSelf());
+    }
+
+    protected LoggingAdapter logger() {
         return logger;
+    }
+
+    protected ClusterBackendActorSystem backendActorSystem() {
+        return backendActorSystem;
     }
 
 }

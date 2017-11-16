@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
+import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
@@ -54,6 +55,10 @@ public class RoomPortal extends AbstractBackendActor {
     private static final MessageBody ROOM_NOT_FOUND =
             DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
 
+    public RoomPortal(ClusterBackendActorSystem backendActorSystem) {
+        super(backendActorSystem);
+    }
+
     @Override
     public void onOnline(MemberOnlineEvent onlineEvent) {
 
@@ -90,17 +95,6 @@ public class RoomPortal extends AbstractBackendActor {
 
         roomContext.forward(offlineEvent, getContext());
     }
-//    @Override
-//    public void onOffline(long logoutUserId) {
-//        // 用户下线，标记为下线
-//        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Offline));
-//    }
-//
-//    @Override
-//    public void onOnline(long logoutUserId) {
-//        // 用户上线,标记为重新上线
-//        sendPlayerStatus(new PlayerStatusEvent(logoutUserId, PlayerStatus.Online));
-//    }
 
     /**
      * 当客户端有请求过来时触发

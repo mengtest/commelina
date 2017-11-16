@@ -20,12 +20,12 @@ public final class ReplyUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReplyUtils.class);
 
     /**
-     * 回复消息到客户端
+     * 通知消息
      *
      * @param channel
      * @param socketMessage
      */
-    private static void reply(Channel channel, SocketMessage socketMessage) {
+    static void reply(Channel channel, SocketMessage socketMessage) {
         ChannelFuture future = channel.writeAndFlush(socketMessage);
 
         if (future.isSuccess()) {
@@ -45,6 +45,16 @@ public final class ReplyUtils {
      * 回复消息到客户端
      *
      * @param channelHandlerContext
+     * @param socketMessage
+     */
+    public static void reply(ChannelHandlerContext channelHandlerContext, SocketMessage socketMessage) {
+        reply(channelHandlerContext.channel(), socketMessage);
+    }
+
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
      * @param domain
      * @param opcode
      * @param message
@@ -53,13 +63,12 @@ public final class ReplyUtils {
                              int domain,
                              int opcode,
                              ByteString message) {
-        final SocketMessage msg = SocketMessage.newBuilder()
+        reply(channelHandlerContext.channel(), SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.RESONSE_CODE)
                 .setDomain(domain)
                 .setOpcode(opcode)
-                .setMsg(message)
-                .build();
-        reply(channelHandlerContext.channel(), msg);
+                .setBody(message)
+                .build());
     }
 
     /**
@@ -72,12 +81,11 @@ public final class ReplyUtils {
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              int domain,
                              int opcode) {
-        final SocketMessage msg = SocketMessage.newBuilder()
+        reply(channelHandlerContext, SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.RESONSE_CODE)
                 .setDomain(domain)
                 .setOpcode(opcode)
-                .build();
-        reply(channelHandlerContext.channel(), msg);
+                .build());
     }
 
 }

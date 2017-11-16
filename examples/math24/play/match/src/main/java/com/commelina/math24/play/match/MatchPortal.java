@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
+import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.math24.play.match.mode.GlobalMatch;
@@ -11,7 +12,6 @@ import com.commelina.math24.play.match.proto.CancelMatch;
 import com.commelina.math24.play.match.proto.JoinMatch;
 import com.commelina.math24.play.match.proto.MATCH_METHODS;
 import com.commelina.math24.play.match.proto.MATCH_MODE;
-import com.commelina.math24.play.match.room.RoomManger;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
 
@@ -31,14 +31,20 @@ public class MatchPortal extends AbstractBackendActor {
     private final Map<Long, MATCH_MODE> userLastAccessMode = Maps.newHashMap();
 
     /**
-     * 房间管理器
-     */
-    private ActorRef roomManger = getContext().getSystem().actorOf(RoomManger.props());
-
-    /**
      * 10 人局游戏
      */
-    private ActorRef globalMatchActorRef = getContext().getSystem().actorOf(GlobalMatch.props(10, roomManger));
+    private ActorRef globalMatchActorRef;
+
+    public MatchPortal(ClusterBackendActorSystem backendActorSystem) {
+        super(backendActorSystem);
+    }
+
+    @Override
+    public void preStart() {
+        super.preStart();
+        //
+        getContext().getSystem().actorOf(GlobalMatch.props(10, backendActorSystem()));
+    }
 
     @Override
     public void onOffline(MemberOfflineEvent offlineEvent) {
@@ -49,7 +55,7 @@ public class MatchPortal extends AbstractBackendActor {
             userLastAccessMode.remove(offlineEvent.getLogoutUserId());
         } else {
             // 没在匹配里，就在临时房间里
-            roomManger.tell(null, null);
+//            roomManger.tell(null, null);
         }
         // 用户下线，取消匹配
         // match.forward(new Matching.CancelMatch(logoutUserId, () -> 0), getContext());
@@ -73,7 +79,7 @@ public class MatchPortal extends AbstractBackendActor {
                 break;
             // 加入临时房间
             case MATCH_METHODS.JOIN_TEMPORARY_ROOM_VALUE:
-                roomManger.forward(request, getContext());
+//                roomManger.forward(request, getContext());
                 break;
             default:
                 unhandled(request);

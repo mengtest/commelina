@@ -33,6 +33,15 @@ public class RoomManger extends AbstractActor {
 
         roomList.put(currentLastRoomId++, temporary);
 
+//        ApiRequestForward.Builder builder = ApiRequestForward.newBuilder()
+//                .setForward(DOMAIN.GAME_ROOM_VALUE)
+//                .setOpcode(MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE)
+//                .setVersion("1.0.0");
+//
+//        for (Long userId : userIds) {
+//            builder.addArgs(ByteString.copyFromUtf8(userId.toString()));
+//        }
+
 //        temporary.tell(CreateRoom.getDefaultInstance(), getSelf());
     }
 

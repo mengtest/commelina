@@ -8,5 +8,6 @@ public interface Constants {
 
     String CLUSTER_FRONTEND = "frontend";
     String CLUSTER_BACKEND = "backend";
+    String CLUSTER_FRONETEDN_PATH = "/user/" + CLUSTER_FRONTEND;
 
 }

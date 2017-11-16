@@ -4,9 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
-import com.commelina.core.DefaultMessageProvider;
-import com.commelina.math24.play.match.proto.OPCODE;
+import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 
 import java.util.List;
 
@@ -17,6 +15,12 @@ import java.util.List;
 public class GlobalMatchStatus extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+
+    private final ClusterBackendActorSystem backendActorSystem;
+
+    public GlobalMatchStatus(ClusterBackendActorSystem backendActorSystem) {
+        this.backendActorSystem = backendActorSystem;
+    }
 
     @Override
     public Receive createReceive() {
@@ -29,11 +33,11 @@ public class GlobalMatchStatus extends AbstractActor {
         log.info("Broadcast match status people: " + userIds.size());
 
         // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-        ClusterChildNodeSystem.INSTANCE.broadcast(
-                OPCODE.NOTIFY_MATCH_SUCCESS_VALUE,
-                userIds,
-                DefaultMessageProvider.produceMessageForKV("matchUserCount", userIds.size()));
-
+//        ClusterChildNodeSystem.INSTANCE.broadcast(
+//                OPCODE.NOTIFY_MATCH_SUCCESS_VALUE,
+//                userIds,
+//                DefaultMessageProvider.produceMessageForKV("matchUserCount", userIds.size()));
+//
         // 关闭此 actor
         getContext().stop(getSelf());
     }

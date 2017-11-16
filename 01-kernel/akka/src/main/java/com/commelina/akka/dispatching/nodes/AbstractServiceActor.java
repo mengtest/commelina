@@ -14,7 +14,7 @@ public abstract class AbstractServiceActor extends AbstractActor {
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
     protected final void response(ActorResponse message) {
-        // 使用 此方法，必须是有 actor.forward 从定向过来的 ask
+        // 使用 此方法，必须是有 actor.forward 从定向过来的 askForBackend
         // 回复到 on request 的发送者那里
         getSender().tell(message, getSelf());
     }

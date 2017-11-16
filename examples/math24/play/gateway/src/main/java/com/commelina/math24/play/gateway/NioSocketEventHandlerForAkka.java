@@ -1,10 +1,9 @@
 package com.commelina.math24.play.gateway;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.commelina.akka.dispatching.ClusterActorSystemCreator;
+import com.commelina.akka.dispatching.ClusterFrontendActorSystem;
 import com.commelina.akka.dispatching.proto.ActorResponse;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.math24.common.proto.DOMAIN;
@@ -16,7 +15,6 @@ import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 import scala.concurrent.duration.Duration;
 
-import java.security.InvalidParameterException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
     private static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+
     private Dispatching dispatching = new Dispatching();
 
     @Override
@@ -41,8 +40,11 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
             case DOMAIN.GATEWAY_VALUE:
                 dispatching.requestGateway(ctx, request);
                 break;
+            case DOMAIN.MATCHING_VALUE:
+                dispatching.requestMatch(ctx, request);
+                break;
             default:
-                throw new InvalidParameterException("Undefined type" + ask.getForward());
+                ReplyUtils.reply(ctx, StaticProtoBuffMessage.DOMAIN_NOT_FOUND);
         }
 
     }
@@ -64,24 +66,14 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
     private static class Dispatching {
         final ActorSystem gateway;
-        final ActorSystem match;
-        final ActorRef matchFrontend;
-        final ActorSystem room;
-        final ActorRef roomFrontend;
 
-        {
+        final ClusterFrontendActorSystem match;
+        final ClusterFrontendActorSystem room;
+
+        public Dispatching() {
             gateway = ClusterActorSystemCreator.create("gateway", "gateway");
-
-            ClusterActorSystemCreator.ClusterSystem system =
-                    ClusterActorSystemCreator.createAsClusterFrontend("ClusterMatchingSystem", "cluster-requestGateway-match");
-            match = system.getActorSystem();
-            matchFrontend = system.getFrontend();
-
-            ClusterActorSystemCreator.ClusterSystem roomSystem =
-                    ClusterActorSystemCreator.createAsClusterFrontend("ClusterRoomSystem", "cluster-requestGateway-room");
-
-            room = roomSystem.getActorSystem();
-            roomFrontend = roomSystem.getFrontend();
+            match = ClusterActorSystemCreator.createAsClusterFrontend("ClusterMatchingSystem", "cluster-requestGateway-match");
+            room = ClusterActorSystemCreator.createAsClusterFrontend("ClusterRoomSystem", "cluster-requestGateway-room");
         }
 
         public void requestGateway(ChannelHandlerContext ctx, ApiRequest request) {
@@ -92,15 +84,11 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
                 default:
             }
 
-//            ReplyUtils.reply(ctx, ask.getForward(), ask.getOpcode(), body)
+//            ReplyUtils.reply(ctx, askForBackend.getForward(), askForBackend.getOpcode(), body)
         }
 
         public void requestMatch(ChannelHandlerContext ctx, ApiRequest request) {
-
-            ActorResponse response = (ActorResponse) PatternsCS.ask(matchFrontend, request, DEFAULT_TIMEOUT)
-                    .toCompletableFuture()
-                    .join();
-
+            ActorResponse response = match.askForBackend(request);
             ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
         }
 
@@ -120,7 +108,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 //            //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
 //
 //            long userId = Long.valueOf(tokenArg.toStringUtf8());
-////            getLogger().info("userId:{}, 登录成功", userId);
+////            logger().info("userId:{}, 登录成功", userId);
         }
 
     }

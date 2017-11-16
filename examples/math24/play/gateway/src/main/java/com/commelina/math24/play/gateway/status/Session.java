@@ -1,4 +1,4 @@
-package com.commelina.math24.play.gateway.service;
+package com.commelina.math24.play.gateway.status;
 
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;

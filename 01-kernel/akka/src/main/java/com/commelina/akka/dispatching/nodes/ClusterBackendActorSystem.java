@@ -1,6 +1,7 @@
 package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
@@ -8,6 +9,8 @@ import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.niosocket.message.BroadcastMessage;
 import com.commelina.niosocket.message.NotifyMessage;
 import com.commelina.niosocket.message.WorldMessage;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 /**
  * @author @panyao
@@ -15,17 +18,16 @@ import com.commelina.niosocket.message.WorldMessage;
  */
 public class ClusterBackendActorSystem {
 
-    public static final ClusterBackendActorSystem INSTANCE = new ClusterBackendActorSystem(null);
+    private String frontendPath;
 
-//    private final Logger logger = LoggerFactory.getLogger(ClusterChildNodeSystem.class);
+    private final ActorSystem system;
 
-    private ActorRef clusterRouterFrontend;
-
-    private ActorSystem system;
-
+    private final ActorRef backendFrontend;
     public final Timeout timeout;
 
-    public ClusterBackendActorSystem(Timeout timeout) {
+    public ClusterBackendActorSystem(ActorSystem system, ActorRef backendFrontend, Timeout timeout) {
+        this.system = system;
+        this.backendFrontend = backendFrontend;
         this.timeout = timeout;
     }
 
@@ -34,7 +36,7 @@ public class ClusterBackendActorSystem {
     }
 
     public Object askForward(ApiRequestForward requestForward, Timeout timeout) {
-        return PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture().join();
+        return PatternsCS.ask(getFrontendActor(), requestForward, timeout).toCompletableFuture().join();
     }
 
     public Object broadcast(BroadcastMessage messageBody) {
@@ -42,7 +44,7 @@ public class ClusterBackendActorSystem {
     }
 
     public Object broadcast(BroadcastMessage message, Timeout timeout) {
-        return PatternsCS.ask(clusterRouterFrontend, message, timeout).toCompletableFuture().join();
+        return PatternsCS.ask(getFrontendActor(), message, timeout).toCompletableFuture().join();
     }
 
     public Object notify(NotifyMessage messageBody) {
@@ -50,7 +52,7 @@ public class ClusterBackendActorSystem {
     }
 
     public Object notify(NotifyMessage messageBody, Timeout timeout) {
-        return PatternsCS.ask(clusterRouterFrontend, messageBody, timeout).toCompletableFuture().join();
+        return PatternsCS.ask(getFrontendActor(), messageBody, timeout).toCompletableFuture().join();
     }
 
     public Object world(WorldMessage messageBody) {
@@ -58,11 +60,30 @@ public class ClusterBackendActorSystem {
     }
 
     public Object world(WorldMessage messageBody, Timeout timeout) {
-        return PatternsCS.ask(clusterRouterFrontend, messageBody, timeout).toCompletableFuture().join();
+        return PatternsCS.ask(getFrontendActor(), messageBody, timeout).toCompletableFuture().join();
     }
 
-    void registerRouterFronted(ActorRef routerFronted) {
-        clusterRouterFrontend = routerFronted;
+    public ActorSystem getActorSystem() {
+        return system;
     }
 
+    void registerRouterFronted(String routerFrontedPath) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(frontendPath));
+        frontendPath = routerFrontedPath;
+    }
+
+    void removeRouterFronted() {
+        frontendPath = null;
+    }
+
+    public ActorSelection getFrontendActor() {
+        if (Strings.isNullOrEmpty(frontendPath)) {
+            throw new ClusterFrontendException();
+        }
+        return system.actorSelection(frontendPath);
+    }
+
+    public ActorRef getBackendFrontend() {
+        return backendFrontend;
+    }
 }
