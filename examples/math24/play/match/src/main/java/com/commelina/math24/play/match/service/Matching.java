@@ -4,7 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.AbstractServiceActor;
+import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.core.DefaultMessageProvider;
 import com.google.common.collect.Lists;
 import com.google.protobuf.Internal;

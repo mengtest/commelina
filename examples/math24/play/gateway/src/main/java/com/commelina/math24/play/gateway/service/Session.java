@@ -1,11 +1,7 @@
 package com.commelina.math24.play.gateway.service;
 
-import com.commelina.akka.dispatching.AbstractServiceActor;
-import com.commelina.akka.dispatching.LoginUserEntity;
+import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
-import com.commelina.core.BusinessMessage;
-import com.commelina.core.DefaultMessageProvider;
-import com.commelina.math24.play.gateway.proto.ERROR_CODE;
 import com.google.protobuf.ByteString;
 
 /**
@@ -21,7 +17,7 @@ public class Session extends AbstractServiceActor {
                     ByteString tokenArg = r.getArgs(0);
                     if (tokenArg == null) {
                         // token 转换错误
-                        response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
+//                        response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
                         return;
                     }
 
@@ -33,7 +29,7 @@ public class Session extends AbstractServiceActor {
 
                     long userId = Long.valueOf(tokenArg.toStringUtf8());
                     getLogger().info("userId:{}, 登录成功", userId);
-                    getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceEmptyMessage()), getSelf());
+//                    getSender().tell(new LoginUserEntity(userId, DefaultMessageProvider.produceEmptyMessage()), getSelf());
                 })
                 .build();
     }

@@ -1,7 +1,7 @@
 package com.commelina.math24.play.gateway.portal;
 
 import com.commelina.akka.dispatching.DefaultClusterActorRequestHandler;
-import com.commelina.akka.dispatching.RouterClusterFrontendActor;
+import com.commelina.akka.dispatching.AbstractClusterFrontendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.core.BusinessMessage;
@@ -69,10 +69,10 @@ public class ProxyRoom extends DefaultClusterActorRequestHandler {
         return DOMAIN.GAME_ROOM;
     }
 
-    public static class RoomRouterClusterFrontendActor extends RouterClusterFrontendActor {
+    public static class RoomClusterFrontendActor extends AbstractClusterFrontendActor {
 
-        public RoomRouterClusterFrontendActor(Internal.EnumLite myRouterId) {
-            super(myRouterId);
+        public RoomClusterFrontendActor(Internal.EnumLite myRouterId) {
+            super(myRouterId, timeout);
         }
 
         @Override

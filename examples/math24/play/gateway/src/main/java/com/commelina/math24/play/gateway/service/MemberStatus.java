@@ -1,6 +1,6 @@
 package com.commelina.math24.play.gateway.service;
 
-import com.commelina.akka.dispatching.AbstractServiceActor;
+import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.common.proto.DOMAIN;

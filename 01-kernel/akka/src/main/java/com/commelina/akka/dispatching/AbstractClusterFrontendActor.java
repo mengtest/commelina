@@ -10,15 +10,10 @@ import akka.cluster.MemberStatus;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
-import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
+import akka.util.Timeout;
 import com.commelina.akka.dispatching.proto.*;
-import com.commelina.niosocket.MessageAdapter;
-import com.commelina.niosocket.message.BroadcastMessage;
-import com.commelina.niosocket.message.NotifyMessage;
-import com.commelina.niosocket.message.WorldMessage;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.protobuf.Internal;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -26,18 +21,21 @@ import java.util.concurrent.CompletableFuture;
  * @author @panyao
  * @date 2017/9/25
  */
-public class RouterClusterFrontendActor extends AbstractActor implements Rewrite {
+public abstract class AbstractClusterFrontendActor extends AbstractActor implements Rewrite, BackendEvent {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
     private final BiMap<Integer, ActorRef> clusterNodeRouters = HashBiMap.create(8);
 
-    private final Internal.EnumLite myRouterId;
+    private final int domain;
+
+    private final Timeout timeout;
 
     private Cluster cluster = Cluster.get(getContext().system());
 
-    public RouterClusterFrontendActor(Internal.EnumLite myRouterId) {
-        this.myRouterId = myRouterId;
+    public AbstractClusterFrontendActor(int domain, Timeout timeout) {
+        this.domain = domain;
+        this.timeout = timeout;
     }
 
     //subscribe to cluster changes, MemberUp
@@ -67,16 +65,9 @@ public class RouterClusterFrontendActor extends AbstractActor implements Rewrite
                     }
                 })
                 // from cluster seed nodes.
-                .match(ActorNotify.class, n -> MessageAdapter.sendNotify(myRouterId.getNumber(), NotifyMessage.newMessage(
-                        n.getOpcode(),
-                        n.getUserId(),
-                        n.getMessage()
-                )))
-                .match(ActorBroadcast.class, b -> MessageAdapter.sendBroadcast(myRouterId.getNumber(), BroadcastMessage.newBroadcast(
-                        b.getOpcode(), b.getUserIdsList(), b.getMessage()
-                )))
-                .match(ActorWorld.class, w -> MessageAdapter.sendWorld(myRouterId.getNumber(), WorldMessage.newMessage(
-                        w.getOpcode(), w.getMessage())))
+                .match(ActorNotify.class, this::event)
+                .match(ActorBroadcast.class, this::event)
+                .match(ActorWorld.class, this::event)
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
                     // eg: gateway -> room
@@ -85,7 +76,7 @@ public class RouterClusterFrontendActor extends AbstractActor implements Rewrite
                     if (target != null) {
                         // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
                         // 向远程 发起 ask 请求
-                        CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, ClusterChildNodeSystem.DEFAULT_TIMEOUT)
+                        CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, timeout)
                                 .toCompletableFuture();
 
                         // ask with pipe
@@ -144,6 +135,10 @@ public class RouterClusterFrontendActor extends AbstractActor implements Rewrite
             getContext().unwatch(sender());
             clusterNodeRouters.inverse().remove(getSender());
         }
+    }
+
+    protected int getDomain() {
+        return domain;
     }
 
 }

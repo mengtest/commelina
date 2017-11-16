@@ -38,7 +38,7 @@ public class GatewaySpringBoot{
 ////
 ////        // room 集群 handler
 ////        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem", "cluster-gateway-room")
-////                .registerRouter(ProxyRoom.RoomRouterClusterFrontendActor.class)
+////                .registerRouter(ProxyRoom.RoomClusterFrontendActor.class)
 ////                .building();
 //    }
 }

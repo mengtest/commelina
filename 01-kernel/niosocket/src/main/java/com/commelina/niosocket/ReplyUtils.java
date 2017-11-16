@@ -25,7 +25,7 @@ public final class ReplyUtils {
      * @param channel
      * @param socketMessage
      */
-    public static void reply(Channel channel, SocketMessage socketMessage) {
+    private static void reply(Channel channel, SocketMessage socketMessage) {
         ChannelFuture future = channel.writeAndFlush(socketMessage);
 
         if (future.isSuccess()) {

@@ -1,7 +1,7 @@
 package com.commelina.math24.play.room.context;
 
 import akka.actor.Props;
-import com.commelina.akka.dispatching.AbstractServiceActor;
+import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.math24.play.room.proto.Occupied;
 import com.commelina.math24.play.room.proto.Prepare;
 import com.commelina.math24.play.room.proto.Prepared;

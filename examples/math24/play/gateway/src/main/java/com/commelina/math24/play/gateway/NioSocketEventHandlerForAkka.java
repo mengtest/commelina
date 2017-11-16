@@ -4,16 +4,14 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
-import com.commelina.akka.dispatching.ActorSystemCreator;
+import com.commelina.akka.dispatching.ClusterActorSystemCreator;
 import com.commelina.akka.dispatching.proto.ActorResponse;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.SocketEventHandler;
-import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketASK;
-import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 import scala.concurrent.duration.Duration;
@@ -72,15 +70,15 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         final ActorRef roomFrontend;
 
         {
-            gateway = ActorSystemCreator.create("gateway", "gateway");
+            gateway = ClusterActorSystemCreator.create("gateway", "gateway");
 
-            ActorSystemCreator.ClusterSystem system =
-                    ActorSystemCreator.createAsCluster("ClusterMatchingSystem", "cluster-requestGateway-match");
+            ClusterActorSystemCreator.ClusterSystem system =
+                    ClusterActorSystemCreator.createAsClusterFrontend("ClusterMatchingSystem", "cluster-requestGateway-match");
             match = system.getActorSystem();
             matchFrontend = system.getFrontend();
 
-            ActorSystemCreator.ClusterSystem roomSystem =
-                    ActorSystemCreator.createAsCluster("ClusterRoomSystem", "cluster-requestGateway-room");
+            ClusterActorSystemCreator.ClusterSystem roomSystem =
+                    ClusterActorSystemCreator.createAsClusterFrontend("ClusterRoomSystem", "cluster-requestGateway-room");
 
             room = roomSystem.getActorSystem();
             roomFrontend = roomSystem.getFrontend();
@@ -98,18 +96,12 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         }
 
         public void requestMatch(ChannelHandlerContext ctx, ApiRequest request) {
+
             ActorResponse response = (ActorResponse) PatternsCS.ask(matchFrontend, request, DEFAULT_TIMEOUT)
                     .toCompletableFuture()
                     .join();
 
-            SocketMessage.newBuilder()
-                    .setCode(SERVER_CODE.RESONSE_CODE)
-                    .setDomain(DOMAIN.MATCHING_VALUE)
-                    .setOpcode(request.getOpcode())
-                    .setMsg(response.getMessage())
-                    .build();
-
-            ReplyUtils.reply(ctx, ask.getForward(), ask.getOpcode(), body)
+            ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
         }
 
         private void passortValid(ChannelHandlerContext ctx, ApiRequest request) {

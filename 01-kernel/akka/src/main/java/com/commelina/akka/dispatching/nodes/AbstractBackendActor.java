@@ -87,7 +87,7 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
             logger.info("Frontend port:{} , nodes register.", member.address().port().get());
 //            getContext().watch(getSender());
-            ClusterChildNodeSystem.INSTANCE.registerRouterFronted(getSender());
+
         }
     }
 

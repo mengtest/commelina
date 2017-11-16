@@ -15,6 +15,7 @@ public interface Rewrite {
      * 客户端请求进行集群负载
      *
      * @param ask
+     * @param clusterNodeRouters
      * @return
      */
     ActorRef selectActor(ApiRequest ask, BiMap<Integer, ActorRef> clusterNodeRouters);
@@ -23,6 +24,7 @@ public interface Rewrite {
      * server 重定向请求进行集群分发
      *
      * @param forward
+     * @param clusterNodeRouters
      * @return
      */
     ActorRef selectActor(ApiRequestForward forward, BiMap<Integer, ActorRef> clusterNodeRouters);

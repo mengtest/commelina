@@ -8,18 +8,14 @@ import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.niosocket.message.BroadcastMessage;
 import com.commelina.niosocket.message.NotifyMessage;
 import com.commelina.niosocket.message.WorldMessage;
-import com.typesafe.config.ConfigFactory;
-import scala.concurrent.duration.Duration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author @panyao
  * @date 2017/9/25
  */
-public class ClusterChildNodeSystem {
+public class ClusterBackendActorSystem {
 
-    public static final ClusterChildNodeSystem INSTANCE = new ClusterChildNodeSystem();
+    public static final ClusterBackendActorSystem INSTANCE = new ClusterBackendActorSystem(null);
 
 //    private final Logger logger = LoggerFactory.getLogger(ClusterChildNodeSystem.class);
 
@@ -27,10 +23,14 @@ public class ClusterChildNodeSystem {
 
     private ActorSystem system;
 
-    public static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    public final Timeout timeout;
+
+    public ClusterBackendActorSystem(Timeout timeout) {
+        this.timeout = timeout;
+    }
 
     public Object askForward(ApiRequestForward requestForward) {
-        return askForward(requestForward, DEFAULT_TIMEOUT);
+        return askForward(requestForward, timeout);
     }
 
     public Object askForward(ApiRequestForward requestForward, Timeout timeout) {
@@ -38,7 +38,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Object broadcast(BroadcastMessage messageBody) {
-        return broadcast(messageBody, DEFAULT_TIMEOUT);
+        return broadcast(messageBody, timeout);
     }
 
     public Object broadcast(BroadcastMessage message, Timeout timeout) {
@@ -46,7 +46,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Object notify(NotifyMessage messageBody) {
-        return notify(messageBody, DEFAULT_TIMEOUT);
+        return notify(messageBody, timeout);
     }
 
     public Object notify(NotifyMessage messageBody, Timeout timeout) {
@@ -54,7 +54,7 @@ public class ClusterChildNodeSystem {
     }
 
     public Object world(WorldMessage messageBody) {
-        return world(messageBody, DEFAULT_TIMEOUT);
+        return world(messageBody, timeout);
     }
 
     public Object world(WorldMessage messageBody, Timeout timeout) {
@@ -63,11 +63,6 @@ public class ClusterChildNodeSystem {
 
     void registerRouterFronted(ActorRef routerFronted) {
         clusterRouterFrontend = routerFronted;
-    }
-
-    void create(String clusterName, String config) {
-        system = ActorSystem.create(clusterName, ConfigFactory.load(config)
-                .withFallback(ConfigFactory.load("default-message-bindings")));
     }
 
 }

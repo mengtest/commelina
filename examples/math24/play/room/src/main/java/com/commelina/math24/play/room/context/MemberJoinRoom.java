@@ -1,6 +1,6 @@
 package com.commelina.math24.play.room.context;
 
-import com.commelina.akka.dispatching.AbstractServiceActor;
+import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 
 /**
  * 用户加入房间
