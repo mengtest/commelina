@@ -44,6 +44,9 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
             case DOMAIN.MATCHING_VALUE:
                 dispatching.requestMatch(ctx, request);
                 break;
+            case DOMAIN.GAME_ROOM_VALUE:
+                dispatching.requestRoom(ctx, request);
+                break;
             default:
                 ReplyUtils.reply(ctx, ask.getForward(), ask.getOpcode(), ERROR_CODE.DOMAIN_NOT_FOUND_VALUE);
         }
@@ -90,6 +93,12 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
         public void requestMatch(ChannelHandlerContext ctx, ApiRequest request) {
             ActorResponse response = match.askForBackend(request);
+            ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
+        }
+
+        public void requestRoom(ChannelHandlerContext ctx, ApiRequest request) {
+            // 查询本地 actor 记录的房间
+            ActorResponse response = room.askForBackend(request);
             ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
         }
 
