@@ -3,6 +3,7 @@ package com.commelina.niosocket;
 import com.commelina.niosocket.message.BroadcastMessage;
 import com.commelina.niosocket.message.NotifyMessage;
 import com.commelina.niosocket.message.WorldMessage;
+import com.commelina.niosocket.proto.MessageBody;
 import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.Channel;
@@ -29,7 +30,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setBody(message.getBody())
+                .setBody(MessageBody.newBuilder().setMessage(message.getBody()))
                 .build();
 
         Channel channel = NettyServerContext.INSTANCE.getUserChannel(message.getUserId());
@@ -51,7 +52,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setBody(message.getBody())
+                .setBody(MessageBody.newBuilder().setMessage(message.getBody()))
                 .build();
 
         for (Long userId : message.getUserIds()) {
@@ -74,7 +75,7 @@ public final class MessageAdapter {
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
                 .setOpcode(message.getOpcode())
-                .setBody(message.getBody())
+                .setBody(MessageBody.newBuilder().setMessage(message.getBody()))
                 .build();
 
         for (Long userId : NettyServerContext.INSTANCE.LOGIN_USERS.values()) {

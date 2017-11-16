@@ -7,6 +7,7 @@ import com.commelina.akka.dispatching.ClusterFrontendActorSystem;
 import com.commelina.akka.dispatching.proto.ActorResponse;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.play.gateway.proto.ERROR_CODE;
 import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.SocketEventHandler;
@@ -44,7 +45,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
                 dispatching.requestMatch(ctx, request);
                 break;
             default:
-                ReplyUtils.reply(ctx, StaticProtoBuffMessage.DOMAIN_NOT_FOUND);
+                ReplyUtils.reply(ctx, ask.getForward(), ask.getOpcode(), ERROR_CODE.DOMAIN_NOT_FOUND_VALUE);
         }
 
     }

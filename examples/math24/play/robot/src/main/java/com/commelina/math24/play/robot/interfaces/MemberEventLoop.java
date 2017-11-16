@@ -106,9 +106,6 @@ public final class MemberEventLoop {
                     break;
                 } else {
                     switch (msg.getCode()) {
-                        case RPC_API_NOT_FOUND:
-                            LOGGER.error("Api 没有找到.forward:{},opcode:{}", msg.getDomain(), msg.getOpcode());
-                            break;
                         case SERVER_ERROR:
                             LOGGER.error("服务器内部错误.");
                             break;

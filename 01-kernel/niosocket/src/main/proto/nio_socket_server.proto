@@ -26,8 +26,14 @@ message SocketMessage {
     uint32 domain = 2;
     // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
     uint32 opcode = 3;
+    MessageBody body = 4;
+}
+
+message MessageBody {
+    // 错误码，默认为 0 表示返回消息无错误提示
+    uint32 error = 1;
     // 消息内容 约定字节，如 json , pb
-    bytes body = 4;
+    bytes message = 2;
 }
 
 // 系统错误码

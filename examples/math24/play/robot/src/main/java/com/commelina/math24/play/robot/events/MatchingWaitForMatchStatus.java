@@ -38,7 +38,7 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
     @Override
     public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
         try {
-            BusinessMessage<Map<String, Integer>> message = Generator.getJsonHolder().readValue(msg.getMsg().toString(), BusinessMessage.class);
+            BusinessMessage<Map<String, Integer>> message = Generator.getJsonHolder().readValue(msg.getBody().getMessage().toString(), BusinessMessage.class);
             logger.info("当前匹配人数:" + message.getData().get("matchUserCount"));
         } catch (IOException e) {
             e.printStackTrace();

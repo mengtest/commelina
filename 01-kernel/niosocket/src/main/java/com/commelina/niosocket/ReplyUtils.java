@@ -1,5 +1,6 @@
 package com.commelina.niosocket;
 
+import com.commelina.niosocket.proto.MessageBody;
 import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
@@ -57,17 +58,29 @@ public final class ReplyUtils {
      * @param channelHandlerContext
      * @param domain
      * @param opcode
+     */
+    public static void reply(ChannelHandlerContext channelHandlerContext, int domain, int opcode) {
+        reply(channelHandlerContext, SocketMessage.newBuilder()
+                .setCode(SERVER_CODE.RESONSE_CODE)
+                .setDomain(domain)
+                .setOpcode(opcode)
+                .build());
+    }
+
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param domain
+     * @param opcode
      * @param message
      */
-    public static void reply(ChannelHandlerContext channelHandlerContext,
-                             int domain,
-                             int opcode,
-                             ByteString message) {
+    public static void reply(ChannelHandlerContext channelHandlerContext, int domain, int opcode, ByteString message) {
         reply(channelHandlerContext.channel(), SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.RESONSE_CODE)
                 .setDomain(domain)
                 .setOpcode(opcode)
-                .setBody(message)
+                .setBody(MessageBody.newBuilder().setMessage(message))
                 .build());
     }
 
@@ -78,13 +91,29 @@ public final class ReplyUtils {
      * @param domain
      * @param opcode
      */
-    public static void reply(ChannelHandlerContext channelHandlerContext,
-                             int domain,
-                             int opcode) {
-        reply(channelHandlerContext, SocketMessage.newBuilder()
+    public static void reply(ChannelHandlerContext channelHandlerContext, int domain, int opcode, int error) {
+        reply(channelHandlerContext.channel(), SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.RESONSE_CODE)
                 .setDomain(domain)
                 .setOpcode(opcode)
+                .setBody(MessageBody.newBuilder().setError(error))
+                .build());
+    }
+
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param domain
+     * @param opcode
+     * @param message
+     */
+    public static void reply(ChannelHandlerContext channelHandlerContext, int domain, int opcode, int error, ByteString message) {
+        reply(channelHandlerContext.channel(), SocketMessage.newBuilder()
+                .setCode(SERVER_CODE.RESONSE_CODE)
+                .setDomain(domain)
+                .setOpcode(opcode)
+                .setBody(MessageBody.newBuilder().setError(error).setMessage(message))
                 .build());
     }
 

@@ -105,19 +105,19 @@ public class RoomPortal extends AbstractBackendActor {
     public void onRequest(ApiRequest request) {
         ByteString roomIdArg = request.getArgs(0);
         if (roomIdArg == null) {
-            response(ROOM_NOT_FOUND);
+            response(StaticProtoBuffDefined.ROOM_NOT_FOUND);
             return;
         }
 
         final long roomId = Long.valueOf(roomIdArg.toStringUtf8());
         if (roomId <= 0) {
-            response(ROOM_NOT_FOUND);
+            response(StaticProtoBuffDefined.ROOM_NOT_FOUND);
             return;
         }
 
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
-            response(ROOM_NOT_FOUND);
+            response(StaticProtoBuffDefined.ROOM_NOT_FOUND);
             logger.info("Api request room id {} not instance RoomContext.", roomId);
             return;
         }
