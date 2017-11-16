@@ -11,8 +11,11 @@ import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.SocketEventHandler;
 import com.commelina.niosocket.proto.SocketASK;
+import com.google.protobuf.ByteString;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author panyao
@@ -49,8 +52,23 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
     }
 
     @Override
-    public long onLogin(ChannelHandlerContext ctx, SocketASK ask) {
-        return 0;
+    public CompletableFuture<Long> onLogin(ChannelHandlerContext ctx, SocketASK ask) {
+
+        ByteString tokenArg = ask.getArgs(0);
+        if (tokenArg == null) {
+            // token 转换错误
+//                        response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
+        }
+
+        //        String token = tokenArg.getAsString();
+        //        String parseToken = new String(BaseEncoding.base64Url().decode(token));
+        //        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
+        //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
+        //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
+
+
+        Long.valueOf(tokenArg.toStringUtf8());
+        return null;
     }
 
 

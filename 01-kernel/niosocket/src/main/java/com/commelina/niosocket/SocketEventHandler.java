@@ -3,6 +3,8 @@ package com.commelina.niosocket;
 import com.commelina.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * 用户事件
  *
@@ -24,7 +26,7 @@ public interface SocketEventHandler {
      *
      * @param ctx
      */
-    long onLogin(ChannelHandlerContext ctx, SocketASK ask);
+    CompletableFuture<Long> onLogin(ChannelHandlerContext ctx, SocketASK ask);
 
     /**
      * 用户离线

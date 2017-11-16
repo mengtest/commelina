@@ -6,6 +6,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * 用户消息接收的handler
  *
@@ -78,15 +80,25 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT_CODE);
         } else {
             // forward = -1 表示登陆
-            long userId = socketEventHandler.onLogin(ctx, ask);
-            if (userId > 0) {
+            CompletableFuture<Long> userIdCompletableFuture = socketEventHandler.onLogin(ctx, ask);
+
+            do {
+                if (userIdCompletableFuture == null) {
+                    break;
+                }
+
+                long userId = userIdCompletableFuture.get();
+                if (userId <= 0) {
+                    break;
+                }
+
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Login success, channelId {}, userId {} ", ctx.channel().id(), userId);
                 }
                 NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
-            } else {
-                ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
-            }
+                return;
+            } while (false);
+            ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
         }
 
     }
