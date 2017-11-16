@@ -2,24 +2,15 @@ package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
-import com.commelina.core.MessageBody;
-import com.commelina.akka.dispatching.proto.ActorBroadcast;
-import com.commelina.akka.dispatching.proto.ActorNotify;
-import com.commelina.akka.dispatching.proto.ActorWorld;
-import com.commelina.core.BusinessMessage;
-import com.commelina.core.DefaultMessageProvider;
-import com.google.protobuf.ByteString;
+import com.commelina.niosocket.message.BroadcastMessage;
+import com.commelina.niosocket.message.NotifyMessage;
+import com.commelina.niosocket.message.WorldMessage;
 import com.typesafe.config.ConfigFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import scala.concurrent.duration.Duration;
 
-import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,11 +21,9 @@ public class ClusterChildNodeSystem {
 
     public static final ClusterChildNodeSystem INSTANCE = new ClusterChildNodeSystem();
 
-    private final Logger logger = LoggerFactory.getLogger(ClusterChildNodeSystem.class);
+//    private final Logger logger = LoggerFactory.getLogger(ClusterChildNodeSystem.class);
 
     private ActorRef clusterRouterFrontend;
-
-    private ActorRef localRouterFrontend;
 
     private ActorSystem system;
 
@@ -48,86 +37,37 @@ public class ClusterChildNodeSystem {
         return PatternsCS.ask(clusterRouterFrontend, requestForward, timeout).toCompletableFuture().join();
     }
 
-    public Object broadcast(int opcode, Iterable<Long> userIds, MessageBody messageBody) {
-        return broadcast(opcode, userIds, messageBody, DEFAULT_TIMEOUT);
+    public Object broadcast(BroadcastMessage messageBody) {
+        return broadcast(messageBody, DEFAULT_TIMEOUT);
     }
 
-    public Object broadcast(int opcode, Iterable<Long> userIds, BusinessMessage<?> messageBody) {
-        return broadcast(opcode, userIds, DefaultMessageProvider.produceMessage(messageBody), DEFAULT_TIMEOUT);
+    public Object broadcast(BroadcastMessage message, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, message, timeout).toCompletableFuture().join();
     }
 
-    public Object broadcast(int opcode, Iterable<Long> userIds, MessageBody messageBody, Timeout timeout) {
-        byte[] bytes;
-        try {
-            bytes = messageBody.getBytes();
-        } catch (IOException e) {
-            logger.error("{}", e);
-            return null;
-        }
-        return PatternsCS.ask(clusterRouterFrontend,
-                ActorBroadcast.newBuilder()
-                        .setOpcode(opcode)
-                        .addAllUserIds(userIds)
-                        .setMessage(ByteString.copyFrom(bytes))
-                        .build(), timeout)
-                .toCompletableFuture().join();
+    public Object notify(NotifyMessage messageBody) {
+        return notify(messageBody, DEFAULT_TIMEOUT);
     }
 
-    public Object notify(int opcode, long userId, MessageBody messageBody) {
-        return notify(opcode, userId, messageBody, DEFAULT_TIMEOUT);
+    public Object notify(NotifyMessage messageBody, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, messageBody, timeout).toCompletableFuture().join();
     }
 
-    public Object notify(int opcode, long userId, MessageBody messageBody, Timeout timeout) {
-        byte[] bytes;
-        try {
-            bytes = messageBody.getBytes();
-        } catch (IOException e) {
-            logger.error("{}", e);
-            return null;
-        }
-        return PatternsCS.ask(clusterRouterFrontend, ActorNotify.newBuilder()
-                .setOpcode(opcode)
-                .setUserId(userId)
-                .setMessage(ByteString.copyFrom(bytes))
-                .build(), timeout).toCompletableFuture().join();
+    public Object world(WorldMessage messageBody) {
+        return world(messageBody, DEFAULT_TIMEOUT);
     }
 
-    public Object world(int opcode, MessageBody messageBody) {
-        return world(opcode, messageBody, DEFAULT_TIMEOUT);
-    }
-
-    public Object world(int opcode, MessageBody messageBody, Timeout timeout) {
-        byte[] bytes;
-        try {
-            bytes = messageBody.getBytes();
-        } catch (IOException e) {
-            logger.error("{}", e);
-            return null;
-        }
-        return PatternsCS.ask(clusterRouterFrontend, ActorWorld.newBuilder()
-                .setOpcode(opcode)
-                .setMessage(ByteString.copyFrom(bytes))
-                .build(), timeout).toCompletableFuture().join();
+    public Object world(WorldMessage messageBody, Timeout timeout) {
+        return PatternsCS.ask(clusterRouterFrontend, messageBody, timeout).toCompletableFuture().join();
     }
 
     void registerRouterFronted(ActorRef routerFronted) {
         clusterRouterFrontend = routerFronted;
     }
 
-    void removeRouterFronted() {
-        clusterRouterFrontend = null;
-    }
-
     void create(String clusterName, String config) {
         system = ActorSystem.create(clusterName, ConfigFactory.load(config)
-                .withFallback(ConfigFactory.load("default-remote-message-bindings")));
-    }
-
-    void registerRouterFronted(Props props) {
-        if (localRouterFrontend != null) {
-            throw new InvalidParameterException();
-        }
-        localRouterFrontend = system.actorOf(props, "localRouterFrontend");
+                .withFallback(ConfigFactory.load("default-message-bindings")));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.commelina.akka;
+package com.commelina.akka.dispatching;
 
 import com.commelina.core.MessageBody;
 

@@ -1,6 +1,6 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.akka.DefaultClusterActorRequestHandler;
+import com.commelina.akka.dispatching.DefaultClusterActorRequestHandler;
 import com.commelina.akka.dispatching.RouterClusterFrontendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;

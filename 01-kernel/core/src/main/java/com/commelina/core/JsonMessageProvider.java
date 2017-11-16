@@ -12,6 +12,7 @@ import java.util.Map;
  * @author @panyao
  * @date 2017/8/16
  */
+@Deprecated
 public class JsonMessageProvider {
 
     private static final MessageBody EMPTY = new JsonMessage(BusinessMessage.success());

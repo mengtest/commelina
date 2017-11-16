@@ -3,7 +3,7 @@ package com.commelina.math24.play.room.context;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
+import com.commelina.akka.dispatching.AbstractServiceActor;
 import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;

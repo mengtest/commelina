@@ -8,6 +8,7 @@ import com.google.protobuf.Internal;
  * @author @panyao
  * @date 2016/8/24
  */
+@Deprecated
 public final class BusinessMessage<T> {
 
     private final int businessCode;

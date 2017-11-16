@@ -1,5 +1,6 @@
 package com.commelina.akka.dispatching;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import com.typesafe.config.ConfigFactory;
@@ -15,12 +16,26 @@ public class ActorSystemCreator {
                 .withFallback(ConfigFactory.load("default-message-bindings.conf")));
     }
 
-    public static ActorSystem createAsCluster(String name, String config) {
+    public static ClusterSystem createAsCluster(String name, String config) {
         ActorSystem actorSystem = create(name, config);
+        ClusterSystem system = new ClusterSystem();
+        system.actorSystem = actorSystem;
+        system.frontend = actorSystem.actorOf(Props.create(RouterClusterFrontendActor.class), Constants.CLUSTER_FRONTEND);
+        return system;
+    }
 
-        actorSystem.actorOf(Props.create(RouterClusterFrontendActor.class), "frontend");
+    public static class ClusterSystem {
+        private ActorSystem actorSystem;
+        private ActorRef frontend;
 
-        return actorSystem;
+        public ActorSystem getActorSystem() {
+            return actorSystem;
+        }
+
+        public ActorRef getFrontend() {
+            return frontend;
+        }
+
     }
 
 }

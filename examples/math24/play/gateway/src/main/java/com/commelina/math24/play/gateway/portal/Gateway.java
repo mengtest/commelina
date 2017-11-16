@@ -1,6 +1,6 @@
 package com.commelina.math24.play.gateway.portal;
 
-import com.commelina.akka.DefaultLocalActorRequestHandler;
+import com.commelina.akka.dispatching.DefaultLocalActorRequestHandler;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.core.BusinessMessage;
 import com.commelina.core.DefaultMessageProvider;

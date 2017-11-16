@@ -17,14 +17,14 @@ public class MatchAbstractMatchModeActorClientRouterActorTest {
 //        }), probe.getRef());
 
 //        MessageBody response = probe.expectMsgClass(MessageBody.class);
-//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response.getMessage().getOpCode());
+//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response.getBody().getOpCode());
 
 //        AkkaBroadcast broadcast = probe.expectMsgClass(AkkaBroadcast.class);
 //        assertEquals(Long.valueOf(1), broadcast.getUserIds().get(0));
 //
 ////        Map<String, Integer> kvEntity;
 ////        try {
-////            kvEntity = Generator.getJsonHolder().readValue(broadcast.getMessage().getBytes(), HashMap.class);
+////            kvEntity = Generator.getJsonHolder().readValue(broadcast.getBody().getBytes(), HashMap.class);
 ////        } catch (IOException e) {
 ////            throw e;
 ////        }
@@ -34,13 +34,13 @@ public class MatchAbstractMatchModeActorClientRouterActorTest {
 //
 //        AkkaResponseMessage response1 = probe.expectMsgClass(AkkaResponseMessage.class);
 //
-//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response1.getMessage().getOpCode());
+//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response1.getBody().getOpCode());
 //
 //        AkkaBroadcast broadcast1 = probe.expectMsgClass(AkkaBroadcast.class);
 //        assertEquals(Long.valueOf(2), broadcast1.getUserIds().get(1));
 ////        Map<String, Integer> kvEntity1;
 ////        try {
-////            kvEntity1 = Generator.getJsonHolder().readValue(broadcast1.getMessage().getBytes(), HashMap.class);
+////            kvEntity1 = Generator.getJsonHolder().readValue(broadcast1.getBody().getBytes(), HashMap.class);
 ////        } catch (IOException e) {
 ////            throw e;
 ////        }
@@ -50,13 +50,13 @@ public class MatchAbstractMatchModeActorClientRouterActorTest {
 //
 //        AkkaResponseMessage response2 = probe.expectMsgClass(AkkaResponseMessage.class);
 //
-//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response2.getMessage().getOpCode());
+//        assertEquals(OpCodeConstants.JOIN_SUCCESS_RESPONSE, response2.getBody().getOpCode());
 //
 //        AkkaBroadcast broadcast3 = probe.expectMsgClass(AkkaBroadcast.class);
 //        assertEquals(Long.valueOf(3), broadcast3.getUserIds().get(2));
 //        Map<String, Integer> kvEntity3;
 //        try {
-//            kvEntity3 = Generator.getJsonHolder().readValue(broadcast3.getMessage().getBytes(), HashMap.class);
+//            kvEntity3 = Generator.getJsonHolder().readValue(broadcast3.getBody().getBytes(), HashMap.class);
 //        } catch (IOException e) {
 //            throw e;
 //        }

@@ -8,14 +8,10 @@ import akka.cluster.Member;
 import akka.cluster.MemberStatus;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.DispatchForward;
-import com.commelina.akka.MemberEvent;
 import com.commelina.akka.dispatching.Constants;
-import com.commelina.akka.dispatching.proto.ApiRequest;
-import com.commelina.akka.dispatching.proto.ApiRequestForward;
-import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
-import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
-import com.commelina.core.MessageBody;
+import com.commelina.akka.dispatching.DispatchForward;
+import com.commelina.akka.dispatching.MemberEvent;
+import com.commelina.akka.dispatching.proto.*;
 
 /**
  * 后端 actor
@@ -83,7 +79,7 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         // nothing to do
     }
 
-    protected void response(MessageBody message) {
+    protected void response(ActorResponse message) {
         getSender().tell(message, getSelf());
     }
 
@@ -96,12 +92,11 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
     }
 
     void remove(Member member) {
-        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
-            logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
-//            getContext().unwatch(getSender());
-            ClusterChildNodeSystem.INSTANCE.removeRouterFronted();
-//            frontendAddress = null;
-        }
+//        if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
+//            logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
+////            getContext().unwatch(getSender());
+////            frontendAddress = null;
+//        }
     }
 
     protected LoggingAdapter getLogger() {

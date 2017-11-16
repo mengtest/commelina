@@ -1,7 +1,8 @@
 package com.commelina.niosocket;
 
-import com.commelina.core.MessageBody;
+import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketMessage;
+import com.google.protobuf.ByteString;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -51,8 +52,31 @@ public final class ReplyUtils {
     public static void reply(ChannelHandlerContext channelHandlerContext,
                              int domain,
                              int opcode,
-                             MessageBody message) {
-        SocketMessage msg = MessageResponseProvider.DEFAULT_MESSAGE_PROVIDER.createResponseMessage(domain, opcode, message);
+                             ByteString message) {
+        final SocketMessage msg = SocketMessage.newBuilder()
+                .setCode(SERVER_CODE.RESONSE_CODE)
+                .setDomain(domain)
+                .setOpcode(opcode)
+                .setMsg(message)
+                .build();
+        reply(channelHandlerContext.channel(), msg);
+    }
+
+    /**
+     * 回复消息到客户端
+     *
+     * @param channelHandlerContext
+     * @param domain
+     * @param opcode
+     */
+    public static void reply(ChannelHandlerContext channelHandlerContext,
+                             int domain,
+                             int opcode) {
+        final SocketMessage msg = SocketMessage.newBuilder()
+                .setCode(SERVER_CODE.RESONSE_CODE)
+                .setDomain(domain)
+                .setOpcode(opcode)
+                .build();
         reply(channelHandlerContext.channel(), msg);
     }
 

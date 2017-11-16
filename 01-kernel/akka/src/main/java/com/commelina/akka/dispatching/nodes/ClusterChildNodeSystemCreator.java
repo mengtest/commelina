@@ -1,7 +1,5 @@
 package com.commelina.akka.dispatching.nodes;
 
-import akka.actor.Props;
-
 /**
  *
  * @author @panyao
@@ -14,7 +12,6 @@ public class ClusterChildNodeSystemCreator {
             String clusterName,
             String akkaActorConfig) {
         ClusterChildNodeSystem.INSTANCE.create(clusterName, akkaActorConfig);
-        ClusterChildNodeSystem.INSTANCE.registerRouterFronted(Props.create(backedClass));
         return new ClusterChildNodeSystemCreator();
     }
 

@@ -1,6 +1,6 @@
 package com.commelina.niosocket.message;
 
-import com.commelina.core.MessageBody;
+import com.google.protobuf.ByteString;
 
 import java.util.List;
 
@@ -15,15 +15,15 @@ public class BroadcastMessage {
 
     private final int opcode;
     private final List<Long> userIds;
-    private final MessageBody message;
+    private final ByteString body;
 
-    private BroadcastMessage(int opcode, List<Long> userIds, MessageBody messageBody) {
+    private BroadcastMessage(int opcode, List<Long> userIds, ByteString messageBody) {
         this.opcode = opcode;
-        this.message = messageBody;
+        this.body = messageBody;
         this.userIds = userIds;
     }
 
-    public static BroadcastMessage newBroadcast(int opcode, List<Long> userIds, MessageBody messageBody) {
+    public static BroadcastMessage newBroadcast(int opcode, List<Long> userIds, ByteString messageBody) {
         return new BroadcastMessage(opcode, userIds, messageBody);
     }
 
@@ -31,8 +31,8 @@ public class BroadcastMessage {
         return userIds;
     }
 
-    public MessageBody getMessage() {
-        return message;
+    public ByteString getBody() {
+        return body;
     }
 
     public int getOpcode() {

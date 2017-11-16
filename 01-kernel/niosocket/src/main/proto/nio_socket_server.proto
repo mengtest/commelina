@@ -14,7 +14,7 @@ message SocketASK {
     uint32 opcode = 2;
     // 接口版本
     string version = 3;
-    // 参数列表
+    // 参数 约定结构，json，pb等等
     repeated bytes args = 4;
 }
 
@@ -26,8 +26,8 @@ message SocketMessage {
     uint32 domain = 2;
     // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
     uint32 opcode = 3;
-    // 消息内容 约定字节，如 json
-    bytes msg = 4;
+    // 消息内容 约定字节，如 json , pb
+    bytes body = 4;
 }
 
 // 系统错误码

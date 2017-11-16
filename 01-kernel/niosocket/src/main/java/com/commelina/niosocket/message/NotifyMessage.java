@@ -1,6 +1,6 @@
 package com.commelina.niosocket.message;
 
-import com.commelina.core.MessageBody;
+import com.google.protobuf.ByteString;
 
 /**
  * 通知消息
@@ -12,15 +12,15 @@ public class NotifyMessage {
 
     private final int opcode;
     private final long userId;
-    private final MessageBody message;
+    private final ByteString body;
 
-    private NotifyMessage(int opcode, long userId, MessageBody messageBody) {
+    private NotifyMessage(int opcode, long userId, ByteString messageBody) {
         this.opcode = opcode;
         this.userId = userId;
-        this.message = messageBody;
+        this.body = messageBody;
     }
 
-    public static NotifyMessage newMessage(int opcode, long userId, MessageBody messageBody) {
+    public static NotifyMessage newMessage(int opcode, long userId, ByteString messageBody) {
         return new NotifyMessage(opcode, userId, messageBody);
     }
 
@@ -28,8 +28,8 @@ public class NotifyMessage {
         return userId;
     }
 
-    public MessageBody getMessage() {
-        return message;
+    public ByteString getBody() {
+        return body;
     }
 
     public int getOpcode() {

@@ -6,7 +6,6 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
-import com.commelina.core.AppVersion;
 import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.matching_room.proto.MATCHING_ROOM_METHODS;
 import com.google.protobuf.ByteString;
@@ -41,7 +40,7 @@ class MatchingRedirect extends AbstractActor {
         ApiRequestForward.Builder builder = ApiRequestForward.newBuilder()
                 .setForward(DOMAIN.GAME_ROOM_VALUE)
                 .setOpcode(MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE)
-                .setVersion(AppVersion.FIRST_VERSION);
+                .setVersion("1.0.0");
 
         for (Long userId : userIds) {
             builder.addArgs(ByteString.copyFromUtf8(userId.toString()));

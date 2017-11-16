@@ -9,7 +9,7 @@ import com.commelina.niosocket.proto.SocketMessage;
  * @author @panyao
  * @date 2017/9/27
  */
-public class ProtoBuffMap {
+public class ProtoBuffStatic {
 
     public static final SocketMessage HEARTBEAT_CODE = SocketMessage.getDefaultInstance();
     public static final SocketMessage SERVER_ERROR = SocketMessage

@@ -10,6 +10,7 @@ import java.io.IOException;
  * @author @panyao
  * @date 2017/8/10
  */
+@Deprecated
 final class JsonMessage implements MessageBody {
 
     private final BusinessMessage message;

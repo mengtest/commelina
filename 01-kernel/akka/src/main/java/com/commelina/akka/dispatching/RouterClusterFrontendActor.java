@@ -10,7 +10,6 @@ import akka.cluster.MemberStatus;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
-import com.commelina.akka.Rewrite;
 import com.commelina.akka.dispatching.nodes.ClusterChildNodeSystem;
 import com.commelina.akka.dispatching.proto.*;
 import com.commelina.niosocket.MessageAdapter;
@@ -71,13 +70,13 @@ public class RouterClusterFrontendActor extends AbstractActor implements Rewrite
                 .match(ActorNotify.class, n -> MessageAdapter.sendNotify(myRouterId.getNumber(), NotifyMessage.newMessage(
                         n.getOpcode(),
                         n.getUserId(),
-                        () -> n.getMessage().toByteArray()
+                        n.getMessage()
                 )))
                 .match(ActorBroadcast.class, b -> MessageAdapter.sendBroadcast(myRouterId.getNumber(), BroadcastMessage.newBroadcast(
-                        b.getOpcode(), b.getUserIdsList(), () -> b.getMessage().toByteArray()
+                        b.getOpcode(), b.getUserIdsList(), b.getMessage()
                 )))
                 .match(ActorWorld.class, w -> MessageAdapter.sendWorld(myRouterId.getNumber(), WorldMessage.newMessage(
-                        w.getOpcode(), () -> w.getMessage().toByteArray())))
+                        w.getOpcode(), w.getMessage())))
                 // 重定向请求
                 .match(ApiRequestForward.class, rf -> {
                     // eg: gateway -> room

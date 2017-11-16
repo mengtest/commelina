@@ -63,12 +63,12 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
             }
-            ctx.writeAndFlush(ProtoBuffMap.HEARTBEAT_CODE);
+            ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT_CODE);
         } else {
             try {
                 socketEventHandler.onRequest(ctx, ask);
             } catch (Throwable throwable) {
-                ctx.writeAndFlush(ProtoBuffMap.SERVER_ERROR);
+                ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
                 exceptionCaught(ctx, throwable);
             }
         }

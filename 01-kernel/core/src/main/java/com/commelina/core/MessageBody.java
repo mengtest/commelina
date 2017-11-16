@@ -1,13 +1,12 @@
 package com.commelina.core;
 
-import java.io.IOException;
-
 /**
  * 消息定义
  *
  * @author @panyao
  * @date 2017/8/15
  */
+@Deprecated
 public interface MessageBody {
 
     /**
@@ -15,8 +14,8 @@ public interface MessageBody {
      * 编码错误则抛出 异常
      *
      * @return
-     * @throws IOException
+     * @throws RuntimeException
      */
-    byte[] getBytes() throws IOException;
+    byte[] getBytes() throws RuntimeException;
 
 }

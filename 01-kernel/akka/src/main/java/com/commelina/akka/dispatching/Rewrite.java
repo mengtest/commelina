@@ -1,4 +1,4 @@
-package com.commelina.akka;
+package com.commelina.akka.dispatching;
 
 import akka.actor.ActorRef;
 import com.commelina.akka.dispatching.proto.ApiRequest;
