@@ -25,7 +25,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendNotify(int domain, NotifyMessage message) {
+    public static void sendNotify(int domain, NotifyMessage message) {
         final SocketMessage msg = SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
@@ -37,7 +37,6 @@ public final class MessageAdapter {
 
         ReplyUtils.reply(channel, msg);
 
-        return true;
     }
 
     /**
@@ -47,7 +46,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendBroadcast(int domain, BroadcastMessage message) {
+    public static void sendBroadcast(int domain, BroadcastMessage message) {
         final SocketMessage msg = SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
@@ -60,7 +59,6 @@ public final class MessageAdapter {
             ReplyUtils.reply(channel, msg);
         }
 
-        return true;
     }
 
     /**
@@ -70,7 +68,7 @@ public final class MessageAdapter {
      * @param message
      * @return
      */
-    public static boolean sendWorld(int domain, WorldMessage message) {
+    public static void sendWorld(int domain, WorldMessage message) {
         final SocketMessage msg = SocketMessage.newBuilder()
                 .setCode(SERVER_CODE.NOTIFY_CODE)
                 .setDomain(domain)
@@ -78,12 +76,8 @@ public final class MessageAdapter {
                 .setBody(MessageBody.newBuilder().setMessage(message.getBody()))
                 .build();
 
-        for (Long userId : NettyServerContext.INSTANCE.LOGIN_USERS.values()) {
-            Channel channel = NettyServerContext.INSTANCE.getUserChannel(userId);
-            ReplyUtils.reply(channel, msg);
-        }
-
-        return true;
+        // 广播
+        NettyServerContext.INSTANCE.CHANNEL_GROUP.writeAndFlush(msg);
     }
 
 }

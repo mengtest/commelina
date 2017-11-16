@@ -8,8 +8,8 @@ option java_multiple_files = true;
 
 // niosocket 请求体
 message SocketASK {
-    // 重定向的域 等于 0 会被认为是 心跳请求
-    uint32 forward = 1;
+    // 重定向的域 >=0 会认为是业务请求，小于 0 认为是系统请求-1 心跳 -2 登陆
+    int32 forward = 1;
     // 接口域
     uint32 opcode = 2;
     // 接口版本
@@ -38,12 +38,16 @@ message MessageBody {
 
 // 系统错误码
 enum SERVER_CODE {
-    // 心跳
-    HEARTBEAT_CODE = 0;
     // 成功响应
-    RESONSE_CODE = 1;
+    RESONSE_CODE = 0;
     // 通知
-    NOTIFY_CODE = 2;
+    NOTIFY_CODE = 1;
+    // 心跳
+    HEARTBEAT_CODE = 2;
+    // 需要登陆才能访问
+    UNAUTHORIZED = 3;
+    // 登陆失败
+    LOGIN_FAILED = 4;
     // 服务端内部错误
-    SERVER_ERROR = 3;
+    SERVER_ERROR = 5;
 }

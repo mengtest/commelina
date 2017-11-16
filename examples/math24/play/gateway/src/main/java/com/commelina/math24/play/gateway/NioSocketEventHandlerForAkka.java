@@ -1,7 +1,6 @@
 package com.commelina.math24.play.gateway;
 
 import akka.actor.ActorSystem;
-import akka.util.Timeout;
 import com.commelina.akka.dispatching.ClusterActorSystemCreator;
 import com.commelina.akka.dispatching.ClusterFrontendActorSystem;
 import com.commelina.akka.dispatching.proto.ActorResponse;
@@ -14,9 +13,6 @@ import com.commelina.niosocket.SocketEventHandler;
 import com.commelina.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
-import scala.concurrent.duration.Duration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author panyao
@@ -25,13 +21,12 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
-    private static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
-
     private Dispatching dispatching = new Dispatching();
 
     @Override
-    public void onRequest(ChannelHandlerContext ctx, SocketASK ask) {
+    public void onRequest(ChannelHandlerContext ctx, long userId, SocketASK ask) {
         final ApiRequest request = ApiRequest.newBuilder()
+                .setLoginUserId(userId)
                 .setOpcode(ask.getOpcode())
                 .setVersion(ask.getVersion())
                 .addAllArgs(ask.getArgsList())
@@ -54,9 +49,10 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
     }
 
     @Override
-    public void onOnline(ChannelHandlerContext ctx) {
-
+    public long onLogin(ChannelHandlerContext ctx, SocketASK ask) {
+        return 0;
     }
+
 
     @Override
     public void onOffline(ChannelHandlerContext ctx, long logoutUserId) {

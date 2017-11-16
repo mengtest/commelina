@@ -17,16 +17,14 @@ public interface SocketEventHandler {
      * @param ctx
      * @param ask
      */
-    void onRequest(ChannelHandlerContext ctx, SocketASK ask);
+    void onRequest(ChannelHandlerContext ctx, long userId, SocketASK ask);
 
     /**
-     * 用户上线
+     * 用户登陆，需要返回 用户uid
      *
      * @param ctx
      */
-    default void onOnline(ChannelHandlerContext ctx) {
-
-    }
+    long onLogin(ChannelHandlerContext ctx, SocketASK ask);
 
     /**
      * 用户离线

@@ -11,11 +11,11 @@ import com.commelina.niosocket.proto.SocketMessage;
  */
 public class ProtoBuffStatic {
 
-    public static final SocketMessage HEARTBEAT_CODE = SocketMessage.getDefaultInstance();
-    public static final SocketMessage SERVER_ERROR = SocketMessage
-            .newBuilder()
-            .setCode(SERVER_CODE.SERVER_ERROR)
-            .build();
+    static final SocketMessage HEARTBEAT_CODE = SocketMessage.getDefaultInstance();
+    static final SocketMessage SERVER_ERROR = SocketMessage.newBuilder().setCode(SERVER_CODE.SERVER_ERROR).build();
+
+    static final SocketMessage UNAUTHORIZED = SocketMessage.newBuilder().setCode(SERVER_CODE.UNAUTHORIZED).build();
+    static final SocketMessage LOGIN_FAILED = SocketMessage.newBuilder().setCode(SERVER_CODE.LOGIN_FAILED).build();
 
     public static SocketMessage createMessage(SERVER_CODE serverCode, int domain, int opcode) {
         return SocketMessage

@@ -22,7 +22,7 @@ class NettyServerContext {
     /**
      * 用户会话组
      */
-    private final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup("sessionGroups", GlobalEventExecutor.INSTANCE);
+    final ChannelGroup CHANNEL_GROUP = new DefaultChannelGroup("sessionGroups", GlobalEventExecutor.INSTANCE);
     /**
      * 用户会话管理
      */
@@ -34,16 +34,6 @@ class NettyServerContext {
 
     private NettyServerContext() {
 
-    }
-
-    /**
-     * 用户上线
-     *
-     * @param channel
-     * @return
-     */
-    boolean channelActive(Channel channel) {
-        return CHANNEL_GROUP.add(channel);
     }
 
     /**
@@ -61,34 +51,10 @@ class NettyServerContext {
 
     /**
      * 把用户加入到登录会话中去
-     *
-     * @param channelId
-     * @param userId
-     * @return
      */
-    long userJoin(ChannelId channelId, long userId) {
-        Channel channel = CHANNEL_GROUP.find(channelId);
-        if (channel == null) {
-            throw new UserChannelUnActiveException();
-        }
-        LOGIN_USERS.forcePut(channelId, userId);
-        return userId;
-    }
-
-    /**
-     * 用户注销了
-     *
-     * @param userId
-     * @return
-     */
-    ChannelId userRemove(long userId) {
-        ChannelId channelId = LOGIN_USERS.inverse().remove(userId);
-        if (channelId != null) {
-            // FIXME: 2017/8/29 这里是因为编辑检查泛型不过才这样写的，实际上是可以运行的 netty 这set实现太锤子了
-            CHANNEL_GROUP.remove(CHANNEL_GROUP.find(channelId));
-        }
-        //CHANNEL_GROUP.remove(channelId);
-        return channelId;
+    void userJoin(Channel channel, long userId) {
+        CHANNEL_GROUP.add(channel);
+        LOGIN_USERS.forcePut(channel.id(), userId);
     }
 
     /**
@@ -97,12 +63,11 @@ class NettyServerContext {
      * @param channelId
      * @return
      */
-    long getLoginUserId(ChannelId channelId) {
+    Long getLoginUserId(ChannelId channelId) {
         if (CHANNEL_GROUP.find(channelId) == null) {
-            return 0;
+            return null;
         }
-        Long userId = LOGIN_USERS.get(channelId);
-        return userId == null ? 0 : userId;
+        return LOGIN_USERS.get(channelId);
     }
 
     /**

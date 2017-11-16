@@ -26,11 +26,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        final boolean result = NettyServerContext.INSTANCE.channelActive(ctx.channel());
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("client:{}, login server: {}", ctx.channel().id(), result);
+            LOGGER.debug("client:{}, connection.", ctx.channel().id());
         }
-        socketEventHandler.onOnline(ctx);
     }
 
     /**
@@ -58,20 +56,39 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final SocketASK ask = (SocketASK) msg;
-        // forward = 0 表示心跳
-        if (ask.getForward() == 0) {
+
+        if (ask.getForward() > 0) {
+            long userId = NettyServerContext.INSTANCE.getLoginUserId(ctx.channel().id());
+            if (userId <= 0) {
+                ctx.writeAndFlush(ProtoBuffStatic.UNAUTHORIZED);
+                return;
+            }
+
+            try {
+                socketEventHandler.onRequest(ctx, userId, ask);
+            } catch (Throwable throwable) {
+                ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
+                exceptionCaught(ctx, throwable);
+            }
+        } else if (ask.getForward() == 0) {
+            // forward = 0 表示心跳
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
             }
             ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT_CODE);
         } else {
-            try {
-                socketEventHandler.onRequest(ctx, ask);
-            } catch (Throwable throwable) {
-                ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
-                exceptionCaught(ctx, throwable);
+            // forward = -1 表示登陆
+            long userId = socketEventHandler.onLogin(ctx, ask);
+            if (userId > 0) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Login success, channelId {}, userId {} ", ctx.channel().id(), userId);
+                }
+                NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
+            } else {
+                ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
             }
         }
+
     }
 
     // 调用异常的处理
