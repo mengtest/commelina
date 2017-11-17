@@ -1,22 +1,16 @@
 package com.commelina.math24.play.robot.events;
 
-import com.commelina.core.BusinessMessage;
 import com.commelina.math24.common.proto.DOMAIN;
-import com.commelina.math24.play.match.proto.OPCODE;
+import com.commelina.math24.play.match.proto.NOTIFY_OPCODE;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
 import com.commelina.niosocket.proto.SocketMessage;
-import com.commelina.utils.Generator;
 import com.google.protobuf.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Map;
-
 
 /**
- *
  * @author @panyao
  * @date 2017/9/11
  */
@@ -32,17 +26,12 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
 
     @Override
     public Internal.EnumLite getApiOpcode() {
-        return OPCODE.MATCH_STATUS;
+        return NOTIFY_OPCODE.NOTIFY_MATCH_SUCCESS;
     }
 
     @Override
     public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
-        try {
-            BusinessMessage<Map<String, Integer>> message = Generator.getJsonHolder().readValue(msg.getBody().getMessage().toString(), BusinessMessage.class);
-            logger.info("当前匹配人数:" + message.getData().get("matchUserCount"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return EventResult.UN_REMOVE;
     }
 

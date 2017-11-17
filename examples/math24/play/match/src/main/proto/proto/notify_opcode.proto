@@ -6,7 +6,7 @@ option java_package = "com.commelina.math24.play.match.proto";
 option java_outer_classname = "NotifyOpcodeProtos";
 option java_multiple_files = true;
 
-enum OPCODE {
+enum NOTIFY_OPCODE {
     NOTIFY_MATCH_SUCCESS = 0;
     MATCH_STATUS = 1;
     JOIN_MATCH_ROOM = 2;

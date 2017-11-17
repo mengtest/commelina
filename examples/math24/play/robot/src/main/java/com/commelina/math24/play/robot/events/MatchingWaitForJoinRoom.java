@@ -1,7 +1,7 @@
 package com.commelina.math24.play.robot.events;
 
 import com.commelina.math24.common.proto.DOMAIN;
-import com.commelina.math24.play.match.proto.MATCH_METHODS;
+import com.commelina.math24.play.match.proto.REQUEST_OPCODE;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
 import com.commelina.niosocket.proto.SocketMessage;
@@ -20,7 +20,7 @@ public class MatchingWaitForJoinRoom implements ReadEvent {
 
     @Override
     public Internal.EnumLite getApiOpcode() {
-        return MATCH_METHODS.JOIN_MATCH_QUENE;
+        return REQUEST_OPCODE.JOIN_MATCH_QUENE;
     }
 
     @Override

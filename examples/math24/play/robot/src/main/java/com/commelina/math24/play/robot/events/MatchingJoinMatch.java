@@ -1,7 +1,7 @@
 package com.commelina.math24.play.robot.events;
 
 import com.commelina.math24.common.proto.DOMAIN;
-import com.commelina.math24.play.match.proto.MATCH_METHODS;
+import com.commelina.math24.play.match.proto.REQUEST_OPCODE;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
 import com.commelina.niosocket.proto.RequestBody;
@@ -28,7 +28,7 @@ public class MatchingJoinMatch implements MemberEvent {
         return SocketASK.newBuilder()
                 .setForward(DOMAIN.MATCHING_VALUE)
                 .setBody(RequestBody.newBuilder()
-                        .setOpcode(MATCH_METHODS.JOIN_MATCH_QUENE_VALUE)
+                        .setOpcode(REQUEST_OPCODE.JOIN_MATCH_QUENE_VALUE)
                         .setVersion("1.0.0")
                         .addArgs(ByteString.copyFromUtf8(userId.toString()))
                 )
@@ -42,7 +42,7 @@ public class MatchingJoinMatch implements MemberEvent {
 
     @Override
     public Internal.EnumLite getApiOpcode() {
-        return MATCH_METHODS.JOIN_MATCH_QUENE;
+        return REQUEST_OPCODE.JOIN_MATCH_QUENE;
     }
 
     @Override

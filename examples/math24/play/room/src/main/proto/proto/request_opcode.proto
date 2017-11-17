@@ -6,7 +6,7 @@ option java_package = "com.commelina.math24.play.room.proto";
 option java_outer_classname = "MethodProtos";
 option java_multiple_files = true;
 
-enum ROOM_METHODS {
+enum REQUEST_OPCODE {
     // 加入房间逻辑
     JOIN_ROOM = 0;
 }

@@ -10,8 +10,8 @@ import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.math24.play.match.mode.GlobalMatch;
 import com.commelina.math24.play.match.proto.CancelMatch;
 import com.commelina.math24.play.match.proto.JoinMatch;
-import com.commelina.math24.play.match.proto.MATCH_METHODS;
 import com.commelina.math24.play.match.proto.MATCH_MODE;
+import com.commelina.math24.play.match.proto.REQUEST_OPCODE;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
 
@@ -65,20 +65,20 @@ public class MatchPortal extends AbstractBackendActor {
     public void onRequest(ApiRequest request) {
         switch (request.getOpcode()) {
             // 加入匹配
-            case MATCH_METHODS.JOIN_MATCH_QUENE_VALUE:
+            case REQUEST_OPCODE.JOIN_MATCH_QUENE_VALUE:
                 switchActor(request).forward(
                         JoinMatch.newBuilder()
                                 .setUserId(request.getLoginUserId())
                                 .build(), getContext());
                 break;
             // 取消匹配
-            case MATCH_METHODS.EXIT_MATCH_QUENE_VALUE:
+            case REQUEST_OPCODE.EXIT_MATCH_QUENE_VALUE:
                 switchActor(request).forward(CancelMatch.newBuilder()
                         .setUserId(request.getLoginUserId())
                         .build(), getContext());
                 break;
             // 加入临时房间
-            case MATCH_METHODS.JOIN_TEMPORARY_ROOM_VALUE:
+            case REQUEST_OPCODE.JOIN_TEMPORARY_ROOM_VALUE:
 //                roomManger.forward(request, getContext());
                 break;
             default:

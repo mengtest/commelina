@@ -9,12 +9,8 @@ import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
-import com.commelina.core.BusinessMessage;
-import com.commelina.core.DefaultMessageProvider;
-import com.commelina.core.MessageBody;
 import com.commelina.math24.matching_room.proto.MATCHING_ROOM_METHODS;
 import com.commelina.math24.play.room.context.RoomContext;
-import com.commelina.math24.play.room.proto.ERROR_CODE;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
@@ -48,12 +44,6 @@ public class RoomPortal extends AbstractBackendActor {
     private long currentRoomId = 0;
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
-
-    /**
-     * 房间不存在通知信息
-     */
-    private static final MessageBody ROOM_NOT_FOUND =
-            DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.ROOM_NOT_FOUND));
 
     public RoomPortal(ClusterBackendActorSystem backendActorSystem) {
         super(backendActorSystem);
