@@ -28,17 +28,16 @@ message SocketMessage {
     SERVER_CODE code = 1;
     // 服务端预定义 消息的域
     uint32 domain = 2;
-    // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
-    uint32 opcode = 3;
-
-    MessageBody body = 4;
+    MessageBody body = 3;
 }
 
 message MessageBody {
+    // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
+    uint32 opcode = 1;
     // 错误码，默认为 0 表示返回消息无错误提示
-    uint32 error = 1;
+    uint32 error = 2;
     // 消息内容 约定字节，如 json , pb
-    bytes message = 2;
+    bytes message = 3;
 }
 
 // 系统错误码
