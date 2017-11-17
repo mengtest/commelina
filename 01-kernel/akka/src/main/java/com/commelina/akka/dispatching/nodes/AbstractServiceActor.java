@@ -23,7 +23,7 @@ public abstract class AbstractServiceActor extends AbstractActor {
 
     private ActorSelection frontend;
 
-    protected ActorSelection findFrontend() {
+    protected ActorSelection selectFrontend() {
         if (frontend == null) {
             BackendFindFrontend backendFindFrontend = (BackendFindFrontend) PatternsCS.ask(getContext().getSystem()
                     .actorSelection(Constants.CLUSTER_BACKEND_PATH), BackendFindEvent.getDefaultInstance(), getAskForFrontendTimeout())
@@ -32,6 +32,10 @@ public abstract class AbstractServiceActor extends AbstractActor {
             frontend = getContext().getSystem().actorSelection(backendFindFrontend.getFrontendAddress());
         }
         return frontend;
+    }
+
+    protected ActorSelection selectBackendFrontend() {
+        return getContext().getSystem().actorSelection(Constants.CLUSTER_BACKEND_PATH);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.List;
  * @author panyao
  * @date 2017/11/10
  */
-public class GlobalMatchStatus extends AbstractMatchServiceActor {
+class GlobalMatchStatus extends AbstractMatchServiceActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 

@@ -2,6 +2,7 @@ package com.commelina.math24.play.match.mode;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.commelina.math24.play.match.proto.JoinMatch;
 import com.google.common.collect.Lists;
@@ -32,18 +33,17 @@ public class GlobalMatch extends AbstractMatchServiceActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(JoinMatch.class, this::join)
+                .match(MemberOfflineEvent.class, offlineEvent -> matchList.remove(offlineEvent.getLogoutUserId()))
+                .matchEquals(CHECK_MATHC_LIST, c -> checkMatchList())
                 .build();
     }
 
-    private void join(JoinMatch joinMatch) {
+    private void join(JoinMatch match) {
         if (getLogger().isDebugEnabled()) {
-            getLogger().info("add queue userId " + joinMatch.getUserId());
+            getLogger().info("add queue userId " + match.getUserId());
         }
 
-        matchList.add(joinMatch.getUserId());
-
-        // 回复客户端成功
-//        response(DefaultMessageProvider.produceEmptyMessage());
+        matchList.add(match.getUserId());
 
         checkMatchList();
     }
@@ -56,7 +56,7 @@ public class GlobalMatch extends AbstractMatchServiceActor {
                     userIds.add(matchList.iterator().next());
                     matchList.iterator().remove();
                 }
-//                roomMangerActor.tell(userIds, getSelf());
+                selectRoomManger().tell(userIds, getSelf());
             } while (matchList.size() >= successPeople);
         } else {
             List<Long> userIds = Lists.newArrayList();
@@ -70,4 +70,8 @@ public class GlobalMatch extends AbstractMatchServiceActor {
         return Props.create(GlobalMatch.class, successPeople);
     }
 
+    /**
+     * 检查匹配列表
+     */
+    static final String CHECK_MATHC_LIST = "check";
 }

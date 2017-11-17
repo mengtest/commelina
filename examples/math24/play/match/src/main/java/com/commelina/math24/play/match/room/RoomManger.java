@@ -2,7 +2,10 @@ package com.commelina.math24.play.match.room;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
+import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
+import com.commelina.math24.play.match.proto.PrepareTemporaryRoom;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -17,13 +20,36 @@ public class RoomManger extends AbstractMatchServiceActor {
     /**
      * 零时房间列表
      */
-    private final Map<Long, ActorRef> roomList = Maps.newHashMap();
+    private final Map<Long, ActorRef> roomList = Maps.newTreeMap();
+
+    /**
+     * userId -> roomId
+     */
+    private final Map<Long, Long> userRoomId = Maps.newTreeMap();
 
     private long currentLastRoomId = 0;
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
+                .match(MemberOfflineEvent.class, offlineEvent -> {
+                    Long roomId = userRoomId.get(offlineEvent.getLogoutUserId());
+                    if (roomId != null && roomId > 0) {
+                        ActorRef temporaryRoom = roomList.get(roomId);
+                        if (temporaryRoom != null) {
+                            temporaryRoom.forward(offlineEvent, getContext());
+                        }
+                    }
+                })
+                .match(MemberOnlineEvent.class, onlineEvent -> {
+                    Long roomId = userRoomId.get(onlineEvent.getLoginUserId());
+                    if (roomId != null && roomId > 0) {
+                        ActorRef temporaryRoom = roomList.get(roomId);
+                        if (temporaryRoom != null) {
+                            temporaryRoom.forward(onlineEvent, getContext());
+                        }
+                    }
+                })
                 .match(List.class, this::createRoom)
                 .build();
     }
@@ -33,16 +59,7 @@ public class RoomManger extends AbstractMatchServiceActor {
 
         roomList.put(currentLastRoomId++, temporary);
 
-//        ApiRequestForward.Builder builder = ApiRequestForward.newBuilder()
-//                .setForward(DOMAIN.GAME_ROOM_VALUE)
-//                .setOpcode(MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE)
-//                .setVersion("1.0.0");
-//
-//        for (Long userId : userIds) {
-//            builder.addArgs(ByteString.copyFromUtf8(userId.toString()));
-//        }
-
-//        temporary.tell(CreateRoom.getDefaultInstance(), getSelf());
+        temporary.tell(PrepareTemporaryRoom.getDefaultInstance(), getSelf());
     }
 
     public static Props props() {

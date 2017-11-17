@@ -9,5 +9,10 @@ option java_multiple_files = true;
 enum NOTIFY_OPCODE {
     NOTIFY_MATCH_SUCCESS = 0;
     MATCH_STATUS = 1;
-    JOIN_MATCH_ROOM = 2;
+    JOIN_MATCH_TEMPORARY_ROOM = 2;
+}
+
+// 加入临时房间通知消息
+message JOIN_MATCH_TEMPORARY_ROOM_BRD {
+    uint64 roomId = 1;
 }

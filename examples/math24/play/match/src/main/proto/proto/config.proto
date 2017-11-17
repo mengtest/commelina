@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package def.match.error_code;
+
+option java_package = "com.commelina.math24.play.match.proto";
+option java_outer_classname = "ConfigProtos";
+option java_multiple_files = true;
+

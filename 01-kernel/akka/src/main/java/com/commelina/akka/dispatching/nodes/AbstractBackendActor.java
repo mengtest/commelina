@@ -101,6 +101,10 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         getSender().tell(message, getSelf());
     }
 
+    protected void emptyResponse() {
+        response(ActorResponse.getDefaultInstance());
+    }
+
     protected LoggingAdapter getLogger() {
         return logger;
     }
