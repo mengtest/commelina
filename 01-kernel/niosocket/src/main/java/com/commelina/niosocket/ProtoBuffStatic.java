@@ -1,8 +1,6 @@
 package com.commelina.niosocket;
 
-import com.commelina.niosocket.proto.DEFAULT_FORWARD_CODE;
-import com.commelina.niosocket.proto.SERVER_CODE;
-import com.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.*;
 
 /**
  * 静态的 proto 映射
@@ -12,24 +10,37 @@ import com.commelina.niosocket.proto.SocketMessage;
  */
 public class ProtoBuffStatic {
 
-    static final SocketMessage HEARTBEAT_CODE = SocketMessage.getDefaultInstance();
+    /**
+     * 服务器错误的包
+     */
     static final SocketMessage SERVER_ERROR = SocketMessage.newBuilder().setCode(SERVER_CODE.SERVER_ERROR).build();
-
+    /**
+     * 需要登录才能访问
+     */
     static final SocketMessage UNAUTHORIZED = SocketMessage.newBuilder().setCode(SERVER_CODE.UNAUTHORIZED).build();
-    static final SocketMessage LOGIN_FAILED = SocketMessage.newBuilder().setCode(SERVER_CODE.LOGIN_FAILED).build();
 
+    /**
+     * 心跳 回复的包
+     */
+    static final SocketMessage HEARTBEAT = SocketMessage.newBuilder().setCode(SERVER_CODE.HEARTBEAT_CODE).build();
+
+    /**
+     * 登录失败的包
+     */
+    static final SocketMessage LOGIN_FAILED = SocketMessage.newBuilder()
+            .setCode(SERVER_CODE.RESONSE_CODE)
+            .setDomain(SYSTEM_FORWARD_CODE.SYSTEM_VALUE)
+            .setOpcode(SYSTEM_OPCODE.LOGIN_CODE_VALUE)
+            .setBody(MessageBody.newBuilder().setError(SYSTEM_ERROR.LOGIN_FAILED_VALUE))
+            .build();
+    /**
+     * 登录成功的包
+     */
     static final SocketMessage LOGIN_SUCCESS = SocketMessage.newBuilder()
             .setCode(SERVER_CODE.RESONSE_CODE)
-            .setDomain(DEFAULT_FORWARD_CODE.LOGIN_VALUE)
+            .setDomain(SYSTEM_FORWARD_CODE.SYSTEM_VALUE)
+            .setOpcode(SYSTEM_OPCODE.LOGIN_CODE_VALUE)
+            .setBody(MessageBody.newBuilder().setError(SYSTEM_ERROR.LOGIN_SUCCESS_VALUE))
             .build();
-
-    public static SocketMessage createMessage(SERVER_CODE serverCode, int domain, int opcode) {
-        return SocketMessage
-                .newBuilder()
-                .setCode(serverCode)
-                .setDomain(domain)
-                .setOpcode(opcode)
-                .build();
-    }
 
 }

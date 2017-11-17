@@ -4,6 +4,7 @@ import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
+import com.commelina.niosocket.proto.RequestBody;
 import com.commelina.niosocket.proto.SocketASK;
 import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/11
  */
@@ -36,9 +36,11 @@ public class GatewayLogin implements MemberEvent {
 
         return SocketASK.newBuilder()
                 .setForward(DOMAIN.GATEWAY_VALUE)
-                .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
-                .setVersion("1.0.0")
-                .addArgs(ByteString.copyFromUtf8("1"))
+                .setBody(RequestBody.newBuilder()
+                        .setOpcode(GATEWAY_METHODS.PASSPORT_CONNECT_VALUE)
+                        .setVersion("1.0.0")
+                        .addArgs(ByteString.copyFromUtf8("1"))
+                )
                 .build();
     }
 

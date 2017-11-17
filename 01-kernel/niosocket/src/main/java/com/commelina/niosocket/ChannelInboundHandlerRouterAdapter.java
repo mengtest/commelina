@@ -1,13 +1,13 @@
 package com.commelina.niosocket;
 
-import com.commelina.niosocket.proto.DEFAULT_FORWARD_CODE;
-import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 用户消息接收的handler
@@ -27,12 +27,12 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
      * @param ctx
      * @throws Exception
      */
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("client:{}, connection.", ctx.channel().id());
-        }
-    }
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//        if (LOGGER.isDebugEnabled()) {
+//            LOGGER.debug("client:{}, connection.", ctx.channel().id());
+//        }
+//    }
 
     /**
      * 当客户端断开连接的时候触发函数
@@ -46,7 +46,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("client:{}, logout userId:{}", ctx.channel().id(), logoutUserId);
         }
-        socketEventHandler.onOffline(ctx, logoutUserId);
+        if (logoutUserId > 0) {
+            socketEventHandler.onOffline(ctx, logoutUserId);
+        }
     }
 
     /**
@@ -59,48 +61,17 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final SocketASK ask = (SocketASK) msg;
-
-        if (ask.getForward() > 0) {
-            long userId = NettyServerContext.INSTANCE.getLoginUserId(ctx.channel().id());
-            if (userId <= 0) {
-                ctx.writeAndFlush(ProtoBuffStatic.UNAUTHORIZED);
-                return;
-            }
-            try {
-                socketEventHandler.onRequest(ctx, userId, ask);
-            } catch (Throwable throwable) {
-                ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
-                exceptionCaught(ctx, throwable);
-            }
-        } else if (ask.getForward() == DEFAULT_FORWARD_CODE.HEARTBEAT_VALUE) {
-            // forward = 0 表示心跳
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
-            }
-            ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT_CODE);
-        } else {
-            // forward = -1 表示登陆
-            CompletableFuture<Long> userIdCompletableFuture = socketEventHandler.onLogin(ctx, ask);
-
-            do {
-                if (userIdCompletableFuture == null) {
-                    break;
-                }
-
-                long userId = userIdCompletableFuture.get();
-                if (userId <= 0) {
-                    break;
-                }
-
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Login success, channelId {}, userId {} ", ctx.channel().id(), userId);
-                }
-                NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
-                ctx.writeAndFlush(ProtoBuffStatic.LOGIN_SUCCESS);
-                return;
-            } while (false);
-            ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
+        if (ask.getForward() >= SYSTEM_FORWARD_CODE.BOUNDARY_VALUE) {
+            onRequest(ctx, ask);
+            return;
         }
+
+        if (ask.getForward() == SYSTEM_FORWARD_CODE.HEARTBEAT_VALUE) {
+            heartbeat(ctx, ask);
+            return;
+        }
+
+        systemOption(ctx, ask);
     }
 
     // 调用异常的处理
@@ -128,6 +99,64 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
 
     void setHandlers(SocketEventHandler socketEventHandler) {
         this.socketEventHandler = socketEventHandler;
+    }
+
+    private void onRequest(ChannelHandlerContext ctx, SocketASK ask) throws Exception {
+        long userId = NettyServerContext.INSTANCE.getLoginUserId(ctx.channel().id());
+        if (userId <= 0) {
+            ctx.writeAndFlush(ProtoBuffStatic.UNAUTHORIZED);
+            return;
+        }
+        try {
+            socketEventHandler.onRequest(ctx, userId, ask);
+        } catch (Throwable throwable) {
+            ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
+            exceptionCaught(ctx, throwable);
+        }
+    }
+
+    private void systemOption(ChannelHandlerContext ctx, SocketASK ask) {
+        switch (ask.getBody().getOpcode()) {
+            case SYSTEM_OPCODE.LOGIN_CODE_VALUE:
+                login(ctx, ask);
+                break;
+            default:
+                // nothing to do
+        }
+    }
+
+    private void heartbeat(ChannelHandlerContext ctx, SocketASK ask) {
+        // forward = 0 表示心跳
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
+        }
+        ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT);
+    }
+
+    private void login(ChannelHandlerContext ctx, SocketASK ask) {
+        CompletableFuture<Long> userIdCompletableFuture = socketEventHandler.onLogin(ctx, ask);
+        do {
+            if (userIdCompletableFuture == null) {
+                break;
+            }
+            long userId;
+            try {
+                userId = userIdCompletableFuture.get();
+            } catch (InterruptedException | ExecutionException e) {
+                LOGGER.error("Login failed channelId: {}, error: {}", ctx.channel().id(), e);
+                break;
+            }
+            if (userId <= 0) {
+                break;
+            }
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Login success, channelId {}, userId {} ", ctx.channel().id(), userId);
+            }
+            NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
+            ctx.writeAndFlush(ProtoBuffStatic.LOGIN_SUCCESS);
+            return;
+        } while (false);
+        ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
     }
 
 }

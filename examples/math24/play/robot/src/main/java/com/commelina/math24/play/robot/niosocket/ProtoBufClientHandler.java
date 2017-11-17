@@ -1,7 +1,6 @@
 package com.commelina.math24.play.robot.niosocket;
 
 import com.commelina.math24.play.robot.interfaces.SocketHandler;
-import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketASK;
 import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/7
  */
@@ -42,14 +40,26 @@ public class ProtoBufClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         LOGGER.debug("Received message.");
         SocketMessage message = (SocketMessage) msg;
-        if (message.getCode() == SERVER_CODE.HEARTBEAT_CODE) {
-            LOGGER.debug("Heartbeat normal.");
-            // nothing to do
-            return;
-        }
 
-        socketHandler.channelRead(ctx, message);
-        super.channelRead(ctx, msg);
+        switch (message.getCode()) {
+            case NOTIFY_CODE:
+                socketHandler.channelRead(ctx, message);
+                break;
+            case RESONSE_CODE:
+                socketHandler.channelRead(ctx, message);
+                break;
+            case UNAUTHORIZED:
+                LOGGER.debug("Unauthorized.");
+                break;
+            case SERVER_ERROR:
+                LOGGER.debug("Server error.");
+                break;
+            case HEARTBEAT_CODE:
+                LOGGER.debug("Heartbeat normal.");
+                return;
+            default:
+
+        }
     }
 
     @Override

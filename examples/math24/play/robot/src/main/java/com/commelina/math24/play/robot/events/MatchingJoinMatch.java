@@ -4,6 +4,7 @@ import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.match.proto.MATCH_METHODS;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
+import com.commelina.niosocket.proto.RequestBody;
 import com.commelina.niosocket.proto.SocketASK;
 import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.ByteString;
@@ -26,9 +27,11 @@ public class MatchingJoinMatch implements MemberEvent {
     public SocketASK handler(MemberEventLoop eventLoop) {
         return SocketASK.newBuilder()
                 .setForward(DOMAIN.MATCHING_VALUE)
-                .setOpcode(MATCH_METHODS.JOIN_MATCH_QUENE_VALUE)
-                .setVersion("1.0.0")
-                .addArgs(ByteString.copyFromUtf8(userId.toString()))
+                .setBody(RequestBody.newBuilder()
+                        .setOpcode(MATCH_METHODS.JOIN_MATCH_QUENE_VALUE)
+                        .setVersion("1.0.0")
+                        .addArgs(ByteString.copyFromUtf8(userId.toString()))
+                )
                 .build();
     }
 

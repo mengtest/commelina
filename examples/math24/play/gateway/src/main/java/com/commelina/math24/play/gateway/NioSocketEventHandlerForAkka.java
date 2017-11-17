@@ -46,7 +46,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
                 dispatching.requestRoom(ctx, request);
                 break;
             default:
-                ReplyUtils.reply(ctx, ask.getForward(), ask.getOpcode(), ERROR_CODE.DOMAIN_NOT_FOUND_VALUE);
+                ReplyUtils.reply(ctx, ask.getForward(), ask.getBody().getOpcode(), ERROR_CODE.DOMAIN_NOT_FOUND_VALUE);
         }
 
     }
@@ -54,7 +54,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
     @Override
     public CompletableFuture<Long> onLogin(ChannelHandlerContext ctx, SocketASK ask) {
 
-        ByteString tokenArg = ask.getArgs(0);
+        ByteString tokenArg = ask.getBody().getArgs(0);
         if (tokenArg == null) {
             // token 转换错误
 //                        response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));

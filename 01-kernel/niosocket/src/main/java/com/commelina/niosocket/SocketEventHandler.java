@@ -17,6 +17,7 @@ public interface SocketEventHandler {
      * 路由上下文，当有消息来触发，用来分发消息
      *
      * @param ctx
+     * @param userId
      * @param ask
      */
     void onRequest(ChannelHandlerContext ctx, long userId, SocketASK ask);
@@ -25,6 +26,8 @@ public interface SocketEventHandler {
      * 用户登陆，需要返回 用户uid
      *
      * @param ctx
+     * @param ask
+     * @return
      */
     CompletableFuture<Long> onLogin(ChannelHandlerContext ctx, SocketASK ask);
 
