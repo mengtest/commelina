@@ -5,7 +5,8 @@ import akka.actor.Props;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
-import com.commelina.math24.play.match.proto.PrepareTemporaryRoom;
+import com.commelina.math24.play.match.proto.JoinRoom;
+import com.commelina.math24.play.match.proto.TemporaryRoomPrepare;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -50,6 +51,21 @@ public class RoomManger extends AbstractMatchServiceActor {
                         }
                     }
                 })
+                .match(JoinRoom.class, j -> {
+                    Long roomId = userRoomId.get(j.getUserId());
+                    if (roomId == null || roomId == 0) {
+                        getLogger().info("User : {} not found roomId.", j.getUserId());
+                        return;
+                    }
+
+                    ActorRef temporaryRoom = roomList.get(roomId);
+                    if (temporaryRoom == null) {
+                        getLogger().info("User : {},roomId {} not found.", j.getUserId(), roomId);
+                        return;
+                    }
+
+                    temporaryRoom.forward(j, getContext());
+                })
                 .match(List.class, this::createRoom)
                 .build();
     }
@@ -59,7 +75,7 @@ public class RoomManger extends AbstractMatchServiceActor {
 
         roomList.put(currentLastRoomId++, temporary);
 
-        temporary.tell(PrepareTemporaryRoom.getDefaultInstance(), getSelf());
+        temporary.tell(TemporaryRoomPrepare.getDefaultInstance(), getSelf());
     }
 
     public static Props props() {

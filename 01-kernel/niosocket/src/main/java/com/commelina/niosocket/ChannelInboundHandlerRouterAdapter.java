@@ -1,6 +1,7 @@
 package com.commelina.niosocket;
 
 import com.commelina.niosocket.proto.*;
+import com.google.protobuf.ByteString;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -110,8 +111,17 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         try {
             socketEventHandler.onRequest(ctx, userId, ask);
         } catch (Throwable throwable) {
-            ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
-            exceptionCaught(ctx, throwable);
+            if (LOGGER.isDebugEnabled()) {
+                final SocketMessage message = SocketMessage.newBuilder()
+                        .setCode(SERVER_CODE.SERVER_ERROR)
+                        .setDomain(ask.getForward())
+                        .setBody(MessageBody.newBuilder().setMessage(ByteString.copyFromUtf8(throwable.getLocalizedMessage())))
+                        .build();
+                ctx.writeAndFlush(message);
+            } else {
+                ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
+                exceptionCaught(ctx, throwable);
+            }
         }
     }
 

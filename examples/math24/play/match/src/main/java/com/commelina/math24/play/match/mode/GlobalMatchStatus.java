@@ -3,9 +3,14 @@ package com.commelina.math24.play.match.mode;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import com.commelina.akka.dispatching.proto.ActorBroadcast;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
+import com.commelina.math24.play.match.proto.MATCH_STATUS_BRD;
+import com.commelina.math24.play.match.proto.NOTIFY_OPCODE;
+import scala.concurrent.duration.Duration;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author panyao
@@ -25,17 +30,23 @@ class GlobalMatchStatus extends AbstractMatchServiceActor {
     private void notifyMatchStatus(List<Long> userIds) {
         log.info("Broadcast match status people: " + userIds.size());
 
-        // 把消息发回到主 actor 由，主 actor 发送广播消息到 gate way
-//        ClusterChildNodeSystem.INSTANCE.broadcast(
-//                OPCODE.NOTIFY_MATCH_SUCCESS_VALUE,
-//                userIds,
-//                DefaultMessageProvider.produceMessageForKV("matchUserCount", userIds.size()));
-//
-        // 关闭此 actor
-        getContext().stop(getSelf());
+        selectFrontend().tell(
+                ActorBroadcast.newBuilder()
+                        .setOpcode(NOTIFY_OPCODE.MATCH_STATUS_VALUE)
+                        .addAllUserIds(userIds)
+                        .setMessage(MATCH_STATUS_BRD.newBuilder().setMatchPeople(userIds.size()).build().toByteString())
+                        .build(),
+                getSelf());
+
+        // xs 后关闭此 actor
+        getScheduler().scheduleOnce(
+                Duration.create(5, TimeUnit.SECONDS),
+                () -> getContext().stop(getSelf()),
+                getDispatcher()
+        );
     }
 
-    public static Props props() {
+    static Props props() {
         return Props.create(GlobalMatchStatus.class);
     }
 

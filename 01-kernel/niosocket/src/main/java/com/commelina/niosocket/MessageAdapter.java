@@ -81,4 +81,24 @@ public final class MessageAdapter {
         NettyServerContext.INSTANCE.CHANNEL_GROUP.writeAndFlush(msg);
     }
 
+    /**
+     * 发送错误消息
+     *
+     * @param domain
+     * @param userIds
+     * @param messageBody
+     */
+    public static void sendError(int domain, List<Long> userIds, ByteString messageBody) {
+        final SocketMessage msg = SocketMessage.newBuilder()
+                .setCode(SERVER_CODE.SERVER_ERROR)
+                .setDomain(domain)
+                .setBody(MessageBody.newBuilder().setMessage(messageBody))
+                .build();
+
+        for (Long userId : userIds) {
+            Channel channel = NettyServerContext.INSTANCE.getUserChannel(userId);
+            ReplyUtils.reply(channel, msg);
+        }
+    }
+
 }

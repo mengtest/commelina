@@ -28,6 +28,11 @@ message ActorWorld {
     bytes message = 2;
 }
 
+message ActorDebugMessage {
+    repeated uint64 userIds = 1;
+    bytes message = 2;
+}
+
 message ApiRequest {
     // 接口域
     uint32 opcode = 1;

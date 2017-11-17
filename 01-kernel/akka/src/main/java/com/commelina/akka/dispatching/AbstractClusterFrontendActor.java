@@ -106,7 +106,12 @@ public abstract class AbstractClusterFrontendActor extends AbstractActor impleme
                 })
                 .match(ClusterEvent.MemberUp.class, mUp -> register(mUp.member()))
                 .match(ClusterEvent.MemberRemoved.class, mRem -> remove(mRem.member()))
+                .match(ActorDebugMessage.class, this::remoteDebug)
                 .build();
+    }
+
+    protected void remoteDebug(ActorDebugMessage message) {
+        unhandled(message);
     }
 
     @Override

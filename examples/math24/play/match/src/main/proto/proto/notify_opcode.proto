@@ -12,6 +12,10 @@ enum NOTIFY_OPCODE {
     JOIN_MATCH_TEMPORARY_ROOM = 2;
 }
 
+message MATCH_STATUS_BRD {
+    uint32 matchPeople = 1;
+}
+
 // 加入临时房间通知消息
 message JOIN_MATCH_TEMPORARY_ROOM_BRD {
     uint64 roomId = 1;
