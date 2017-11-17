@@ -52,7 +52,7 @@ message ApiRequestForward {
     // 接口版本
     string version = 3;
     // 参数列表
-    repeated bytes args = 4;
+    bytes args = 4;
 }
 
 message MemberOfflineEvent {

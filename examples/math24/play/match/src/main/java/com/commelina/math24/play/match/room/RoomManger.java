@@ -6,6 +6,7 @@ import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.commelina.math24.play.match.proto.JoinRoom;
+import com.commelina.math24.play.match.proto.TemporaryRoomDissolve;
 import com.commelina.math24.play.match.proto.TemporaryRoomPrepare;
 import com.google.common.collect.Maps;
 
@@ -67,6 +68,7 @@ public class RoomManger extends AbstractMatchServiceActor {
                     temporaryRoom.forward(j, getContext());
                 })
                 .match(List.class, this::createRoom)
+                .match(TemporaryRoomDissolve.class, d -> roomList.remove(d.getRoomId()))
                 .build();
     }
 

@@ -32,7 +32,7 @@ public class AppBoot {
 
     @PostConstruct
     public void init() {
-        ClusterActorSystemCreator.createAsClusterBackend("ClusterRoomSystem", "cluster-room", RoomPortal.class);
+        ClusterActorSystemCreator.createAsClusterBackend("ClusterRoomSystem", "cluster-room", RoomBackend.class);
     }
 
 }

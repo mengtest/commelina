@@ -176,11 +176,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -196,11 +196,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
@@ -216,11 +216,11 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/messages/server-match-room/</directory>
-                                    <filtering>false</filtering>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>

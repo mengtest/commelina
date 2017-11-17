@@ -8,7 +8,7 @@ import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
-import com.commelina.math24.matching_room.proto.MATCHING_ROOM_METHODS;
+import com.commelina.math24.matching_room.proto.MATCH_ROOM_REQUEST_OPCODE;
 import com.commelina.math24.play.room.context.RoomContext;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -25,22 +25,17 @@ import java.util.stream.Collectors;
  * @author @panyao
  * @date 2017/9/26
  */
-public class RoomPortal extends AbstractBackendActor {
+public class RoomBackend extends AbstractBackendActor {
 
     /**
      * roomId -> RoomContextActorRef
      */
-    private final BiMap<Long, ActorRef> roomIdToRoomContextActor = HashBiMap.create(128);
+    private final Map<Long, ActorRef> roomIdToRoomContextActor = Maps.newTreeMap();
 
     /**
      * userId -> roomId
      */
-    private final Map<Long, Long> usersToRoomId = Maps.newHashMap();
-
-    /**
-     * 当前 自增的房间id
-     */
-    private long currentRoomId = 0;
+    private final Map<Long, Long> usersToRoomId = Maps.newTreeMap();
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
 
@@ -121,7 +116,7 @@ public class RoomPortal extends AbstractBackendActor {
     @Override
     public void onForward(ApiRequestForward forward) {
         switch (forward.getOpcode()) {
-            case MATCHING_ROOM_METHODS.CREATE_ROOM_VALUE:
+            case MATCH_ROOM_REQUEST_OPCODE.CREATE_ROOM_VALUE:
                 createRoom(forward);
                 break;
             default:
@@ -130,6 +125,10 @@ public class RoomPortal extends AbstractBackendActor {
     }
 
     private void createRoom(ApiRequestForward forward) {
+
+        CREATE_ROOM_REQUES
+
+
         List<Long> userIds = forward.getArgsList()
                 .stream()
                 .map(v -> Long.valueOf(v.toStringUtf8()))
@@ -138,7 +137,6 @@ public class RoomPortal extends AbstractBackendActor {
         // fixme 加载用户信息
         // 默认用户为在线
 
-        final long newRoomId = currentRoomId++;
         final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
         roomIdToRoomContextActor.put(newRoomId, roomContext);
 
