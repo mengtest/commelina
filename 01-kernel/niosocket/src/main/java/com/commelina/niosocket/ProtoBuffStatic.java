@@ -1,5 +1,6 @@
 package com.commelina.niosocket;
 
+import com.commelina.niosocket.proto.DEFAULT_FORWARD_CODE;
 import com.commelina.niosocket.proto.SERVER_CODE;
 import com.commelina.niosocket.proto.SocketMessage;
 
@@ -16,6 +17,11 @@ public class ProtoBuffStatic {
 
     static final SocketMessage UNAUTHORIZED = SocketMessage.newBuilder().setCode(SERVER_CODE.UNAUTHORIZED).build();
     static final SocketMessage LOGIN_FAILED = SocketMessage.newBuilder().setCode(SERVER_CODE.LOGIN_FAILED).build();
+
+    static final SocketMessage LOGIN_SUCCESS = SocketMessage.newBuilder()
+            .setCode(SERVER_CODE.RESONSE_CODE)
+            .setDomain(DEFAULT_FORWARD_CODE.LOGIN_VALUE)
+            .build();
 
     public static SocketMessage createMessage(SERVER_CODE serverCode, int domain, int opcode) {
         return SocketMessage

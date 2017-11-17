@@ -1,5 +1,6 @@
 package com.commelina.niosocket;
 
+import com.commelina.niosocket.proto.DEFAULT_FORWARD_CODE;
 import com.commelina.niosocket.proto.SocketASK;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -65,14 +66,13 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush(ProtoBuffStatic.UNAUTHORIZED);
                 return;
             }
-
             try {
                 socketEventHandler.onRequest(ctx, userId, ask);
             } catch (Throwable throwable) {
                 ctx.writeAndFlush(ProtoBuffStatic.SERVER_ERROR);
                 exceptionCaught(ctx, throwable);
             }
-        } else if (ask.getForward() == 0) {
+        } else if (ask.getForward() == DEFAULT_FORWARD_CODE.HEARTBEAT_VALUE) {
             // forward = 0 表示心跳
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
@@ -96,11 +96,11 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
                     LOGGER.debug("Login success, channelId {}, userId {} ", ctx.channel().id(), userId);
                 }
                 NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
+                ctx.writeAndFlush(ProtoBuffStatic.LOGIN_SUCCESS);
                 return;
             } while (false);
             ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
         }
-
     }
 
     // 调用异常的处理

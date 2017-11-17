@@ -30,9 +30,9 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
     public void onRequest(ChannelHandlerContext ctx, long userId, SocketASK ask) {
         final ApiRequest request = ApiRequest.newBuilder()
                 .setLoginUserId(userId)
-                .setOpcode(ask.getOpcode())
-                .setVersion(ask.getVersion())
-                .addAllArgs(ask.getArgsList())
+                .setOpcode(ask.getBody().getOpcode())
+                .setVersion(ask.getBody().getVersion())
+                .addAllArgs(ask.getBody().getArgsList())
                 .build();
 
         switch (ask.getForward()) {

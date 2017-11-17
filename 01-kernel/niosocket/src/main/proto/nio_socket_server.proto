@@ -10,12 +10,16 @@ option java_multiple_files = true;
 message SocketASK {
     // 重定向的域 >=0 会认为是业务请求，小于 0 认为是系统请求-1 心跳 -2 登陆
     int32 forward = 1;
+    RequestBody body = 2;
+}
+
+message RequestBody {
     // 接口域
-    uint32 opcode = 2;
+    uint32 opcode = 1;
     // 接口版本
-    string version = 3;
+    string version = 2;
     // 参数 约定结构，json，pb等等
-    repeated bytes args = 4;
+    repeated bytes args = 3;
 }
 
 // niosocket 消息
@@ -26,6 +30,7 @@ message SocketMessage {
     uint32 domain = 2;
     // 操作码  code = 1 , opCode 与 请求的 request opcode 保持一致，code = 1 则会新定义操作码
     uint32 opcode = 3;
+
     MessageBody body = 4;
 }
 
@@ -50,4 +55,15 @@ enum SERVER_CODE {
     LOGIN_FAILED = 4;
     // 服务端内部错误
     SERVER_ERROR = 5;
+}
+
+enum DEFAULT_FORWARD_CODE {
+    HEARTBEAT = 0;
+    LOGIN = -1;
+
+}
+
+enum DEFAULT_OPCODE {
+    LOGIN_CODE = 0;
+
 }
