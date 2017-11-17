@@ -1,23 +1,19 @@
 package com.commelina.math24.play.room;
 
 import akka.actor.ActorRef;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
+import com.commelina.math24.matching_room.proto.CREATE_ROOM_REQUEST;
 import com.commelina.math24.matching_room.proto.MATCH_ROOM_REQUEST_OPCODE;
 import com.commelina.math24.play.room.context.RoomContext;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 房间 server 入口
@@ -37,21 +33,19 @@ public class RoomBackend extends AbstractBackendActor {
      */
     private final Map<Long, Long> usersToRoomId = Maps.newTreeMap();
 
-    private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
-
     @Override
     public void onOnline(MemberOnlineEvent onlineEvent) {
 
         Long roomId = usersToRoomId.get(onlineEvent.getLoginUserId());
 
         if (roomId == null || roomId <= 0) {
-            logger.info("User id {} not found room id.", onlineEvent.getLoginUserId());
+            getLogger().info("User id {} not found room id.", onlineEvent.getLoginUserId());
             return;
         }
 
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
-            logger.info("RoomContext id {} not instance RoomContext.", roomId);
+            getLogger().info("RoomContext id {} not instance RoomContext.", roomId);
             return;
         }
 
@@ -63,13 +57,13 @@ public class RoomBackend extends AbstractBackendActor {
         Long roomId = usersToRoomId.get(offlineEvent.getLogoutUserId());
 
         if (roomId == null || roomId <= 0) {
-            logger.info("User id {} not found room id.", offlineEvent.getLogoutUserId());
+            getLogger().info("User id {} not found room id.", offlineEvent.getLogoutUserId());
             return;
         }
 
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
-            logger.info("RoomContext id {} not instance RoomContext.", roomId);
+            getLogger().info("RoomContext id {} not instance RoomContext.", roomId);
             return;
         }
 
@@ -98,7 +92,7 @@ public class RoomBackend extends AbstractBackendActor {
         ActorRef roomContext = roomIdToRoomContextActor.get(roomId);
         if (roomContext == null) {
             response(StaticProtoBuffDefined.ROOM_NOT_FOUND);
-            logger.info("Api request room id {} not instance RoomContext.", roomId);
+            getLogger().info("Api request room id {} not instance RoomContext.", roomId);
             return;
         }
 
@@ -125,23 +119,22 @@ public class RoomBackend extends AbstractBackendActor {
     }
 
     private void createRoom(ApiRequestForward forward) {
-
-        CREATE_ROOM_REQUES
-
-
-        List<Long> userIds = forward.getArgsList()
-                .stream()
-                .map(v -> Long.valueOf(v.toStringUtf8()))
-                .collect(Collectors.toList());
+        CREATE_ROOM_REQUEST request;
+        try {
+            request = CREATE_ROOM_REQUEST.parseFrom(forward.getArgs(0));
+        } catch (InvalidProtocolBufferException e) {
+            getLogger().error("Input args error {}", e);
+            return;
+        }
 
         // fixme 加载用户信息
         // 默认用户为在线
 
-        final ActorRef roomContext = getContext().actorOf(RoomContext.props(newRoomId, null), "roomContext");
-        roomIdToRoomContextActor.put(newRoomId, roomContext);
+        final ActorRef roomContext = getContext().actorOf(RoomContext.props(request.getRoomId(), null), "roomContext");
+        roomIdToRoomContextActor.put(request.getRoomId(), roomContext);
 
         // 把当前用户加入 room Id 列表上
-        userIds.forEach(v -> usersToRoomId.put(v, newRoomId));
+        request.getUserIdsList().forEach(u -> usersToRoomId.put(u, request.getRoomId()));
     }
 
 }

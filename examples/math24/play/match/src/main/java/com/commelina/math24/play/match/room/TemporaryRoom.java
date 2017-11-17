@@ -6,6 +6,7 @@ import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.common.proto.DOMAIN;
+import com.commelina.math24.matching_room.proto.CREATE_ROOM_REQUEST;
 import com.commelina.math24.matching_room.proto.MATCH_ROOM_REQUEST_OPCODE;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.commelina.math24.play.match.proto.*;

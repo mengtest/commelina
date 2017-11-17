@@ -1,9 +1,9 @@
 package com.commelina.math24.play.robot.events;
 
 import com.commelina.math24.common.proto.DOMAIN;
-import com.commelina.math24.play.match.proto.REQUEST_OPCODE;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
+import com.commelina.math24.play.room.proto.REQUEST_OPCODE;
 import com.commelina.niosocket.proto.RequestBody;
 import com.commelina.niosocket.proto.SocketASK;
 import com.commelina.niosocket.proto.SocketMessage;

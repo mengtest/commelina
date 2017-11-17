@@ -18,8 +18,8 @@ message RequestBody {
     uint32 opcode = 1;
     // 接口版本
     string version = 2;
-    // 参数 约定结构，json，pb等等
-    bytes args = 3;
+    // 参数 约定结构  ，json，pb等等， 数组前面可以放公共参数 如 userId, JSON, PB
+    repeated bytes args = 3;
 }
 
 // niosocket 消息

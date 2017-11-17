@@ -53,7 +53,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
     @Override
     public CompletableFuture<Long> onLogin(ChannelHandlerContext ctx, SocketASK ask) {
-
+        // 整个消息就是 token
         ByteString tokenArg = ask.getBody().getArgs(0);
         if (tokenArg == null) {
             // token 转换错误
