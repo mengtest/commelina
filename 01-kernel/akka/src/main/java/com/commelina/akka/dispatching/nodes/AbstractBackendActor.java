@@ -25,11 +25,7 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
 
     private final Cluster cluster = Cluster.get(getContext().system());
 
-    private final ClusterBackendActorSystem backendActorSystem;
-
-    public AbstractBackendActor(ClusterBackendActorSystem backendActorSystem) {
-        this.backendActorSystem = backendActorSystem;
-    }
+    private BackendFindFrontend findFrontendSocket;
 
     //subscribe to cluster changes, MemberUp
     @Override
@@ -50,6 +46,7 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
                 .match(ApiRequestForward.class, this::onForward)
                 .match(MemberOfflineEvent.class, this::onOffline)
                 .match(MemberOnlineEvent.class, this::onOnline)
+                .match(BackendFindEvent.class, e -> getSender().tell(findFrontendSocket, getSelf()))
 
                 .match(ClusterEvent.CurrentClusterState.class, state -> {
                     for (Member member : state.getMembers()) {
@@ -88,16 +85,15 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
     void register(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
             logger.info("Frontend port:{} , nodes register.", member.address().port().get());
-            backendActorSystem.registerRouterFronted(member.address() + Constants.CLUSTER_FRONETEDN_PATH);
-//            getContext().watch(getSender());
+            String frontendPath = member.address() + Constants.CLUSTER_FRONTEND_PATH;
+            findFrontendSocket = BackendFindFrontend.newBuilder().setFrontendAddress(frontendPath).build();
         }
     }
 
     void remove(Member member) {
         if (member.hasRole(Constants.CLUSTER_FRONTEND)) {
             logger.info("Frontend port:{} , nodes remove.", member.address().port().get());
-//            getContext().unwatch(getSender());
-            backendActorSystem.removeRouterFronted();
+            findFrontendSocket = BackendFindFrontend.getDefaultInstance();
         }
     }
 
@@ -105,12 +101,8 @@ public abstract class AbstractBackendActor extends AbstractActor implements Disp
         getSender().tell(message, getSelf());
     }
 
-    protected LoggingAdapter logger() {
+    protected LoggingAdapter getLogger() {
         return logger;
-    }
-
-    protected ClusterBackendActorSystem backendActorSystem() {
-        return backendActorSystem;
     }
 
 }

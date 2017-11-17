@@ -1,7 +1,7 @@
 package com.commelina.math24.play.match.room;
 
-import akka.actor.AbstractActor;
 import akka.actor.Props;
+import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.commelina.math24.play.match.proto.PrepareTemporaryRoom;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author panyao
  * @date 2017/11/10
  */
-public class TemporaryRoom extends AbstractActor {
+public class TemporaryRoom extends AbstractMatchServiceActor {
 
     /**
      * 房间id

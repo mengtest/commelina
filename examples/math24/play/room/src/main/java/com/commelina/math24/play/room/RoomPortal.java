@@ -4,7 +4,6 @@ import akka.actor.ActorRef;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
-import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.ApiRequestForward;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
@@ -44,10 +43,6 @@ public class RoomPortal extends AbstractBackendActor {
     private long currentRoomId = 0;
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), this);
-
-    public RoomPortal(ClusterBackendActorSystem backendActorSystem) {
-        super(backendActorSystem);
-    }
 
     @Override
     public void onOnline(MemberOnlineEvent onlineEvent) {

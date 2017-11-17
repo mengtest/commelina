@@ -57,3 +57,12 @@ message MemberOfflineEvent {
 message MemberOnlineEvent {
     uint64 loginUserId = 1;
 }
+
+// 查询 集群前端的地址
+message BackendFindEvent {
+
+}
+
+message BackendFindFrontend {
+    string frontendAddress = 1;
+}

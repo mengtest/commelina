@@ -1,10 +1,9 @@
 package com.commelina.math24.play.match.mode;
 
-import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
+import com.commelina.math24.play.match.AbstractMatchServiceActor;
 
 import java.util.List;
 
@@ -12,15 +11,9 @@ import java.util.List;
  * @author panyao
  * @date 2017/11/10
  */
-public class GlobalMatchStatus extends AbstractActor {
+public class GlobalMatchStatus extends AbstractMatchServiceActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
-
-    private final ClusterBackendActorSystem backendActorSystem;
-
-    public GlobalMatchStatus(ClusterBackendActorSystem backendActorSystem) {
-        this.backendActorSystem = backendActorSystem;
-    }
 
     @Override
     public Receive createReceive() {

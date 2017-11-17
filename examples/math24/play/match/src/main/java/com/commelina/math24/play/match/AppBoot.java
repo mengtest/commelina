@@ -22,7 +22,7 @@ public class AppBoot {
 
     @PostConstruct
     public void init() {
-        ClusterActorSystemCreator.createAsClusterBackend("ClusterMatchingSystem", "cluster-match", MatchPortal.class);
+        ClusterActorSystemCreator.createAsClusterBackend("ClusterMatchingSystem", "cluster-match", MatchBackend.class);
     }
 
 }

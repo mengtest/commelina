@@ -1,10 +1,7 @@
 package com.commelina.math24.play.match;
 
 import akka.actor.ActorRef;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
-import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.math24.play.match.mode.GlobalMatch;
@@ -21,9 +18,7 @@ import java.util.Map;
  * @author @panyao
  * @date 2017/9/26
  */
-public class MatchPortal extends AbstractBackendActor {
-
-    private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
+public class MatchBackend extends AbstractBackendActor {
 
     /**
      * 用户访问的最后一个 mode
@@ -31,19 +26,14 @@ public class MatchPortal extends AbstractBackendActor {
     private final Map<Long, MATCH_MODE> userLastAccessMode = Maps.newHashMap();
 
     /**
-     * 10 人局游戏
+     * 全局匹配
      */
     private ActorRef globalMatchActorRef;
-
-    public MatchPortal(ClusterBackendActorSystem backendActorSystem) {
-        super(backendActorSystem);
-    }
 
     @Override
     public void preStart() {
         super.preStart();
-        //
-        getContext().getSystem().actorOf(GlobalMatch.props(10, backendActorSystem()));
+        globalMatchActorRef = getContext().getSystem().actorOf(GlobalMatch.props(10), AbstractMatchServiceActor.GLOBAL_MATCH);
     }
 
     @Override

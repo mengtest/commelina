@@ -132,7 +132,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 //            //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
 //
 //            long userId = Long.valueOf(tokenArg.toStringUtf8());
-////            logger().info("userId:{}, 登录成功", userId);
+////            getLogger().info("userId:{}, 登录成功", userId);
         }
 
     }

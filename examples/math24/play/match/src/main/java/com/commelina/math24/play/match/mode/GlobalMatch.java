@@ -2,10 +2,7 @@ package com.commelina.math24.play.match.mode;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
-import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
+import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.commelina.math24.play.match.proto.JoinMatch;
 import com.google.common.collect.Lists;
 
@@ -17,25 +14,17 @@ import java.util.List;
  * @author panyao
  * @date 2017/11/10
  */
-public class GlobalMatch extends AbstractServiceActor {
+public class GlobalMatch extends AbstractMatchServiceActor {
 
     private final int successPeople;
-
-    private final LoggingAdapter logger = Logging.getLogger(getContext().getSystem(), this);
 
     /**
      * 匹配列表
      */
     private final List<Long> matchList;
 
-    /**
-     * 房间管理 actor
-     */
-    private ActorRef roomMangerActor;
-
-    public GlobalMatch(int successPeople, ActorRef roomMangerActor) {
+    public GlobalMatch(int successPeople) {
         this.successPeople = successPeople;
-        this.roomMangerActor = roomMangerActor;
         this.matchList = Lists.newArrayListWithExpectedSize(successPeople * 3);
     }
 
@@ -47,8 +36,8 @@ public class GlobalMatch extends AbstractServiceActor {
     }
 
     private void join(JoinMatch joinMatch) {
-        if (logger.isDebugEnabled()) {
-            logger.info("add queue userId " + joinMatch.getUserId());
+        if (getLogger().isDebugEnabled()) {
+            getLogger().info("add queue userId " + joinMatch.getUserId());
         }
 
         matchList.add(joinMatch.getUserId());
@@ -67,7 +56,7 @@ public class GlobalMatch extends AbstractServiceActor {
                     userIds.add(matchList.iterator().next());
                     matchList.iterator().remove();
                 }
-                roomMangerActor.tell(userIds, getSelf());
+//                roomMangerActor.tell(userIds, getSelf());
             } while (matchList.size() >= successPeople);
         } else {
             List<Long> userIds = Lists.newArrayList();
@@ -77,8 +66,8 @@ public class GlobalMatch extends AbstractServiceActor {
         }
     }
 
-    public static Props props(int successPeople, ClusterBackendActorSystem actorSystem) {
-        return Props.create(GlobalMatch.class, successPeople, actorSystem);
+    public static Props props(int successPeople) {
+        return Props.create(GlobalMatch.class, successPeople);
     }
 
 }

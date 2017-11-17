@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Created by @panyao on 2017/8/15.
  */
-public class MatchAbstractMatchModeActorClientRouterActorTest {
+public class MatchAbstractAbstractMatchServiceActorModeActorClientRouterActorTest {
 
     @Test
     public void testMatchingRun() throws Exception {

@@ -4,9 +4,10 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.util.Timeout;
 import com.commelina.akka.dispatching.nodes.AbstractBackendActor;
-import com.commelina.akka.dispatching.nodes.ClusterBackendActorSystem;
+import com.commelina.akka.dispatching.nodes.MetricsListener;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
+import scala.concurrent.duration.FiniteDuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ClusterActorSystemCreator {
 
-    private static final Timeout DEFAULT_TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    private static final FiniteDuration DURATION = Duration.create(5, TimeUnit.SECONDS);
 
     public static ActorSystem create(String name, String config) {
         return ActorSystem.create(name, ConfigFactory.load(config)
@@ -24,21 +25,25 @@ public class ClusterActorSystemCreator {
     }
 
     public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config) {
-        return createAsClusterFrontend(name, config, DEFAULT_TIMEOUT, NioSocketClusterFrontendActor.class);
+        return createAsClusterFrontend(name, config, DURATION, NioSocketClusterFrontendActor.class);
     }
 
-    public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config, Timeout timeout, Class<? extends AbstractClusterFrontendActor> frontend) {
+    public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config, FiniteDuration timeout,
+                                                                     Class<? extends AbstractClusterFrontendActor> frontend) {
         ActorSystem actorSystem = create(name, config);
-        return new ClusterFrontendActorSystem(create(name, config), actorSystem.actorOf(Props.create(frontend), Constants.CLUSTER_FRONTEND), timeout);
+        return new ClusterFrontendActorSystem(create(name, config), actorSystem.actorOf(Props.create(frontend), Constants.CLUSTER_FRONTEND), new Timeout(timeout));
     }
 
-    public static ClusterBackendActorSystem createAsClusterBackend(String name, String config, Class<? extends AbstractBackendActor> backend) {
-        return createAsClusterBackend(name, config, backend, DEFAULT_TIMEOUT);
-    }
-
-    public static ClusterBackendActorSystem createAsClusterBackend(String name, String config, Class<? extends AbstractBackendActor> backend, Timeout timeout) {
+    public static ActorSystem createAsClusterBackend(String name, String config, Class<? extends AbstractBackendActor> backend) {
         ActorSystem actorSystem = create(name, config);
-        return new ClusterBackendActorSystem(actorSystem, actorSystem.actorOf(Props.create(backend)), timeout);
+        actorSystem.actorOf(Props.create(backend));
+        return actorSystem;
+    }
+
+    public static ActorSystem createAsClusterBackend(String name, String config, Class<? extends AbstractBackendActor> backend, Class<MetricsListener> metricsListenerClass) {
+        ActorSystem actorSystem = createAsClusterBackend(name, config, backend);
+        actorSystem.actorOf(Props.create(metricsListenerClass));
+        return actorSystem;
     }
 
 }

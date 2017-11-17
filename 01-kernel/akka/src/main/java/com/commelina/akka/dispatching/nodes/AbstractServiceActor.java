@@ -1,9 +1,17 @@
 package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorSelection;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.commelina.akka.dispatching.proto.ActorResponse;
+import akka.pattern.PatternsCS;
+import akka.util.Timeout;
+import com.commelina.akka.dispatching.Constants;
+import com.commelina.akka.dispatching.proto.BackendFindEvent;
+import com.commelina.akka.dispatching.proto.BackendFindFrontend;
+import scala.concurrent.duration.Duration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author @panyao
@@ -13,10 +21,26 @@ public abstract class AbstractServiceActor extends AbstractActor {
 
     private final LoggingAdapter logger = Logging.getLogger(getContext().system(), getClass());
 
-    protected final void response(ActorResponse message) {
-        // 使用 此方法，必须是有 actor.forward 从定向过来的 askForBackend
-        // 回复到 on request 的发送者那里
-        getSender().tell(message, getSelf());
+    private ActorSelection frontend;
+
+    protected ActorSelection findFrontend() {
+        if (frontend == null) {
+            BackendFindFrontend backendFindFrontend = (BackendFindFrontend) PatternsCS.ask(getContext().getSystem()
+                    .actorSelection(Constants.CLUSTER_BACKEND_PATH), BackendFindEvent.getDefaultInstance(), getAskForFrontendTimeout())
+                    .toCompletableFuture().join();
+
+            frontend = getContext().getSystem().actorSelection(backendFindFrontend.getFrontendAddress());
+        }
+        return frontend;
+    }
+
+    /**
+     * 获取 服务器前端的path 超时时间
+     *
+     * @return
+     */
+    protected Timeout getAskForFrontendTimeout() {
+        return new Timeout(Duration.create(5, TimeUnit.SECONDS));
     }
 
     protected LoggingAdapter getLogger() {

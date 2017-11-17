@@ -1,8 +1,8 @@
 package com.commelina.math24.play.match.room;
 
-import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import com.commelina.math24.play.match.AbstractMatchServiceActor;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author panyao
  * @date 2017/11/10
  */
-public class RoomManger extends AbstractActor {
+public class RoomManger extends AbstractMatchServiceActor {
 
     /**
      * 零时房间列表
