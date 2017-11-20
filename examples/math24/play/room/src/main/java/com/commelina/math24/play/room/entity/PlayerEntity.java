@@ -22,4 +22,7 @@ public class PlayerEntity {
         this.playerStatus = playerStatus;
     }
 
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
 }

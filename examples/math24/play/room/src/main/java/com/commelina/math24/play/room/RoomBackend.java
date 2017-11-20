@@ -95,7 +95,6 @@ public class RoomBackend extends AbstractBackendActor {
 
         // fixme 加载用户信息
         // 默认用户为在线
-
         final ActorRef roomContext = getContext().actorOf(RoomContext.props(request.getRoomId(), null), "roomContext");
         roomIdToRoomContextActor.put(request.getRoomId(), roomContext);
 

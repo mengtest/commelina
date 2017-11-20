@@ -1,7 +1,6 @@
 package com.commelina.math24.play.room.context;
 
 import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
 import akka.actor.Props;
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
 import com.commelina.akka.dispatching.proto.ActorBroadcast;
@@ -10,8 +9,8 @@ import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.room.entity.PlayerEntity;
 import com.commelina.math24.play.room.entity.PlayerStatus;
-import com.commelina.math24.play.room.message.NotifyJoinRoom;
 import com.commelina.math24.play.room.proto.NOTIFY_OPCODE;
+import com.commelina.math24.play.room.proto.NotifyJoinRoom;
 import com.commelina.math24.play.room.proto.Prepare;
 import com.commelina.math24.play.room.proto.Prepared;
 import com.google.common.collect.BiMap;
@@ -41,10 +40,6 @@ public class RoomContext extends AbstractServiceActor {
      * 棋盘准备状态
      */
     private boolean checkerboardPrepared;
-    /**
-     * 处于哪个阶段
-     */
-    private MemberOfPrepareBehavior ofBehavior;
 
     public RoomContext(long roomId, List<PlayerEntity> playerEntities) {
         this.roomId = roomId;
@@ -53,8 +48,6 @@ public class RoomContext extends AbstractServiceActor {
 
     @Override
     public void preStart() throws Exception {
-        ofBehavior = MemberOfPrepareBehavior.NONE;
-
         // 设置检查游戏结束的任务
         // 10 分钟之后结束游戏
         getScheduler().scheduleOnce(Duration.create(11, TimeUnit.MINUTES), this::checkOver, getDispatcher());
@@ -72,21 +65,22 @@ public class RoomContext extends AbstractServiceActor {
     private void sendJoinRoomBroadcast() {
         FiniteDuration finiteDuration = Duration.create(10, TimeUnit.SECONDS);
 
-        NotifyJoinRoom room = new NotifyJoinRoom();
-        room.setRoomId(roomId);
-        room.setOverMicrosecond(System.currentTimeMillis() + finiteDuration.toMillis());
-
+        // 向客户端广播加入房间的消息
         selectFrontend().tell(ActorBroadcast.newBuilder()
                 .setOpcode(NOTIFY_OPCODE.JOIN_ROOM_VALUE)
                 .addAllUserIds(players.keySet())
-                .setMessage(room.)
+                .setMessage(NotifyJoinRoom.newBuilder()
+                        .setRoomId(roomId)
+                        .setOverMicrosecond(System.currentTimeMillis() + finiteDuration.toMillis())
+                        .build().toByteString())
                 .build(), getSelf());
 
-        ActorSystem system = getContext().getSystem();
-        // 十秒之后
-        players.keySet().forEach(u -> system.scheduler().scheduleOnce(finiteDuration, () -> {
-
-        }, system.dispatcher()));
+//        ActorSystem system = getContext().getSystem();
+//
+//        // 十秒之后
+//        players.keySet().forEach(u -> system.scheduler().scheduleOnce(finiteDuration, () -> {
+//
+//        }, system.dispatcher()));
     }
 
     @Override
