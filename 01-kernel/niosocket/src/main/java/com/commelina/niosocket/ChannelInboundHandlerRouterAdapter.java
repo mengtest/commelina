@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * 用户消息接收的handler
@@ -149,13 +148,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             if (userIdCompletableFuture == null) {
                 break;
             }
-            long userId;
-            try {
-                userId = userIdCompletableFuture.get();
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error("Login failed channelId: {}, error: {}", ctx.channel().id(), e);
-                break;
-            }
+            long userId = userIdCompletableFuture.join();
             if (userId <= 0) {
                 break;
             }
