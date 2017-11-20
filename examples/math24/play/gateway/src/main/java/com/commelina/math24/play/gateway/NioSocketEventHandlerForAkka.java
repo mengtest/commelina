@@ -11,10 +11,16 @@ import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.SocketEventHandler;
 import com.commelina.niosocket.proto.SocketASK;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.io.BaseEncoding;
 import com.google.protobuf.ByteString;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -23,6 +29,8 @@ import java.util.concurrent.CompletableFuture;
  */
 @Component
 public class NioSocketEventHandlerForAkka implements SocketEventHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(NioSocketEventHandlerForAkka.class);
 
     private Dispatching dispatching = new Dispatching();
 
@@ -56,19 +64,19 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         // 整个消息就是 token
         ByteString tokenArg = ask.getBody().getArgs(0);
         if (tokenArg == null) {
-            // token 转换错误
-//                        response(DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR)));
+            logger.info("Token arg must be input.");
+            return null;
         }
-
-        //        String token = tokenArg.getAsString();
-        //        String parseToken = new String(BaseEncoding.base64Url().decode(token));
-        //        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
-        //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
-        //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
-
-
-        Long.valueOf(tokenArg.toStringUtf8());
-        return null;
+        String token = tokenArg.toStringUtf8();
+        if (Strings.isNullOrEmpty(token)) {
+            logger.info("Token arg must be input.");
+            return null;
+        }
+        return CompletableFuture.supplyAsync(() -> {
+            String parseToken = new String(BaseEncoding.base64Url().decode(token));
+            List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
+            return Long.valueOf(tokenArg.toStringUtf8());
+        });
     }
 
 

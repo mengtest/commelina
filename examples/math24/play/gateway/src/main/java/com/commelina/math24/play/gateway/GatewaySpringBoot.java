@@ -24,21 +24,4 @@ public class GatewaySpringBoot{
         return new BootstrapNioSocket();
     }
 
-//    @PostConstruct
-//    public void init() {
-//
-////        // 本地 handler
-////        AkkaLocalWorkerSystemCreator.create("gateway")
-////                .registerRouter(applicationContext.getBeansOfType(LocalServiceHandler.class));
-////
-////        // match 集群 handler
-////        AkkaMultiWorkerSystemCreator.create(DOMAIN.MATCHING, "ClusterMatchingSystem", "cluster-gateway-match")
-////                .registerRouter()
-////                .building();
-////
-////        // room 集群 handler
-////        AkkaMultiWorkerSystemCreator.create(DOMAIN.GAME_ROOM, "ClusterRoomSystem", "cluster-gateway-room")
-////                .registerRouter(ProxyRoom.RoomClusterFrontendActor.class)
-////                .building();
-//    }
 }

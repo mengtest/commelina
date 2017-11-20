@@ -28,6 +28,15 @@ public class ClusterActorSystemCreator {
         return createAsClusterFrontend(name, config, DURATION, NioSocketClusterFrontendActor.class);
     }
 
+    public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config, FiniteDuration timeout) {
+        return createAsClusterFrontend(name, config, timeout, NioSocketClusterFrontendActor.class);
+    }
+
+    public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config,
+                                                                     Class<? extends AbstractClusterFrontendActor> frontend) {
+        return createAsClusterFrontend(name, config, DURATION, frontend);
+    }
+
     public static ClusterFrontendActorSystem createAsClusterFrontend(String name, String config, FiniteDuration timeout,
                                                                      Class<? extends AbstractClusterFrontendActor> frontend) {
         ActorSystem actorSystem = create(name, config);
