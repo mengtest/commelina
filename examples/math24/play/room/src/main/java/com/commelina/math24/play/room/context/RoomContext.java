@@ -4,12 +4,14 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
+import com.commelina.akka.dispatching.proto.ActorBroadcast;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.room.entity.PlayerEntity;
 import com.commelina.math24.play.room.entity.PlayerStatus;
 import com.commelina.math24.play.room.message.NotifyJoinRoom;
+import com.commelina.math24.play.room.proto.NOTIFY_OPCODE;
 import com.commelina.math24.play.room.proto.Prepare;
 import com.commelina.math24.play.room.proto.Prepared;
 import com.google.common.collect.BiMap;
@@ -52,14 +54,13 @@ public class RoomContext extends AbstractServiceActor {
     @Override
     public void preStart() throws Exception {
         ofBehavior = MemberOfPrepareBehavior.NONE;
-        ActorSystem system = getContext().getSystem();
 
         // 设置检查游戏结束的任务
         // 10 分钟之后结束游戏
-        system.scheduler().scheduleOnce(Duration.create(11, TimeUnit.MINUTES), this::checkOver, system.dispatcher());
+        getScheduler().scheduleOnce(Duration.create(11, TimeUnit.MINUTES), this::checkOver, getDispatcher());
 
         // 创建棋盘
-        checkerboard = system.actorOf(Checkerboard.props(100, 100));
+        checkerboard = getContext().getSystem().actorOf(Checkerboard.props(100, 100));
 
         // 发送准备棋盘的通知
         checkerboard.tell(Prepare.getDefaultInstance(), getSelf());
@@ -75,12 +76,12 @@ public class RoomContext extends AbstractServiceActor {
         room.setRoomId(roomId);
         room.setOverMicrosecond(System.currentTimeMillis() + finiteDuration.toMillis());
 
-//        ClusterChildNodeSystem.INSTANCE.broadcast(
-//                0,
-////                OPCODE.JOIN_ROOM_VALUE,
-//                players.keySet(),
-//                BusinessMessage.success(room)
-//        );
+        selectFrontend().tell(ActorBroadcast.newBuilder()
+                .setOpcode(NOTIFY_OPCODE.JOIN_ROOM_VALUE)
+                .addAllUserIds(players.keySet())
+                .setMessage(room.)
+                .build(), getSelf());
+
         ActorSystem system = getContext().getSystem();
         // 十秒之后
         players.keySet().forEach(u -> system.scheduler().scheduleOnce(finiteDuration, () -> {
@@ -91,10 +92,6 @@ public class RoomContext extends AbstractServiceActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(ApiRequest.class, r -> {
-                    //
-
-                })
                 .match(MemberOfflineEvent.class, offlineEvent -> {
                     PlayerEntity playerEntity = players.get(offlineEvent.getLogoutUserId());
                     if (playerEntity != null) {

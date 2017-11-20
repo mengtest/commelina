@@ -2,6 +2,8 @@ package com.commelina.akka.dispatching.nodes;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.Scheduler;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.PatternsCS;
@@ -9,6 +11,7 @@ import akka.util.Timeout;
 import com.commelina.akka.dispatching.Constants;
 import com.commelina.akka.dispatching.proto.BackendFindEvent;
 import com.commelina.akka.dispatching.proto.BackendFindFrontend;
+import scala.concurrent.ExecutionContextExecutor;
 import scala.concurrent.duration.Duration;
 
 import java.util.concurrent.TimeUnit;
@@ -49,6 +52,14 @@ public abstract class AbstractServiceActor extends AbstractActor {
 
     protected LoggingAdapter getLogger() {
         return logger;
+    }
+
+    protected Scheduler getScheduler() {
+        return getContext().getSystem().scheduler();
+    }
+
+    protected ExecutionContextExecutor getDispatcher() {
+        return getContext().getSystem().dispatcher();
     }
 
 }

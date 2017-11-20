@@ -1,9 +1,7 @@
 package com.commelina.math24.play.match;
 
 import akka.actor.ActorSelection;
-import akka.actor.Scheduler;
 import com.commelina.akka.dispatching.nodes.AbstractServiceActor;
-import scala.concurrent.ExecutionContextExecutor;
 
 /**
  * @author panyao
@@ -20,14 +18,6 @@ public abstract class AbstractMatchServiceActor extends AbstractServiceActor {
 
     protected ActorSelection selectRoomManger() {
         return getContext().getSystem().actorSelection("/user/" + ROOM_MANAGER);
-    }
-
-    protected Scheduler getScheduler() {
-        return getContext().getSystem().scheduler();
-    }
-
-    protected ExecutionContextExecutor getDispatcher() {
-        return getContext().getSystem().dispatcher();
     }
 
 }
