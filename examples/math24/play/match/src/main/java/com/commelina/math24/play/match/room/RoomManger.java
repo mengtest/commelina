@@ -55,7 +55,7 @@ public class RoomManger extends AbstractMatchServiceActor {
 
                     ActorRef temporaryRoom = roomList.get(roomId);
                     if (temporaryRoom == null) {
-                        getLogger().info("User : {},roomId {} not found.", j.getUserId(), j.getRoomId());
+                        getLogger().info("User : {},roomId {} not found.", j.getUserId(), roomId);
                         return;
                     }
 
