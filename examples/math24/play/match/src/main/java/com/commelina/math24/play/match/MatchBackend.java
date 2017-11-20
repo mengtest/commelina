@@ -6,10 +6,7 @@ import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.match.mode.GlobalMatch;
-import com.commelina.math24.play.match.proto.CancelMatch;
-import com.commelina.math24.play.match.proto.JoinMatch;
-import com.commelina.math24.play.match.proto.MATCH_MODE;
-import com.commelina.math24.play.match.proto.REQUEST_OPCODE;
+import com.commelina.math24.play.match.proto.*;
 import com.commelina.math24.play.match.room.RoomManger;
 import com.google.protobuf.ByteString;
 
@@ -71,7 +68,9 @@ public class MatchBackend extends AbstractBackendActor {
                 break;
             // 加入临时房间
             case REQUEST_OPCODE.JOIN_TEMPORARY_ROOM_VALUE:
-                roomManger.tell(request.getLoginUserId(), getSelf());
+                roomManger.tell(JoinTemporaryRoom.newBuilder()
+                        .setUserId(request.getLoginUserId())
+                        .build(), getSelf());
                 // 回复客户端成功
                 emptyResponse();
                 break;

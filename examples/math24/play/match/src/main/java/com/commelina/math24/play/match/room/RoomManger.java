@@ -5,7 +5,7 @@ import akka.actor.Props;
 import com.commelina.akka.dispatching.proto.MemberOfflineEvent;
 import com.commelina.akka.dispatching.proto.MemberOnlineEvent;
 import com.commelina.math24.play.match.AbstractMatchServiceActor;
-import com.commelina.math24.play.match.proto.JoinRoom;
+import com.commelina.math24.play.match.proto.JoinTemporaryRoom;
 import com.commelina.math24.play.match.proto.TemporaryRoomDissolve;
 import com.commelina.math24.play.match.proto.TemporaryRoomPrepare;
 import com.google.common.collect.Maps;
@@ -35,24 +35,18 @@ public class RoomManger extends AbstractMatchServiceActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(MemberOfflineEvent.class, offlineEvent -> {
-                    Long roomId = userRoomId.get(offlineEvent.getLogoutUserId());
-                    if (roomId != null && roomId > 0) {
-                        ActorRef temporaryRoom = roomList.get(roomId);
-                        if (temporaryRoom != null) {
-                            temporaryRoom.forward(offlineEvent, getContext());
-                        }
+                    ActorRef temporaryRoom = selectRoom(offlineEvent.getLogoutUserId());
+                    if (temporaryRoom != null) {
+                        temporaryRoom.forward(offlineEvent, getContext());
                     }
                 })
                 .match(MemberOnlineEvent.class, onlineEvent -> {
-                    Long roomId = userRoomId.get(onlineEvent.getLoginUserId());
-                    if (roomId != null && roomId > 0) {
-                        ActorRef temporaryRoom = roomList.get(roomId);
-                        if (temporaryRoom != null) {
-                            temporaryRoom.forward(onlineEvent, getContext());
-                        }
+                    ActorRef temporaryRoom = selectRoom(onlineEvent.getLoginUserId());
+                    if (temporaryRoom != null) {
+                        temporaryRoom.forward(onlineEvent, getContext());
                     }
                 })
-                .match(JoinRoom.class, j -> {
+                .match(JoinTemporaryRoom.class, j -> {
                     Long roomId = userRoomId.get(j.getUserId());
                     if (roomId == null || roomId == 0) {
                         getLogger().info("User : {} not found roomId.", j.getUserId());
@@ -61,14 +55,17 @@ public class RoomManger extends AbstractMatchServiceActor {
 
                     ActorRef temporaryRoom = roomList.get(roomId);
                     if (temporaryRoom == null) {
-                        getLogger().info("User : {},roomId {} not found.", j.getUserId(), roomId);
+                        getLogger().info("User : {},roomId {} not found.", j.getUserId(), j.getRoomId());
                         return;
                     }
 
                     temporaryRoom.forward(j, getContext());
                 })
                 .match(List.class, this::createRoom)
-                .match(TemporaryRoomDissolve.class, d -> roomList.remove(d.getRoomId()))
+                .match(TemporaryRoomDissolve.class, d -> {
+                    roomList.remove(d.getRoomId());
+                    d.getUserIdsList().forEach(userRoomId::remove);
+                })
                 .build();
     }
 
@@ -78,6 +75,14 @@ public class RoomManger extends AbstractMatchServiceActor {
         roomList.put(currentLastRoomId++, temporary);
 
         temporary.tell(TemporaryRoomPrepare.getDefaultInstance(), getSelf());
+    }
+
+    private ActorRef selectRoom(long userId) {
+        Long roomId = userRoomId.get(userId);
+        if (roomId == null || roomId <= 0) {
+            return null;
+        }
+        return roomList.get(roomId);
     }
 
     public static Props props() {

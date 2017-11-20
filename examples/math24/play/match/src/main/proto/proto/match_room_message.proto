@@ -12,8 +12,9 @@ message TemporaryRoomPrepare {
 
 message TemporaryRoomDissolve {
     uint64 roomId = 1;
+    repeated uint64 userIds = 2;
 }
 
-message JoinRoom {
+message JoinTemporaryRoom {
     uint64 userId = 1;
 }

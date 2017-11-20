@@ -52,7 +52,7 @@ class TemporaryRoom extends AbstractMatchServiceActor {
     public Receive createReceive() {
         return receiveBuilder()
                 // 只传入 uid 则表示用户加入房间
-                .match(JoinRoom.class, j -> {
+                .match(JoinTemporaryRoom.class, j -> {
                     joinUserIds.add(j.getUserId());
                     if (joinUserIds.size() >= userIds.size()) {
                         createRoomInRoomServer();
@@ -88,6 +88,7 @@ class TemporaryRoom extends AbstractMatchServiceActor {
     private void dissolve() {
         selectRoomManger().tell(TemporaryRoomDissolve.newBuilder()
                 .setRoomId(roomId)
+                .addAllUserIds(userIds)
                 .build(), getSelf());
     }
 
