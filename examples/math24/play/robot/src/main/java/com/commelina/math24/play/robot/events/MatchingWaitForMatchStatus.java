@@ -18,7 +18,6 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
 
     private final Logger logger = LoggerFactory.getLogger(MatchingWaitForMatchStatus.class);
 
-
     @Override
     public Internal.EnumLite getDomain() {
         return DOMAIN.MATCHING;

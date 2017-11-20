@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.gateway;
+
+option java_package = "com.commelina.math24.play.gateway.proto";
+option java_outer_classname = "NotifyOpcodeProtos";
+option java_multiple_files = true;
+
+enum OPCODE {
+    EMPTY1 = 0;
+}
+
