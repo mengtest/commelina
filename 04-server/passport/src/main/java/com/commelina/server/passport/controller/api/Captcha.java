@@ -1,6 +1,6 @@
-package com.commelina.server.passport.controller;
+package com.commelina.server.passport.controller.api;
 
-import com.commelina.mvc.ResponseBodyMessage;
+import com.commelina.web.mvc.ResponseBodyMessage;
 import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.server.passport.service.CaptchaService;
 import org.springframework.stereotype.Controller;

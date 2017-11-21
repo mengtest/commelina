@@ -1,4 +1,4 @@
-package com.commelina.flux;
+package com.commelina.web.flux;
 
 /**
  * @author panyao

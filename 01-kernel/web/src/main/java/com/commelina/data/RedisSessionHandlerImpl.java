@@ -1,6 +1,6 @@
 package com.commelina.data;
 
-import com.commelina.mvc.SessionHandler;
+import com.commelina.web.mvc.SessionHandler;
 import com.commelina.utils.SnowflakeIdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

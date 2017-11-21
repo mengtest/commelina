@@ -1,4 +1,4 @@
-package com.commelina.mvc;
+package com.commelina.web.mvc;
 
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Internal;

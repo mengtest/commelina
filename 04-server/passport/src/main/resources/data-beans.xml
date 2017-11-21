@@ -5,7 +5,4 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         ">
 
-    <!-- redis session handler 实现 -->
-    <bean class="com.commelina.data.RedisSessionHandlerImpl"/>
-
 </beans>

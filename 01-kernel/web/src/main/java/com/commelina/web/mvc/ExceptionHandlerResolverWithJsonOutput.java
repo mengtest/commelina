@@ -1,4 +1,4 @@
-package com.commelina.mvc;
+package com.commelina.web.mvc;
 
 import com.commelina.utils.Generator;
 import com.fasterxml.jackson.core.JsonProcessingException;

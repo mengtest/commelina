@@ -1,4 +1,4 @@
-package com.commelina.mvc;
+package com.commelina.web.mvc;
 
 import com.google.common.base.Strings;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,7 @@ public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        String token = request.getHeader("authenticated-newToken");
+        String token = request.getHeader("authenticated-token");
         do {
             if (!Strings.isNullOrEmpty(token)) {
                 SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.validToken(token);

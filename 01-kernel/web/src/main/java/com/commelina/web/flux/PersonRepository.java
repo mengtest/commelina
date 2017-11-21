@@ -1,4 +1,4 @@
-package com.commelina.flux;
+package com.commelina.web.flux;
 
 import org.springframework.data.repository.CrudRepository;
 

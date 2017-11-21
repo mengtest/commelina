@@ -1,4 +1,4 @@
-package com.commelina.flux;
+package com.commelina.web.flux;
 
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;

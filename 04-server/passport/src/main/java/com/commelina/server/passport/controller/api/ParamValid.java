@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller;
+package com.commelina.server.passport.controller.api;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

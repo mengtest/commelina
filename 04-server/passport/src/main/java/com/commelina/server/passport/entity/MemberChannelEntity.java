@@ -5,4 +5,7 @@ package com.commelina.server.passport.entity;
  * @date 2017/10/25
  */
 public class MemberChannelEntity {
+
+
+
 }

@@ -1,13 +1,12 @@
-package com.commelina.server.passport.controller;
+package com.commelina.server.passport.controller.api;
 
-import com.commelina.mvc.AuthenticatedApiInterceptor;
-import com.commelina.mvc.ResponseBodyMessage;
-import com.commelina.mvc.SessionHandler;
+import com.commelina.server.passport.entity.MemberEntity;
+import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.server.passport.service.AccountService;
 import com.commelina.server.passport.service.CaptchaService;
 import com.commelina.utils.ServiceDomainMessage;
-import com.commelina.server.passport.entity.MemberEntity;
-import com.commelina.server.passport.proto.ERROR_CODE;
+import com.commelina.web.mvc.ResponseBodyMessage;
+import com.commelina.web.mvc.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author @panyao
@@ -40,13 +37,11 @@ public class Connect {
      *
      * @param tel
      * @param smsCode
-     * @param response
      * @return
      */
     @RequestMapping(value = "/telwithvalidcode", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseBodyMessage<String> telephone(@RequestParam String tel, @RequestParam int smsCode,
-                                                 HttpServletRequest request, HttpServletResponse response) {
+    public ResponseBodyMessage<String> withCode(@RequestParam String tel, @RequestParam int smsCode) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
         }
@@ -57,8 +52,7 @@ public class Connect {
 
         ServiceDomainMessage<MemberEntity> message = accountService.singInWithTelOrNoPassword(tel);
         if (message.isSuccess()) {
-            SessionHandler.SessionTokenEntity sessionTokenEntity = sessionHandler.doSignIn(message.getData().getUid());
-            AuthenticatedApiInterceptor.addLogin(request, response, sessionTokenEntity);
+
             return ResponseBodyMessage.success();
         }
 
@@ -67,8 +61,7 @@ public class Connect {
 
     @RequestMapping(value = "/telwithpass", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseBodyMessage<String> telephone1(@RequestParam String tel, @RequestParam int smsCode,
-                                                  HttpServletRequest request, HttpServletResponse response) {
+    public ResponseBodyMessage<String> withPassword(@RequestParam String tel, @RequestParam String pwd) {
 
         return null;
     }
