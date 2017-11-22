@@ -7,7 +7,6 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
 
@@ -34,14 +33,9 @@ public class JsonMessageConverterWithLanguage extends MappingJackson2HttpMessage
     protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException,
             HttpMessageNotWritableException {
 
-
-        if (LOGGER.isDebugEnabled()) {
-            if (!(object instanceof ResponseBodyMessage)) {
-                throw new IOException("response message must be instanceof " + ResponseBodyMessage.class);
-            }
-        }
-
-        super.writeInternal(object, outputMessage);
+        ResponseBodyMessage newMessage = (ResponseBodyMessage) object;
+//        newMessage.businessMsg = source.getMessage(newMessage.getBusinessCode() + "", null, null);
+        super.writeInternal(newMessage, outputMessage);
     }
 
 }

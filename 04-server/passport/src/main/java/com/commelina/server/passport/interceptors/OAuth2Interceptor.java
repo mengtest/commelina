@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller;
+package com.commelina.server.passport.interceptors;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

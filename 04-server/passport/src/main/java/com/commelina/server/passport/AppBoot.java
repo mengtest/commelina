@@ -2,6 +2,7 @@ package com.commelina.server.passport;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 
 /**
@@ -9,10 +10,11 @@ import org.springframework.context.annotation.ImportResource;
  * @date 2017/8/30
  */
 @SpringBootApplication
+@ComponentScan(basePackages = {
+        "com.commelina.server.passport",
+})
 @ImportResource(locations = {
-        "classpath:spring-beans.xml",
         "classpath:spring-mvc.xml",
-        "classpath:data-beans.xml",
 //        "classpath:data-redis-connection-factory.xml",
         "classpath:data-jpa-session-factory.xml",
 })

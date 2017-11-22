@@ -4,10 +4,7 @@ import com.commelina.web.mvc.ResponseBodyMessage;
 import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.server.passport.service.CaptchaService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,7 +25,7 @@ public class Captcha {
      * @param tel
      * @return
      */
-    @RequestMapping(value = "/sms", method = RequestMethod.GET)
+    @GetMapping(value = "/sms")
     @ResponseBody
     public ResponseBodyMessage telephone(@RequestParam String tel) {
         if (!ParamValid.telephone(tel)) {

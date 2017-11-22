@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller;
+package com.commelina.server.passport.interceptors;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -9,4 +9,5 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @date 2017/11/21
  */
 public class ApiInterceptor extends HandlerInterceptorAdapter {
+
 }

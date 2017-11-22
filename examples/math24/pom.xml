@@ -14,10 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>admin</module>
-        <module>admin-portal</module>
         <module>api-all</module>
-
         <module>play</module>
     </modules>
 

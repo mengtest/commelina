@@ -10,7 +10,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>server-admin</artifactId>
+    <artifactId>server-admin-portal</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.github.freedompy.commelina.server.admin.AppBoot</mainClass>
+                    <mainClass>org.commelina.math24.admin.AppBoot</mainClass>
                 </configuration>
                 <executions>
                     <execution>
