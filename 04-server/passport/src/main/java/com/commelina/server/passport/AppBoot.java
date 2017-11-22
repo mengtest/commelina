@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @ComponentScan(basePackages = {
         "com.commelina.server.passport",
+        "com.commelina.server.passportv2",
 })
 @ImportResource(locations = {
         "classpath:spring-mvc.xml",

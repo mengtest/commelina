@@ -20,9 +20,9 @@ import java.io.PrintWriter;
  * @author @panyao
  * @date 2016/8/19
  */
-public final class ExceptionHandlerResolverWithJsonOutput extends ExceptionHandlerExceptionResolver {
+public final class MethodExceptionHandlerResolverForJson extends ExceptionHandlerExceptionResolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerResolverWithJsonOutput.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodExceptionHandlerResolverForJson.class);
 
     @Resource(name = "errorMessage")
     private MessageSource source;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.AssertTrue;
 
 /**
  *
@@ -30,7 +31,8 @@ public class CaptchaController {
      */
     @GetMapping(value = "/sms")
     @ResponseBody
-    public ResponseBodyMessage telephone(@RequestParam String tel) {
+    public ResponseBodyMessage telephone(@RequestParam String tel,
+                                         @AssertTrue String xx) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
         }

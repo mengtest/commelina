@@ -2,8 +2,9 @@ package com.commelina.server.passport;
 
 import com.commelina.server.passport.interceptors.ApiInterceptor;
 import com.commelina.server.passport.interceptors.OAuth2Interceptor;
-import com.commelina.web.mvc.ExceptionHandlerResolverWithJsonOutput;
-import com.commelina.web.mvc.JsonMessageConverterWithLanguage;
+import com.commelina.web.mvc.DefaultWebMvcConfig;
+import com.commelina.web.mvc.JacksonResponseBodyJsonAdvice;
+import com.commelina.web.mvc.MethodExceptionHandlerResolverForJson;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -11,7 +12,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.nio.charset.Charset;
 
@@ -21,7 +22,7 @@ import java.nio.charset.Charset;
  */
 @Configuration
 @EnableWebMvc
-public class WebMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfig extends DefaultWebMvcConfig{
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -30,14 +31,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public HandlerExceptionResolver exceptionHandler() {
-        return new ExceptionHandlerResolverWithJsonOutput();
-    }
-
-    @Bean
-    public HttpMessageConverter converter() {
+    public ResponseBodyAdvice<Object> converter() {
 //        return new MappingJackson2HttpMessageConverter();
-        return new JsonMessageConverterWithLanguage();
+        return new JacksonResponseBodyJsonAdvice();
     }
 
     @Bean
