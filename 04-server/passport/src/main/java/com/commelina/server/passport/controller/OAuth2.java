@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller("/oauth2")
 public class OAuth2 {
 
-    @GetMapping("/openInfo")
+    @GetMapping("/open/id")
+    public ResponseBodyMessage<String> getOpenId(@RequestParam String accessToken) {
+        return null;
+    }
+
+    @GetMapping("/open/info")
     public ResponseBodyMessage<String> getOpenInfo(@RequestParam String accessToken) {
         return null;
     }

@@ -1,7 +1,8 @@
 CREATE DATABASE IF NOT EXISTS `server_passport` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 USE `server_passport`;
 
-CREATE TABLE `passport_main_member` (
+CREATE TABLE IF NOT EXISTS `passport_main_member` (
   `uid` bigint(20) UNSIGNED NOT NULL COMMENT '用户uid',
   `pwd` varchar(60) NOT NULL COMMENT '账号密码',
   `nickname` varchar(80) CHARACTER SET utf8mb4 NOT NULL
