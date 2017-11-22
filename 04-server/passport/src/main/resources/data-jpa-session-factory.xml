@@ -60,7 +60,7 @@
         <!--实体类位置-->
         <property name="packagesToScan">
             <list>
-                <value>org.commelina.server.passport.entity</value>
+                <value>com.commelina.server.passport.entity</value>
             </list>
         </property>
         <!--持久化单元名-->
@@ -71,7 +71,8 @@
         <property name="jpaProperties">
             <props>
                 <!--配置方言-->
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>-->
+                <prop key="hibernate.dialect.storage_engine">innodb</prop>
                 <!--激活查询日志功能-->
                 <prop key="hibernate.show_sql">true</prop>
                 <!--优雅地输出Sql-->
@@ -98,7 +99,7 @@
     <!--定义事务管理器的引用-->
 
 
-    <jpa:repositories base-package="org.commelina.server.passport.dao"
+    <jpa:repositories base-package="com.commelina.server.passport.dao"
                       repository-impl-postfix="Repository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>

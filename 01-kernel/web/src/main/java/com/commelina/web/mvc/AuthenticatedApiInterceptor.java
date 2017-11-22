@@ -1,7 +1,6 @@
 package com.commelina.web.mvc;
 
 import com.google.common.base.Strings;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author @panyao
  * @date 2016/6/7
  */
-@RequestMapping
 public final class AuthenticatedApiInterceptor extends HandlerInterceptorAdapter {
 
     @Resource

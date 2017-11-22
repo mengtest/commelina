@@ -7,6 +7,8 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -19,7 +21,7 @@ public class JsonMessageConverterWithLanguage extends MappingJackson2HttpMessage
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonMessageConverterWithLanguage.class);
 
-//    @Resource(name = "apiMessageSourceFile")
+    @Resource(name = "errorMessage")
     private MessageSource source;
 
     /**
@@ -31,6 +33,8 @@ public class JsonMessageConverterWithLanguage extends MappingJackson2HttpMessage
     @Override
     protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException,
             HttpMessageNotWritableException {
+
+
         if (LOGGER.isDebugEnabled()) {
             if (!(object instanceof ResponseBodyMessage)) {
                 throw new IOException("response message must be instanceof " + ResponseBodyMessage.class);

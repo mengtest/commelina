@@ -38,7 +38,11 @@
     <!-- 异常 handler 配置 -->
     <bean class="com.commelina.web.mvc.ExceptionHandlerResolverWithJsonOutput"/>
 
-    <!-- session 实现 -->
-    <bean class="com.commelina.data.RedisSessionHandlerImpl"/>
+    <!-- 语言包配置 -->
+    <bean id="errorMessage" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--<property name="cacheSeconds" value="1000"/>-->
+        <property name="basename" value="language.error"/>
+    </bean>
 
 </beans>

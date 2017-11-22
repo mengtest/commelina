@@ -6,12 +6,7 @@ import com.commelina.server.passport.service.AccountService;
 import com.commelina.server.passport.service.CaptchaService;
 import com.commelina.utils.ServiceDomainMessage;
 import com.commelina.web.mvc.ResponseBodyMessage;
-import com.commelina.web.mvc.SessionHandler;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,15 +14,12 @@ import javax.annotation.Resource;
  * @author @panyao
  * @date 2017/8/31
  */
-@Controller
+@RestController
 @RequestMapping("/api/connect")
 public class Connect {
 
     @Resource
     private AccountService accountService;
-
-    @Resource
-    private SessionHandler sessionHandler;
 
     @Resource
     private CaptchaService captchaService;

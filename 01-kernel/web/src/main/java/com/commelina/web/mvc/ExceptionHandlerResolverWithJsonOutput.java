@@ -24,7 +24,7 @@ public final class ExceptionHandlerResolverWithJsonOutput extends ExceptionHandl
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerResolverWithJsonOutput.class);
 
-    @Resource(name = "apiMessageSourceFile")
+    @Resource(name = "errorMessage")
     private MessageSource source;
 
     @Override

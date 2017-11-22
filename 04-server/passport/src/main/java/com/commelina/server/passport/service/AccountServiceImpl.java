@@ -1,16 +1,15 @@
 package com.commelina.server.passport.service;
 
-import com.commelina.server.passport.entity.AccountTelephoneEntity;
 import com.commelina.server.passport.dao.AccountTelephoneRepository;
 import com.commelina.server.passport.dao.MemberRepository;
+import com.commelina.server.passport.entity.AccountTelephoneEntity;
 import com.commelina.server.passport.entity.MemberEntity;
 import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.utils.ServiceDomainEmptyMessage;
 import com.commelina.utils.ServiceDomainMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 /**
  * @author panyao
@@ -19,10 +18,10 @@ import javax.annotation.Resource;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Resource
+    @Autowired
     private AccountTelephoneRepository accountTephoneRepository;
 
-    @Resource
+    @Autowired
     private MemberRepository memberRepository;
 
     @Override

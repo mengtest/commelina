@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ImportResource;
         "classpath:spring-beans.xml",
         "classpath:spring-mvc.xml",
         "classpath:data-beans.xml",
-        "classpath:data-redis-connection-factory.xml",
+//        "classpath:data-redis-connection-factory.xml",
         "classpath:data-jpa-session-factory.xml",
 })
 public class AppBoot {

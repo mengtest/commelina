@@ -16,7 +16,7 @@ public final class ResponseBodyMessage<T extends Serializable> {
     final long serverTimeMillis;
     final T data;
 
-    private static final int DEFAULT_SUCCESS = 0;
+    static final int DEFAULT_SUCCESS = 0;
     static final int SERVER_ERROR = -1;
     static final String SERVER_ERROR_STR = SERVER_ERROR + "";
 
@@ -52,6 +52,18 @@ public final class ResponseBodyMessage<T extends Serializable> {
 
     public Integer getBusinessCode() {
         return businessCode;
+    }
+
+    public String getBusinessMsg() {
+        return businessMsg;
+    }
+
+    public long getServerTimeMillis() {
+        return serverTimeMillis;
+    }
+
+    public T getData() {
+        return data;
     }
 
 }
