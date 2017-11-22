@@ -21,28 +21,22 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>01-kernel</module>
+                <module>kernel</module>
             </modules>
         </profile>
         <profile>
-            <id>1service</id>
-            <modules>
-                <module>02-service</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>2server</id>
+            <id>1server</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <!--<module>03-server-tool</module>-->
-                <module>04-server</module>
-                <!--<module>05-server-sdk</module>-->
+                <!--<module>server-tool</module>-->
+                <module>server</module>
+                <!--<module>server-sdk</module>-->
             </modules>
         </profile>
         <profile>
-            <id>3math24</id>
+            <id>2math24</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
