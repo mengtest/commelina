@@ -35,11 +35,12 @@
         <akka.version>2.5.6</akka.version>
         <akka.http.version>10.0.10</akka.http.version>
 
-        <spring-boot.version>2.0.0.M6</spring-boot.version>
+        <spring-boot.version>1.5.8.RELEASE</spring-boot.version>
 
         <redis-lettuce.version>4.4.1.Final</redis-lettuce.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
         <db-pool.druid.version>1.1.5</db-pool.druid.version>
+        <jackson.version>2.9.2</jackson.version>
 
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
@@ -175,7 +176,6 @@
                 <version>${hibernate-core.version}</version>
             </dependency>
 
-
             <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <dependency>
                 <groupId>mysql</groupId>
@@ -192,12 +192,26 @@
                 <scope>runtime</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
-            <!--<dependency>-->
-            <!--<groupId>org.scala-lang</groupId>-->
-            <!--<artifactId>scala-library</artifactId>-->
-            <!--<version>${scala-library.version}</version>-->
-            <!--</dependency>-->
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
