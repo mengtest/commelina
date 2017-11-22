@@ -10,19 +10,6 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/api"/>
-            <mvc:mapping path="/api/**"/>
-            <bean class="com.commelina.server.passport.interceptors.ApiInterceptor"/>
-        </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/oauth2"/>
-            <mvc:mapping path="/oauth2/**"/>
-            <bean class="com.commelina.server.passport.interceptors.OAuth2Interceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-
     <!-- 语言包配置 -->
     <bean id="errorMessage" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="defaultEncoding" value="utf-8"/>

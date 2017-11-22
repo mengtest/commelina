@@ -1,2 +1,13 @@
 server:
   port: 8887
+  tomcat:
+    uri-encoding: UTF-8
+
+# https://docs.spring.io/spring-boot/docs/2.0.0.M6/reference/htmlsingle/
+spring:
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  mvc:

@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller.admin;
+package com.commelina.server.passportv2.admin;
 
 /**
  * @author panyao

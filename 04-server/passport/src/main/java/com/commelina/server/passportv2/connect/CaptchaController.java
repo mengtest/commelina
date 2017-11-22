@@ -1,10 +1,13 @@
-package com.commelina.server.passport.controller.api;
+package com.commelina.server.passportv2.connect;
 
-import com.commelina.web.mvc.ResponseBodyMessage;
 import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.server.passport.service.CaptchaService;
+import com.commelina.web.mvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -15,7 +18,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("/api/captcha")
-public class Captcha {
+public class CaptchaController {
 
     @Resource
     private CaptchaService captchaService;

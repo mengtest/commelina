@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller.api.connect;
+package com.commelina.server.passportv2.connect;
 
 import com.commelina.web.mvc.ResponseBodyMessage;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/api/connect/channel/huawei")
-public class Huawei {
+public class ChannelHuaweiController {
 
     @RequestMapping(value = "/valid", method = RequestMethod.GET)
     @ResponseBody

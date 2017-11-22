@@ -1,4 +1,4 @@
-package com.commelina.server.passport.controller.api;
+package com.commelina.server.passportv2.connect;
 
 import com.commelina.server.passport.entity.MemberEntity;
 import com.commelina.server.passport.proto.ERROR_CODE;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/api/connect")
-public class Connect {
+public class LoginController {
 
     @Resource
     private AccountService accountService;
