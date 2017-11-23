@@ -31,11 +31,11 @@ public class ClusterFrontendActorSystem {
         return frontend;
     }
 
-    public ActorResponse askForBackend(ApiRequest request) {
-        return askForBackend(request, timeout);
+    public ActorResponse askToBackend(ApiRequest request) {
+        return askToBackend(request, timeout);
     }
 
-    public ActorResponse askForBackend(ApiRequest request, Timeout timeout) {
+    public ActorResponse askToBackend(ApiRequest request, Timeout timeout) {
         return (ActorResponse) PatternsCS.ask(frontend, request, timeout)
                 .toCompletableFuture()
                 .join();

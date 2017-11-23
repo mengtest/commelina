@@ -30,7 +30,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(NioSocketEventHandlerForAkka.class);
 
-    private Dispatching dispatching = new Dispatching();
+    private final Dispatching dispatching = new Dispatching();
 
     @Override
     public void onRequest(ChannelHandlerContext ctx, long userId, SocketASK ask) {
@@ -99,33 +99,14 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         }
 
         public void requestMatch(ChannelHandlerContext ctx, ApiRequest request) {
-            ActorResponse response = match.askForBackend(request);
+            ActorResponse response = match.askToBackend(request);
             ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
         }
 
         public void requestRoom(ChannelHandlerContext ctx, ApiRequest request) {
             // 查询本地 actor 记录的房间
-            ActorResponse response = room.askForBackend(request);
+            ActorResponse response = room.askToBackend(request);
             ReplyUtils.reply(ctx, DOMAIN.MATCHING_VALUE, request.getOpcode(), response.getMessage());
-        }
-
-        private void passortValid(ChannelHandlerContext ctx, ApiRequest request) {
-
-//            if (tokenArg == null) {
-//                // token 转换错误
-////                ReplyUtils.reply();
-//                DefaultMessageProvider.produceMessage(BusinessMessage.error(ERROR_CODE.TOKEN_PARSE_ERROR))
-//                return;
-//            }
-//
-//            //        String token = tokenArg.getAsString();
-//            //        String parseToken = new String(BaseEncoding.base64Url().decode(token));
-//            //        List<String> tokenChars = Splitter.on('|').splitToList(parseToken);
-//            //        ContextAdapter.userLogin(context.getRawContext().channel().id(), Long.valueOf(tokenChars.get(0)));
-//            //        ContextAdapter.userLogin(context.channel().id(), tokenArg.getAsLong());
-//
-//            long userId = Long.valueOf(tokenArg.toStringUtf8());
-////            getLogger().info("userId:{}, 登录成功", userId);
         }
 
     }

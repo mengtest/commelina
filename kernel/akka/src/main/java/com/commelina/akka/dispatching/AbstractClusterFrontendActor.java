@@ -75,16 +75,16 @@ public abstract class AbstractClusterFrontendActor extends AbstractActor impleme
                     ActorRef target = selectActor(rf, clusterNodeRouters);
                     if (target != null) {
                         // https://doc.akka.io/docs/akka/current/java/actors.html#ask-send-and-receive-future
-                        // 向远程 发起 askForBackend 请求
+                        // 向远程 发起 askToBackend 请求
                         CompletableFuture<Object> askFuture = PatternsCS.ask(target, rf, timeout)
                                 .toCompletableFuture();
 
-                        // askForBackend with pipe
+                        // askToBackend with pipe
                         CompletableFuture<ActorResponse> transformed = CompletableFuture
                                 .allOf(askFuture)
                                 .thenApply(v -> (ActorResponse) askFuture.join());
 
-                        // askForBackend with pipe to sender.
+                        // askToBackend with pipe to sender.
                         PatternsCS.pipe(transformed, getContext().getSystem().dispatcher()).to(getSender(), getSelf());
                     } else {
                         unhandled(rf);
