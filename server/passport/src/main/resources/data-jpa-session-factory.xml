@@ -99,7 +99,7 @@
     <!--定义事务管理器的引用-->
 
 
-    <jpa:repositories base-package="com.commelina.server.passport.dao"
+    <jpa:repositories base-package="com.commelina.server.passportv2.dao"
                       repository-impl-postfix="Repository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
