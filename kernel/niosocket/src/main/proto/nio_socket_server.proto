@@ -17,7 +17,7 @@ message RequestBody {
     // 接口操作码
     uint32 opcode = 1;
     // 接口版本
-    string version = 2;
+    uint32 vercode = 2;
     // 参数 约定结构  ，json，pb等等， 数组前面可以放公共参数 如 userId, JSON, PB
     repeated bytes args = 3;
 }
@@ -71,6 +71,4 @@ enum SYSTEM_OPCODE {
 enum SYSTEM_ERROR {
     // 登录失败
     LOGIN_FAILED = 0;
-    // 登录成功
-    LOGIN_SUCCESS = 1;
 }

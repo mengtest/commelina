@@ -37,7 +37,7 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         final ApiRequest request = ApiRequest.newBuilder()
                 .setLoginUserId(userId)
                 .setOpcode(ask.getBody().getOpcode())
-                .setVersion(ask.getBody().getVersion())
+                .setVercode(ask.getBody().getVercode())
                 .addAllArgs(ask.getBody().getArgsList())
                 .build();
 

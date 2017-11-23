@@ -2,7 +2,7 @@ package com.commelina.math24.play.robot.events;
 
 import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.match.proto.NOTIFY_OPCODE;
-import com.commelina.math24.play.robot.interfaces.MemberEventLoop;
+import com.commelina.math24.play.robot.niosocket.MemberEventLoop;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
 import com.commelina.niosocket.proto.SocketMessage;
 import com.google.protobuf.Internal;
@@ -19,7 +19,7 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
     private final Logger logger = LoggerFactory.getLogger(MatchingWaitForMatchStatus.class);
 
     @Override
-    public Internal.EnumLite getDomain() {
+    public Internal.EnumLite getForward() {
         return DOMAIN.MATCHING;
     }
 
@@ -29,7 +29,7 @@ public class MatchingWaitForMatchStatus implements ReadEvent {
     }
 
     @Override
-    public EventResult read(MemberEventLoop eventLoop, SocketMessage msg) {
+    public EventResult onResponse(MemberEventLoop eventLoop, SocketMessage msg) {
 
         return EventResult.UN_REMOVE;
     }

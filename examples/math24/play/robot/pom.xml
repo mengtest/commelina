@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.commelina.math24.play.robot.RobotSpringBoot</mainClass>
+                    <mainClass>com.commelina.math24.play.robot.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -68,7 +68,7 @@
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../../../commelina/02-niosocket/src/main/proto/</directory>
+                                    <directory>${basedir}/../../../../kernel/niosocket/src/main/proto/</directory>
                                     <filtering>true</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>

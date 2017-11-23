@@ -1,6 +1,5 @@
 package com.commelina.math24.play.robot.niosocket;
 
-import com.commelina.math24.play.robot.interfaces.SocketHandler;
 import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,24 +18,15 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/7
  */
 public class NettyClient {
 
-    public static boolean getNettyClientByConfig(SocketHandler socketHandler) {
-        NettyClient client = new NettyClient();
-        try {
-            client.connect("127.0.0.1", 9005, socketHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+    public static void start(MemberEventLoop loop) throws InterruptedException {
+        String host = "127.0.0.1";
+        int port = 9005;
 
-    void connect(String host, int port, final SocketHandler socketHandler) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -53,15 +43,18 @@ public class NettyClient {
                     ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                     ch.pipeline().addLast(new ProtobufEncoder());
 
-                    ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
-                    ch.pipeline().addLast(new ProtoBufClientHandler(socketHandler));
+                    ch.pipeline().addLast(new IdleStateHandler(0, 5, 10, TimeUnit.SECONDS));
+                    ch.pipeline().addLast(new BusinessRouterHandler(loop));
                 }
             });
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync();
+
             // Wait until the connection is closed.
+
             f.channel().closeFuture().sync();
+
         } finally {
             workerGroup.shutdownGracefully();
         }
