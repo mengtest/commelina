@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package def.room.error_code;
+
+option java_package = "com.commelina.math24.play.room.proto";
+option java_outer_classname = "ErrorCodeProtos";
+option java_multiple_files = true;
+
+enum ERROR_CODE {
+    // 房间不存在
+    ROOM_NOT_FOUND = 0;
+    // 输入参数错误
+    ARG_ERRPR = 1;
+    // 等待棋盘创建完成
+    WAIT_CHECKERBOARD_CREATED = 2;
+
+}

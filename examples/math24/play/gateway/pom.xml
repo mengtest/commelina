@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.commelina.math24.play.gateway.GatewaySpringBoot</mainClass>
+                    <mainClass>com.commelina.math24.play.gateway.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>

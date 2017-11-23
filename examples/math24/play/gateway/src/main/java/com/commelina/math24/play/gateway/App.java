@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean;
  * @date 2017/8/10
  */
 @SpringBootApplication
-public class GatewaySpringBoot{
+public class App {
 
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(GatewaySpringBoot.class);
+        SpringApplication app = new SpringApplication(App.class);
         app.setWebApplicationType(WebApplicationType.NONE);
         app.run(args);
     }

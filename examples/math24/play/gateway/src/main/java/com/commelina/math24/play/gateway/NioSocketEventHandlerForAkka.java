@@ -1,13 +1,11 @@
 package com.commelina.math24.play.gateway;
 
-import akka.actor.ActorSystem;
 import com.commelina.akka.dispatching.ClusterActorSystemCreator;
 import com.commelina.akka.dispatching.ClusterFrontendActorSystem;
 import com.commelina.akka.dispatching.proto.ActorResponse;
 import com.commelina.akka.dispatching.proto.ApiRequest;
 import com.commelina.math24.common.proto.DOMAIN;
 import com.commelina.math24.play.gateway.proto.ERROR_CODE;
-import com.commelina.math24.play.gateway.proto.GATEWAY_METHODS;
 import com.commelina.niosocket.ReplyUtils;
 import com.commelina.niosocket.SocketEventHandler;
 import com.commelina.niosocket.proto.SocketASK;
@@ -44,9 +42,6 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
                 .build();
 
         switch (ask.getForward()) {
-            case DOMAIN.GATEWAY_VALUE:
-                dispatching.requestGateway(ctx, request);
-                break;
             case DOMAIN.MATCHING_VALUE:
                 dispatching.requestMatch(ctx, request);
                 break;
@@ -79,7 +74,6 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
         });
     }
 
-
     @Override
     public void onOffline(ChannelHandlerContext ctx, long logoutUserId) {
 
@@ -87,30 +81,21 @@ public class NioSocketEventHandlerForAkka implements SocketEventHandler {
 
     @Override
     public void onException(ChannelHandlerContext ctx, Throwable cause) {
-
+        if (logger.isDebugEnabled()) {
+            cause.printStackTrace();
+        } else {
+            logger.error("{}", cause);
+        }
     }
 
     private static class Dispatching {
-        final ActorSystem gateway;
-
         final ClusterFrontendActorSystem match;
         final ClusterFrontendActorSystem room;
 
         public Dispatching() {
-            gateway = ClusterActorSystemCreator.create("gateway", "gateway");
             match = ClusterActorSystemCreator.createAsClusterFrontend("ClusterMatchingSystem", "cluster-requestGateway-match");
+
             room = ClusterActorSystemCreator.createAsClusterFrontend("ClusterRoomSystem", "cluster-requestGateway-room");
-        }
-
-        public void requestGateway(ChannelHandlerContext ctx, ApiRequest request) {
-            switch (request.getOpcode()) {
-                case GATEWAY_METHODS.PASSPORT_CONNECT_VALUE:
-
-                    break;
-                default:
-            }
-
-//            ReplyUtils.reply(ctx, askForBackend.getForward(), askForBackend.getOpcode(), body)
         }
 
         public void requestMatch(ChannelHandlerContext ctx, ApiRequest request) {

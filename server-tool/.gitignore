@@ -24,7 +24,7 @@ hs_err_pid*
 /.mvn
 
 # IDE intellij忽略
-../commelina/05-server-tools/tool-parent.iml
+/*.iml
 /.idea
 /target
 

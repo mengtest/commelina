@@ -7,7 +7,7 @@
         <groupId>com.github.freedompy.commelina</groupId>
         <artifactId>kernel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../01-kernel</relativePath>
+        <relativePath>../kernel</relativePath>
     </parent>
 
     <artifactId>server-parent</artifactId>

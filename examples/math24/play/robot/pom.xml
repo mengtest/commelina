@@ -42,17 +42,17 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/proto/proto/</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/proto/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../gateway/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../gateway/src/main/proto/</directory>
                                     <filtering>true</filtering>
 									<excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../match/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../match/src/main/proto/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
@@ -60,7 +60,7 @@
                                     </excludes>
                                 </resource>
                                 <resource>
-                                    <directory>${basedir}/../room/src/main/proto/proto/</directory>
+                                    <directory>${basedir}/../room/src/main/proto/</directory>
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
