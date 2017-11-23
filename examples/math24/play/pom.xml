@@ -55,10 +55,12 @@
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
                                     <filtering>false</filtering>
-                                    <includes>*.conf</includes>
-                                    <excludes>
-                                        <exclude>.gitignore</exclude>
-                                    </excludes>
+                                    <includes>
+                                        <include>cluster-matching-common.conf</include>
+                                        <include>cluster-room-common.conf</include>
+                                        <include>common.conf</include>
+                                        <include>remote-common.conf</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
@@ -75,10 +77,11 @@
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
                                     <filtering>false</filtering>
-                                    <includes>*.*</includes>
-                                    <excludes>
-                                        <exclude>.gitignore</exclude>
-                                    </excludes>
+                                    <includes>
+                                        <include>cluster-matching-common.conf</include>
+                                        <include>common.conf</include>
+                                        <include>remote-common.conf</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
@@ -95,15 +98,15 @@
                                 <resource>
                                     <directory>${basedir}/actor_config/</directory>
                                     <filtering>false</filtering>
-                                    <includes>*.conf</includes>
-                                    <excludes>
-                                        <exclude>.gitignore</exclude>
-                                    </excludes>
+                                    <includes>
+                                        <include>cluster-room-common.conf</include>
+                                        <include>common.conf</include>
+                                        <include>remote-common.conf</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>copy-actor-to-gateway-server</id>
                         <phase>validate</phase>
@@ -111,7 +114,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/gateway/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/gateway/src/main/resources/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/gateway/</directory>
@@ -131,7 +134,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/match/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/match/src/main/resources/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/match/</directory>
@@ -151,7 +154,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/room/src/main/resources</outputDirectory>
+                            <outputDirectory>${basedir}/room/src/main/resources/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/actor_config/room/</directory>
@@ -164,7 +167,6 @@
                             </resources>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>copy-proto-to-gateway</id>
                         <phase>validate</phase>
@@ -172,7 +174,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/gateway/src/main/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/gateway/src/main/proto/copy/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
@@ -192,7 +194,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/match/src/main/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/match/src/main/proto/copy/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>
@@ -212,7 +214,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/room/src/main/proto/copy</outputDirectory>
+                            <outputDirectory>${basedir}/room/src/main/proto/copy/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${basedir}/messages/common/</directory>

@@ -2,4 +2,3 @@
 !.gitignore
 !cluster-gateway-matching.conf
 !cluster-gateway-room.conf
-!gateway.conf
