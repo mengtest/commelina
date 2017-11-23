@@ -3,10 +3,11 @@ package com.commelina.math24.play.robot.niosocket;
 import com.commelina.math24.play.robot.interfaces.HandlerEvent;
 import com.commelina.math24.play.robot.interfaces.MemberEvent;
 import com.commelina.math24.play.robot.interfaces.ReadEvent;
-import com.commelina.niosocket.proto.SERVER_CODE;
-import com.commelina.niosocket.proto.SocketASK;
-import com.commelina.niosocket.proto.SocketMessage;
+import com.commelina.niosocket.proto.*;
+import com.commelina.utils.Version;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+import com.google.protobuf.ByteString;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
@@ -16,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author @panyao
@@ -31,6 +35,20 @@ public final class MemberEventLoop {
     private final EventLoop eventLoop = new DefaultEventLoop();
 
     ChannelHandlerContext ctx;
+
+    private final Queue<SocketASK> offlineAskQueue = Queues.newArrayBlockingQueue(11);
+
+    private Lock lock = new ReentrantLock();
+
+    private TokenInterface token;
+    private MemberEvent initEvent;
+
+    private int reconnectionTimes;
+
+    public MemberEventLoop(TokenInterface token, MemberEvent initEvent) {
+        this.token = token;
+        this.initEvent = initEvent;
+    }
 
     public void addEvent(ReadEvent event, ReadEvent... events) {
         readEvents.add(event);
@@ -100,35 +118,96 @@ public final class MemberEventLoop {
         });
     }
 
-    void addSystemEvent() {
+    void connection(ChannelHandlerContext ctx) {
+        ctx.writeAndFlush(SocketASK.newBuilder()
+                .setForward(SYSTEM_FORWARD_CODE.SYSTEM_VALUE)
+                .setBody(RequestBody.newBuilder()
+                        .setOpcode(SYSTEM_OPCODE.LOGIN_CODE_VALUE)
+                        .setVercode(Version.create("1.0.0"))
+                        .addArgs(ByteString.copyFromUtf8(token.getToken()))
+                )
+                .build());
+    }
 
+    void systemResponse(ChannelHandlerContext ctx, SocketMessage message) {
+        switch (message.getOpcode()) {
+            case SYSTEM_OPCODE.LOGIN_CODE_VALUE:
+                switch (message.getBody().getError()) {
+                    case SYSTEM_ERROR.LOGIN_SUCCESS_VALUE:
+                        this.ctx = ctx;
+                        if (reconnectionTimes > 0) {
+
+                        } else {
+                            SocketASK ask;
+                            do {
+                                ask = offlineAskQueue.poll();
+                                ctx.writeAndFlush(ask);
+                            } while (ask != null);
+                        }
+                        break;
+                    case SYSTEM_ERROR.LOGIN_FAILED_VALUE:
+                        // 重置重连次数
+                        errorTimes = 0;
+                        reconnection();
+                        break;
+                    default:
+                        throw new RuntimeException("undefined error " + message.getBody().getError());
+                }
+                break;
+            default:
+                throw new RuntimeException("undefined opcode " + message.getOpcode());
+        }
     }
 
     private void ask(SocketASK message) {
         if (ctx != null) {
-            ctx.writeAndFlush(message);
+            if (offlineAskQueue.size() > 0) {
+                // 把消息加入离线消息列表
+                offlineAskQueue.add(message);
+            } else {
+                ctx.writeAndFlush(message);
+            }
             return;
         }
+        // 把消息加入离线消息列表
+        offlineAskQueue.add(message);
 
-        while (errorTimes++ < ERROR_TIME_LIMIT) {
-            if (ctx != null) {
-                LOGGER.info("第{}次重连成功，消息已发送", errorTimes - 1);
-                ctx.writeAndFlush(message);
-                errorTimes = 0;
-                return;
-            }
-            LOGGER.info("第{}次尝试重连,{}", errorTimes, LocalTime.now().withNano(0));
-            // TODO: 2017/10/13 这里写得怪怪的，先偷懒了
-            NettyClient.start(this);
+        reconnection();
+    }
+
+    private void reconnection() {
+        if (lock.tryLock()) {
+            lock.lock();
+            // 记录总共重连的次数
+            reconnectionTimes++;
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                LOGGER.info("第{}次尝试重连错误,{}", errorTimes, e);
+                // 执行重连操作
+                while (errorTimes++ < ERROR_TIME_LIMIT) {
+                    if (ctx != null) {
+                        LOGGER.info("第{}次重连成功", errorTimes - 1);
+                        return;
+                    }
+                    LOGGER.info("第{}次尝试重连,{}", errorTimes, LocalTime.now().withNano(0));
+                    // TODO: 2017/10/13 这里写得怪怪的，先偷懒了
+                    try {
+                        NettyClient.start(this);
+                    } catch (InterruptedException e) {
+                        LOGGER.info("第{}次尝试重连错误,{}", errorTimes, e);
+                        continue;
+                    }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        LOGGER.info("第{}次尝试重连线程错误,{}", errorTimes, e);
+                    }
+                }
+            } finally {
+                lock.unlock();
             }
         }
     }
 
     private int errorTimes = 0;
-    static final int ERROR_TIME_LIMIT = 12;
+    private static final int ERROR_TIME_LIMIT = 12;
 
 }

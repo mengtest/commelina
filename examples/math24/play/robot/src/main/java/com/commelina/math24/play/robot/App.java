@@ -1,5 +1,6 @@
 package com.commelina.math24.play.robot;
 
+import com.commelina.math24.play.robot.events.MatchingJoinMatch;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,8 +21,8 @@ public class App {
     }
 
     @PostConstruct
-    public void init() {
-//        DefaultBoot.start("", "", new MatchingJoinMatch());
+    public void init() throws InterruptedException {
+        Starter.start("", "", new MatchingJoinMatch());
     }
 
 }

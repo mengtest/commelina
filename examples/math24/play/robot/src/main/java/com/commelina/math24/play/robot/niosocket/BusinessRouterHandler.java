@@ -1,7 +1,8 @@
 package com.commelina.math24.play.robot.niosocket;
 
-import com.commelina.niosocket.proto.*;
-import com.commelina.utils.Version;
+import com.commelina.niosocket.proto.SYSTEM_FORWARD_CODE;
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -26,16 +27,7 @@ public class BusinessRouterHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         LOGGER.info("与服务端建立连接");
-
-        ctx.writeAndFlush(SocketASK.newBuilder()
-                .setForward(SYSTEM_FORWARD_CODE.SYSTEM_VALUE)
-                .setBody(RequestBody.newBuilder()
-                        .setOpcode(SYSTEM_OPCODE.LOGIN_CODE_VALUE)
-                        .setVercode(Version.create("1.0.0"))
-                )
-                .build());
-
-        LOGGER.info("向服务端发送登录请求");
+        eventLoop.connection(ctx);
     }
 
     @Override
@@ -48,6 +40,7 @@ public class BusinessRouterHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         SocketMessage message = (SocketMessage) msg;
+
         switch (message.getCode()) {
             case NOTIFY_CODE:
                 LOGGER.info("收到服务端通知消息 {}", message.getClass());
@@ -55,7 +48,11 @@ public class BusinessRouterHandler extends ChannelInboundHandlerAdapter {
                 break;
             case RESONSE_CODE:
                 LOGGER.info("收到服务端回复消息 {}", message.getClass());
-                eventLoop.acceptor(message);
+                if (message.getDomain() > SYSTEM_FORWARD_CODE.BOUNDARY_VALUE) {
+                    eventLoop.acceptor(message);
+                } else if (message.getDomain() == SYSTEM_FORWARD_CODE.SYSTEM_VALUE) {
+                    eventLoop.systemResponse(ctx, message);
+                }
                 break;
             case UNAUTHORIZED:
                 LOGGER.error("需要登录才能访问");

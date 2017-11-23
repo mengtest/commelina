@@ -71,4 +71,6 @@ enum SYSTEM_OPCODE {
 enum SYSTEM_ERROR {
     // 登录失败
     LOGIN_FAILED = 0;
+    // 登录成功
+    LOGIN_SUCCESS = 1;
 }
