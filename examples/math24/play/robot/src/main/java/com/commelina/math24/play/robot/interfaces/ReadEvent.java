@@ -16,18 +16,7 @@ public interface ReadEvent extends Identify {
      * @param msg
      * @return
      */
-    default EventResult onResponse(MemberEventLoop eventLoop, SocketMessage msg) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 服务端通知事件
-     *
-     * @param eventLoop
-     * @param msg
-     * @return
-     */
-    default EventResult onNotify(MemberEventLoop eventLoop, SocketMessage msg) {
+    default EventResult onMessage(MemberEventLoop eventLoop, SocketMessage msg) {
         throw new UnsupportedOperationException();
     }
 

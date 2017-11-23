@@ -14,21 +14,15 @@ import com.google.protobuf.Internal;
 public class MatchingWaitForJoinRoom implements ReadEvent {
 
     @Override
-    public Internal.EnumLite getForward() {
-        return DOMAIN.MATCHING;
-    }
-
-    @Override
-    public Internal.EnumLite getApiOpcode() {
-        return REQUEST_OPCODE.JOIN_MATCH_QUENE;
-    }
-
-    @Override
-    public EventResult onResponse(MemberEventLoop eventLoop, SocketMessage msg) {
+    public EventResult onMessage(MemberEventLoop eventLoop, SocketMessage msg) {
         // 移除 接受匹配状态的 event
         eventLoop.removeReadEvent(MatchingWaitForMatchStatus.class);
 
         return null;
     }
 
+    @Override
+    public boolean match(Internal.EnumLite forward, Internal.EnumLite opcode) {
+        return forward.getNumber() == DOMAIN.MATCHING_VALUE && opcode.getNumber() == REQUEST_OPCODE.JOIN_MATCH_QUENE_VALUE;
+    }
 }

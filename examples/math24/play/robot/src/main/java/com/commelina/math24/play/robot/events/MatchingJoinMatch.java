@@ -28,12 +28,12 @@ public class MatchingJoinMatch implements MemberEvent {
     }
 
     @Override
-    public boolean tag(Internal.EnumLite forward, Internal.EnumLite opcode) {
+    public boolean match(Internal.EnumLite forward, Internal.EnumLite opcode) {
         return DOMAIN.MATCHING_VALUE == forward.getNumber() && REQUEST_OPCODE.JOIN_MATCH_QUENE.equals(opcode);
     }
 
     @Override
-    public EventResult onResponse(MemberEventLoop eventLoop, SocketMessage msg) {
+    public EventResult onMessage(MemberEventLoop eventLoop, SocketMessage msg) {
         // 加入匹配成功
         // 注册监听匹配状态的事件
         eventLoop.addEvent(new MatchingWaitForMatchStatus());

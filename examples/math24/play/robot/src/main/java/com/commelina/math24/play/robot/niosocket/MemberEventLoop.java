@@ -95,14 +95,10 @@ public final class MemberEventLoop {
         eventLoop.execute(() -> {
             while (readEvents.iterator().hasNext()) {
                 ReadEvent event = readEvents.iterator().next();
-                if (!event.tag(msg::getDomain, msg::getOpcode)) {
+                if (!event.match(msg::getDomain, msg::getOpcode)) {
                     continue;
                 }
-
-                ReadEvent.EventResult result = msg.getCode() == SERVER_CODE.RESONSE_CODE
-                        ? event.onResponse(this, msg) : event.onNotify(this, msg);
-
-                switch (result) {
+                switch (event.onMessage(this, msg)) {
                     case UN_REMOVE:
                         break;
                     case ADD_HISTORY:

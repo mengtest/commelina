@@ -17,6 +17,6 @@ public interface Identify {
      * @param opcode
      * @return
      */
-    boolean tag(Internal.EnumLite forward, Internal.EnumLite opcode);
+    boolean match(Internal.EnumLite forward, Internal.EnumLite opcode);
 
 }
