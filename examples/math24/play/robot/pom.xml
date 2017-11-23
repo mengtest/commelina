@@ -13,6 +13,10 @@
     <artifactId>math24-play-robot</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <maven.resources.overwrite>true</maven.resources.overwrite>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
