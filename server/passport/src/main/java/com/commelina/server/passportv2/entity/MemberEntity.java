@@ -1,22 +1,22 @@
-package com.commelina.server.passport.entity;
+package com.commelina.server.passportv2.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 /**
+ * 用户表
  *
  * @author panyao
- * @date 2017/9/2
+ * @date 2017/11/21
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "passport_member")
+@Table(name = "member")
 public class MemberEntity {
 
-    @Id
-    @Column(updatable = false, nullable = false)
     private long uid;
-
-    @Column(length = 60, nullable = false)
     private String pwd;
 
     public long getUid() {
@@ -34,5 +34,4 @@ public class MemberEntity {
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
-
 }

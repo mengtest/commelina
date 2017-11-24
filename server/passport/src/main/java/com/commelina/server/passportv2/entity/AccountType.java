@@ -1,4 +1,4 @@
-package com.commelina.server.passportv2.entityv2;
+package com.commelina.server.passportv2.entity;
 
 /**
  * @author panyao

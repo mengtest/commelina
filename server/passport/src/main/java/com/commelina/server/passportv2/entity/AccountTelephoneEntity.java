@@ -1,22 +1,21 @@
-package com.commelina.server.passport.entity;
+package com.commelina.server.passportv2.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 /**
+ * 用户手机号码表
  *
  * @author panyao
- * @date 2017/9/2
+ * @date 2017/11/21
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "passport_account_telephone")
+@Table(name = "member_channel_telephone")
 public class AccountTelephoneEntity {
-
-    @Id
-    @Column(updatable = false, nullable = false)
     private long uid;
-
-    @Column(length = 80, updatable = false, nullable = false)
     private String account;
 
     public long getUid() {
@@ -34,5 +33,4 @@ public class AccountTelephoneEntity {
     public void setAccount(String account) {
         this.account = account;
     }
-
 }

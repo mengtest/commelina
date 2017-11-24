@@ -1,6 +1,6 @@
 package com.commelina.server.passportv2.service;
 
-import com.commelina.server.passport.entity.MemberEntity;
+import com.commelina.server.passportv2.entity.MemberEntity;
 import com.commelina.utils.ServiceDomainEmptyMessage;
 import com.commelina.utils.ServiceDomainMessage;
 

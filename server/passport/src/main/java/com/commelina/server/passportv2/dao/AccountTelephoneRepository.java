@@ -1,6 +1,6 @@
 package com.commelina.server.passportv2.dao;
 
-import com.commelina.server.passport.entity.AccountTelephoneEntity;
+import com.commelina.server.passportv2.entity.AccountTelephoneEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;

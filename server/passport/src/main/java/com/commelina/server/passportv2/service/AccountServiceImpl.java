@@ -1,10 +1,10 @@
 package com.commelina.server.passportv2.service;
 
+import com.commelina.server.passport.proto.ERROR_CODE;
 import com.commelina.server.passportv2.dao.AccountTelephoneRepository;
 import com.commelina.server.passportv2.dao.MemberRepository;
-import com.commelina.server.passport.entity.AccountTelephoneEntity;
-import com.commelina.server.passport.entity.MemberEntity;
-import com.commelina.server.passport.proto.ERROR_CODE;
+import com.commelina.server.passportv2.entity.AccountTelephoneEntity;
+import com.commelina.server.passportv2.entity.MemberEntity;
 import com.commelina.utils.ServiceDomainEmptyMessage;
 import com.commelina.utils.ServiceDomainMessage;
 import org.springframework.beans.factory.annotation.Autowired;

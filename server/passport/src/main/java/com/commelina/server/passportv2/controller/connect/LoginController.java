@@ -1,7 +1,7 @@
 package com.commelina.server.passportv2.controller.connect;
 
-import com.commelina.server.passport.entity.MemberEntity;
 import com.commelina.server.passport.proto.ERROR_CODE;
+import com.commelina.server.passportv2.entity.MemberEntity;
 import com.commelina.server.passportv2.service.AccountService;
 import com.commelina.server.passportv2.service.CaptchaService;
 import com.commelina.utils.ServiceDomainMessage;

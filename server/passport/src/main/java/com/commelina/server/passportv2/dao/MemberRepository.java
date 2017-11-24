@@ -1,6 +1,6 @@
 package com.commelina.server.passportv2.dao;
 
-import com.commelina.server.passport.entity.MemberEntity;
+import com.commelina.server.passportv2.entity.MemberEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
