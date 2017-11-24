@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package def.gateway;
+
+import "copy/domain_constants.proto";
+
+option java_package = "com.game.gateway.proto";
+option java_outer_classname = "MemberStatusProtos";
+option java_multiple_files = true;
+
+message FindRoomRequest {
+    uint64 roomId = 1;
+}
+
+message FindRoomResponse {
+    bool exists = 1;
+}
+
+message AddRoom {
+    uint64 roomId = 1;
+}
+
+message RemoveRoom {
+    uint64 roomId = 1;
+}
+
+message ChangeAccesssDoamin {
+    uint64 userId = 1;
+    DOMAIN domain = 2;
+}

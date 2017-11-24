@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package def;
+
+option java_package = "com.commelina.math24.common.proto";
+option java_outer_classname = "DomainProtos";
+option java_multiple_files = true;
+
+// 响应的 domain 列表，目前就这三个
+enum DOMAIN {
+    MATCHING = 0; // 匹配服务器
+    GAME_ROOM = 1; // 游戏房间服务器
+}

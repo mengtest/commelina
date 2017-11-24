@@ -15,14 +15,13 @@
 
     <properties>
         <maven.resources.overwrite>true</maven.resources.overwrite>
+        <docker.image.prefix>commelina</docker.image.prefix>
     </properties>
 
     <modules>
         <module>gateway</module>
         <module>match</module>
         <module>room</module>
-
-        <module>robot</module>
     </modules>
 
     <dependencies>

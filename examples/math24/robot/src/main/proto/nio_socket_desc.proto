@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package netty.nio.socket.protocol;
+
+option java_package = "com.commelina.niosocket.proto";
+option java_outer_classname = "SocketNettyProtocolDesc";
+
+// 编码
+// An encoder that prepends the the Google Protocol Buffers
+// <a href="https://developers.google.com/protocol-buffers/docs/encoding?csw=1#varints">Base
+// 128 Varints</a> integer length field. For example:
+// <pre>
+// BEFORE ENCODE (300 bytes)       AFTER ENCODE (302 bytes)
+// +---------------+               +--------+---------------+
+// | Protobuf Data |-------------->| Length | Protobuf Data |
+// |  (300 bytes)  |               | 0xAC02 |  (300 bytes)  |
+// +---------------+               +--------+---------------+
+// </pre>
+
+// 解码
+// A decoder that splits the received {@link ByteBuf}s dynamically by the
+// value of the Google Protocol Buffers
+// <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html#varints">Base
+// 128 Varints</a> integer length field in the message. For example:
+// <pre>
+// BEFORE DECODE (302 bytes)       AFTER DECODE (300 bytes)
+// +--------+---------------+      +---------------+
+// | Length | Protobuf Data |----->| Protobuf Data |
+// | 0xAC02 |  (300 bytes)  |      |  (300 bytes)  |
+// +--------+---------------+      +---------------+
+
+
+
+
+
+
+

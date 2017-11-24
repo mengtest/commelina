@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package def.room.notify.opcode;
+
+option java_package = "com.commelina.math24.play.room.proto";
+option java_outer_classname = "NotifyOpcodeProtos";
+option java_multiple_files = true;
+
+enum NOTIFY_OPCODE {
+    //
+    JOIN_ROOM = 0;
+}
+
+message NotifyJoinRoom {
+    uint64 roomId = 1;
+    uint64 overMicrosecond = 2;
+}

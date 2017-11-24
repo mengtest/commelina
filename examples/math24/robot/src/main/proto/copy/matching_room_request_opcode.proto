@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package def.matching_room;
+
+option java_package = "com.commelina.math24.matching_room.proto";
+option java_outer_classname = "OpcodeDef";
+option java_multiple_files = true;
+
+enum MATCH_ROOM_REQUEST_OPCODE {
+    CREATE_ROOM = 0;
+}
+
+message CREATE_ROOM_REQUEST {
+    uint64 roomId = 1;
+    repeated uint64 userIds = 2;
+}

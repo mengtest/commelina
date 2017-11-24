@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package def.matching_room;
+
+option java_package = "com.commelina.math24.matching_room.proto";
+option java_outer_classname = "ErrorCodeDef";
+option java_multiple_files = true;
+
+enum MATCH_ROOM_ERROR_CODE {
+    // 房间不存在
+    EMPTYS = 0;
+}

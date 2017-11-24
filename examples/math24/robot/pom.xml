@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.github.freedompy.commelina</groupId>
-        <artifactId>math24-play-parent</artifactId>
+        <artifactId>math24-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../</relativePath>
     </parent>
@@ -16,6 +16,21 @@
     <properties>
         <maven.resources.overwrite>true</maven.resources.overwrite>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.freedompy.commelina</groupId>
+            <artifactId>kernel-niosocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.freedompy.commelina</groupId>
+            <artifactId>kernel-akka</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -51,7 +66,7 @@
                                 <resource>
                                     <directory>${basedir}/../gateway/src/main/proto/</directory>
                                     <filtering>true</filtering>
-									<excludes>
+                                    <excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
@@ -68,13 +83,13 @@
                                     <filtering>true</filtering>
                                     <excludes>
                                         <exclude>copy/*.*</exclude>
-										 <exclude>.gitignore</exclude>
+                                        <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
                                     <directory>${basedir}/../../../../kernel/niosocket/src/main/proto/</directory>
                                     <filtering>true</filtering>
-									<excludes>
+                                    <excludes>
                                         <exclude>.gitignore</exclude>
                                     </excludes>
                                 </resource>
