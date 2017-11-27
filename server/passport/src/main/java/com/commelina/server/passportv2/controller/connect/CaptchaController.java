@@ -31,8 +31,7 @@ public class CaptchaController {
      */
     @GetMapping(value = "/sms")
     @ResponseBody
-    public ResponseBodyMessage telephone(@RequestParam String tel,
-                                         @AssertTrue String xx) {
+    public ResponseBodyMessage telephone(@RequestParam String tel) {
         if (!ParamValid.telephone(tel)) {
             return ResponseBodyMessage.error(ERROR_CODE.INPUT_TELEPHONE_FORMAT_ERROR);
         }
