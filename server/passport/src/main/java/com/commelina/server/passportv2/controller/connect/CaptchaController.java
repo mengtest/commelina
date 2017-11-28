@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.AssertTrue;
 
 /**
- *
  * @author @panyao
  * @date 2017/9/4
  */
@@ -25,7 +23,6 @@ public class CaptchaController {
     private CaptchaService captchaService;
 
     /**
-     *
      * @param tel
      * @return
      */
