@@ -67,7 +67,13 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         }
 
         if (ask.getForward() == SYSTEM_FORWARD_CODE.HEARTBEAT_VALUE) {
-            heartbeat(ctx, ask);
+            // forward = 0 表示心跳
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
+            }
+            ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT);
+
+            ctx.fireChannelRead(ask);
             return;
         }
 
@@ -105,6 +111,7 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
         long userId = NettyServerContext.INSTANCE.getLoginUserId(ctx.channel().id());
         if (userId <= 0) {
             ctx.writeAndFlush(ProtoBuffStatic.UNAUTHORIZED);
+            ctx.fireChannelRead(ask);
             return;
         }
         try {
@@ -130,16 +137,9 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
                 login(ctx, ask);
                 break;
             default:
+                ctx.fireChannelRead(ask);
                 // nothing to do
         }
-    }
-
-    private void heartbeat(ChannelHandlerContext ctx, SocketASK ask) {
-        // forward = 0 表示心跳
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("client id:{}, heartbeat ", ctx.channel().id());
-        }
-        ctx.writeAndFlush(ProtoBuffStatic.HEARTBEAT);
     }
 
     private void login(ChannelHandlerContext ctx, SocketASK ask) {
@@ -157,9 +157,11 @@ class ChannelInboundHandlerRouterAdapter extends ChannelInboundHandlerAdapter {
             }
             NettyServerContext.INSTANCE.userJoin(ctx.channel(), userId);
             ctx.writeAndFlush(ProtoBuffStatic.LOGIN_SUCCESS);
+            ctx.fireChannelRead(ask);
             return;
         } while (false);
         ctx.writeAndFlush(ProtoBuffStatic.LOGIN_FAILED);
+        ctx.fireChannelRead(ask);
     }
 
 }
