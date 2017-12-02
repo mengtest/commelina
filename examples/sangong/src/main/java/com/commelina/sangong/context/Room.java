@@ -4,6 +4,11 @@ import com.commelina.sangong.Behavior;
 import com.commelina.sangong.Controller;
 import com.commelina.sangong.MemberEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by panyao on 2017/12/2.
  */
@@ -12,46 +17,51 @@ public class Room implements MemberEvent {
     // 维护当前的 阶段
     private Controller currentController;
 
+    private Map<Integer, Behavior> behaviors = new HashMap<Integer, Behavior>();
+
+    private final Lock behaviorExecuterLock = new ReentrantLock();
+
     public void onRequest(ChannelHandlerContext context, int userId) {
         // 分配到对于的 behavior 上去
     }
 
-    public void addController(Controller controller) {
+    public void changeToNextController(Controller controller) {
+        currentController = controller;
         int waitTime = controller.onStart(this);
         if (waitTime > 0) {
-            addExpireEvent();
+            // 用计时器超时切换阶段 进行 onUpdate
+            addControllerExpireEvent(waitTime);
         } else {
-            addExecute();
+            controllerUpdate();
         }
+    }
 
-        // 处理延迟
-
-        // 加入执行队列
+    private void controllerUpdate() {
+        currentController.onUpdate(this);
+        if (currentController.isOver(this)) {
+            currentController.onCompleted(this);
+        }
     }
 
     public void addBehavior(int userId, Behavior behavior) {
         // 加入执行队列
-    }
-
-    public void onTimer() {
-        //
-        // 计时器超时触发之后，转化成 behavior 或者 controller addExecute
-        // 不要直接修改当前 room 的值
+        int waitTime = behavior.onStart(userId, this);
+        if (waitTime > 0) {
+            addBehaviorExpireEvent(waitTime, userId, behavior);
+        }
     }
 
     // 加入延迟器
-    private void addExpireEvent() {
+    private void addControllerExpireEvent(int waitTime) {
+        // todo 计时器超时 执行
 
     }
 
-    // 加入执行队列
-    private void addExecute() {
+    private void addBehaviorExpireEvent(int waitTime, int userId, Behavior behavior) {
+        // 计时器超时则 执行
 
-    }
-
-    private void execute(){
-        // 队列等待 behavior
-        Object o = null;
     }
 
 }
+
+
