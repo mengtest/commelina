@@ -9,8 +9,11 @@ import com.commelina.sangong.MemberEvent;
  */
 public class Room implements MemberEvent {
 
-    public void onRequest(ChannelHandlerContext context, int userId) {
+    // 维护当前的 阶段
+    private Controller currentController;
 
+    public void onRequest(ChannelHandlerContext context, int userId) {
+        // 分配到对于的 behavior 上去
     }
 
     public void addController(Controller controller) {
@@ -18,7 +21,7 @@ public class Room implements MemberEvent {
         if (waitTime > 0) {
             addExpireEvent();
         } else {
-            addExcute();
+            addExecute();
         }
 
         // 处理延迟
@@ -32,7 +35,7 @@ public class Room implements MemberEvent {
 
     public void onTimer() {
         //
-        // 计时器超时触发之后，转化成 behavior 或者 controller addExcute
+        // 计时器超时触发之后，转化成 behavior 或者 controller addExecute
         // 不要直接修改当前 room 的值
     }
 
@@ -42,12 +45,13 @@ public class Room implements MemberEvent {
     }
 
     // 加入执行队列
-    private void addExcute() {
+    private void addExecute() {
 
     }
 
-    private void findBehaviorThanExcute(){
-
+    private void execute(){
+        // 队列等待 behavior
+        Object o = null;
     }
 
 }
