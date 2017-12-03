@@ -29,7 +29,7 @@ public class Room implements MemberEvent {
         currentController = controller;
         int waitTime = controller.onStart(this);
         if (waitTime > 0) {
-            // 用计时器超时切换阶段 进行 onUpdate
+            // 用计时器超时切换阶段 进行 controllerUpdate
             addControllerExpireEvent(waitTime);
         } else {
             controllerUpdate();
