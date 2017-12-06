@@ -21,12 +21,11 @@ public interface Controller{
 
     // 是否结束
     default boolean isOver(Room room){
-
+        return false;
     }
 
     // 结束之后触发的操作，比如进入下一阶段
     default void onCompleted(Room room) {
-
 
     }
 

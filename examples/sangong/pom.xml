@@ -13,9 +13,15 @@
     <artifactId>sangong</artifactId>
     <packaging>jar</packaging>
 
-    <modules>
-        <module>play</module>
-        <module>robot</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.freedompy.commelina</groupId>
+            <artifactId>kernel-akka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.freedompy.commelina</groupId>
+            <artifactId>kernel-niosocket</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

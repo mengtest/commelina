@@ -42,6 +42,7 @@
             </activation>
             <modules>
                 <module>examples/math24</module>
+                <module>examples/sangong</module>
             </modules>
         </profile>
     </profiles>

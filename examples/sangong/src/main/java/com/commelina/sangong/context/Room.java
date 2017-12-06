@@ -1,8 +1,9 @@
 package com.commelina.sangong.context;
 
+import com.commelina.niosocket.proto.SocketASK;
+import com.commelina.niosocket.proto.SocketMessage;
 import com.commelina.sangong.Behavior;
 import com.commelina.sangong.Controller;
-import com.commelina.sangong.MemberEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by panyao on 2017/12/2.
  */
-public class Room implements MemberEvent {
+public class Room {
 
     // 维护当前的 阶段
     private Controller currentController;
@@ -20,10 +21,6 @@ public class Room implements MemberEvent {
     private Map<Integer, Behavior> behaviors = new HashMap<Integer, Behavior>();
 
     private final Lock behaviorExecuterLock = new ReentrantLock();
-
-    public void onRequest(ChannelHandlerContext context, int userId) {
-        // 分配到对于的 behavior 上去
-    }
 
     public void changeToNextController(Controller controller) {
         currentController = controller;
@@ -60,6 +57,11 @@ public class Room implements MemberEvent {
     private void addBehaviorExpireEvent(int waitTime, int userId, Behavior behavior) {
         // 计时器超时则 执行
 
+    }
+
+    public SocketMessage onRequest(long userId, SocketASK ask) {
+
+        return null;
     }
 
 }
