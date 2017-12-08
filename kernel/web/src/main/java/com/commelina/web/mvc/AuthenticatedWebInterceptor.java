@@ -21,7 +21,7 @@ public final class AuthenticatedWebInterceptor extends HandlerInterceptorAdapter
     @Resource
     private SessionHandler sessionHandler;
 
-    private static String domain;
+    private static String domain = null;
     private static final Pattern pattern = Pattern.compile("[\\w-]+\\.(com|cn)\\b()*$");
 
     /**
